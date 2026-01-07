@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DirekturController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -15,16 +16,11 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        $user = auth()->user();
-        
-        return match($user->role) {
-            'admin_hrd' => view('dashboard'),
-            'direktur' => view('dashboard'),
-            'karyawan' => view('dashboard'),
-            default => view('dashboard'),
-        };
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Approval routes (approve/reject pengajuan)
+    Route::post('/pengajuan/{type}/{id}/approve', [\App\Http\Controllers\ApprovalController::class, 'approve'])->name('pengajuan.approve');
+    Route::post('/pengajuan/{type}/{id}/reject', [\App\Http\Controllers\ApprovalController::class, 'reject'])->name('pengajuan.reject');
 
     // Direktur Routes
     Route::prefix('direktur')->name('direktur.')->middleware('auth')->group(function () {
