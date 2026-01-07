@@ -34,4 +34,31 @@ Route::middleware([
         Route::get('/laporan', [DirekturController::class, 'laporan'])->name('laporan');
         Route::get('/riwayat-persetujuan', [DirekturController::class, 'riwayatPersetujuan'])->name('riwayat-persetujuan');
     });
+
+    // Karyawan Routes
+    Route::prefix('karyawan')->name('karyawan.')->middleware('auth')->group(function () {
+        Route::get('/absensi', function () {
+            return view('karyawan.absensi');
+        })->name('absensi');
+        
+        Route::get('/pengajuan-cuti', function () {
+            return view('karyawan.pengajuan-cuti');
+        })->name('pengajuan-cuti');
+        
+        Route::get('/pengajuan-lembur', function () {
+            return view('karyawan.pengajuan-lembur');
+        })->name('pengajuan-lembur');
+        
+        Route::get('/surat', function () {
+            return view('karyawan.surat');
+        })->name('surat');
+        
+        Route::get('/riwayat', function () {
+            return view('karyawan.riwayat');
+        })->name('riwayat');
+        
+        Route::get('/profil', function () {
+            return view('karyawan.profil');
+        })->name('profil');
+    });
 });
