@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return redirect()->route('login');
 });
 
 Route::middleware([
@@ -12,6 +15,13 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $user = auth()->user();
+        
+        return match($user->role) {
+            'admin_hrd' => view('dashboard'),
+            'direktur' => view('dashboard'),
+            'karyawan' => view('dashboard'),
+            default => view('dashboard'),
+        };
     })->name('dashboard');
 });
