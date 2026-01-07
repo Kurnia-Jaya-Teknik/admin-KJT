@@ -30,6 +30,9 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'departemen_id',
+        'status_kontrak',
+        'sisa_cuti',
     ];
 
     /**
@@ -64,5 +67,31 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Relationships
+    public function departemen()
+    {
+        return $this->belongsTo(Departemen::class);
+    }
+
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class);
+    }
+
+    public function cuti()
+    {
+        return $this->hasMany(Cuti::class);
+    }
+
+    public function lembur()
+    {
+        return $this->hasMany(Lembur::class);
+    }
+
+    public function surat()
+    {
+        return $this->hasMany(Surat::class);
     }
 }
