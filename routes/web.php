@@ -56,5 +56,48 @@ Route::middleware([
         Route::get('/profil', function () {
             return view('karyawan.profil');
         })->name('profil');
+
+        Route::get('/notifikasi', function () {
+            return view('karyawan.notifikasi');
+        })->name('notifikasi');
+    });
+
+    // Admin/HRD Routes
+    Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
+        
+        Route::get('/karyawan', function () {
+            return view('admin.karyawan');
+        })->name('karyawan');
+        
+        Route::get('/cuti', function () {
+            return view('admin.cuti');
+        })->name('cuti');
+        
+        Route::get('/lembur', function () {
+            return view('admin.lembur');
+        })->name('lembur');
+        
+        Route::get('/surat', function () {
+            return view('admin.surat');
+        })->name('surat');
+        
+        Route::get('/template', function () {
+            return view('admin.template');
+        })->name('template');
+        
+        Route::get('/riwayat-surat', function () {
+            return view('admin.riwayat-surat');
+        })->name('riwayat-surat');
+        
+        Route::get('/notifikasi', function () {
+            return view('admin.notifikasi');
+        })->name('notifikasi');
+        
+        Route::get('/profil', function () {
+            return view('admin.profil');
+        })->name('profil');
     });
 });
