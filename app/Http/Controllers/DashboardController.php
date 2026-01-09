@@ -143,11 +143,19 @@ class DashboardController extends Controller
         // Surat siap dikirim
         $suratSiapDikirim = Surat::where('status', 'Disetujui')->count();
 
+        // Surat menunggu (untuk card)
+        $suratMenunggu = Surat::where('status', 'Pending')
+            ->with('user')
+            ->latest()
+            ->take(5)
+            ->get();
+
         return [
             'totalKaryawan' => $totalKaryawan,
             'hadirHariIni' => $hadirHariIni,
             'pengajuanDisetujui' => $pengajuanDisetujui,
             'suratSiapDikirim' => $suratSiapDikirim,
+            'suratMenunggu' => $suratMenunggu,
         ];
     }
 

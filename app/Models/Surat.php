@@ -24,6 +24,10 @@ class Surat extends Model
         'disetujui_oleh',
         'tanggal_persetujuan',
         'keterangan',
+        'kop_surat_id',
+        'generated_file_path',
+        'generated_file_url',
+        'generated_mime',
     ];
 
     protected $casts = [

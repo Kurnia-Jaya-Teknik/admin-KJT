@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DirekturController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\KopSuratController;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -83,10 +84,24 @@ Route::middleware([
         Route::get('/surat', function () {
             return view('admin.surat');
         })->name('surat');
+
+        // Admin Surat actions (approve/reject/delete)
+        Route::post('/surat/{id}/approve', [\App\Http\Controllers\Admin\SuratController::class, 'approve'])->name('surat.approve');
+        Route::post('/surat/{id}/reject', [\App\Http\Controllers\Admin\SuratController::class, 'reject'])->name('surat.reject');
+        Route::delete('/surat/{id}', [\App\Http\Controllers\Admin\SuratController::class, 'destroy'])->name('surat.destroy');
+
+        // Create surat
+        Route::post('/surat', [\App\Http\Controllers\Admin\SuratController::class, 'store'])->name('surat.store');
         
         Route::get('/template', function () {
             return view('admin.template');
         })->name('template');
+
+        // Kop Surat (AJAX)
+        Route::get('/kop-surat', [KopSuratController::class, 'index']);
+        Route::post('/kop-surat', [KopSuratController::class, 'store']);
+        Route::get('/kop-surat/{id}/placeholders', [KopSuratController::class, 'placeholders']);
+        Route::post('/kop-surat/{id}/fill', [KopSuratController::class, 'fill']);
         
         Route::get('/riwayat-surat', function () {
             return view('admin.riwayat-surat');
