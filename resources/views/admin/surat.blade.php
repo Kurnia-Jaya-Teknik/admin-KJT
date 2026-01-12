@@ -36,15 +36,17 @@
         }
     </style>
 
-    <div class="flex">
-        <!-- Sidebar -->
+    <!-- Fixed Sidebar -->
+    <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
         @include('layouts.sidebar')
+    </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 py-8">
+    <!-- Scrollable Main Content -->
+    <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
+        <div class="py-8 min-h-full">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <!-- Header Section -->
-                <div class="mb-8">
+            <!-- Header Section -->
+            <div class="mb-8">
                     <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg p-6 sm:p-8">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div class="flex items-center gap-4">
@@ -55,10 +57,10 @@
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                 </div>
-                                <div>
+                    <div>
                                     <h1 class="text-3xl font-bold text-white">Manajemen Surat Resmi</h1>
                                     <p class="text-indigo-100 mt-1">Kelola surat resmi yang telah disetujui direktur</p>
-                                </div>
+                    </div>
                             </div>
                             <button id="btnBuatSurat" onclick="openModalBuatSurat()" role="button"
                                 aria-haspopup="dialog" tabindex="0"
@@ -69,12 +71,12 @@
                                         d="M12 4v16m8-8H4" />
                                 </svg>
                                 Buat Surat Baru
-                            </button>
+                    </button>
                         </div>
-                    </div>
                 </div>
+            </div>
 
-                <!-- Tabs Navigation -->
+            <!-- Tabs Navigation -->
                 <div class="mb-6">
                     <div class="bg-white rounded-lg shadow-sm p-2">
                         <nav class="flex space-x-2" aria-label="Tabs">
@@ -96,10 +98,10 @@
                             </button>
                         </nav>
                     </div>
-                </div>
+            </div>
 
-                <!-- TAB 1: Permintaan Surat Disetujui Direktur -->
-                <div id="content-permintaan" class="block">
+            <!-- TAB 1: Permintaan Surat Disetujui Direktur -->
+            <div id="content-permintaan" class="block">
                     <!-- Info Banner -->
                     <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 rounded">
                         <div class="flex">
@@ -115,19 +117,19 @@
                                     yang telah disetujui Direktur dan siap diterbitkan oleh Admin HRD.</p>
                             </div>
                         </div>
-                    </div>
+                </div>
 
-                    <!-- Filter Section -->
+                <!-- Filter Section -->
                     <div class="bg-white shadow rounded-lg mb-6">
                         <div class="px-6 py-5">
                             <h3 class="text-base font-medium text-gray-900 mb-4">Filter & Pencarian</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                <div class="md:col-span-2">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="md:col-span-2">
                                     <x-label for="search_employee" value="Cari Karyawan atau Keperluan" />
                                     <x-input id="search_employee" type="text" class="mt-1 block w-full"
                                         placeholder="Ketik nama karyawan..." />
-                                </div>
-                                <div>
+                        </div>
+                        <div>
                                     <x-label for="filter_type" value="Jenis Permintaan" />
                                     <select id="filter_type"
                                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm px-4 py-3 text-base">
@@ -135,19 +137,19 @@
                                         <option value="cuti">Cuti</option>
                                         <option value="lembur">Lembur</option>
                                         <option value="resmi">Resmi</option>
-                                        <option value="lain">Lainnya</option>
-                                    </select>
-                                </div>
-                                <div>
+                                <option value="lain">Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
                                     <x-label for="filter_date" value="Tanggal Disetujui" />
                                     <x-input id="filter_date" type="date" class="mt-1 block w-full" />
                                 </div>
-                            </div>
                         </div>
                     </div>
+                </div>
 
                     <!-- Stats Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <!-- Card 1: Menunggu Dibuat -->
                         <div class="bg-white rounded-xl shadow-lg border-l-4 border-orange-500 hover:shadow-xl transition-shadow duration-300 stats-card cursor-pointer"
                             role="button" tabindex="0" onclick="cardFilter('permintaan','Menunggu Dibuat', this)"
@@ -161,11 +163,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                        </div>
+                    </div>
                                         <div>
                                             <p class="text-sm font-medium text-gray-600">Menunggu Dibuat</p>
                                             <p class="text-xs text-gray-500">Butuh perhatian</p>
-                                        </div>
+                    </div>
                                     </div>
                                 </div>
                                 <div class="text-right">
@@ -224,12 +226,12 @@
                                     <h3 class="text-4xl font-bold text-gray-800" id="count-published">28</h3>
                                 </div>
                             </div>
-                        </div>
                     </div>
+                </div>
 
-                    <!-- Queue Table -->
+                <!-- Queue Table -->
                     <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
-                        <div class="overflow-x-auto">
+                    <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                                     <tr>
@@ -257,11 +259,11 @@
                                             class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Aksi
                                         </th>
-                                    </tr>
-                                </thead>
+                                </tr>
+                            </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    <!-- Item 1 -->
-                                    <tr class="hover:bg-gray-50">
+                                <!-- Item 1 -->
+                                <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-8 w-8">
@@ -273,8 +275,8 @@
                                                 <div class="ml-3">
                                                     <div class="text-sm font-medium text-gray-900">Ahmad Rizki</div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                        </div>
+                                    </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Cuti</td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm text-gray-700">Cuti Tahunan 5 Hari</div>
@@ -298,10 +300,10 @@
                                                 Buat Surat
                                             </button>
                                         </td>
-                                    </tr>
+                                </tr>
 
-                                    <!-- Item 2 -->
-                                    <tr class="hover:bg-gray-50">
+                                <!-- Item 2 -->
+                                <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-8 w-8">
@@ -313,8 +315,8 @@
                                                 <div class="ml-3">
                                                     <div class="text-sm font-medium text-gray-900">Siti Nurhaliza</div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                        </div>
+                                    </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Lembur</td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm text-gray-700">Lembur 8 Jam</div>
@@ -337,10 +339,10 @@
                                                 Lanjutkan
                                             </button>
                                         </td>
-                                    </tr>
+                                </tr>
 
-                                    <!-- Item 3 -->
-                                    <tr class="hover:bg-gray-50">
+                                <!-- Item 3 -->
+                                <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-8 w-8">
@@ -352,8 +354,8 @@
                                                 <div class="ml-3">
                                                     <div class="text-sm font-medium text-gray-900">Budi Santoso</div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                        </div>
+                                    </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Resmi</td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm text-gray-700">Izin Keluar Jam Kerja</div>
@@ -377,10 +379,10 @@
                                                 Buat Surat
                                             </button>
                                         </td>
-                                    </tr>
+                                </tr>
 
-                                    <!-- Item 4 -->
-                                    <tr class="hover:bg-gray-50">
+                                <!-- Item 4 -->
+                                <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-8 w-8">
@@ -392,8 +394,8 @@
                                                 <div class="ml-3">
                                                     <div class="text-sm font-medium text-gray-900">Rina Wijaya</div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                        </div>
+                                    </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Cuti</td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm text-gray-700">Cuti Sakit 3 Hari</div>
@@ -417,10 +419,10 @@
                                                 Buat Surat
                                             </button>
                                         </td>
-                                    </tr>
+                                </tr>
 
-                                    <!-- Item 5 -->
-                                    <tr class="hover:bg-gray-50">
+                                <!-- Item 5 -->
+                                <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-8 w-8">
@@ -432,8 +434,8 @@
                                                 <div class="ml-3">
                                                     <div class="text-sm font-medium text-gray-900">Dedi Gunawan</div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                        </div>
+                                    </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Cuti</td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm text-gray-700">Cuti Tahunan 7 Hari</div>
@@ -457,15 +459,15 @@
                                                 Buat Surat
                                             </button>
                                         </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
 
-                <!-- TAB 2: Daftar Surat Diterbitkan -->
-                <div id="content-daftar" class="hidden">
+            <!-- TAB 2: Daftar Surat Diterbitkan -->
+            <div id="content-daftar" class="hidden">
                     <!-- Info Banner -->
                     <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6 rounded">
                         <div class="flex">
@@ -481,19 +483,19 @@
                                     HRD. Surat ini tersedia untuk diambil karyawan dan dilaporkan ke Direktur.</p>
                             </div>
                         </div>
-                    </div>
+                </div>
 
-                    <!-- Filter Section -->
+                <!-- Filter Section -->
                     <div class="bg-white shadow rounded-lg mb-6">
                         <div class="px-6 py-5">
                             <h3 class="text-base font-medium text-gray-900 mb-4">Filter & Pencarian</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                <div class="md:col-span-2">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="md:col-span-2">
                                     <x-label for="search_surat" value="Cari Nomor Surat atau Karyawan" />
                                     <x-input id="search_surat" type="text" class="mt-1 block w-full"
                                         placeholder="Cari..." />
-                                </div>
-                                <div>
+                        </div>
+                        <div>
                                     <x-label for="filter_type_publish" value="Jenis Surat" />
                                     <select id="filter_type_publish"
                                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm px-4 py-3 text-base">
@@ -501,17 +503,17 @@
                                         <option value="cuti">Cuti</option>
                                         <option value="lembur">Lembur</option>
                                         <option value="resmi">Resmi</option>
-                                    </select>
-                                </div>
-                                <div>
+                            </select>
+                        </div>
+                        <div>
                                     <x-label for="filter_date_publish" value="Tanggal Terbit" />
                                     <x-input id="filter_date_publish" type="date" class="mt-1 block w-full" />
                                 </div>
-                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Stats -->
+                <!-- Stats -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
                         <div
                             class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-green-100">
@@ -520,9 +522,9 @@
                                     <div>
                                         <p class="text-sm font-medium text-green-700">Total Surat Diterbitkan Bulan Ini
                                         </p>
-                                        <p class="text-3xl font-bold text-green-600 mt-2">28</p>
+                        <p class="text-3xl font-bold text-green-600 mt-2">28</p>
                                         <p class="text-xs text-green-500 mt-1">Januari 2026</p>
-                                    </div>
+                    </div>
                                     <div
                                         class="p-4 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl shadow-lg">
                                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor"
@@ -540,7 +542,7 @@
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <p class="text-sm font-medium text-blue-700">Belum Diambil Karyawan</p>
-                                        <p class="text-3xl font-bold text-blue-600 mt-2">5</p>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">5</p>
                                         <p class="text-xs text-blue-500 mt-1">Perlu tindak lanjut</p>
                                     </div>
                                     <div
@@ -553,12 +555,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
+                </div>
 
-                    <!-- Published Surat Table -->
+                <!-- Published Surat Table -->
                     <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
-                        <div class="overflow-x-auto">
+                    <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                                     <tr>
@@ -586,10 +588,10 @@
                                             class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Aksi
                                         </th>
-                                    </tr>
-                                </thead>
+                                </tr>
+                            </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr class="hover:bg-gray-50">
+                                <tr class="hover:bg-gray-50">
                                         <td
                                             class="px-6 py-4 whitespace-nowrap text-sm font-mono font-medium text-gray-900">
                                             SK-2026-001</td>
@@ -601,7 +603,7 @@
                                                 class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                                 Telah Diterbitkan
                                             </span>
-                                        </td>
+                                    </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                             <x-secondary-button class="!py-2 !px-4">
                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
@@ -614,15 +616,15 @@
                                                 </svg>
                                                 Lihat
                                             </x-secondary-button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50">
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
                                         <td
                                             class="px-6 py-4 whitespace-nowrap text-sm font-mono font-medium text-gray-900">
                                             SK-2026-002</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Lembur</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Siti Nurhaliza
-                                        </td>
+                                    </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12 Jan 2026</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
@@ -642,9 +644,9 @@
                                                 </svg>
                                                 Lihat
                                             </x-secondary-button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50">
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
                                         <td
                                             class="px-6 py-4 whitespace-nowrap text-sm font-mono font-medium text-gray-900">
                                             SK-2026-003</td>
@@ -656,7 +658,7 @@
                                                 class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                                 Telah Diterbitkan
                                             </span>
-                                        </td>
+                                    </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                             <x-secondary-button class="!py-2 !px-4">
                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
@@ -669,18 +671,18 @@
                                                 </svg>
                                                 Lihat
                                             </x-secondary-button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
         <!-- Modal: Buat/Edit Surat with Better Custom Style -->
-        <!-- Modal: Buat/Edit Surat -->
+    <!-- Modal: Buat/Edit Surat -->
         <div id="modalSurat" class="hidden fixed inset-0 z-50 flex items-center justify-center"
             aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <!-- Semi-dark blurred overlay (click to close) -->
@@ -690,19 +692,19 @@
 
             <div
                 class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto z-10">
-                <!-- Header -->
-                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                    <h2 class="text-xl font-semibold text-gray-900">Buat Surat Resmi</h2>
-                    <button onclick="closeModalSurat()" class="text-gray-500 hover:text-gray-700">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-900">Buat Surat Resmi</h2>
+                <button onclick="closeModalSurat()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
+                    </svg>
+                </button>
+            </div>
 
-                <!-- Content -->
-                <div class="px-6 py-4 space-y-4">
+            <!-- Content -->
+            <div class="px-6 py-4 space-y-4">
                     <!-- Kop Surat selector + upload -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Kop Surat</label>
@@ -711,18 +713,18 @@
                                 <option value="">-- Pilih Kop Surat (Default) --</option>
                             </select>
 
-                            <div>
+                    <div>
                                 <input id="kopUploadInput" type="file" accept="image/*,application/pdf"
                                     class="hidden" />
                                 <button type="button" onclick="document.getElementById('kopUploadInput').click()"
                                     class="px-3 py-2 bg-white border rounded-md text-gray-700 hover:bg-gray-50">Upload
                                     Kop Baru</button>
-                            </div>
+                    </div>
                         </div>
                         <div id="kopPreview" class="text-sm text-gray-500">Tidak ada kop dipilih.</div>
                         <div id="kopTemplateFields" class="mt-3 space-y-2"></div>
                         <div id="kopUploadStatus" class="mt-2 text-xs text-gray-500"></div>
-                    </div>
+                </div>
 
                     <!-- STEP NAVIGATION: compact, multi-step form -->
                     <div id="formSteps" class="space-y-4">
@@ -730,20 +732,20 @@
                         <!-- STEP 1: Pilih Jenis & Kelola Template -->
                         <div id="step-1" class="step">
                             <h3 class="text-lg font-semibold mb-2">1. Pilih Jenis & Kelola Template</h3>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Surat</label>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Surat</label>
                                     <select id="jenisSurat"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                                        <option value="">Pilih Jenis</option>
+                            <option value="">Pilih Jenis</option>
                                         <option value="pkwt">PKWT (Perjanjian Kerja Waktu Tertentu)</option>
                                         <option value="pkwtt">PKWTT (Perjanjian Kerja Waktu Tidak Tertentu)</option>
                                         <option value="magang">Surat Balasan Magang</option>
                                         <option value="jalan">Surat Jalan</option>
                                         <option value="cuti">Surat Pengajuan Cuti</option>
                                         <option value="lembur">Surat Pengajuan Lembur</option>
-                                    </select>
-                                </div>
+                        </select>
+                    </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Template Surat</label>
                                     <div class="flex items-center gap-2">
@@ -788,8 +790,8 @@
                                     <input type="date" id="tanggalSurat"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Untuk Karyawan</label>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Untuk Karyawan</label>
                                     <input type="text" id="karyawanSurat" placeholder="Nama karyawan"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
                                 </div>
@@ -802,8 +804,8 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Departemen</label>
                                     <input type="text" id="departemenSurat" placeholder="Departemen"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-                                </div>
-                            </div>
+                    </div>
+                </div>
 
                             <div class="flex justify-between gap-2 mt-4">
                                 <button type="button" id="backToStep1"
@@ -816,14 +818,14 @@
                         <!-- STEP 3: Isi surat & publish -->
                         <div id="step-3" class="step hidden">
                             <h3 class="text-lg font-semibold mb-2">3. Isi & Pratayang</h3>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Tujuan Surat</label>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tujuan Surat</label>
                                 <input type="text" id="tujuanSurat" placeholder="Ke Bank, Kantor Pos, dll..."
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-                            </div>
+                </div>
 
                             <div class="mt-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Isi Surat</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Isi Surat</label>
                                 <textarea id="isiSurat" placeholder="Ketik isi surat di sini..." rows="6"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-sm"></textarea>
                             </div>
@@ -841,26 +843,27 @@
                             </div>
                         </div>
 
-                    </div>
                 </div>
+            </div>
 
-                <!-- Footer -->
+            <!-- Footer -->
                 <div id="modalFooter" class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
                     <button onclick="closeModalSurat()"
                         class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
                     <button onclick="simpanSurat()"
                         class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium">Terbitkan
                         Surat</button>
-                </div>
             </div>
         </div>
+        </div>
+    </div>
 
-        <script>
-            function switchTab(tab) {
+    <script>
+        function switchTab(tab) {
                 // Hide all content
-                document.getElementById('content-permintaan').classList.add('hidden');
-                document.getElementById('content-daftar').classList.add('hidden');
-
+            document.getElementById('content-permintaan').classList.add('hidden');
+            document.getElementById('content-daftar').classList.add('hidden');
+            
                 // Reset all tabs - updated for new tab style
                 const tabs = ['tab-permintaan', 'tab-daftar'];
                 tabs.forEach(tabId => {
@@ -870,7 +873,7 @@
                 });
 
                 // Show selected content and activate tab
-                document.getElementById('content-' + tab).classList.remove('hidden');
+            document.getElementById('content-' + tab).classList.remove('hidden');
                 const activeTab = document.getElementById('tab-' + tab);
                 activeTab.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-900');
                 activeTab.classList.add('bg-indigo-50', 'text-indigo-700');
@@ -881,7 +884,7 @@
                 if (modal) {
                     modal.classList.remove('hidden');
                     modal.classList.add('flex');
-                    document.getElementById('tanggalSurat').valueAsDate = new Date();
+            document.getElementById('tanggalSurat').valueAsDate = new Date();
                     // reset modal title if present
                     const title = document.getElementById('modal-title');
                     if (title) title.innerText = 'Buat Surat Resmi';
@@ -936,9 +939,9 @@
                     console.error('Error opening modal:', error);
                     alert('Terjadi kesalahan saat membuka form. Silakan refresh halaman.');
                 }
-            }
+        }
 
-            function closeModalSurat() {
+        function closeModalSurat() {
                 const modal = document.getElementById('modalSurat');
                 if (modal) {
                     modal.classList.add('hidden');
@@ -956,23 +959,23 @@
             window.closeModalSurat = closeModalSurat;
             window.simpanSurat = simpanSurat;
 
-            function buatSurat(karyawan, jenis) {
+        function buatSurat(karyawan, jenis) {
                 // Store context so we can remove/move request row when published
                 window.currentRequest = {
                     karyawan: karyawan,
                     jenis: jenis
                 };
                 openModalSurat();
-                document.getElementById('karyawanSurat').value = karyawan;
+            document.getElementById('karyawanSurat').value = karyawan;
                 // keep select values as short form (cuti/lembur/resmi)
-                document.getElementById('jenisSurat').value = jenis.toLowerCase();
-            }
+            document.getElementById('jenisSurat').value = jenis.toLowerCase();
+        }
 
-            function lanjutkanSurat(karyawan, jenis) {
-                buatSurat(karyawan, jenis);
-            }
+        function lanjutkanSurat(karyawan, jenis) {
+            buatSurat(karyawan, jenis);
+        }
 
-            function simpanSurat() {
+        function simpanSurat() {
                 const nomorEl = document.getElementById('nomorSurat');
                 const tanggalEl = document.getElementById('tanggalSurat');
                 const jenisEl = document.getElementById('jenisSurat');
@@ -1062,7 +1065,7 @@
                             }
 
                             // close modal
-                            closeModalSurat();
+            closeModalSurat();
                         } else {
                             alert('Gagal menerbitkan surat.');
                             console.error('Surat store response', data);
@@ -1962,6 +1965,6 @@
                 // Initialize filters
                 filterRequests();
                 filterPublished();
-            });
-        </script>
+        });
+    </script>
 </x-app-layout>

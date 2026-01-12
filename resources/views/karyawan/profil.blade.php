@@ -5,19 +5,28 @@
         </h2>
     </x-slot>
 
-    <div class="flex min-h-[calc(100vh-130px)]">
+    <!-- Fixed Sidebar -->
+    <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
         @include('layouts.sidebar')
+    </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-8 bg-gray-50/50">
+    <!-- Scrollable Main Content -->
+    <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
+        <div class="p-6 lg:p-8 bg-gradient-to-br from-slate-50/80 via-blue-50/20 to-purple-50/10 min-h-full">
+        <!-- Welcome Header -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-semibold text-gray-800 mb-1.5">Profil Saya</h1>
+            <p class="text-sm text-gray-500">Kelola informasi pribadi dan keamanan akun Anda</p>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Profile Card -->
             <div class="lg:col-span-1">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
                     <div class="p-6 text-center">
                         <!-- Avatar -->
-                        <div class="w-20 h-20 mx-auto mb-4">
-                            <img src="https://ui-avatars.com/api/?name=Rina+Wijaya&background=4f46e5&color=fff&size=80" alt="Avatar" class="w-full h-full rounded-lg">
+                        <div class="w-20 h-20 mx-auto mb-4 ring-2 ring-emerald-200/50 rounded-xl overflow-hidden">
+                            <img src="https://ui-avatars.com/api/?name=Rina+Wijaya&background=4f46e5&color=fff&size=80" alt="Avatar" class="w-full h-full">
                         </div>
                         <!-- Name & Position -->
                         <p class="text-lg font-semibold text-gray-800">Rina Wijaya</p>
@@ -25,46 +34,46 @@
                         <p class="text-xs text-gray-500 mt-1">Departemen Keuangan</p>
                         
                         <!-- Divider -->
-                        <div class="my-4 border-t border-gray-200"></div>
+                        <div class="my-4 border-t border-gray-100/50"></div>
 
                         <!-- Info Section -->
                         <div class="space-y-3 text-left">
                             <div>
-                                <p class="text-xs text-gray-500 font-medium">ID KARYAWAN</p>
-                                <p class="text-sm text-gray-800 font-semibold">EMP-2024-156</p>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">ID Karyawan</p>
+                                <p class="text-sm text-gray-800 font-semibold mt-0.5">EMP-2024-156</p>
                             </div>
                             <div>
-                                <p class="text-xs text-gray-500 font-medium">STATUS</p>
-                                <p class="text-sm text-gray-800 font-semibold">Aktif</p>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Status</p>
+                                <p class="text-sm text-gray-800 font-semibold mt-0.5">Aktif</p>
                             </div>
                             <div>
-                                <p class="text-xs text-gray-500 font-medium">BERGABUNG SEJAK</p>
-                                <p class="text-sm text-gray-800 font-semibold">15 Januari 2024</p>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Bergabung Sejak</p>
+                                <p class="text-sm text-gray-800 font-semibold mt-0.5">15 Januari 2024</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Quick Stats -->
-                <div class="mt-6 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 p-6 hover:shadow-md transition-shadow duration-300">
                     <h3 class="text-sm font-semibold text-gray-800 mb-4">Statistik</h3>
                     <div class="space-y-4">
                         <div>
-                            <div class="flex justify-between mb-1">
-                                <span class="text-xs text-gray-600">Sisa Cuti</span>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-xs text-gray-500">Sisa Cuti</span>
                                 <span class="text-sm font-semibold text-gray-800">8/12</span>
                             </div>
-                            <div class="bg-gray-100 rounded-full h-2">
-                                <div class="bg-emerald-500 h-2 rounded-full" style="width: 67%"></div>
+                            <div class="bg-gray-100/30 rounded-full h-2 overflow-hidden">
+                                <div class="bg-gradient-to-r from-emerald-400/60 to-emerald-400/50 h-2 rounded-full transition-all duration-500 shadow-sm" style="width: 67%"></div>
                             </div>
                         </div>
                         <div>
-                            <div class="flex justify-between mb-1">
-                                <span class="text-xs text-gray-600">Kehadiran Bulan Ini</span>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-xs text-gray-500">Kehadiran Bulan Ini</span>
                                 <span class="text-sm font-semibold text-gray-800">18/20</span>
                             </div>
-                            <div class="bg-gray-100 rounded-full h-2">
-                                <div class="bg-blue-500 h-2 rounded-full" style="width: 90%"></div>
+                            <div class="bg-gray-100/30 rounded-full h-2 overflow-hidden">
+                                <div class="bg-gradient-to-r from-blue-400/60 to-blue-400/50 h-2 rounded-full transition-all duration-500 shadow-sm" style="width: 90%"></div>
                             </div>
                         </div>
                     </div>
@@ -72,70 +81,84 @@
             </div>
 
             <!-- Form Edit Profile -->
-            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <div class="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
+                <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-emerald-50/20 via-blue-50/20 to-purple-50/15">
                     <h3 class="text-sm font-semibold text-gray-800">Informasi Pribadi</h3>
                 </div>
                 <div class="p-6">
-                    <form class="space-y-6">
+                    <form class="space-y-5">
                         <!-- Data Tidak Dapat Diubah -->
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                            <p class="text-xs text-blue-800">
-                                <span class="font-semibold">Info:</span> Data berikut tidak dapat diubah. Hubungi HR jika ada kesalahan.
-                            </p>
+                        <div class="bg-gradient-to-r from-blue-50/40 to-indigo-50/30 border border-blue-200/30 rounded-xl p-4">
+                            <div class="flex items-start gap-3">
+                                <div class="p-1.5 bg-blue-100/50 rounded-lg flex-shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4 text-blue-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-xs text-gray-600 leading-relaxed">
+                                    <span class="font-medium text-gray-700">Info:</span> Data berikut tidak dapat diubah. Hubungi HR jika ada kesalahan.
+                                </p>
+                            </div>
                         </div>
 
                         <!-- Nama Lengkap -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
-                            <input type="text" value="Rina Wijaya" disabled class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 cursor-not-allowed">
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Nama Lengkap</label>
+                            <input type="text" value="Rina Wijaya" disabled class="w-full px-4 py-2.5 bg-gray-50/60 border border-gray-200/40 rounded-xl text-gray-600 cursor-not-allowed text-sm">
                         </div>
 
                         <!-- Email -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                            <input type="email" value="rina.wijaya@company.com" disabled class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 cursor-not-allowed">
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Email</label>
+                            <input type="email" value="rina.wijaya@company.com" disabled class="w-full px-4 py-2.5 bg-gray-50/60 border border-gray-200/40 rounded-xl text-gray-600 cursor-not-allowed text-sm">
                         </div>
 
                         <!-- Jabatan -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Jabatan</label>
-                            <input type="text" value="Staff Finance" disabled class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 cursor-not-allowed">
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Jabatan</label>
+                            <input type="text" value="Staff Finance" disabled class="w-full px-4 py-2.5 bg-gray-50/60 border border-gray-200/40 rounded-xl text-gray-600 cursor-not-allowed text-sm">
                         </div>
 
                         <!-- Departemen -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Departemen</label>
-                            <input type="text" value="Keuangan" disabled class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 cursor-not-allowed">
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Departemen</label>
+                            <input type="text" value="Keuangan" disabled class="w-full px-4 py-2.5 bg-gray-50/60 border border-gray-200/40 rounded-xl text-gray-600 cursor-not-allowed text-sm">
                         </div>
 
                         <!-- Divider -->
-                        <div class="border-t border-gray-200 pt-6"></div>
+                        <div class="border-t border-gray-100/50 pt-5"></div>
 
                         <!-- Data Dapat Diubah -->
-                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-                            <p class="text-xs text-green-800">
-                                <span class="font-semibold">Catatan:</span> Anda dapat mengubah data berikut.
-                            </p>
+                        <div class="bg-gradient-to-r from-emerald-50/40 to-green-50/30 border border-emerald-200/30 rounded-xl p-4">
+                            <div class="flex items-start gap-3">
+                                <div class="p-1.5 bg-emerald-100/50 rounded-lg flex-shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4 text-emerald-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-xs text-gray-600 leading-relaxed">
+                                    <span class="font-medium text-gray-700">Catatan:</span> Anda dapat mengubah data berikut.
+                                </p>
+                            </div>
                         </div>
 
                         <!-- Nomor HP -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nomor HP</label>
-                            <input type="tel" placeholder="+62 8xx xxxx xxxx" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                            <p class="text-xs text-gray-600 mt-1">Digunakan untuk notifikasi penting</p>
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Nomor HP</label>
+                            <input type="tel" placeholder="+62 8xx xxxx xxxx" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-300/50 transition-all duration-300 text-sm">
+                            <p class="text-xs text-gray-400 mt-1.5">Digunakan untuk notifikasi penting</p>
                         </div>
 
                         <!-- Alamat Rumah -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Rumah</label>
-                            <textarea rows="3" placeholder="Jalan, Kelurahan, Kecamatan, Kota/Kabupaten, Provinsi" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"></textarea>
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Alamat Rumah</label>
+                            <textarea rows="3" placeholder="Jalan, Kelurahan, Kecamatan, Kota/Kabupaten, Provinsi" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-300/50 transition-all duration-300 text-sm resize-none"></textarea>
                         </div>
 
                         <!-- Jenis Kelamin -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin</label>
-                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Jenis Kelamin</label>
+                            <select class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-300/50 transition-all duration-300 text-sm">
                                 <option selected>Perempuan</option>
                                 <option>Laki-laki</option>
                             </select>
@@ -143,16 +166,16 @@
 
                         <!-- Tanggal Lahir -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Lahir</label>
-                            <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Tanggal Lahir</label>
+                            <input type="date" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-300/50 transition-all duration-300 text-sm">
                         </div>
 
                         <!-- Button -->
-                        <div class="flex gap-3 pt-4">
-                            <button type="submit" class="flex-1 px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+                        <div class="flex gap-3 pt-2">
+                            <button type="submit" class="flex-1 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-medium rounded-xl hover:from-emerald-600 hover:to-emerald-500 shadow-sm hover:shadow-md transition-all duration-300 text-sm">
                                 Simpan Perubahan
                             </button>
-                            <button type="reset" class="flex-1 px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors">
+                            <button type="reset" class="flex-1 px-4 py-2.5 bg-white/80 border border-gray-200/60 text-gray-600 font-medium rounded-xl hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 text-sm">
                                 Batal
                             </button>
                         </div>
@@ -162,26 +185,26 @@
         </div>
 
         <!-- Account Security Section -->
-        <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+        <div class="mt-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
+            <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-blue-50/20 to-indigo-50/20">
                 <h3 class="text-sm font-semibold text-gray-800">Keamanan Akun</h3>
             </div>
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Change Password -->
-                    <div>
+                    <div class="bg-gradient-to-br from-blue-50/30 to-indigo-50/20 rounded-xl p-5 border border-blue-100/30">
                         <h4 class="text-sm font-semibold text-gray-800 mb-2">Ubah Password</h4>
-                        <p class="text-sm text-gray-600 mb-4">Perbarui password Anda secara berkala untuk keamanan akun</p>
-                        <button class="px-4 py-2 border border-indigo-600 text-indigo-600 font-medium rounded-lg hover:bg-indigo-50 transition-colors">
+                        <p class="text-xs text-gray-500 mb-4 leading-relaxed">Perbarui password Anda secara berkala untuk keamanan akun</p>
+                        <button class="px-4 py-2.5 border border-blue-400/60 text-blue-600/80 font-medium rounded-xl hover:bg-blue-50/60 hover:border-blue-400/80 transition-all duration-300 text-sm">
                             Ubah Password
                         </button>
                     </div>
 
                     <!-- Two-Factor Auth -->
-                    <div>
+                    <div class="bg-gradient-to-br from-purple-50/30 to-pink-50/20 rounded-xl p-5 border border-purple-100/30">
                         <h4 class="text-sm font-semibold text-gray-800 mb-2">Autentikasi Dua Faktor</h4>
-                        <p class="text-sm text-gray-600 mb-4">Tingkatkan keamanan dengan autentikasi dua faktor</p>
-                        <button class="px-4 py-2 border border-indigo-600 text-indigo-600 font-medium rounded-lg hover:bg-indigo-50 transition-colors">
+                        <p class="text-xs text-gray-500 mb-4 leading-relaxed">Tingkatkan keamanan dengan autentikasi dua faktor</p>
+                        <button class="px-4 py-2.5 border border-purple-400/60 text-purple-600/80 font-medium rounded-xl hover:bg-purple-50/60 hover:border-purple-400/80 transition-all duration-300 text-sm">
                             Aktifkan
                         </button>
                     </div>
@@ -190,39 +213,40 @@
         </div>
 
         <!-- Activity Log -->
-        <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+        <div class="mt-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
+            <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-emerald-50/20 to-blue-50/20">
                 <h3 class="text-sm font-semibold text-gray-800">Log Aktivitas Terbaru</h3>
             </div>
-            <div class="divide-y divide-gray-200">
-                <div class="p-6">
+            <div class="divide-y divide-gray-100/50">
+                <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-transparent transition-all duration-300">
                     <div class="flex items-start justify-between">
                         <div>
-                            <p class="font-medium text-gray-800">Login</p>
-                            <p class="text-xs text-gray-600 mt-1">Perangkat: Windows • IP: 192.168.1.100</p>
+                            <p class="text-sm font-medium text-gray-800">Login</p>
+                            <p class="text-xs text-gray-400 mt-0.5">Perangkat: Windows • IP: 192.168.1.100</p>
                         </div>
-                        <span class="text-xs text-gray-500">Hari ini, 14:30</span>
+                        <span class="text-xs text-gray-400">Hari ini, 14:30</span>
                     </div>
                 </div>
-                <div class="p-6">
+                <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-emerald-50/30 hover:to-transparent transition-all duration-300">
                     <div class="flex items-start justify-between">
                         <div>
-                            <p class="font-medium text-gray-800">Ubah Profil</p>
-                            <p class="text-xs text-gray-600 mt-1">Nomor telepon diperbarui</p>
+                            <p class="text-sm font-medium text-gray-800">Ubah Profil</p>
+                            <p class="text-xs text-gray-400 mt-0.5">Nomor telepon diperbarui</p>
                         </div>
-                        <span class="text-xs text-gray-500">2 hari lalu</span>
+                        <span class="text-xs text-gray-400">2 hari lalu</span>
                     </div>
                 </div>
-                <div class="p-6">
+                <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-purple-50/30 hover:to-transparent transition-all duration-300">
                     <div class="flex items-start justify-between">
                         <div>
-                            <p class="font-medium text-gray-800">Ajukan Pengajuan</p>
-                            <p class="text-xs text-gray-600 mt-1">Pengajuan cuti tahunan</p>
+                            <p class="text-sm font-medium text-gray-800">Ajukan Pengajuan</p>
+                            <p class="text-xs text-gray-400 mt-0.5">Pengajuan cuti tahunan</p>
                         </div>
-                        <span class="text-xs text-gray-500">5 hari lalu</span>
+                        <span class="text-xs text-gray-400">5 hari lalu</span>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </x-app-layout>

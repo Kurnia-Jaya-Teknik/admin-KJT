@@ -1,27 +1,29 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="flex min-h-[calc(100vh-130px)]">
+    <!-- Fixed Sidebar -->
+    <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
         @include('layouts.sidebar')
+    </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-6 bg-gray-50/50">
+    <!-- Scrollable Main Content -->
+    <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
+        <div class="p-6 lg:p-8 bg-gray-50/50 min-h-full">
             <!-- Welcome Banner -->
-            <div
-                class="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 rounded-2xl p-6 mb-6 text-white shadow-lg">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-2xl font-bold mb-1">Selamat Datang, {{ Auth::user()->name }}! 👋</h1>
-                        <p class="text-indigo-100 text-sm">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+            <div class="relative overflow-hidden bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 rounded-2xl p-6 mb-6 shadow-lg">
+                <div class="relative flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold mb-1 text-white">Selamat Datang, {{ Auth::user()->name }}! 👋</h1>
+                            <p class="text-blue-50 text-sm">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                        </div>
                     </div>
                     <div class="hidden md:block">
                         <svg class="w-16 h-16 text-white/20" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                         </svg>
                     </div>
                 </div>
@@ -283,6 +285,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </x-app-layout>

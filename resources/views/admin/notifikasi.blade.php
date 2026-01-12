@@ -5,11 +5,14 @@
         </h2>
     </x-slot>
 
-    <div class="flex min-h-[calc(100vh-130px)]">
+    <!-- Fixed Sidebar -->
+    <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
         @include('layouts.sidebar')
+    </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-8 bg-gray-50/50">
+    <!-- Scrollable Main Content -->
+    <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
+        <div class="p-6 lg:p-8 bg-gray-50/50 min-h-full">
             <!-- Header -->
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-900">Notifikasi Admin HR</h1>
@@ -154,6 +157,6 @@
             <div class="text-center mt-8">
                 <button class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Muat Notifikasi Lebih Lama</button>
             </div>
-        </div>
+                </div>
     </div>
 </x-app-layout>

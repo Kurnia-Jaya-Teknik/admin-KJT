@@ -1,6 +1,6 @@
 <!-- Sidebar -->
-<aside class="w-64 bg-white shadow-sm border-r border-gray-200 hidden lg:block">
-    <div class="p-6">
+<aside class="w-64 h-full bg-white shadow-sm border-r border-gray-200 flex flex-col">
+    <div class="p-6 flex-1 overflow-y-auto">
         <!-- User Info -->
         <div class="flex items-center space-x-3 mb-8 pb-6 border-b border-gray-100">
             <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-lg shadow-md">

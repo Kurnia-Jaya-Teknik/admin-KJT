@@ -5,11 +5,14 @@
         </h2>
     </x-slot>
 
-    <div class="flex min-h-[calc(100vh-130px)]">
+    <!-- Fixed Sidebar -->
+    <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
         @include('layouts.sidebar')
+    </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-8 bg-gray-50/50">
+    <!-- Scrollable Main Content -->
+    <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
+        <div class="p-6 lg:p-8 bg-gray-50/50 min-h-full">
             <!-- Period Filter -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <div>
@@ -196,6 +199,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+                </div>
     </div>
 </x-app-layout>

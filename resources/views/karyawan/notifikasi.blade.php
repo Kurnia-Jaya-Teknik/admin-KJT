@@ -5,11 +5,14 @@
         </h2>
     </x-slot>
 
-    <div class="flex min-h-[calc(100vh-130px)]">
+    <!-- Fixed Sidebar -->
+    <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
         @include('layouts.sidebar')
+    </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-8 bg-gray-50/50">
+    <!-- Scrollable Main Content -->
+    <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
+        <div class="p-6 lg:p-8 bg-gray-50/50 min-h-full">
         <!-- Filter Section -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
             <div class="flex items-center justify-between gap-4">

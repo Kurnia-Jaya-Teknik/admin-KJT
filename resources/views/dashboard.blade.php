@@ -1,31 +1,51 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="flex min-h-[calc(100vh-130px)]">
+    <!-- Fixed Sidebar -->
+    <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
         @include('layouts.sidebar')
+    </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-8 bg-gray-50/50">
+    <!-- Scrollable Main Content -->
+    <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
+        <div class="p-6 lg:p-8 bg-gray-50/50 min-h-full">
             <!-- Welcome Banner -->
-            <div
-                class="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 rounded-2xl p-8 mb-8 text-white shadow-lg">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-2xl font-bold mb-2">Selamat Datang, {{ Auth::user()->name }}! 👋</h1>
-                        <p class="text-indigo-100 text-sm">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
-                    </div>
-                    <div class="hidden md:block">
-                        <svg class="w-24 h-24 text-white/20" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                        </svg>
+            @if (Auth::user()->role === 'karyawan')
+                <div class="relative overflow-hidden bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 rounded-2xl p-6 mb-6 shadow-lg">
+                    <div class="relative flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h1 class="text-xl font-bold mb-1 text-white">Halo, {{ Auth::user()->name }}! 👋</h1>
+                                <p class="text-blue-50 text-sm font-medium">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @else
+                <div class="relative overflow-hidden bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 rounded-2xl p-8 mb-8 shadow-lg">
+                    <div class="relative flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h1 class="text-2xl font-bold mb-2 text-white">Selamat Datang, {{ Auth::user()->name }}! 👋</h1>
+                                <p class="text-blue-50 text-sm">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                            </div>
+                        </div>
+                        <div class="hidden md:block">
+                            <svg class="w-24 h-24 text-white/20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -51,15 +71,15 @@
                     <div
                         class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor"
+                            <div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             </div>
                             <span
-                                class="text-xs font-medium text-amber-600 bg-amber-100 px-2 py-1 rounded-full">Pending</span>
+                                class="text-xs font-medium text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">Pending</span>
                         </div>
                         <h3 class="text-2xl font-bold text-gray-800 mb-1">8</h3>
                         <p class="text-sm text-gray-500">Cuti Menunggu Approval</p>
@@ -137,15 +157,15 @@
                     <div
                         class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor"
+                            <div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <span
-                                class="text-xs font-medium text-amber-600 bg-amber-100 px-2 py-1 rounded-full">Approved</span>
+                                class="text-xs font-medium text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">Approved</span>
                         </div>
                         <h3 class="text-2xl font-bold text-gray-800 mb-1">24</h3>
                         <p class="text-sm text-gray-500">Pengajuan Disetujui</p>
@@ -168,73 +188,76 @@
                         <p class="text-sm text-gray-500">Surat Siap Dikirim</p>
                     </div>
                 @else
-                    <!-- Karyawan Stats - Personal -->
+                    <!-- Karyawan Stats - Personal (Soft Modern Design) -->
                     <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
+                        class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
+                        <div class="absolute inset-0 bg-gradient-to-br from-pink-50/50 to-purple-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             </div>
                             <span
-                                class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">Tersisa</span>
+                                class="text-xs font-medium text-pink-600 bg-pink-50 px-2.5 py-1 rounded-full">Tersisa</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">12</h3>
-                        <p class="text-sm text-gray-500">Sisa Cuti Tahun Ini (hari)</p>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-1">12</h3>
+                        <p class="text-sm text-gray-500 font-medium">Sisa Cuti Tahun Ini</p>
                     </div>
 
                     <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
+                        class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-50/50 to-yellow-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-yellow-100 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <span
-                                class="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Digunakan</span>
+                                class="text-xs font-medium text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full">Digunakan</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">8</h3>
-                        <p class="text-sm text-gray-500">Cuti Dipakai Tahun 2026 (hari)</p>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-1">8</h3>
+                        <p class="text-sm text-gray-500 font-medium">Cuti Dipakai Tahun Ini</p>
                     </div>
 
                     <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
+                        class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-indigo-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <span class="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">Jan
-                                2026</span>
+                            <span class="text-xs font-medium text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full">Januari</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">16</h3>
-                        <p class="text-sm text-gray-500">Total Lembur Januari (jam)</p>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-1">16</h3>
+                        <p class="text-sm text-gray-500 font-medium">Total Lembur Bulan Ini</p>
                     </div>
 
                     <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
+                        class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-50/50 to-orange-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-100 to-orange-100 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <span
-                                class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">Disetujui</span>
+                                class="text-xs font-medium text-yellow-600 bg-yellow-50 px-2.5 py-1 rounded-full">Disetujui</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">Disetujui</h3>
-                        <p class="text-sm text-gray-500">Status Pengajuan Terakhir</p>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-1">Disetujui</h3>
+                        <p class="text-sm text-gray-500 font-medium">Status Pengajuan Terakhir</p>
                     </div>
                 @endif
             </div>
@@ -361,7 +384,7 @@
                                 </div>
                                 <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-4 h-4 rounded-full bg-amber-600 flex-shrink-0"></div>
+                                        <div class="w-4 h-4 rounded-full bg-yellow-600 flex-shrink-0"></div>
                                         <span class="text-gray-600">Menunggu</span>
                                     </div>
                                     <span class="font-bold text-gray-800">70 (50%)</span>
@@ -384,7 +407,7 @@
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm text-gray-600 font-bold">Pengajuan Pending</span>
                                     </div>
-                                    <span class="font-bold text-lg text-amber-600">13</span>
+                                    <span class="font-bold text-lg text-yellow-600">13</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <div class="flex items-center gap-2">
@@ -437,10 +460,10 @@
 
                                 <!-- Operations -->
                                 <div class="flex-1 flex flex-col items-center justify-end gap-3">
-                                    <div class="w-full bg-amber-500 rounded-t-lg" style="height: 190px;"></div>
+                                    <div class="w-full bg-yellow-500 rounded-t-lg" style="height: 190px;"></div>
                                     <div class="text-center">
                                         <p class="text-xs font-semibold text-gray-700 mb-1">Operations</p>
-                                        <p class="text-sm font-bold text-amber-600">38/45</p>
+                                        <p class="text-sm font-bold text-yellow-600">38/45</p>
                                     </div>
                                 </div>
 
@@ -553,7 +576,7 @@
 
                                     <div class="flex items-center justify-between mb-3">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-3 h-3 rounded-full bg-amber-600"></div>
+                                            <div class="w-3 h-3 rounded-full bg-yellow-600"></div>
                                             <span class="text-sm text-gray-700">Menunggu</span>
                                         </div>
                                         <div id="countPending" class="text-sm font-bold text-gray-800">36</div>
@@ -626,7 +649,7 @@
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <span class="text-sm text-gray-600">Menunggu Proses</span>
-                                    <span class="font-bold text-lg text-amber-600">5</span>
+                                    <span class="font-bold text-lg text-yellow-600">5</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <span class="text-sm text-gray-600">Sedang Diproses</span>
@@ -644,199 +667,428 @@
                         </div>
                     </div>
                 @else
-                    <!-- Charts Section - Karyawan (Personal) -->
-                    <div class="lg:col-span-2 space-y-6">
-                        <!-- Personal Attendance Chart - Monthly -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-lg font-semibold text-gray-800">Kehadiran Saya - Januari 2026</h3>
-                                <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">22
-                                    / 22 Hari</span>
+                    <!-- Charts Section - Karyawan (Personal) - Soft Modern Design -->
+                    <div class="lg:col-span-2 space-y-5">
+                        <!-- Personal Attendance Chart - Monthly with Dummy Data -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
+                            <div class="flex items-center justify-between mb-5">
+                                <h3 class="text-base font-semibold text-gray-800">Kehadiran Saya - Januari 2026</h3>
+                                <span class="text-xs font-medium text-pink-600 bg-pink-50 px-2.5 py-1 rounded-full">20 / 22 Hari</span>
                             </div>
-                            <div class="h-56 flex items-end justify-between gap-1 px-1">
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 100%;"></div>
+                            <div class="h-48 flex items-end justify-between gap-1 px-1 overflow-x-auto">
+                                <!-- Data dummy untuk 22 hari kerja -->
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">1</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 100%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">2</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-red-500 rounded-t-lg" style="height: 0%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-orange-400/80 to-orange-300/60 rounded-t-lg transition-all duration-300 hover:from-orange-500 hover:to-orange-400" style="height: 5%; min-height: 4px;" title="Tidak Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">3</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 100%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <span class="text-xs text-gray-600 font-medium">4</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <span class="text-xs text-gray-600 font-medium">5</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">6</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 100%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">7</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-amber-500 rounded-t-lg" style="height: 50%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-yellow-400/70 to-yellow-300/50 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400" style="height: 50%;" title="Setengah Hari"></div>
                                     <span class="text-xs text-gray-600 font-medium">8</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 100%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">9</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 100%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">10</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 100%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <span class="text-xs text-gray-600 font-medium">11</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <span class="text-xs text-gray-600 font-medium">12</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">13</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 100%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">14</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 100%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">15</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 100%;"></div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">16</span>
                                 </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <span class="text-xs text-gray-600 font-medium">17</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <span class="text-xs text-gray-600 font-medium">18</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <span class="text-xs text-gray-600 font-medium">19</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <span class="text-xs text-gray-600 font-medium">20</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <span class="text-xs text-gray-600 font-medium">21</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <span class="text-xs text-gray-600 font-medium">22</span>
+                                </div>
                             </div>
-                            <div class="mt-4 grid grid-cols-3 gap-4 pt-4 border-t border-gray-100 text-xs">
+                            <div class="mt-5 grid grid-cols-3 gap-4 pt-4 border-t border-gray-100">
                                 <div class="text-center">
-                                    <p class="text-gray-600 mb-1">Hadir</p>
-                                    <p class="font-bold text-lg text-green-600">20</p>
+                                    <p class="text-gray-500 mb-1 text-xs font-medium">Hadir</p>
+                                    <p class="font-semibold text-lg text-pink-600">20</p>
                                 </div>
                                 <div class="text-center">
-                                    <p class="text-gray-600 mb-1">Alfa/Izin</p>
-                                    <p class="font-bold text-lg text-red-600">1</p>
+                                    <p class="text-gray-500 mb-1 text-xs font-medium">Tidak Hadir</p>
+                                    <p class="font-semibold text-lg text-orange-600">1</p>
                                 </div>
                                 <div class="text-center">
-                                    <p class="text-gray-600 mb-1">Setengah Hari</p>
-                                    <p class="font-bold text-lg text-amber-600">1</p>
+                                    <p class="text-gray-500 mb-1 text-xs font-medium">Setengah Hari</p>
+                                    <p class="font-semibold text-lg text-yellow-600">1</p>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Pengajuan Cuti Chart - 6 Bulan Terakhir -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
+                            <h3 class="text-base font-semibold text-gray-800 mb-5">Pengajuan Cuti Saya - 6 Bulan Terakhir</h3>
+                            <div class="h-40 flex items-end justify-between gap-2 px-1">
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-yellow-400/80 to-yellow-300/60 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400" style="height: 75%;" title="3 hari"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Agu</span>
+                                    <span class="text-xs font-semibold text-gray-800">3</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-yellow-400/80 to-yellow-300/60 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400" style="height: 50%;" title="2 hari"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Sep</span>
+                                    <span class="text-xs font-semibold text-gray-800">2</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-yellow-400/80 to-yellow-300/60 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400" style="height: 100%;" title="4 hari"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Okt</span>
+                                    <span class="text-xs font-semibold text-gray-800">4</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-yellow-400/80 to-yellow-300/60 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400" style="height: 25%;" title="1 hari"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Nov</span>
+                                    <span class="text-xs font-semibold text-gray-800">1</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-gray-300/60 to-gray-200/40 rounded-t-lg transition-all duration-300 hover:from-gray-400 hover:to-gray-300" style="height: 5%; min-height: 4px;" title="0 hari"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Des</span>
+                                    <span class="text-xs font-semibold text-gray-800">0</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-yellow-500/90 to-yellow-400/70 rounded-t-lg transition-all duration-300 hover:from-yellow-600 hover:to-yellow-500" style="height: 50%;" title="2 hari"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Jan</span>
+                                    <span class="text-xs font-semibold text-gray-800">2</span>
+                                </div>
+                            </div>
+                            <div class="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600">Total Cuti Digunakan</span>
+                                <span class="text-lg font-semibold text-yellow-600">12 hari</span>
                             </div>
                         </div>
 
                         <!-- Personal Overtime Chart -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Lembur Saya - 6 Bulan Terakhir</h3>
-                            <div class="h-40 flex items-end justify-between gap-3 px-2">
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-purple-500 rounded-t-lg" style="height: 90%;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Agustus</span>
-                                    <span class="text-xs font-bold text-gray-800">12 jam</span>
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
+                            <h3 class="text-base font-semibold text-gray-800 mb-5">Lembur Saya - 6 Bulan Terakhir</h3>
+                            <div class="h-40 flex items-end justify-between gap-2 px-1">
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-purple-400/80 to-purple-300/60 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-purple-400" style="height: 90%;" title="12 jam"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Agu</span>
+                                    <span class="text-xs font-semibold text-gray-800">12</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-purple-500 rounded-t-lg" style="height: 65%;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">September</span>
-                                    <span class="text-xs font-bold text-gray-800">8 jam</span>
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-purple-400/80 to-purple-300/60 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-purple-400" style="height: 65%;" title="8 jam"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Sep</span>
+                                    <span class="text-xs font-semibold text-gray-800">8</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-purple-500 rounded-t-lg" style="height: 78%;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Oktober</span>
-                                    <span class="text-xs font-bold text-gray-800">10 jam</span>
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-purple-400/80 to-purple-300/60 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-purple-400" style="height: 78%;" title="10 jam"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Okt</span>
+                                    <span class="text-xs font-semibold text-gray-800">10</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-purple-500 rounded-t-lg" style="height: 52%;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">November</span>
-                                    <span class="text-xs font-bold text-gray-800">6 jam</span>
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-purple-400/80 to-purple-300/60 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-purple-400" style="height: 52%;" title="6 jam"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Nov</span>
+                                    <span class="text-xs font-semibold text-gray-800">6</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-purple-500 rounded-t-lg" style="height: 100%;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Desember</span>
-                                    <span class="text-xs font-bold text-gray-800">14 jam</span>
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-purple-400/80 to-purple-300/60 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-purple-400" style="height: 100%;" title="14 jam"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Des</span>
+                                    <span class="text-xs font-semibold text-gray-800">14</span>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-purple-400 rounded-t-lg" style="height: 57%;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Januari</span>
-                                    <span class="text-xs font-bold text-gray-800">16 jam</span>
+                                <div class="flex-1 flex flex-col items-center gap-1.5">
+                                    <div class="w-full bg-gradient-to-t from-purple-500/90 to-purple-400/70 rounded-t-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-500" style="height: 57%;" title="16 jam"></div>
+                                    <span class="text-xs text-gray-600 font-medium">Jan</span>
+                                    <span class="text-xs font-semibold text-gray-800">16</span>
                                 </div>
                             </div>
-                            <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-700">Total 6 Bulan Terakhir</span>
-                                <span class="text-lg font-bold text-gray-800">66 jam</span>
+                            <div class="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600">Total 6 Bulan Terakhir</span>
+                                <span class="text-lg font-semibold text-purple-600">66 jam</span>
+                            </div>
+                        </div>
+
+                        <!-- Status Pengajuan Chart (Donut/Pie) -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
+                            <h3 class="text-base font-semibold text-gray-800 mb-5">Status Pengajuan Saya</h3>
+                            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                                <!-- Donut Chart Visual - Fixed Calculation -->
+                                <div class="relative w-36 h-36 flex-shrink-0">
+                                    <svg class="w-36 h-36 transform -rotate-90" viewBox="0 0 120 120">
+                                        <!-- Background circle -->
+                                        <circle cx="60" cy="60" r="50" fill="none" stroke="#e5e7eb" stroke-width="12"/>
+                                        <!-- Disetujui (60% = 188.5 dari 314.16) -->
+                                        <circle cx="60" cy="60" r="50" fill="none" stroke="#10b981" stroke-width="12" 
+                                            stroke-dasharray="188.5 314.16" stroke-dashoffset="0" stroke-linecap="round"/>
+                                        <!-- Menunggu (25% = 78.54 dari 314.16) -->
+                                        <circle cx="60" cy="60" r="50" fill="none" stroke="#f59e0b" stroke-width="12" 
+                                            stroke-dasharray="78.54 314.16" stroke-dashoffset="-188.5" stroke-linecap="round"/>
+                                        <!-- Ditolak (15% = 47.12 dari 314.16) -->
+                                        <circle cx="60" cy="60" r="50" fill="none" stroke="#ef4444" stroke-width="12" 
+                                            stroke-dasharray="47.12 314.16" stroke-dashoffset="-267.04" stroke-linecap="round"/>
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                        <div class="text-center">
+                                            <div class="text-2xl font-semibold text-gray-800">20</div>
+                                            <div class="text-xs text-gray-500">Total</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Legend -->
+                                <div class="space-y-3 flex-shrink-0">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-800">Disetujui</p>
+                                            <p class="text-xs text-gray-500">12 (60%)</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-full bg-yellow-500 flex-shrink-0"></div>
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-800">Menunggu</p>
+                                            <p class="text-xs text-gray-500">5 (25%)</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-full bg-red-500 flex-shrink-0"></div>
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-800">Ditolak</p>
+                                            <p class="text-xs text-gray-500">3 (15%)</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Column - Karyawan (Personal) -->
-                    <div class="space-y-6">
+                    <!-- Right Column - Karyawan (Personal) - Soft Modern Design -->
+                    <div class="space-y-5">
                         <!-- Cuti Balance Quick View -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Saldo Cuti Saya</h3>
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Kuota Cuti Saya</h3>
                             <div class="space-y-4">
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm font-medium text-gray-700">Cuti Tahunan</span>
-                                        <span class="text-sm font-bold text-green-600">12 / 20 hari</span>
+                                        <span class="text-xs font-medium text-gray-600">Cuti Tahunan</span>
+                                        <span class="text-sm font-semibold text-yellow-600">12 / 20 hari</span>
                                     </div>
-                                    <div class="w-full bg-gray-100 rounded-full h-3">
-                                        <div class="bg-green-500 h-3 rounded-full" style="width: 60%"></div>
+                                    <div class="w-full bg-gray-100 rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full transition-all duration-500" style="width: 60%"></div>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm font-medium text-gray-700">Cuti Sakit</span>
-                                        <span class="text-sm font-bold text-blue-600">Unlimited</span>
+                                        <span class="text-xs font-medium text-gray-600">Cuti Sakit</span>
+                                        <span class="text-sm font-semibold text-orange-600">Tidak Terbatas</span>
                                     </div>
-                                    <div class="w-full bg-gray-100 rounded-full h-3">
-                                        <div class="bg-blue-500 h-3 rounded-full" style="width: 100%"></div>
+                                    <div class="w-full bg-gray-100 rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-orange-400 to-orange-500 h-2 rounded-full transition-all duration-500" style="width: 100%"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Personal Summary -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Info Saya</h3>
-                            <div class="space-y-4 text-sm">
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Info Saya</h3>
+                            <div class="space-y-3 text-sm">
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-                                    <span class="text-gray-600">Departemen</span>
+                                    <span class="text-gray-500 font-medium">Bagian</span>
                                     <span class="font-semibold text-gray-800">IT & Teknologi</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-                                    <span class="text-gray-600">Status Kontrak</span>
-                                    <span class="font-semibold text-gray-800">PKWTT</span>
+                                    <span class="text-gray-500 font-medium">Status</span>
+                                    <span class="font-semibold text-gray-800">Tetap</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-                                    <span class="text-gray-600">Kehadiran Bulan Ini</span>
-                                    <span class="font-bold text-green-600">100%</span>
+                                    <span class="text-gray-500 font-medium">Kehadiran Bulan Ini</span>
+                                    <span class="font-semibold text-lg text-purple-600">100%</span>
                                 </div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-gray-600">Pengajuan Pending</span>
-                                    <span class="font-bold text-amber-600">1</span>
+                                    <span class="text-gray-500 font-medium">Menunggu Persetujuan</span>
+                                    <span class="font-semibold text-lg text-yellow-600">1</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Recent Updates -->
-                        <div
-                            class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-sm border border-blue-100 p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Update Terbaru</h3>
+                        <!-- Quick Actions Card -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Aksi Cepat</h3>
                             <div class="space-y-3">
-                                <div class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></div>
-                                    <div class="flex-1">
-                                        <p class="text-xs font-medium text-gray-800">Surat terbit</p>
-                                        <p class="text-xs text-gray-600">Surat Keterangan Kerja</p>
+                                <a href="{{ route('karyawan.pengajuan-cuti') }}" class="block w-full bg-gradient-to-r from-pink-400 to-pink-500 hover:from-pink-500 hover:to-pink-600 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                    Ajukan Cuti
+                                </a>
+                                <a href="{{ route('karyawan.pengajuan-lembur') }}" class="block w-full bg-gradient-to-r from-purple-400 to-purple-500 hover:from-purple-500 hover:to-purple-600 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                    Ajukan Lembur
+                                </a>
+                                <a href="{{ route('karyawan.surat') }}" class="block w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                    Surat Saya
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Pengajuan Pending -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Pengajuan Menunggu</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-yellow-50/50 rounded-lg border border-yellow-100/50">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-800">Cuti Tahunan</p>
+                                            <p class="text-xs text-gray-500">2 hari - 15-16 Jan</p>
+                                        </div>
                                     </div>
+                                    <span class="text-xs font-medium text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded-full">Pending</span>
                                 </div>
-                                <div class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></div>
-                                    <div class="flex-1">
-                                        <p class="text-xs font-medium text-gray-800">Cuti disetujui</p>
-                                        <p class="text-xs text-gray-600">3 hari mulai 10 Jan</p>
+                                <div class="flex items-center justify-between p-3 bg-purple-50/50 rounded-lg border border-purple-100/50">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-2 h-2 rounded-full bg-purple-400"></div>
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-800">Lembur</p>
+                                            <p class="text-xs text-gray-500">5 jam - 12 Jan</p>
+                                        </div>
                                     </div>
+                                    <span class="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-0.5 rounded-full">Review</span>
+                                </div>
+                            </div>
+                            <a href="{{ route('karyawan.riwayat') }}" class="mt-3 block text-center text-xs font-medium text-purple-600 hover:text-purple-700">
+                                Lihat Semua →
+                            </a>
+                        </div>
+
+                        <!-- Statistik Bulanan -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Statistik Bulan Ini</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-600">Kehadiran</span>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800">90.9%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-600">Total Lembur</span>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800">16 jam</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-lg bg-yellow-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-600">Cuti Digunakan</span>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800">2 hari</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-600">Surat Terbit</span>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800">1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notifikasi Penting -->
+                        <div class="bg-gradient-to-br from-pink-50/50 to-purple-50/30 rounded-xl shadow-sm border border-pink-100/50 p-5">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                </svg>
+                                <h3 class="text-sm font-semibold text-gray-800">Pemberitahuan</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="text-xs text-gray-600 leading-relaxed">
+                                    <p class="font-medium text-gray-800 mb-1">• Slip gaji Desember tersedia</p>
+                                    <p class="text-gray-500">Silakan unduh di menu Surat Saya</p>
+                                </div>
+                                <div class="text-xs text-gray-600 leading-relaxed pt-2 border-t border-pink-100/50">
+                                    <p class="font-medium text-gray-800 mb-1">• Evaluasi kinerja Q4</p>
+                                    <p class="text-gray-500">Jadwal: 20 Januari 2026</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endif
             </div>
-
-            <!-- Pending Requests - Direktur (Card Format) -->
+         
+    <!-- Pending Requests - Direktur (Card Format) -->
             @if (Auth::user()->role === 'direktur')
                 <div class="grid grid-cols-2 gap-6 mb-6">
                     <!-- Pengajuan Cuti - Card List Format -->
@@ -855,7 +1107,7 @@
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Ahmad Rizki</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Pending</span>
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">IT & Teknologi</p>
                                         <p class="text-xs font-medium text-gray-700">3 hari • Mulai 10 Jan</p>
@@ -872,7 +1124,7 @@
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Budi Santoso</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Pending</span>
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">Finance</p>
                                         <p class="text-xs font-medium text-gray-700">2 hari • Mulai 12 Jan</p>
@@ -889,7 +1141,7 @@
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Dani Hermawan</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Pending</span>
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">Operations</p>
                                         <p class="text-xs font-medium text-gray-700">5 hari • Mulai 15 Jan</p>
@@ -906,7 +1158,7 @@
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Eka Wijaya</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Pending</span>
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">Marketing</p>
                                         <p class="text-xs font-medium text-gray-700">1 hari • Mulai 16 Jan</p>
@@ -923,7 +1175,7 @@
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Fitra Rahman</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Pending</span>
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">HR & Admin</p>
                                         <p class="text-xs font-medium text-gray-700">4 hari • Mulai 18 Jan</p>
@@ -939,7 +1191,7 @@
 
                     <!-- Pengajuan Lembur - Card List Format -->
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden ">
-                        <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-violet-50 to-purple-50">
+                        <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-purple-50">
                             <h3 class="text-lg font-bold text-gray-800">Lembur Menunggu Persetujuan (5)</h3>
                         </div>
                         <div class="divide-gray-100 max-h-96 overflow-y-auto">
@@ -953,7 +1205,7 @@
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Siti Nurhaliza</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Pending</span>
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">IT & Teknologi</p>
                                         <p class="text-xs font-medium text-gray-700">5 jam • 5 Jan 2026</p>
@@ -970,7 +1222,7 @@
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Rina Wijaya</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Pending</span>
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">Finance</p>
                                         <p class="text-xs font-medium text-gray-700">4 jam • 6 Jan 2026</p>
@@ -987,7 +1239,7 @@
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Gusril Maulana</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Pending</span>
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">Operations</p>
                                         <p class="text-xs font-medium text-gray-700">6 jam • 6 Jan 2026</p>
@@ -1004,7 +1256,7 @@
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Hendra Kusuma</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Pending</span>
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">Marketing</p>
                                         <p class="text-xs font-medium text-gray-700">3 jam • 7 Jan 2026</p>
@@ -1021,7 +1273,7 @@
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Intan Permata</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Pending</span>
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">HR & Admin</p>
                                         <p class="text-xs font-medium text-gray-700">2 jam • 7 Jan 2026</p>
@@ -1040,7 +1292,7 @@
                 <div class="grid grid-cols-2 gap-6 mb-6">
                     <!-- Surat Menunggu Proses -->
                     <div id="surat-card" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-violet-50">
+                        <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-purple-50">
                             <h3 class="text-lg font-bold text-gray-800">Surat Menunggu Proses (<span
                                     id="surat-count">{{ $suratMenunggu->count() }}</span>)</h3>
                         </div>
@@ -1057,7 +1309,7 @@
                                                 <p class="text-sm font-semibold text-gray-800">{{ $surat->user->name }}
                                                 </p>
                                                 <span
-                                                    class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800 status-label">{{ $surat->status }}</span>
+                                                    class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800 status-label">{{ $surat->status }}</span>
                                             </div>
                                             <p class="text-xs text-gray-500 mb-1">{{ $surat->jenis ?? 'Surat' }}</p>
                                             <p class="text-xs font-medium text-gray-700">Diajukan
@@ -1209,13 +1461,13 @@
                             <div class="px-6 py-4 hover:bg-gray-50 transition-colors">
                                 <div class="flex items-start gap-4">
                                     <div
-                                        class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 font-semibold text-amber-600">
+                                        class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0 font-semibold text-yellow-600">
                                         RW</div>
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Rina Wijaya</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Kontrak
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Kontrak
                                                 Exp</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">Finance</p>
@@ -1244,13 +1496,13 @@
                             <div class="px-6 py-4 hover:bg-gray-50 transition-colors">
                                 <div class="flex items-start gap-4">
                                     <div
-                                        class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 font-semibold text-amber-600">
+                                        class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0 font-semibold text-yellow-600">
                                         HK</div>
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center justify-between mb-1">
                                             <p class="text-sm font-semibold text-gray-800">Hendra Kusuma</p>
                                             <span
-                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800">Kontrak
+                                                class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800">Kontrak
                                                 Exp</span>
                                         </div>
                                         <p class="text-xs text-gray-500 mb-1">Marketing</p>
@@ -1271,273 +1523,339 @@
             <!-- Content Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Recent Activities -->
-                <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-5 border-b border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-800">Aktivitas Terbaru</h3>
+                <div class="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
+                    <div class="px-6 py-4 border-b border-gray-100/50 bg-gradient-to-r from-pink-50/30 via-purple-50/30 to-orange-50/20">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-base font-semibold text-gray-800">Aktivitas Terbaru</h3>
+                            <span class="text-xs font-medium text-gray-500 bg-white/60 px-2 py-1 rounded-full">5 aktivitas</span>
+                        </div>
                     </div>
-                    <div class="divide-y divide-gray-50">
+                    <div class="divide-y divide-gray-100/50">
                         @if (Auth::user()->role === 'direktur')
                             <!-- Direktur Activities - Approval & Request Focus -->
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800">Pengajuan lembur Rina Wijaya
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Pengajuan lembur Rina Wijaya
                                             disetujui</p>
-                                        <p class="text-xs text-gray-500">4 jam lembur - 7 Jan 2026</p>
+                                        <p class="text-xs text-gray-500 mb-2">4 jam lembur - 7 Jan 2026</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            1 jam lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400 flex-shrink-0">1 jam lalu</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-yellow-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-100 to-yellow-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800">Pengajuan cuti Ahmad Rizki
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Pengajuan cuti Ahmad Rizki
                                             menunggu persetujuan</p>
-                                        <p class="text-xs text-gray-500">Cuti tahunan 3 hari - mulai 10 Jan 2026</p>
+                                        <p class="text-xs text-gray-500 mb-2">Cuti tahunan 3 hari - mulai 10 Jan 2026</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            2 jam lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400 flex-shrink-0">2 jam lalu</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-red-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-100 to-red-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800">Pengajuan cuti ditolak - Bentrok
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Pengajuan cuti ditolak - Bentrok
                                             shift</p>
-                                        <p class="text-xs text-gray-500">Budi Santoso - 5 Jan 2026</p>
+                                        <p class="text-xs text-gray-500 mb-2">Budi Santoso - 5 Jan 2026</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            3 jam lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400 flex-shrink-0">3 jam lalu</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-purple-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3l-4 4z" />
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800">Laporan kehadiran Desember
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Laporan kehadiran Desember
                                             tersedia</p>
-                                        <p class="text-xs text-gray-500">Tingkat kehadiran: 94.2% dari 156 karyawan</p>
+                                        <p class="text-xs text-gray-500 mb-2">Tingkat kehadiran: 94.2% dari 156 karyawan</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            Kemarin
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400 flex-shrink-0">Kemarin</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors">
-                                <div class="flex items-center space-x-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3l-4 4z" />
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800">Surat Keterangan Kerja diterbitkan
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Surat Keterangan Kerja diterbitkan
                                         </p>
-                                        <p class="text-xs text-gray-500">3 surat untuk keperluan karyawan</p>
+                                        <p class="text-xs text-gray-500 mb-2">3 surat untuk keperluan karyawan</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            2 hari lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400 flex-shrink-0">2 hari lalu</span>
                                 </div>
                             </div>
                         @elseif(Auth::user()->role === 'admin_hrd')
                             <!-- Admin HRD Activities -->
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800">Surat Keterangan Kerja diterbitkan
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Surat Keterangan Kerja diterbitkan
                                         </p>
-                                        <p class="text-xs text-gray-500">Ahmad Rizki - Keperluan Bank</p>
+                                        <p class="text-xs text-gray-500 mb-2">Ahmad Rizki - Keperluan Bank</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            30 menit lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400 flex-shrink-0">30 menit lalu</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800">Karyawan baru ditambahkan</p>
-                                        <p class="text-xs text-gray-500">Rina Wijaya - IT & Teknologi</p>
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Karyawan baru ditambahkan</p>
+                                        <p class="text-xs text-gray-500 mb-2">Rina Wijaya - IT & Teknologi</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            2 jam lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400 flex-shrink-0">2 jam lalu</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-yellow-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-100 to-yellow-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800">Pengajuan surat masuk</p>
-                                        <p class="text-xs text-gray-500">Budi Santoso - Surat Referensi</p>
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Pengajuan surat masuk</p>
+                                        <p class="text-xs text-gray-500 mb-2">Budi Santoso - Surat Referensi</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            3 jam lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400 flex-shrink-0">3 jam lalu</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-purple-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800">Data karyawan diperbarui</p>
-                                        <p class="text-xs text-gray-500">Dani Hermawan - Perubahan jabatan</p>
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Data karyawan diperbarui</p>
+                                        <p class="text-xs text-gray-500 mb-2">Dani Hermawan - Perubahan jabatan</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            Kemarin
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400 flex-shrink-0">Kemarin</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors">
-                                <div class="flex items-center space-x-4">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-red-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-100 to-red-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800">Kontrak hampir berakhir</p>
-                                        <p class="text-xs text-gray-500">2 karyawan - Perlu diperpanjang</p>
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Kontrak hampir berakhir</p>
+                                        <p class="text-xs text-gray-500 mb-2">2 karyawan - Perlu diperpanjang</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            2 hari lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400 flex-shrink-0">2 hari lalu</span>
                                 </div>
                             </div>
                         @else
-                            <!-- Karyawan Activities -->
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                            <!-- Karyawan Activities - Soft Modern Design -->
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-pink-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-100 to-pink-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-800">Pengajuan cuti Anda disetujui</p>
-                                        <p class="text-xs text-gray-500">Cuti tahunan 3 hari - Mulai 10 Jan 2026</p>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Cuti Anda disetujui</p>
+                                        <p class="text-xs text-gray-500 mb-2">Cuti tahunan 3 hari - Mulai 10 Jan 2026</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            2 hari lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400">2 hari lalu</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-yellow-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-100 to-orange-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-800">Pengajuan lembur menunggu
-                                            persetujuan</p>
-                                        <p class="text-xs text-gray-500">Lembur 5 jam - 7 Jan 2026</p>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Lembur menunggu persetujuan</p>
+                                        <p class="text-xs text-gray-500 mb-2">Lembur 5 jam - 7 Jan 2026</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            1 jam lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400">1 jam lalu</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-purple-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                     </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-800">Surat Keterangan Kerja terbit</p>
-                                        <p class="text-xs text-gray-500">Untuk keperluan bank - Siap diunduh</p>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Surat sudah terbit</p>
+                                        <p class="text-xs text-gray-500 mb-2">Surat Keterangan Kerja - Siap diunduh</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            1 hari lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400">1 hari lalu</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors border-b border-gray-50">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-orange-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-yellow-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-800">Pengajuan cuti ditolak</p>
-                                        <p class="text-xs text-gray-500">Cuti sakit 1 hari - 5 Jan 2026 (Bentrok dengan
-                                            shift)</p>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Cuti ditolak</p>
+                                        <p class="text-xs text-gray-500 mb-2">Cuti sakit 1 hari - 5 Jan 2026</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            3 hari lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400">3 hari lalu</span>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 hover:bg-gray-50/50 transition-colors">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
+                            <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-purple-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                                         </svg>
                                     </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-800">Slip gaji Desember tersedia</p>
-                                        <p class="text-xs text-gray-500">Dalam folder file pribadi Anda</p>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Slip gaji tersedia</p>
+                                        <p class="text-xs text-gray-500 mb-2">Slip gaji Desember - Siap diunduh</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            5 hari lalu
+                                        </span>
                                     </div>
-                                    <span class="text-xs text-gray-400">5 hari lalu</span>
                                 </div>
                             </div>
                         @endif
@@ -1545,13 +1863,14 @@
                 </div>
 
                 <!-- Quick Actions & Info -->
+                @if (Auth::user()->role !== 'karyawan')
                 <div class="space-y-6">
                     <!-- Quick Actions -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="px-5 py-4 border-b border-gray-200 bg-gray-50">
+                    <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 overflow-hidden">
+                        <div class="px-5 py-4 border-b border-gray-100/50 bg-gradient-to-r from-purple-50/30 to-pink-50/30">
                             <h3 class="text-sm font-semibold text-gray-800">Aksi Cepat</h3>
                         </div>
-                        <div class="divide-y divide-gray-200">
+                        <div class="divide-y divide-gray-100/50">
                             <!-- Quick Actions - Direktur -->
                             @if (Auth::user()->role === 'direktur')
                                 <a href="{{ route('direktur.persetujuan-cuti-lembur') }}"
@@ -1564,8 +1883,8 @@
                                                 <path fill-rule="evenodd"
                                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                     clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
+                                        </svg>
+                                    </div>
                                         <div>
                                             <p class="text-sm font-medium text-gray-800">Review Pengajuan</p>
                                             <p class="text-xs text-gray-600">13 pengajuan menunggu</p>
@@ -1573,9 +1892,9 @@
                                     </div>
                                     <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 5l7 7-7 7" />
-                                    </svg>
+                                        </svg>
                                 </a>
 
                                 <a href="{{ route('direktur.laporan') }}"
@@ -1587,8 +1906,8 @@
                                                 viewBox="0 0 20 20">
                                                 <path
                                                     d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zm10-3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1v-3a1 1 0 00-1-1h-3z" />
-                                            </svg>
-                                        </div>
+                                        </svg>
+                                    </div>
                                         <div>
                                             <p class="text-sm font-medium text-gray-800">Laporan Bulanan</p>
                                             <p class="text-xs text-gray-600">SDM, kehadiran & pengajuan</p>
@@ -1610,8 +1929,8 @@
                                                 viewBox="0 0 20 20">
                                                 <path
                                                     d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
-                                            </svg>
-                                        </div>
+                                        </svg>
+                                    </div>
                                         <div>
                                             <p class="text-sm font-medium text-gray-800">Ringkasan Karyawan</p>
                                             <p class="text-xs text-gray-600">Data 156 karyawan</p>
@@ -1634,8 +1953,8 @@
                                                 viewBox="0 0 20 20">
                                                 <path
                                                     d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
-                                            </svg>
-                                        </div>
+                                        </svg>
+                                    </div>
                                         <div>
                                             <p class="text-sm font-medium text-gray-800">Kelola Karyawan</p>
                                             <p class="text-xs text-gray-600">156 karyawan aktif</p>
@@ -1643,9 +1962,9 @@
                                     </div>
                                     <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 5l7 7-7 7" />
-                                    </svg>
+                                        </svg>
                                 </a>
 
                                 <a href="{{ route('admin.surat') }}"
@@ -1658,8 +1977,8 @@
                                                 <path fill-rule="evenodd"
                                                     d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
                                                     clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
+                                        </svg>
+                                    </div>
                                         <div>
                                             <p class="text-sm font-medium text-gray-800">Kelola Surat</p>
                                             <p class="text-xs text-gray-600">5 surat menunggu</p>
@@ -1683,104 +2002,11 @@
                                                 <path fill-rule="evenodd"
                                                     d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
                                                     clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
+                                        </svg>
+                                    </div>
                                         <div>
                                             <p class="text-sm font-medium text-gray-800">Template Surat</p>
                                             <p class="text-xs text-gray-600">Kelola template</p>
-                                        </div>
-                                    </div>
-                                    <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                            @else
-                                <!-- Karyawan Quick Actions (Horizontal List) -->
-                                <a href="{{ route('karyawan.pengajuan-cuti') }}"
-                                    class="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 transition-all duration-200 group">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-gray-800">Ajukan Cuti</p>
-                                            <p class="text-xs text-gray-600">Cuti tahunan, sakit</p>
-                                        </div>
-                                    </div>
-                                    <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                                <a href="{{ route('karyawan.pengajuan-lembur') }}"
-                                    class="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-purple-50 to-violet-50 hover:from-purple-100 hover:to-violet-100 transition-all duration-200 group">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-10 h-10 rounded-lg bg-purple-500 flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-gray-800">Ajukan Lembur</p>
-                                            <p class="text-xs text-gray-600">Jam kerja tambahan</p>
-                                        </div>
-                                    </div>
-                                    <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                                <a href="{{ route('karyawan.surat') }}"
-                                    class="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 transition-all duration-200 group">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-gray-800">Surat Saya</p>
-                                            <p class="text-xs text-gray-600">Download & riwayat</p>
-                                        </div>
-                                    </div>
-                                    <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                                <a href="{{ route('karyawan.riwayat') }}"
-                                    class="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 transition-all duration-200 group">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-10 h-10 rounded-lg bg-green-500 flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2" d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-gray-800">Riwayat Pengajuan</p>
-                                            <p class="text-xs text-gray-600">Cuti, lembur, surat</p>
                                         </div>
                                     </div>
                                     <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
@@ -1794,39 +2020,41 @@
                     </div>
 
                     <!-- Upcoming Events -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Agenda Mendatang</h3>
+                    <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                        <h3 class="text-sm font-semibold text-gray-800 mb-4">Agenda Mendatang</h3>
                         <div class="space-y-4">
                             <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 rounded-full bg-indigo-500 mt-2"></div>
+                                <div class="w-2 h-2 rounded-full bg-purple-400 mt-1.5"></div>
                                 <div>
-                                    <p class="text-sm font-medium text-gray-800">Meeting Tim HRD</p>
+                                    <p class="text-sm font-medium text-gray-800">Meeting Tim</p>
                                     <p class="text-xs text-gray-500">Hari ini, 14:00 WIB</p>
                                 </div>
                             </div>
                             <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 rounded-full bg-green-500 mt-2"></div>
+                                <div class="w-2 h-2 rounded-full bg-yellow-400 mt-1.5"></div>
                                 <div>
-                                    <p class="text-sm font-medium text-gray-800">Evaluasi Kinerja Q4</p>
+                                    <p class="text-sm font-medium text-gray-800">Evaluasi Kinerja</p>
                                     <p class="text-xs text-gray-500">Besok, 09:00 WIB</p>
                                 </div>
                             </div>
                             <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 rounded-full bg-amber-500 mt-2"></div>
+                                <div class="w-2 h-2 rounded-full bg-pink-400 mt-1.5"></div>
                                 <div>
-                                    <p class="text-sm font-medium text-gray-800">Training Karyawan Baru</p>
+                                    <p class="text-sm font-medium text-gray-800">Pelatihan</p>
                                     <p class="text-xs text-gray-500">10 Jan 2026, 10:00 WIB</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
+        </div>
         </div>
     </div>
 
     <!-- Mobile Sidebar Toggle (for responsive) -->
-    <div class="lg:hidden fixed bottom-6 right-6">
+    <div class="lg:hidden fixed bottom-6 right-6 z-50">
         <button
             class="w-14 h-14 bg-indigo-600 rounded-full shadow-lg flex items-center justify-center text-white hover:bg-indigo-700 transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
