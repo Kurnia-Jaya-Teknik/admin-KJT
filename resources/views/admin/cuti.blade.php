@@ -25,13 +25,13 @@
                     <!-- Search Karyawan -->
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Cari Nama Karyawan</label>
-                        <input type="text" placeholder="Ketik nama..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                                        <input type="text" placeholder="Ketik nama..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
 
                     <!-- Filter Status -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
                             <option value="">Semua Status</option>
                             <option value="pending">Menunggu Direktur</option>
                             <option value="approved">Disetujui</option>
@@ -42,7 +42,7 @@
                     <!-- Filter Periode -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Periode</label>
-                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
                             <option value="">Semua Periode</option>
                             <option value="2026-01">Januari 2026</option>
                             <option value="2025-12">Desember 2025</option>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                     <p class="text-sm text-gray-600">Menunggu Persetujuan</p>
-                    <p class="text-3xl font-bold text-amber-600 mt-2">8</p>
+                    <p class="text-3xl font-bold text-red-600 mt-2">8</p>
                 </div>
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                     <p class="text-sm text-gray-600">Disetujui</p>
@@ -80,7 +80,7 @@
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-3">
                                 <h3 class="text-lg font-semibold text-gray-900">Ahmad Rizki</h3>
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Menunggu</span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">Menunggu</span>
                             </div>
                             <div class="grid grid-cols-2 gap-4 text-sm mb-3">
                                 <div>
@@ -104,7 +104,7 @@
                                 <p class="text-sm text-gray-600">Alasan: Libur keluarga</p>
                             </div>
                         </div>
-                        <button class="text-indigo-600 hover:text-indigo-700 font-medium whitespace-nowrap ml-4">Lihat Detail →</button>
+                        <button class="text-red-600 hover:text-red-700 font-medium whitespace-nowrap ml-4">Lihat Detail →</button>
                     </div>
                 </div>
 
@@ -138,7 +138,7 @@
                                 <p class="text-sm text-gray-600">Alasan: Cuti panjang</p>
                             </div>
                         </div>
-                        <button class="text-indigo-600 hover:text-indigo-700 font-medium whitespace-nowrap ml-4">Lihat Detail →</button>
+                        <button class="text-red-600 hover:text-red-700 font-medium whitespace-nowrap ml-4">Lihat Detail →</button>
                     </div>
                 </div>
 

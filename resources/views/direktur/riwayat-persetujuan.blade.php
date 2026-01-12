@@ -17,15 +17,15 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Periode Mulai</label>
-                    <input type="date" class="w-full px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                    <input type="date" class="w-full px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Periode Akhir</label>
-                    <input type="date" class="w-full px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                    <input type="date" class="w-full px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Pengajuan</label>
-                    <select class="w-full px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                    <select class="w-full px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all">
                         <option>Semua</option>
                         <option>Cuti</option>
                         <option>Lembur</option>
@@ -33,7 +33,7 @@
                     </select>
                 </div>
                 <div class="flex items-end">
-                    <button class="w-full px-4 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors">
+                    <button class="w-full px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-colors">
                         Terapkan Filter
                     </button>
                 </div>
@@ -55,7 +55,7 @@
                         <tbody class="divide-y divide-gray-100">
                             <tr class="hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 text-sm font-medium text-gray-800">7 Jan 2026</td>
-                                <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Cuti Tahunan</span></td>
+                                <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800">Cuti Tahunan</span></td>
                                 <td class="px-6 py-4 text-sm text-gray-600">Rina Wijaya</td>
                                 <td class="px-6 py-4 text-sm text-gray-600">4 jam, Project deadline</td>
                                 <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">✓ Disetujui</span></td>
@@ -69,14 +69,14 @@
                             </tr>
                             <tr class="hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 text-sm font-medium text-gray-800">5 Jan 2026</td>
-                                <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Lembur</span></td>
+                                <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800">Lembur</span></td>
                                 <td class="px-6 py-4 text-sm text-gray-600">Ahmad Rizki</td>
                                 <td class="px-6 py-4 text-sm text-gray-600">3 hari, Liburan keluarga</td>
                                 <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">✓ Disetujui</span></td>
                             </tr>
                             <tr class="hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 text-sm font-medium text-gray-800">4 Jan 2026</td>
-                                <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Cuti Sakit</span></td>
+                                <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800">Cuti Sakit</span></td>
                                 <td class="px-6 py-4 text-sm text-gray-600">Budi Santoso</td>
                                 <td class="px-6 py-4 text-sm text-gray-600">2 hari, Sakit demam</td>
                                 <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">✓ Disetujui</span></td>

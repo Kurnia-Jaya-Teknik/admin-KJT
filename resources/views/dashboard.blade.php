@@ -6,10 +6,10 @@
 
     <!-- Scrollable Main Content -->
     <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
-        <div class="p-6 lg:p-8 bg-gray-50/50 min-h-full">
+        <div class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gray-50/50 min-h-full">
             <!-- Welcome Banner -->
             @if (Auth::user()->role === 'karyawan')
-                <div class="relative overflow-hidden bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 rounded-2xl p-6 mb-6 shadow-lg">
+                <div class="relative overflow-hidden bg-gradient-to-r from-slate-400 via-slate-400 to-slate-500 rounded-2xl p-6 mb-6 shadow-lg">
                     <div class="relative flex items-center justify-between">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
@@ -19,13 +19,13 @@
                             </div>
                             <div>
                                 <h1 class="text-xl font-bold mb-1 text-white">Halo, {{ Auth::user()->name }}! 👋</h1>
-                                <p class="text-blue-50 text-sm font-medium">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                                <p class="text-slate-50 text-sm font-medium">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             @else
-                <div class="relative overflow-hidden bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 rounded-2xl p-8 mb-8 shadow-lg">
+                <div class="relative overflow-hidden bg-gradient-to-r from-slate-400 via-slate-400 to-slate-500 rounded-2xl p-8 mb-8 shadow-lg">
                     <div class="relative flex items-center justify-between">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
@@ -35,7 +35,7 @@
                             </div>
                             <div>
                                 <h1 class="text-2xl font-bold mb-2 text-white">Selamat Datang, {{ Auth::user()->name }}! 👋</h1>
-                                <p class="text-blue-50 text-sm">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                                <p class="text-slate-50 text-sm">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
                             </div>
                         </div>
                         <div class="hidden md:block">
@@ -54,15 +54,15 @@
                     <div
                         class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
+                            <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                             </div>
                             <span
-                                class="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Aktif</span>
+                                class="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-1 rounded-full">Aktif</span>
                         </div>
                         <h3 class="text-2xl font-bold text-gray-800 mb-1">156</h3>
                         <p class="text-sm text-gray-500">Total Karyawan Aktif</p>
@@ -123,8 +123,8 @@
                     <div
                         class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
+                            <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -191,17 +191,17 @@
                     <!-- Karyawan Stats - Personal (Soft Modern Design) -->
                     <div
                         class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
-                        <div class="absolute inset-0 bg-gradient-to-br from-pink-50/50 to-purple-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-50/50 to-slate-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div class="relative flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
-                                <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor"
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-100 to-slate-100 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             </div>
                             <span
-                                class="text-xs font-medium text-pink-600 bg-pink-50 px-2.5 py-1 rounded-full">Tersisa</span>
+                                class="text-xs font-medium text-red-600 bg-red-50 px-2.5 py-1 rounded-full">Tersisa</span>
                         </div>
                         <h3 class="text-2xl font-semibold text-gray-800 mb-1">12</h3>
                         <p class="text-sm text-gray-500 font-medium">Sisa Cuti Tahun Ini</p>
@@ -209,17 +209,17 @@
 
                     <div
                         class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
-                        <div class="absolute inset-0 bg-gradient-to-br from-orange-50/50 to-yellow-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-slate-50/50 to-gray-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div class="relative flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-yellow-100 flex items-center justify-center">
-                                <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor"
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-100 to-gray-100 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <span
-                                class="text-xs font-medium text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full">Digunakan</span>
+                                class="text-xs font-medium text-slate-600 bg-slate-50 px-2.5 py-1 rounded-full">Digunakan</span>
                         </div>
                         <h3 class="text-2xl font-semibold text-gray-800 mb-1">8</h3>
                         <p class="text-sm text-gray-500 font-medium">Cuti Dipakai Tahun Ini</p>
@@ -227,16 +227,16 @@
 
                     <div
                         class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
-                        <div class="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-indigo-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-50/50 to-orange-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div class="relative flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
-                                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor"
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-100 to-orange-100 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <span class="text-xs font-medium text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full">Januari</span>
+                            <span class="text-xs font-medium text-red-600 bg-red-50 px-2.5 py-1 rounded-full">Januari</span>
                         </div>
                         <h3 class="text-2xl font-semibold text-gray-800 mb-1">16</h3>
                         <p class="text-sm text-gray-500 font-medium">Total Lembur Bulan Ini</p>
@@ -244,17 +244,17 @@
 
                     <div
                         class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
-                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-50/50 to-orange-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-green-50/50 to-emerald-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div class="relative flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-100 to-orange-100 flex items-center justify-center">
-                                <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor"
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <span
-                                class="text-xs font-medium text-yellow-600 bg-yellow-50 px-2.5 py-1 rounded-full">Disetujui</span>
+                                class="text-xs font-medium text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Disetujui</span>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-1">Disetujui</h3>
                         <p class="text-sm text-gray-500 font-medium">Status Pengajuan Terakhir</p>
@@ -273,27 +273,27 @@
                             </h3>
                             <div class="flex items-end justify-between h-40 gap-2 mb-6">
                                 <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-indigo-600 rounded-t" style="height: 80px;"></div>
+                                    <div class="w-full bg-red-600 rounded-t" style="height: 80px;"></div>
                                     <span class="text-xs text-gray-600 font-medium">Agu</span>
                                 </div>
                                 <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-indigo-600 rounded-t" style="height: 95px;"></div>
+                                    <div class="w-full bg-red-600 rounded-t" style="height: 95px;"></div>
                                     <span class="text-xs text-gray-600 font-medium">Sep</span>
                                 </div>
                                 <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-indigo-600 rounded-t" style="height: 70px;"></div>
+                                    <div class="w-full bg-red-600 rounded-t" style="height: 70px;"></div>
                                     <span class="text-xs text-gray-600 font-medium">Okt</span>
                                 </div>
                                 <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-indigo-600 rounded-t" style="height: 110px;"></div>
+                                    <div class="w-full bg-red-600 rounded-t" style="height: 110px;"></div>
                                     <span class="text-xs text-gray-600 font-medium">Nov</span>
                                 </div>
                                 <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-indigo-600 rounded-t" style="height: 105px;"></div>
+                                    <div class="w-full bg-red-600 rounded-t" style="height: 105px;"></div>
                                     <span class="text-xs text-gray-600 font-medium">Des</span>
                                 </div>
                                 <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-indigo-600 rounded-t" style="height: 75px;"></div>
+                                    <div class="w-full bg-red-600 rounded-t" style="height: 75px;"></div>
                                     <span class="text-xs text-gray-600 font-medium">Jan</span>
                                 </div>
                             </div>
@@ -312,19 +312,19 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <span class="text-sm font-medium text-gray-700">IT & Teknologi</span>
-                                        <span class="text-sm font-bold text-indigo-600">42 jam</span>
+                                        <span class="text-sm font-bold text-red-600">42 jam</span>
                                     </div>
                                     <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-indigo-600 h-2 rounded-full" style="width: 60%"></div>
+                                        <div class="bg-red-600 h-2 rounded-full" style="width: 60%"></div>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <span class="text-sm font-medium text-gray-700">Finance</span>
-                                        <span class="text-sm font-bold text-blue-600">35 jam</span>
+                                        <span class="text-sm font-bold text-slate-600">35 jam</span>
                                     </div>
                                     <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 50%"></div>
+                                        <div class="bg-slate-600 h-2 rounded-full" style="width: 50%"></div>
                                     </div>
                                 </div>
                                 <div>
@@ -425,7 +425,7 @@
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm text-gray-600 font-bold">Kehadiran Hari Ini</span>
                                     </div>
-                                    <span class="font-bold text-lg text-blue-600">145/156</span>
+                                    <span class="font-bold text-lg text-slate-600">145/156</span>
                                 </div>
                             </div>
                         </div>
@@ -442,10 +442,10 @@
                                 style="height: 320px;">
                                 <!-- IT & Teknologi -->
                                 <div class="flex-1 flex flex-col items-center justify-end gap-3">
-                                    <div class="w-full bg-blue-500 rounded-t-lg" style="height: 180px;"></div>
+                                    <div class="w-full bg-slate-500 rounded-t-lg" style="height: 180px;"></div>
                                     <div class="text-center">
                                         <p class="text-xs font-semibold text-gray-700 mb-1">IT & Teknologi</p>
-                                        <p class="text-sm font-bold text-blue-600">18/20</p>
+                                        <p class="text-sm font-bold text-slate-600">18/20</p>
                                     </div>
                                 </div>
 
@@ -472,16 +472,16 @@
                                     <div class="w-full bg-indigo-500 rounded-t-lg" style="height: 210px;"></div>
                                     <div class="text-center">
                                         <p class="text-xs font-semibold text-gray-700 mb-1">Marketing</p>
-                                        <p class="text-sm font-bold text-indigo-600">28/30</p>
+                                        <p class="text-sm font-bold text-red-600">28/30</p>
                                     </div>
                                 </div>
 
                                 <!-- HRD -->
                                 <div class="flex-1 flex flex-col items-center justify-end gap-3">
-                                    <div class="w-full bg-purple-500 rounded-t-lg" style="height: 250px;"></div>
+                                    <div class="w-full bg-slate-500 rounded-t-lg" style="height: 250px;"></div>
                                     <div class="text-center">
                                         <p class="text-xs font-semibold text-gray-700 mb-1">HRD</p>
-                                        <p class="text-sm font-bold text-purple-600">10/10</p>
+                                        <p class="text-sm font-bold text-slate-600">10/10</p>
                                     </div>
                                 </div>
                             </div>
@@ -678,19 +678,19 @@
                             <div class="h-48 flex items-end justify-between gap-1 px-1 overflow-x-auto">
                                 <!-- Data dummy untuk 22 hari kerja -->
                                 <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <div class="w-full bg-red-600 rounded-t-lg transition-all duration-300 hover:bg-red-700" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">1</span>
                                 </div>
                                 <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <div class="w-full bg-red-600 rounded-t-lg transition-all duration-300 hover:bg-red-700" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">2</span>
                                 </div>
                                 <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-orange-400/80 to-orange-300/60 rounded-t-lg transition-all duration-300 hover:from-orange-500 hover:to-orange-400" style="height: 5%; min-height: 4px;" title="Tidak Hadir"></div>
+                                    <div class="w-full bg-slate-400 rounded-t-lg transition-all duration-300 hover:bg-slate-500" style="height: 5%; min-height: 4px;" title="Tidak Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">3</span>
                                 </div>
                                 <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
+                                    <div class="w-full bg-red-600 rounded-t-lg transition-all duration-300 hover:bg-red-700" style="height: 100%;" title="Hadir"></div>
                                     <span class="text-xs text-gray-600 font-medium">4</span>
                                 </div>
                                 <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
@@ -769,11 +769,11 @@
                             <div class="mt-5 grid grid-cols-3 gap-4 pt-4 border-t border-gray-100">
                                 <div class="text-center">
                                     <p class="text-gray-500 mb-1 text-xs font-medium">Hadir</p>
-                                    <p class="font-semibold text-lg text-pink-600">20</p>
+                                    <p class="font-semibold text-lg text-red-600">20</p>
                                 </div>
                                 <div class="text-center">
                                     <p class="text-gray-500 mb-1 text-xs font-medium">Tidak Hadir</p>
-                                    <p class="font-semibold text-lg text-orange-600">1</p>
+                                    <p class="font-semibold text-lg text-slate-600">1</p>
                                 </div>
                                 <div class="text-center">
                                     <p class="text-gray-500 mb-1 text-xs font-medium">Setengah Hari</p>
@@ -784,40 +784,87 @@
 
                         <!-- Pengajuan Cuti Chart - 6 Bulan Terakhir -->
                         <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
-                            <h3 class="text-base font-semibold text-gray-800 mb-5">Pengajuan Cuti Saya - 6 Bulan Terakhir</h3>
-                            <div class="h-40 flex items-end justify-between gap-2 px-1">
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-yellow-400/80 to-yellow-300/60 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400" style="height: 75%;" title="3 hari"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Agu</span>
-                                    <span class="text-xs font-semibold text-gray-800">3</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-yellow-400/80 to-yellow-300/60 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400" style="height: 50%;" title="2 hari"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Sep</span>
-                                    <span class="text-xs font-semibold text-gray-800">2</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-yellow-400/80 to-yellow-300/60 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400" style="height: 100%;" title="4 hari"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Okt</span>
-                                    <span class="text-xs font-semibold text-gray-800">4</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-yellow-400/80 to-yellow-300/60 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400" style="height: 25%;" title="1 hari"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Nov</span>
-                                    <span class="text-xs font-semibold text-gray-800">1</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-gray-300/60 to-gray-200/40 rounded-t-lg transition-all duration-300 hover:from-gray-400 hover:to-gray-300" style="height: 5%; min-height: 4px;" title="0 hari"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Des</span>
-                                    <span class="text-xs font-semibold text-gray-800">0</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-yellow-500/90 to-yellow-400/70 rounded-t-lg transition-all duration-300 hover:from-yellow-600 hover:to-yellow-500" style="height: 50%;" title="2 hari"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Jan</span>
-                                    <span class="text-xs font-semibold text-gray-800">2</span>
+                            <h3 class="text-base font-semibold text-gray-800 mb-6">Pengajuan Cuti Saya - 6 Bulan Terakhir</h3>
+                            <!-- Chart dengan Grid Lines dan Layout Lebih Besar -->
+                            <div class="space-y-4">
+                                <!-- Y-axis scale labels -->
+                                <div class="flex gap-6">
+                                    <div class="w-12 flex flex-col justify-between text-right pr-2" style="height: 280px;">
+                                        <span class="text-xs text-gray-500 font-medium">4</span>
+                                        <span class="text-xs text-gray-500 font-medium">3</span>
+                                        <span class="text-xs text-gray-500 font-medium">2</span>
+                                        <span class="text-xs text-gray-500 font-medium">1</span>
+                                        <span class="text-xs text-gray-500 font-medium">0</span>
+                                    </div>
+                                    <!-- Main Chart Container -->
+                                    <div class="flex-1">
+                                        <div class="relative" style="height: 280px;">
+                                            <!-- Grid lines -->
+                                            <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                                                <div class="border-t border-gray-200"></div>
+                                                <div class="border-t border-gray-200"></div>
+                                                <div class="border-t border-gray-200"></div>
+                                                <div class="border-t border-gray-200"></div>
+                                                <div class="border-t border-gray-200"></div>
+                                            </div>
+                                            <!-- Bars Container -->
+                                            <div class="absolute inset-0 flex items-end justify-around gap-6 px-2">
+                                                <!-- Agustus -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-red-600 hover:bg-red-700 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 75%; max-width: 80px; margin: 0 auto;" title="3 hari">
+                                                        <div class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">3</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Agu</span>
+                                                </div>
+                                                <!-- September -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-red-600 hover:bg-red-700 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 50%; max-width: 80px; margin: 0 auto;" title="2 hari">
+                                                        <div class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">2</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Sep</span>
+                                                </div>
+                                                <!-- Oktober -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-red-600 hover:bg-red-700 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 100%; max-width: 80px; margin: 0 auto;" title="4 hari">
+                                                        <div class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">4</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Okt</span>
+                                                </div>
+                                                <!-- November -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-red-600 hover:bg-red-700 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 25%; max-width: 80px; margin: 0 auto; min-height: 12px;" title="1 hari">
+                                                        <div class="w-full h-full flex items-start justify-center pt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">1</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Nov</span>
+                                                </div>
+                                                <!-- Desember -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-gray-400 hover:bg-gray-500 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 5%; max-width: 80px; margin: 0 auto; min-height: 8px;" title="0 hari"></div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Des</span>
+                                                </div>
+                                                <!-- Januari -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-red-700 hover:bg-red-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 50%; max-width: 80px; margin: 0 auto;" title="2 hari">
+                                                        <div class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">2</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Jan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+                            <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
                                 <span class="text-sm font-medium text-gray-600">Total Cuti Digunakan</span>
                                 <span class="text-lg font-semibold text-yellow-600">12 hari</span>
                             </div>
@@ -825,40 +872,91 @@
 
                         <!-- Personal Overtime Chart -->
                         <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
-                            <h3 class="text-base font-semibold text-gray-800 mb-5">Lembur Saya - 6 Bulan Terakhir</h3>
-                            <div class="h-40 flex items-end justify-between gap-2 px-1">
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-purple-400/80 to-purple-300/60 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-purple-400" style="height: 90%;" title="12 jam"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Agu</span>
-                                    <span class="text-xs font-semibold text-gray-800">12</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-purple-400/80 to-purple-300/60 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-purple-400" style="height: 65%;" title="8 jam"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Sep</span>
-                                    <span class="text-xs font-semibold text-gray-800">8</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-purple-400/80 to-purple-300/60 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-purple-400" style="height: 78%;" title="10 jam"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Okt</span>
-                                    <span class="text-xs font-semibold text-gray-800">10</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-purple-400/80 to-purple-300/60 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-purple-400" style="height: 52%;" title="6 jam"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Nov</span>
-                                    <span class="text-xs font-semibold text-gray-800">6</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-purple-400/80 to-purple-300/60 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-purple-400" style="height: 100%;" title="14 jam"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Des</span>
-                                    <span class="text-xs font-semibold text-gray-800">14</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5">
-                                    <div class="w-full bg-gradient-to-t from-purple-500/90 to-purple-400/70 rounded-t-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-500" style="height: 57%;" title="16 jam"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Jan</span>
-                                    <span class="text-xs font-semibold text-gray-800">16</span>
+                            <h3 class="text-base font-semibold text-gray-800 mb-6">Lembur Saya - 6 Bulan Terakhir</h3>
+                            <!-- Chart dengan Grid Lines dan Layout Lebih Besar -->
+                            <div class="space-y-4">
+                                <!-- Y-axis scale labels -->
+                                <div class="flex gap-6">
+                                    <div class="w-12 flex flex-col justify-between text-right pr-2" style="height: 280px;">
+                                        <span class="text-xs text-gray-500 font-medium">14h</span>
+                                        <span class="text-xs text-gray-500 font-medium">10h</span>
+                                        <span class="text-xs text-gray-500 font-medium">7h</span>
+                                        <span class="text-xs text-gray-500 font-medium">3h</span>
+                                        <span class="text-xs text-gray-500 font-medium">0h</span>
+                                    </div>
+                                    <!-- Main Chart Container -->
+                                    <div class="flex-1">
+                                        <div class="relative" style="height: 280px;">
+                                            <!-- Grid lines -->
+                                            <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                                                <div class="border-t border-gray-200"></div>
+                                                <div class="border-t border-gray-200"></div>
+                                                <div class="border-t border-gray-200"></div>
+                                                <div class="border-t border-gray-200"></div>
+                                                <div class="border-t border-gray-200"></div>
+                                            </div>
+                                            <!-- Bars Container -->
+                                            <div class="absolute inset-0 flex items-end justify-around gap-6 px-2">
+                                                <!-- Agustus -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-slate-700 hover:bg-slate-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 85.7%; max-width: 80px; margin: 0 auto;" title="12 jam">
+                                                        <div class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">12h</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Agu</span>
+                                                </div>
+                                                <!-- September -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-slate-700 hover:bg-slate-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 57%; max-width: 80px; margin: 0 auto;" title="8 jam">
+                                                        <div class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">8h</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Sep</span>
+                                                </div>
+                                                <!-- Oktober -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-slate-700 hover:bg-slate-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 71%; max-width: 80px; margin: 0 auto;" title="10 jam">
+                                                        <div class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">10h</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Okt</span>
+                                                </div>
+                                                <!-- November -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-slate-700 hover:bg-slate-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 42.8%; max-width: 80px; margin: 0 auto; min-height: 12px;" title="6 jam">
+                                                        <div class="w-full h-full flex items-start justify-center pt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">6h</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Nov</span>
+                                                </div>
+                                                <!-- Desember -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-slate-700 hover:bg-slate-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 100%; max-width: 80px; margin: 0 auto;" title="14 jam">
+                                                        <div class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">14h</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Des</span>
+                                                </div>
+                                                <!-- Januari -->
+                                                <div class="flex-1 flex flex-col items-center group">
+                                                    <div class="w-full bg-slate-800 hover:bg-slate-900 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer" style="height: 114%; max-width: 80px; margin: 0 auto;" title="16 jam">
+                                                        <div class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span class="text-xs font-bold text-white">16h</span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-xs text-gray-600 font-medium mt-2">Jan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+                            <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
                                 <span class="text-sm font-medium text-gray-600">Total 6 Bulan Terakhir</span>
                                 <span class="text-lg font-semibold text-purple-600">66 jam</span>
                             </div>
@@ -900,7 +998,7 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-3">
-                                        <div class="w-3 h-3 rounded-full bg-yellow-500 flex-shrink-0"></div>
+                                        <div class="w-3 h-3 rounded-full bg-red-500 flex-shrink-0"></div>
                                         <div>
                                             <p class="text-xs font-medium text-gray-800">Menunggu</p>
                                             <p class="text-xs text-gray-500">5 (25%)</p>
@@ -927,19 +1025,19 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <span class="text-xs font-medium text-gray-600">Cuti Tahunan</span>
-                                        <span class="text-sm font-semibold text-yellow-600">12 / 20 hari</span>
+                                        <span class="text-sm font-semibold text-red-600">12 / 20 hari</span>
                                     </div>
                                     <div class="w-full bg-gray-100 rounded-full h-2">
-                                        <div class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full transition-all duration-500" style="width: 60%"></div>
+                                        <div class="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full transition-all duration-500" style="width: 60%"></div>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <span class="text-xs font-medium text-gray-600">Cuti Sakit</span>
-                                        <span class="text-sm font-semibold text-orange-600">Tidak Terbatas</span>
+                                        <span class="text-sm font-semibold text-slate-600">Tidak Terbatas</span>
                                     </div>
                                     <div class="w-full bg-gray-100 rounded-full h-2">
-                                        <div class="bg-gradient-to-r from-orange-400 to-orange-500 h-2 rounded-full transition-all duration-500" style="width: 100%"></div>
+                                        <div class="bg-gradient-to-r from-slate-500 to-slate-600 h-2 rounded-full transition-all duration-500" style="width: 100%"></div>
                                     </div>
                                 </div>
                             </div>
@@ -959,11 +1057,11 @@
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <span class="text-gray-500 font-medium">Kehadiran Bulan Ini</span>
-                                    <span class="font-semibold text-lg text-purple-600">100%</span>
+                                    <span class="font-semibold text-lg text-red-600">100%</span>
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <span class="text-gray-500 font-medium">Menunggu Persetujuan</span>
-                                    <span class="font-semibold text-lg text-yellow-600">1</span>
+                                    <span class="font-semibold text-lg text-slate-600">1</span>
                                 </div>
                             </div>
                         </div>
@@ -972,13 +1070,13 @@
                         <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
                             <h3 class="text-sm font-semibold text-gray-800 mb-4">Aksi Cepat</h3>
                             <div class="space-y-3">
-                                <a href="{{ route('karyawan.pengajuan-cuti') }}" class="block w-full bg-gradient-to-r from-pink-400 to-pink-500 hover:from-pink-500 hover:to-pink-600 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                <a href="{{ route('karyawan.pengajuan-cuti') }}" class="block w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
                                     Ajukan Cuti
                                 </a>
-                                <a href="{{ route('karyawan.pengajuan-lembur') }}" class="block w-full bg-gradient-to-r from-purple-400 to-purple-500 hover:from-purple-500 hover:to-purple-600 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                <a href="{{ route('karyawan.pengajuan-lembur') }}" class="block w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
                                     Ajukan Lembur
                                 </a>
-                                <a href="{{ route('karyawan.surat') }}" class="block w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                <a href="{{ route('karyawan.surat') }}" class="block w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
                                     Surat Saya
                                 </a>
                             </div>
@@ -988,28 +1086,28 @@
                         <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
                             <h3 class="text-sm font-semibold text-gray-800 mb-4">Pengajuan Menunggu</h3>
                             <div class="space-y-3">
-                                <div class="flex items-center justify-between p-3 bg-yellow-50/50 rounded-lg border border-yellow-100/50">
+                                <div class="flex items-center justify-between p-3 bg-red-50/50 rounded-lg border border-red-100/50">
                                     <div class="flex items-center gap-2">
-                                        <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+                                        <div class="w-2 h-2 rounded-full bg-red-500"></div>
                                         <div>
                                             <p class="text-xs font-medium text-gray-800">Cuti Tahunan</p>
                                             <p class="text-xs text-gray-500">2 hari - 15-16 Jan</p>
                                         </div>
                                     </div>
-                                    <span class="text-xs font-medium text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded-full">Pending</span>
+                                    <span class="text-xs font-medium text-red-600 bg-red-100 px-2 py-0.5 rounded-full">Pending</span>
                                 </div>
-                                <div class="flex items-center justify-between p-3 bg-purple-50/50 rounded-lg border border-purple-100/50">
+                                <div class="flex items-center justify-between p-3 bg-slate-50/50 rounded-lg border border-slate-100/50">
                                     <div class="flex items-center gap-2">
-                                        <div class="w-2 h-2 rounded-full bg-purple-400"></div>
+                                        <div class="w-2 h-2 rounded-full bg-slate-500"></div>
                                         <div>
                                             <p class="text-xs font-medium text-gray-800">Lembur</p>
                                             <p class="text-xs text-gray-500">5 jam - 12 Jan</p>
                                         </div>
                                     </div>
-                                    <span class="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-0.5 rounded-full">Review</span>
+                                    <span class="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">Review</span>
                                 </div>
                             </div>
-                            <a href="{{ route('karyawan.riwayat') }}" class="mt-3 block text-center text-xs font-medium text-purple-600 hover:text-purple-700">
+                            <a href="{{ route('karyawan.riwayat') }}" class="mt-3 block text-center text-xs font-medium text-slate-600 hover:text-slate-700">
                                 Lihat Semua →
                             </a>
                         </div>
@@ -1020,8 +1118,8 @@
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
-                                        <div class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
-                                            <svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                             </svg>
                                         </div>
@@ -1031,8 +1129,8 @@
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
-                                        <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
-                                            <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                             </svg>
                                         </div>
@@ -1042,8 +1140,8 @@
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
-                                        <div class="w-8 h-8 rounded-lg bg-yellow-100 flex items-center justify-center">
-                                            <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                             </svg>
                                         </div>
@@ -1053,8 +1151,8 @@
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
-                                        <div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
-                                            <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                             </svg>
                                         </div>
@@ -1066,9 +1164,9 @@
                         </div>
 
                         <!-- Notifikasi Penting -->
-                        <div class="bg-gradient-to-br from-pink-50/50 to-purple-50/30 rounded-xl shadow-sm border border-pink-100/50 p-5">
+                        <div class="bg-gradient-to-br from-red-50/50 to-slate-50/30 rounded-xl shadow-sm border border-red-100/50 p-5">
                             <div class="flex items-center gap-2 mb-3">
-                                <svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                                 </svg>
                                 <h3 class="text-sm font-semibold text-gray-800">Pemberitahuan</h3>
@@ -1078,7 +1176,7 @@
                                     <p class="font-medium text-gray-800 mb-1">• Slip gaji Desember tersedia</p>
                                     <p class="text-gray-500">Silakan unduh di menu Surat Saya</p>
                                 </div>
-                                <div class="text-xs text-gray-600 leading-relaxed pt-2 border-t border-pink-100/50">
+                                <div class="text-xs text-gray-600 leading-relaxed pt-2 border-t border-red-100/50">
                                     <p class="font-medium text-gray-800 mb-1">• Evaluasi kinerja Q4</p>
                                     <p class="text-gray-500">Jadwal: 20 Januari 2026</p>
                                 </div>

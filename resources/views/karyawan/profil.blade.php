@@ -12,7 +12,7 @@
 
     <!-- Scrollable Main Content -->
     <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
-        <div class="p-6 lg:p-8 bg-gradient-to-br from-slate-50/80 via-blue-50/20 to-purple-50/10 min-h-full">
+        <div class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gradient-to-br from-slate-50/80 via-red-50/20 to-green-50/10 min-h-full">
         <!-- Welcome Header -->
         <div class="mb-6">
             <h1 class="text-2xl font-semibold text-gray-800 mb-1.5">Profil Saya</h1>
@@ -25,7 +25,7 @@
                 <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
                     <div class="p-6 text-center">
                         <!-- Avatar -->
-                        <div class="w-20 h-20 mx-auto mb-4 ring-2 ring-emerald-200/50 rounded-xl overflow-hidden">
+                        <div class="w-20 h-20 mx-auto mb-4 ring-2 ring-red-200/50 rounded-xl overflow-hidden">
                             <img src="https://ui-avatars.com/api/?name=Rina+Wijaya&background=4f46e5&color=fff&size=80" alt="Avatar" class="w-full h-full">
                         </div>
                         <!-- Name & Position -->
@@ -64,7 +64,7 @@
                                 <span class="text-sm font-semibold text-gray-800">8/12</span>
                             </div>
                             <div class="bg-gray-100/30 rounded-full h-2 overflow-hidden">
-                                <div class="bg-gradient-to-r from-emerald-400/60 to-emerald-400/50 h-2 rounded-full transition-all duration-500 shadow-sm" style="width: 67%"></div>
+                                <div class="bg-gradient-to-r from-red-400/60 to-red-400/50 h-2 rounded-full transition-all duration-500 shadow-sm" style="width: 67%"></div>
                             </div>
                         </div>
                         <div>
@@ -73,7 +73,7 @@
                                 <span class="text-sm font-semibold text-gray-800">18/20</span>
                             </div>
                             <div class="bg-gray-100/30 rounded-full h-2 overflow-hidden">
-                                <div class="bg-gradient-to-r from-blue-400/60 to-blue-400/50 h-2 rounded-full transition-all duration-500 shadow-sm" style="width: 90%"></div>
+                                <div class="bg-gradient-to-r from-slate-400/60 to-slate-400/50 h-2 rounded-full transition-all duration-500 shadow-sm" style="width: 90%"></div>
                             </div>
                         </div>
                     </div>
@@ -82,16 +82,16 @@
 
             <!-- Form Edit Profile -->
             <div class="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
-                <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-emerald-50/20 via-blue-50/20 to-purple-50/15">
+                <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/20 via-slate-50/20 to-slate-50/15">
                     <h3 class="text-sm font-semibold text-gray-800">Informasi Pribadi</h3>
                 </div>
                 <div class="p-6">
                     <form class="space-y-5">
                         <!-- Data Tidak Dapat Diubah -->
-                        <div class="bg-gradient-to-r from-blue-50/40 to-indigo-50/30 border border-blue-200/30 rounded-xl p-4">
+                        <div class="bg-gradient-to-r from-slate-50/40 to-slate-50/30 border border-slate-200/30 rounded-xl p-4">
                             <div class="flex items-start gap-3">
-                                <div class="p-1.5 bg-blue-100/50 rounded-lg flex-shrink-0 mt-0.5">
-                                    <svg class="w-4 h-4 text-blue-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="p-1.5 bg-slate-100/50 rounded-lg flex-shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4 text-slate-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </div>
@@ -129,10 +129,10 @@
                         <div class="border-t border-gray-100/50 pt-5"></div>
 
                         <!-- Data Dapat Diubah -->
-                        <div class="bg-gradient-to-r from-emerald-50/40 to-green-50/30 border border-emerald-200/30 rounded-xl p-4">
+                        <div class="bg-gradient-to-r from-red-50/40 to-red-50/30 border border-red-200/30 rounded-xl p-4">
                             <div class="flex items-start gap-3">
-                                <div class="p-1.5 bg-emerald-100/50 rounded-lg flex-shrink-0 mt-0.5">
-                                    <svg class="w-4 h-4 text-emerald-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="p-1.5 bg-red-100/50 rounded-lg flex-shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4 text-red-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </div>
@@ -145,20 +145,20 @@
                         <!-- Nomor HP -->
                         <div>
                             <label class="block text-xs font-medium text-gray-600 mb-2">Nomor HP</label>
-                            <input type="tel" placeholder="+62 8xx xxxx xxxx" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-300/50 transition-all duration-300 text-sm">
+                            <input type="tel" placeholder="+62 8xx xxxx xxxx" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400/30 focus:border-red-300/50 transition-all duration-300 text-sm">
                             <p class="text-xs text-gray-400 mt-1.5">Digunakan untuk notifikasi penting</p>
                         </div>
 
                         <!-- Alamat Rumah -->
                         <div>
                             <label class="block text-xs font-medium text-gray-600 mb-2">Alamat Rumah</label>
-                            <textarea rows="3" placeholder="Jalan, Kelurahan, Kecamatan, Kota/Kabupaten, Provinsi" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-300/50 transition-all duration-300 text-sm resize-none"></textarea>
+                            <textarea rows="3" placeholder="Jalan, Kelurahan, Kecamatan, Kota/Kabupaten, Provinsi" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400/30 focus:border-red-300/50 transition-all duration-300 text-sm resize-none"></textarea>
                         </div>
 
                         <!-- Jenis Kelamin -->
                         <div>
                             <label class="block text-xs font-medium text-gray-600 mb-2">Jenis Kelamin</label>
-                            <select class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-300/50 transition-all duration-300 text-sm">
+                            <select class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400/30 focus:border-red-300/50 transition-all duration-300 text-sm">
                                 <option selected>Perempuan</option>
                                 <option>Laki-laki</option>
                             </select>
@@ -167,12 +167,12 @@
                         <!-- Tanggal Lahir -->
                         <div>
                             <label class="block text-xs font-medium text-gray-600 mb-2">Tanggal Lahir</label>
-                            <input type="date" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-300/50 transition-all duration-300 text-sm">
+                            <input type="date" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400/30 focus:border-red-300/50 transition-all duration-300 text-sm">
                         </div>
 
                         <!-- Button -->
                         <div class="flex gap-3 pt-2">
-                            <button type="submit" class="flex-1 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-medium rounded-xl hover:from-emerald-600 hover:to-emerald-500 shadow-sm hover:shadow-md transition-all duration-300 text-sm">
+                            <button type="submit" class="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-500 to-red-400 text-white font-medium rounded-xl hover:from-red-600 hover:to-red-500 shadow-sm hover:shadow-md transition-all duration-300 text-sm">
                                 Simpan Perubahan
                             </button>
                             <button type="reset" class="flex-1 px-4 py-2.5 bg-white/80 border border-gray-200/60 text-gray-600 font-medium rounded-xl hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 text-sm">
@@ -186,25 +186,25 @@
 
         <!-- Account Security Section -->
         <div class="mt-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
-            <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-blue-50/20 to-indigo-50/20">
+            <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/20 to-slate-50/20">
                 <h3 class="text-sm font-semibold text-gray-800">Keamanan Akun</h3>
             </div>
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Change Password -->
-                    <div class="bg-gradient-to-br from-blue-50/30 to-indigo-50/20 rounded-xl p-5 border border-blue-100/30">
+                    <div class="bg-gradient-to-br from-red-50/30 to-red-50/20 rounded-xl p-5 border border-red-100/30">
                         <h4 class="text-sm font-semibold text-gray-800 mb-2">Ubah Password</h4>
                         <p class="text-xs text-gray-500 mb-4 leading-relaxed">Perbarui password Anda secara berkala untuk keamanan akun</p>
-                        <button class="px-4 py-2.5 border border-blue-400/60 text-blue-600/80 font-medium rounded-xl hover:bg-blue-50/60 hover:border-blue-400/80 transition-all duration-300 text-sm">
+                        <button class="px-4 py-2.5 border border-red-400/60 text-red-600/80 font-medium rounded-xl hover:bg-red-50/60 hover:border-red-400/80 transition-all duration-300 text-sm">
                             Ubah Password
                         </button>
                     </div>
 
                     <!-- Two-Factor Auth -->
-                    <div class="bg-gradient-to-br from-purple-50/30 to-pink-50/20 rounded-xl p-5 border border-purple-100/30">
+                    <div class="bg-gradient-to-br from-green-50/30 to-slate-50/20 rounded-xl p-5 border border-green-100/30">
                         <h4 class="text-sm font-semibold text-gray-800 mb-2">Autentikasi Dua Faktor</h4>
                         <p class="text-xs text-gray-500 mb-4 leading-relaxed">Tingkatkan keamanan dengan autentikasi dua faktor</p>
-                        <button class="px-4 py-2.5 border border-purple-400/60 text-purple-600/80 font-medium rounded-xl hover:bg-purple-50/60 hover:border-purple-400/80 transition-all duration-300 text-sm">
+                        <button class="px-4 py-2.5 border border-green-400/60 text-green-600/80 font-medium rounded-xl hover:bg-green-50/60 hover:border-green-400/80 transition-all duration-300 text-sm">
                             Aktifkan
                         </button>
                     </div>
@@ -214,11 +214,11 @@
 
         <!-- Activity Log -->
         <div class="mt-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
-            <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-emerald-50/20 to-blue-50/20">
+            <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/20 to-slate-50/20">
                 <h3 class="text-sm font-semibold text-gray-800">Log Aktivitas Terbaru</h3>
             </div>
             <div class="divide-y divide-gray-100/50">
-                <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-transparent transition-all duration-300">
+                <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-red-50/30 hover:to-transparent transition-all duration-300">
                     <div class="flex items-start justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-800">Login</p>
@@ -227,7 +227,7 @@
                         <span class="text-xs text-gray-400">Hari ini, 14:30</span>
                     </div>
                 </div>
-                <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-emerald-50/30 hover:to-transparent transition-all duration-300">
+                <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-transparent transition-all duration-300">
                     <div class="flex items-start justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-800">Ubah Profil</p>
@@ -236,7 +236,7 @@
                         <span class="text-xs text-gray-400">2 hari lalu</span>
                     </div>
                 </div>
-                <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-purple-50/30 hover:to-transparent transition-all duration-300">
+                <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-slate-50/30 hover:to-transparent transition-all duration-300">
                     <div class="flex items-start justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-800">Ajukan Pengajuan</p>

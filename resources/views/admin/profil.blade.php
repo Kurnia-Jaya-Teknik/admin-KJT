@@ -108,22 +108,22 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
-                                    <input type="text" value="Arina Wijaya" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                                    <input type="text" value="Arina Wijaya" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                                    <input type="email" value="arina.wijaya@company.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                                    <input type="email" value="arina.wijaya@company.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Nomor HP</label>
-                                    <input type="text" value="08123456789" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                                    <input type="text" value="08123456789" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Lahir</label>
-                                    <input type="date" value="1990-06-15" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                                    <input type="date" value="1990-06-15" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                                 </div>
                             </div>
 
@@ -151,7 +151,7 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Alamat</label>
-                                <textarea rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Alamat lengkap">Jl. Merdeka No. 123, Jakarta Pusat</textarea>
+                                <textarea rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="Alamat lengkap">Jl. Merdeka No. 123, Jakarta Pusat</textarea>
                             </div>
 
                             <div class="flex justify-end pt-4 border-t border-gray-200">

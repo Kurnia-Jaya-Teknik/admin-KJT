@@ -14,7 +14,7 @@
                     <p class="text-gray-600 mt-1">Total: 156 karyawan aktif</p>
                 </div>
                 <button onclick="openTambahModal()"
-                    class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium flex items-center gap-2">
+                    class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -29,7 +29,7 @@
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Cari Nama atau NIK</label>
                         <input type="text" placeholder="Ketik nama atau NIK..."
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
 
                     <!-- Filter Departemen -->
@@ -49,7 +49,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                         <select
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
                             <option value="">Semua Status</option>
                             <option value="aktif">Aktif</option>
                             <option value="nonaktif">Nonaktif</option>
@@ -89,10 +89,10 @@
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex justify-center gap-2">
                                         <button onclick="openEditModal('2024001', 'Budi Santoso')"
-                                            class="text-indigo-600 hover:text-indigo-700 font-medium transition-colors"
+                                            class="text-red-600 hover:text-red-700 font-medium transition-colors"
                                             title="Edit">Edit</button>
                                         <button onclick="openResetModal('2024001')"
-                                            class="text-amber-600 hover:text-amber-700 font-medium transition-colors"
+                                            class="text-slate-600 hover:text-slate-700 font-medium transition-colors"
                                             title="Reset">Reset</button>
                                         <button onclick="openDeactivateModal('2024001')"
                                             class="text-red-600 hover:text-red-700 font-medium transition-colors"
@@ -115,10 +115,10 @@
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex justify-center gap-2">
                                         <button onclick="openEditModal('2024002', 'Ahmad Rizki')"
-                                            class="text-indigo-600 hover:text-indigo-700 font-medium transition-colors"
+                                            class="text-red-600 hover:text-red-700 font-medium transition-colors"
                                             title="Edit">Edit</button>
                                         <button onclick="openResetModal('2024002')"
-                                            class="text-amber-600 hover:text-amber-700 font-medium transition-colors"
+                                            class="text-slate-600 hover:text-slate-700 font-medium transition-colors"
                                             title="Reset">Reset</button>
                                         <button onclick="openDeactivateModal('2024002')"
                                             class="text-red-600 hover:text-red-700 font-medium transition-colors"
@@ -136,15 +136,15 @@
                                 <td class="px-6 py-4 text-sm text-gray-600">siti.nurhaliza@company.com</td>
                                 <td class="px-6 py-4 text-sm">
                                     <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Cuti</span>
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800">Cuti</span>
                                 </td>
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex justify-center gap-2">
                                         <button onclick="openEditModal('2024003', 'Siti Nurhaliza')"
-                                            class="text-indigo-600 hover:text-indigo-700 font-medium transition-colors"
+                                            class="text-red-600 hover:text-red-700 font-medium transition-colors"
                                             title="Edit">Edit</button>
                                         <button onclick="openResetModal('2024003')"
-                                            class="text-amber-600 hover:text-amber-700 font-medium transition-colors"
+                                            class="text-slate-600 hover:text-slate-700 font-medium transition-colors"
                                             title="Reset">Reset</button>
                                         <button onclick="openDeactivateModal('2024003')"
                                             class="text-red-600 hover:text-red-700 font-medium transition-colors"
@@ -167,10 +167,10 @@
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex justify-center gap-2">
                                         <button onclick="openEditModal('2024004', 'Rina Wijaya')"
-                                            class="text-indigo-600 hover:text-indigo-700 font-medium transition-colors"
+                                            class="text-red-600 hover:text-red-700 font-medium transition-colors"
                                             title="Edit">Edit</button>
                                         <button onclick="openResetModal('2024004')"
-                                            class="text-amber-600 hover:text-amber-700 font-medium transition-colors"
+                                            class="text-slate-600 hover:text-slate-700 font-medium transition-colors"
                                             title="Reset">Reset</button>
                                         <button onclick="openDeactivateModal('2024004')"
                                             class="text-red-600 hover:text-red-700 font-medium transition-colors"
@@ -193,10 +193,10 @@
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex justify-center gap-2">
                                         <button onclick="openEditModal('2024005', 'Dedi Gunawan')"
-                                            class="text-indigo-600 hover:text-indigo-700 font-medium transition-colors"
+                                            class="text-red-600 hover:text-red-700 font-medium transition-colors"
                                             title="Edit">Edit</button>
                                         <button onclick="openResetModal('2024005')"
-                                            class="text-amber-600 hover:text-amber-700 font-medium transition-colors"
+                                            class="text-slate-600 hover:text-slate-700 font-medium transition-colors"
                                             title="Reset">Reset</button>
                                         <button onclick="openDeactivateModal('2024005')"
                                             class="text-red-600 hover:text-red-700 font-medium transition-colors"
@@ -242,27 +242,27 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
                         <input type="text" placeholder="Nama lengkap"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">NIK</label>
                         <input type="text" placeholder="Nomor Identitas Karyawan"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                     <div class="col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                         <input type="email" placeholder="email@company.com"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Jabatan</label>
                         <input type="text" placeholder="Jabatan"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Departemen</label>
                         <select
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
                             <option value="">Pilih Departemen</option>
                             <option value="finance">Finance</option>
                             <option value="marketing">Marketing</option>
@@ -273,12 +273,12 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Nomor HP</label>
                         <input type="text" placeholder="0812xxxxxxxx"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Bergabung</label>
                         <input type="date"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                 </div>
             </div>
@@ -286,7 +286,7 @@
                 <button onclick="closeTambahModal()"
                     class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
                 <button
-                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium">Simpan</button>
+                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">Simpan</button>
             </div>
         </div>
     </div>
@@ -311,28 +311,28 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
                         <input type="text" placeholder="Nama lengkap"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">NIK</label>
                         <input type="text" placeholder="Nomor Identitas Karyawan"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                             disabled />
                     </div>
                     <div class="col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                         <input type="email" placeholder="email@company.com"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Jabatan</label>
                         <input type="text" placeholder="Jabatan"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Departemen</label>
                         <select
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
                             <option value="finance">Finance</option>
                             <option value="marketing">Marketing</option>
                             <option value="ops">Operations</option>
@@ -342,12 +342,12 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Nomor HP</label>
                         <input type="text" placeholder="0812xxxxxxxx"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Bergabung</label>
                         <input type="date"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
                     </div>
                 </div>
             </div>
@@ -355,7 +355,7 @@
                 <button onclick="closeEditModal()"
                     class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
                 <button
-                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium">Simpan
+                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">Simpan
                     Perubahan</button>
             </div>
         </div>
@@ -367,8 +367,8 @@
         data-modal-id="resetModal">
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div class="p-6">
-                <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -381,7 +381,7 @@
                 <button onclick="closeResetModal()"
                     class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
                 <button
-                    class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium">Ya,
+                    class="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors font-medium">Ya,
                     Reset</button>
             </div>
         </div>
