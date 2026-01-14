@@ -694,14 +694,14 @@
                 aria-hidden="true" onclick="closeModalSurat()"></div>
 
             <div
-                class="relative bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-4 max-h-[92vh] overflow-y-auto z-10">
+                class="relative bg-white rounded-xl shadow-2xl w-full h-full lg:h-auto lg:max-w-7xl lg:max-h-[92vh] overflow-hidden z-10 flex flex-col">
             <!-- Header -->
-            <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-indigo-50 to-blue-50 rounded-t-xl">
+            <div class="px-8 py-6 border-b border-gray-200 flex justify-between items-center bg-white">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900">Buat Surat Resmi</h2>
-                    <p class="text-sm text-gray-600 mt-1">Lengkapi formulir untuk membuat surat resmi baru</p>
+                    <p class="text-sm text-gray-600 mt-1">Lengkapi semua field untuk membuat surat resmi baru</p>
                 </div>
-                <button onclick="closeModalSurat()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-2 transition">
+                <button onclick="closeModalSurat()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-2 transition flex-shrink-0">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12" />
@@ -709,37 +709,45 @@
                 </button>
             </div>
 
-            <!-- Content -->
-            <div class="px-8 py-6 space-y-6">
-                    <!-- Kop Surat selector + upload -->
-                    <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
-                        <label class="block text-sm font-semibold text-gray-900 mb-3">🖼️ Kop Surat</label>
-                        <div class="flex gap-3 items-center mb-4">
-                            <select id="kopSuratSelect" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
-                                <option value="">-- Pilih Kop Surat (Default) --</option>
-                            </select>
-                            <input id="kopUploadInput" type="file" accept="image/*,application/pdf" class="hidden" />
-                            <button type="button" onclick="document.getElementById('kopUploadInput').click()"
-                                class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition font-medium">📤 Upload Kop Baru</button>
-                        </div>
-                        <div id="kopPreview" class="text-sm text-gray-600">Tidak ada kop dipilih.</div>
-                        <div id="kopTemplateFields" class="mt-3 space-y-2"></div>
-                        <div id="kopUploadStatus" class="text-xs text-gray-500 mt-3"></div>
-                    </div>
+            <!-- Content - Flex to take remaining space -->
+            <div class="flex-1 overflow-hidden flex">
+                    <!-- SINGLE PAGE FORM: Left form + Right Preview - Google Form Style -->
+                    <div id="formSteps" class="grid grid-cols-1 lg:grid-cols-3 gap-0 min-h-[calc(100vh-200px)] bg-gray-100 w-full">
 
-                    <!-- SINGLE PAGE FORM: Left form + Right Preview -->
-                    <div id="formSteps" class="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[600px]">
-
-                        <!-- LEFT COLUMN: Form Inputs -->
-                        <div class="flex flex-col space-y-6 overflow-y-auto pr-4">
+                        <!-- LEFT COLUMN: Form Inputs - Google Form Style -->
+                        <div class="lg:col-span-2 flex flex-col overflow-y-auto">
                             
-                            <!-- Jenis & Template Selection -->
-                            <div class="bg-white border border-gray-200 rounded-xl p-6">
-                                <h3 class="text-lg font-bold text-gray-900 mb-4">📋 Jenis & Template Surat</h3>
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Jenis Surat</label>
-                                        <select id="jenisSurat" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+                            <!-- Kop Surat Section -->
+                            <div class="bg-white border-b border-gray-200 p-8">
+                                <div class="max-w-2xl">
+                                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Buat Surat Resmi</h2>
+                                    <p class="text-gray-600 mb-6">Lengkapi semua field di bawah untuk membuat surat resmi baru</p>
+                                    
+                                    <label class="block text-sm font-semibold text-gray-900 mb-3">Kop Surat</label>
+                                    <div class="flex gap-3 items-center mb-4">
+                                        <select id="kopSuratSelect" class="flex-1 px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white">
+                                            <option value="">-- Pilih Kop Surat (Default) --</option>
+                                        </select>
+                                        <input id="kopUploadInput" type="file" accept="image/*,application/pdf" class="hidden" />
+                                        <button type="button" onclick="document.getElementById('kopUploadInput').click()"
+                                            class="px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-200 transition font-medium text-sm">Unggah Kop</button>
+                                    </div>
+                                    <div id="kopPreview" class="text-xs text-gray-500 mb-4">Tidak ada kop dipilih</div>
+                                    <div id="kopTemplateFields" class="space-y-4 mb-6"></div>
+                                    <div id="kopUploadStatus" class="text-xs text-gray-500"></div>
+                                </div>
+                            </div>
+
+                            <!-- Form Sections -->
+                            <div class="divide-y divide-gray-200 flex-1">
+                                
+                                <!-- Section 1: Jenis Surat -->
+                                <div class="bg-white p-8 border-b border-gray-200">
+                                    <div class="max-w-2xl">
+                                        <h3 class="text-lg font-bold text-gray-900 mb-1">Jenis Surat</h3>
+                                        <p class="text-sm text-gray-500 mb-6">Pilih jenis surat yang akan dibuat</p>
+                                        
+                                        <select id="jenisSurat" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white text-gray-900">
                                             <option value="">-- Pilih Jenis Surat --</option>
                                             <option value="pkwt">PKWT (Perjanjian Kerja Waktu Tertentu)</option>
                                             <option value="pkwtt">PKWTT (Perjanjian Kerja Waktu Tidak Tertentu)</option>
@@ -749,139 +757,127 @@
                                             <option value="lembur">Surat Pengajuan Lembur</option>
                                         </select>
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Template Surat</label>
-                                        <div class="flex items-center gap-2">
-                                            <select id="suratTemplateSelect" class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
-                                                <option value="">-- Pilih Template (opsional) --</option>
-                                            </select>
-                                            <button type="button" id="openTemplateManager" class="px-4 py-3 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition font-medium">⚙️</button>
-                                        </div>
-                                        <div id="templateLoadStatus" class="text-xs text-gray-600 mt-2">Memuat template...</div>
-                                        <div id="templateManager" class="mt-4 hidden bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                            <div class="max-h-32 overflow-auto border rounded-lg p-2 bg-white mb-3">
-                                                <ul id="suratTemplateList" class="space-y-1 text-sm"></ul>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <button type="button" id="createTemplateBtn" class="flex-1 px-3 py-2 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700 transition">+ Buat</button>
-                                                <button type="button" id="refreshTemplatesBtn" class="px-3 py-2 bg-white border text-sm rounded hover:bg-gray-50 transition">🔄</button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- Informasi Umum -->
-                            <div class="bg-white border border-gray-200 rounded-xl p-6">
-                                <h3 class="text-lg font-bold text-gray-900 mb-4">📝 Informasi Umum</h3>
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Nomor Surat</label>
-                                        <input type="text" id="nomorSurat" placeholder="Contoh: 001/HR/2026" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Tanggal Surat</label>
-                                        <input type="date" id="tanggalSurat" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Untuk Karyawan</label>
-                                        <input type="text" id="karyawanSurat" placeholder="Nama lengkap" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Jabatan</label>
-                                        <input type="text" id="jabatanSurat" placeholder="Misal: Manager IT" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Departemen</label>
-                                        <input type="text" id="departemenSurat" placeholder="Misal: HR, IT" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Tujuan Surat</label>
-                                        <input type="text" id="tujuanSurat" placeholder="Ke Bank, Kantor Pos, dll" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
-                                    </div>
-
-                                    <!-- Informasi Umum - Custom Fields Controls -->
-                                    <div id="informasiCustomControls" class="mt-4 border-t pt-4">
-                                        <div class="flex items-center gap-2">
-                                            <button id="toggleAddInformasiFieldBtn" type="button" class="px-3 py-2 bg-indigo-600 text-white rounded text-sm">+ Tambah Field Informasi</button>
-                                            <span class="text-sm text-gray-500">Tambahkan field kustom untuk Form Informasi Umum (akan berlaku untuk pembuatan surat saat ini, bisa disimpan sebagai template).</span>
+                                <!-- Section 2: Informasi Umum -->
+                                <div class="bg-white p-8 border-b border-gray-200">
+                                    <div class="max-w-2xl">
+                                        <h3 class="text-lg font-bold text-gray-900 mb-1">Informasi Umum</h3>
+                                        <p class="text-sm text-gray-500 mb-6">Isi data identitas surat dan penerima</p>
+                                        
+                                        <!-- Nomor Surat -->
+                                        <div class="mb-6">
+                                            <label class="block text-sm font-medium text-gray-900 mb-2">Nomor Surat *</label>
+                                            <input type="text" id="nomorSurat" placeholder="Contoh: 001/HR/2026" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                                            <p class="text-xs text-gray-500 mt-1">Format: Nomor/Departemen/Tahun</p>
                                         </div>
 
-                                        <div id="addInformasiFieldForm" class="hidden mt-3 bg-gray-50 p-3 rounded border border-gray-200">
-                                            <div class="flex gap-2 items-center">
-                                                <select id="informasiNewFieldType" class="px-3 py-2 border rounded">
-                                                    <option value="text">Text</option>
-                                                    <option value="textarea">Textarea</option>
-                                                    <option value="date">Date</option>
-                                                    <option value="select">Select</option>
-                                                </select>
-                                                <input id="informasiNewFieldLabel" placeholder="Label (contoh: NAMA)" class="px-3 py-2 border rounded" />
-                                                <input id="informasiNewFieldKey" placeholder="Key (contoh: NAMA)" class="px-3 py-2 border rounded w-36" />
-                                                <input id="informasiNewFieldOptions" placeholder="Options (jika select, gunakan , pemisah)" class="px-3 py-2 border rounded w-64" />
-                                                <label class="inline-flex items-center gap-2 text-sm text-gray-700">
-                                                    <input id="informasiNewFieldRequired" type="checkbox" class="h-4 w-4 border-gray-300 rounded" /> <span>Wajib</span>
-                                                </label>
-                                            </div>
-                                            <div class="flex gap-2 mt-2">
-                                                <button id="addInformasiFieldBtn" type="button" class="px-3 py-2 bg-green-600 text-white rounded">Tambah</button>
-                                                <button id="cancelInformasiFieldBtn" type="button" class="px-3 py-2 bg-white border rounded">Batal</button>
-                                            </div>
+                                        <!-- Tanggal Surat -->
+                                        <div class="mb-6">
+                                            <label class="block text-sm font-medium text-gray-900 mb-2">Tanggal Surat *</label>
+                                            <input type="date" id="tanggalSurat" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
                                         </div>
 
-                                        <div id="informasiCustomFields" class="mt-3 space-y-2"></div>
+                                        <!-- Nama Karyawan -->
+                                        <div class="mb-6">
+                                            <label class="block text-sm font-medium text-gray-900 mb-2">Nama Karyawan *</label>
+                                            <input type="text" id="karyawanSurat" placeholder="Nama lengkap" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                                        </div>
+
+                                        <!-- Jabatan -->
+                                        <div class="mb-6">
+                                            <label class="block text-sm font-medium text-gray-900 mb-2">Jabatan</label>
+                                            <input type="text" id="jabatanSurat" placeholder="Misal: Manager IT" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                                        </div>
+
+                                        <!-- Departemen -->
+                                        <div class="mb-6">
+                                            <label class="block text-sm font-medium text-gray-900 mb-2">Departemen</label>
+                                            <input type="text" id="departemenSurat" placeholder="Misal: HR, IT" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                                        </div>
+
+                                        <!-- Tujuan Surat -->
+                                        <div class="mb-6">
+                                            <label class="block text-sm font-medium text-gray-900 mb-2">Tujuan Surat</label>
+                                            <input type="text" id="tujuanSurat" placeholder="Ke mana surat ditujukan" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                                        </div>
+
+                                        
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Sections Editor -->
-                            <div class="bg-white border border-gray-200 rounded-xl p-6">
-                                <h3 class="text-lg font-bold text-gray-900 mb-4">📄 Isi Surat (Sections)</h3>
-                                <div id="sectionsEditor" class="space-y-3 bg-gradient-to-b from-gray-50 to-white p-4 border-2 border-dashed border-gray-300 rounded-lg max-h-96 overflow-y-auto mb-3">
-                                    <p class="text-xs text-gray-500 text-center py-8">Belum ada section. Klik tombol di bawah.</p>
+                                <!-- Section 3: Isi Surat (Section-Based) -->
+                                <div class="bg-white p-8 border-b border-gray-200">
+                                    <div class="max-w-2xl">
+                                        <div class="flex items-center justify-between mb-6">
+                                            <div>
+                                                <h3 class="text-lg font-bold text-gray-900 mb-1">Isi Surat</h3>
+                                                <p class="text-sm text-gray-500">Kelola isi surat dalam bentuk section</p>
+                                            </div>
+                                            <button type="button" onclick="addSuratSection()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium text-sm">+ Tambah Section</button>
+                                        </div>
+                                        
+                                        <div id="suratSections" class="space-y-4">
+                                            <!-- Dynamic sections will be added here -->
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-4">Setiap section terdiri dari judul dan isi. Tambahkan section sesuai struktur surat Anda.</p>
+                                    </div>
                                 </div>
-                                <button type="button" id="addSectionBtn" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium">+ Tambah Section</button>
-                            </div>
 
-                            <!-- Template Fields -->
-                            <div id="suratTemplateFields" class="bg-blue-50 border border-blue-200 rounded-xl p-4"></div>
-                            <div id="templateDynamicForm" class="bg-blue-50 border border-blue-200 rounded-xl p-4"></div>
+                                <!-- Template Fields Dynamic -->
+                                <div id="suratTemplateFields" class="bg-white p-8 border-b border-gray-200"></div>
+                                <div id="templateDynamicForm" class="bg-white p-8 border-b border-gray-200"></div>
 
-                        </div>
-
-                        <!-- RIGHT COLUMN: Real-time Preview -->
-                        <div class="flex flex-col space-y-4">
-                            <div class="bg-white border border-gray-200 rounded-xl p-6 flex-1 flex flex-col">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="text-lg font-bold text-gray-900">👀 Pratayang Surat Real-time</h3>
+                                <!-- Action Buttons -->
+                                <div class="bg-white p-8 border-b border-gray-200 sticky bottom-0 z-10">
+                                    <div class="max-w-2xl flex gap-3">
+                                        <button type="button" onclick="closeModalSurat()" class="px-6 py-3 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition font-medium">Batal</button>
+                                        <button type="button" id="previewLetterBtn" onclick="previewLetter()" class="px-6 py-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition font-medium">Pratayang</button>
+                                        <button type="button" onclick="simpanSurat()" class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium">Terbitkan Surat</button>
+                                    </div>
                                 </div>
-                                <div id="suratPreview" class="flex-1 bg-white p-4 border border-gray-200 rounded-lg overflow-auto text-sm text-gray-800 shadow-inner font-serif">
-                                    <p class="text-xs text-gray-400 text-center py-12">Preview akan muncul saat Anda mengisi form...</p>
-                                </div>
-                            </div>
-
-                            <!-- Action Buttons -->
-                            <div class="flex gap-3 flex-wrap">
-                                <button type="button" id="previewLetterBtn" onclick="previewLetter()" class="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">👁️ Pratayang Penuh</button>
-                                <button type="button" id="generatePdfBtn" onclick="generatePdf()" class="flex-1 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-semibold">📄 Preview PDF</button>
-                            </div>
-
-                            <div class="flex gap-3">
-                                <button type="button" id="saveTemplateConfirm" class="flex-1 px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition font-semibold">💾 Simpan Template</button>
-                                <button type="button" onclick="simpanSurat()" class="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold">✅ Terbitkan</button>
                             </div>
                         </div>
 
-                    </div>
+                        <!-- RIGHT COLUMN: Real-time Preview - Sticky -->
+                        <div class="hidden lg:flex flex-col bg-gray-50 border-l border-gray-200 h-screen sticky top-0">
+                            <div class="flex-1 overflow-y-auto flex flex-col">
+                                <!-- Preview Header -->
+                                <div class="bg-white border-b border-gray-200 p-4 sticky top-0">
+                                    <h3 class="font-bold text-gray-900">Pratayang Surat</h3>
+                                    <p class="text-xs text-gray-500">Diperbarui secara real-time</p>
+                                </div>
+
+                                <!-- Preview Content -->
+                                <div class="flex-1 overflow-y-auto p-6">
+                                    <div id="suratPreview" class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 font-serif text-sm text-gray-900 min-h-full">
+                                        <div class="text-center text-gray-400 py-12">
+                                            <svg class="w-12 h-12 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            <p class="text-sm">Mulai isi form untuk melihat pratayang</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Preview Actions -->
+                                <div class="border-t border-gray-200 bg-white p-4 sticky bottom-0">
+                                    <button type="button" id="generatePdfBtn" onclick="generatePdf()" class="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition font-medium text-sm">📄 Preview PDF</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
 
                 </div>
             </div>
 
-            <!-- Footer -->
+            <!-- Footer - Hidden by default, shown only when needed -->
                 <div id="modalFooter" class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
                     <button onclick="closeModalSurat()"
                         class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
                     <button onclick="simpanSurat()"
-                        class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium">Terbitkan
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">Terbitkan
                         Surat</button>
             </div>
         </div>
@@ -992,6 +988,12 @@
             window.openModalBuatSurat = openModalBuatSurat;
             window.closeModalSurat = closeModalSurat;
             window.simpanSurat = simpanSurat;
+            window.addAdditionalField = addAdditionalField;
+            window.removeAdditionalField = removeAdditionalField;
+            window.getAdditionalFields = getAdditionalFields;
+            window.addSuratSection = addSuratSection;
+            window.removeSuratSection = removeSuratSection;
+            window.getSuratSections = getSuratSections;
 
         function buatSurat(karyawan, jenis) {
                 // Store context so we can remove/move request row when published
@@ -1836,16 +1838,107 @@
                 renderTemplateSections(window.currentSections);
             }
 
-            function getSectionsData() {
-                const out = [];
-                document.querySelectorAll('#sectionsEditor [data-section-index]').forEach(s => {
-                    const idx = s.dataset.sectionIndex;
-                    let content = '';
-                    try { if (CKEDITOR.instances['section_' + idx]) content = CKEDITOR.instances['section_' + idx].getData(); } catch (e) { content = s.querySelector('textarea')?.value || ''; }
-                    const title = s.querySelector('.section-title')?.value || '';
-                    out.push({ title: title, content: content });
+            // ========== DYNAMIC ADDITIONAL FIELDS ==========
+            function addAdditionalField(label = '', value = '', fieldId = null) {
+                const container = document.getElementById('additionalFields');
+                const uniqueId = fieldId || 'field_' + Date.now();
+                
+                const fieldDiv = document.createElement('div');
+                fieldDiv.id = uniqueId;
+                fieldDiv.className = 'p-4 bg-gray-50 border border-gray-200 rounded-md';
+                fieldDiv.innerHTML = `
+                    <div class="flex gap-3 mb-3">
+                        <input type="text" placeholder="Label (misal: Lokasi Kerja, Nama Proyek)" value="${label}" 
+                               onchange="updateFormPreview()" 
+                               class="flex-1 px-3 py-2 border border-gray-300 rounded text-sm" 
+                               data-field-label="${uniqueId}" />
+                        <button type="button" onclick="removeAdditionalField('${uniqueId}')" 
+                                class="px-3 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600">✕ Hapus</button>
+                    </div>
+                    <textarea placeholder="Nilai/Isi field" onchange="updateFormPreview()" 
+                              class="w-full px-3 py-2 border border-gray-300 rounded text-sm" 
+                              rows="2" 
+                              data-field-value="${uniqueId}">${value}</textarea>
+                `;
+                container.appendChild(fieldDiv);
+                updateFormPreview();
+            }
+
+            function removeAdditionalField(fieldId) {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.remove();
+                    updateFormPreview();
+                }
+            }
+
+            function getAdditionalFields() {
+                const container = document.getElementById('additionalFields');
+                const fields = {};
+                if (!container) return fields;
+                
+                container.querySelectorAll('div[id^="field_"]').forEach(fieldDiv => {
+                    const labelInput = fieldDiv.querySelector('[data-field-label]');
+                    const valueInput = fieldDiv.querySelector('[data-field-value]');
+                    const label = labelInput?.value?.trim() || '';
+                    const value = valueInput?.value?.trim() || '';
+                    if (label) fields[label] = value;
                 });
-                return out;
+                return fields;
+            }
+
+            // ========== SECTION-BASED CONTENT EDITOR ==========
+            function addSuratSection(title = '', content = '', sectionId = null) {
+                const container = document.getElementById('suratSections');
+                const uniqueId = sectionId || 'section_' + Date.now();
+                
+                const sectionDiv = document.createElement('div');
+                sectionDiv.id = uniqueId;
+                sectionDiv.className = 'p-5 bg-gray-50 border-2 border-gray-200 rounded-lg';
+                sectionDiv.innerHTML = `
+                    <div class="flex gap-2 mb-4 items-center">
+                        <input type="text" placeholder="Judul Section (misal: Ketentuan Umum, Penutup, dll)" 
+                               value="${title}" onchange="updateFormPreview()" 
+                               class="flex-1 px-3 py-2 border border-gray-300 rounded font-medium text-sm" 
+                               data-section-title="${uniqueId}" />
+                        <button type="button" onclick="removeSuratSection('${uniqueId}')" 
+                                class="px-3 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600">✕ Hapus</button>
+                    </div>
+                    <textarea placeholder="Isi section..." onchange="updateFormPreview()" 
+                              class="w-full px-3 py-2 border border-gray-300 rounded text-sm" 
+                              rows="5" 
+                              data-section-content="${uniqueId}">${content}</textarea>
+                `;
+                container.appendChild(sectionDiv);
+                updateFormPreview();
+            }
+
+            function removeSuratSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.remove();
+                    updateFormPreview();
+                }
+            }
+
+            function getSuratSections() {
+                const container = document.getElementById('suratSections');
+                const sections = [];
+                if (!container) return sections;
+                
+                container.querySelectorAll('div[id^="section_"]').forEach(sectionDiv => {
+                    const titleInput = sectionDiv.querySelector('[data-section-title]');
+                    const contentInput = sectionDiv.querySelector('[data-section-content]');
+                    const title = titleInput?.value?.trim() || '';
+                    const content = contentInput?.value?.trim() || '';
+                    if (title || content) sections.push({ title, content });
+                });
+                return sections;
+            }
+
+            function getSectionsData() {
+                // Return sections from the new section-based editor
+                return getSuratSections();
             }
 
             // Preview letter in a new window (client-side HTML preview)
@@ -2560,6 +2653,248 @@
                 // Initialize filters
                 filterRequests();
                 filterPublished();
+        });
+
+        // ===== REAL-TIME PREVIEW FUNCTION =====
+        function updateFormPreview() {
+            const nomor = document.getElementById('nomorSurat')?.value || '';
+            const tanggal = document.getElementById('tanggalSurat')?.value || '';
+            const karyawan = document.getElementById('karyawanSurat')?.value || '';
+            const jabatan = document.getElementById('jabatanSurat')?.value || '';
+            const departemen = document.getElementById('departemenSurat')?.value || '';
+            const tujuan = document.getElementById('tujuanSurat')?.value || '';
+            
+            // Get new section-based content and additional fields
+            const sections = getSuratSections();
+            const additionalFields = getAdditionalFields();
+
+            let preview = '<div class="space-y-4">';
+            
+            // Kop Surat
+            const kopSelected = document.getElementById('kopSuratSelect')?.value;
+            if (kopSelected) {
+                preview += '<div class="text-center text-sm text-gray-600 mb-6">[LOGO/KOP SURAT]</div>';
+            }
+
+            // Nomor, Tanggal
+            preview += `<div class="text-right text-sm">
+                ${nomor ? `<p><strong>Nomor:</strong> ${escapeHtml(nomor)}</p>` : ''}
+                ${tanggal ? `<p><strong>Tanggal:</strong> ${formatDate(new Date(tanggal))}</p>` : ''}
+            </div>`;
+
+            // Tujuan
+            if (tujuan) {
+                preview += `<div class="text-sm">
+                    <p><strong>Kepada:</strong></p>
+                    <p>${escapeHtml(tujuan)}</p>
+                </div>`;
+            }
+
+            // Pembukaan
+            preview += `<div class="text-sm mt-6">
+                <p>Yang terhormat,</p>
+            </div>`;
+
+            // Identitas Karyawan
+            if (karyawan || jabatan || departemen) {
+                preview += `<div class="text-sm mt-4">
+                    <p>Nama: <strong>${escapeHtml(karyawan)}</strong></p>
+                    ${jabatan ? `<p>Jabatan: <strong>${escapeHtml(jabatan)}</strong></p>` : ''}
+                    ${departemen ? `<p>Departemen: <strong>${escapeHtml(departemen)}</strong></p>` : ''}
+                </div>`;
+            }
+
+            // Additional Fields
+            const additionalFieldsKeys = Object.keys(additionalFields);
+            if (additionalFieldsKeys.length > 0) {
+                preview += `<div class="text-sm mt-4">
+                    ${additionalFieldsKeys.map(key => `<p><strong>${escapeHtml(key)}:</strong> ${escapeHtml(additionalFields[key]).replace(/\n/g, '<br>')}</p>`).join('')}
+                </div>`;
+            }
+
+            // Isi Surat - from Sections
+            if (sections.length > 0) {
+                preview += `<div class="text-sm mt-6 leading-relaxed">`;
+                sections.forEach(section => {
+                    if (section.title) {
+                        preview += `<h4 class="font-bold mt-4 mb-2">${escapeHtml(section.title)}</h4>`;
+                    }
+                    if (section.content) {
+                        preview += `<p>${escapeHtml(section.content).replace(/\n/g, '<br>')}</p>`;
+                    }
+                });
+                preview += `</div>`;
+            } else {
+                preview += `<div class="text-sm mt-6 text-gray-400 italic">
+                    [Isi surat akan muncul di sini]
+                </div>`;
+            }
+
+            // Penutup
+            preview += `<div class="text-sm mt-8">
+                <p>Demikian surat ini kami buat untuk dapat dipergunakan sebagaimana mestinya.</p>
+                <div class="mt-8">
+                    <p>Hormat kami,</p>
+                    <div class="mt-12">
+                        <p>______________________</p>
+                        <p>Direktur Utama</p>
+                    </div>
+                </div>
+            </div>`;
+
+            preview += '</div>';
+
+            const previewEl = document.getElementById('suratPreview');
+            if (previewEl) {
+                previewEl.innerHTML = preview;
+            }
+        }
+
+        // Attach preview to all form inputs
+        function attachPreviewListeners() {
+            const inputs = document.querySelectorAll('#nomorSurat, #tanggalSurat, #karyawanSurat, #jabatanSurat, #departemenSurat, #tujuanSurat, #isiSurat');
+            inputs.forEach(input => {
+                input.addEventListener('input', updateFormPreview);
+                input.addEventListener('change', updateFormPreview);
+            });
+        }
+
+        // Custom field manager
+        let customFieldsData = [];
+
+        function renderCustomFields() {
+            const container = document.getElementById('informasiCustomFields');
+            if (!container) return;
+
+            if (customFieldsData.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            customFieldsData.forEach((field, idx) => {
+                html += `<div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div class="flex justify-between items-start mb-3">
+                        <h4 class="font-semibold text-gray-900">${escapeHtml(field.label)}</h4>
+                        <button type="button" onclick="removeCustomField(${idx})" class="text-red-600 hover:text-red-700 text-sm font-medium">Hapus</button>
+                    </div>
+                    <div>`;
+
+                if (field.type === 'text') {
+                    html += `<input type="text" placeholder="${escapeHtml(field.label)}" data-schema-key="${field.key}" ${field.required ? 'required' : ''} class="w-full px-3 py-2 border border-gray-300 rounded text-sm" />`;
+                } else if (field.type === 'textarea') {
+                    html += `<textarea placeholder="${escapeHtml(field.label)}" data-schema-key="${field.key}" ${field.required ? 'required' : ''} rows="3" class="w-full px-3 py-2 border border-gray-300 rounded text-sm"></textarea>`;
+                } else if (field.type === 'date') {
+                    html += `<input type="date" data-schema-key="${field.key}" ${field.required ? 'required' : ''} class="w-full px-3 py-2 border border-gray-300 rounded text-sm" />`;
+                } else if (field.type === 'select') {
+                    const options = field.options || [];
+                    html += `<select data-schema-key="${field.key}" ${field.required ? 'required' : ''} class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                        <option value="">-- Pilih ${escapeHtml(field.label)} --</option>`;
+                    options.forEach(opt => {
+                        html += `<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`;
+                    });
+                    html += `</select>`;
+                }
+
+                html += `</div></div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function removeCustomField(idx) {
+            customFieldsData.splice(idx, 1);
+            renderCustomFields();
+        }
+
+        function addCustomField() {
+            const type = document.getElementById('informasiNewFieldType')?.value || 'text';
+            const label = document.getElementById('informasiNewFieldLabel')?.value?.trim() || '';
+            const key = document.getElementById('informasiNewFieldKey')?.value?.trim() || '';
+            const options = document.getElementById('informasiNewFieldOptions')?.value?.trim()?.split(',').map(o => o.trim()).filter(o => o) || [];
+            const required = document.getElementById('informasiNewFieldRequired')?.checked || false;
+
+            if (!label || !key) {
+                alert('Label dan Kunci field harus diisi');
+                return;
+            }
+
+            customFieldsData.push({ type, label, key, options, required });
+            renderCustomFields();
+
+            // Reset form
+            document.getElementById('informasiNewFieldType').value = 'text';
+            document.getElementById('informasiNewFieldLabel').value = '';
+            document.getElementById('informasiNewFieldKey').value = '';
+            document.getElementById('informasiNewFieldOptions').value = '';
+            document.getElementById('informasiNewFieldRequired').checked = false;
+            document.getElementById('addInformasiFieldForm').classList.add('hidden');
+        }
+
+        // Setup custom field form toggle
+        function setupCustomFieldForm() {
+            const toggleBtn = document.getElementById('toggleAddInformasiFieldBtn');
+            const form = document.getElementById('addInformasiFieldForm');
+            const addBtn = document.getElementById('addInformasiFieldBtn');
+            const cancelBtn = document.getElementById('cancelInformasiFieldBtn');
+            const typeSelect = document.getElementById('informasiNewFieldType');
+            const optionsContainer = document.getElementById('optionsContainer');
+
+            if (!toggleBtn || !form) return;
+
+            toggleBtn.addEventListener('click', () => {
+                form.classList.toggle('hidden');
+            });
+
+            if (addBtn) addBtn.addEventListener('click', addCustomField);
+
+            if (cancelBtn) cancelBtn.addEventListener('click', () => {
+                form.classList.add('hidden');
+            });
+
+            if (typeSelect) {
+                typeSelect.addEventListener('change', (e) => {
+                    if (optionsContainer) {
+                        if (e.target.value === 'select') {
+                            optionsContainer.classList.remove('hidden');
+                        } else {
+                            optionsContainer.classList.add('hidden');
+                        }
+                    }
+                });
+            }
+        }
+
+        // Helper functions
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatDate(date) {
+            if (!date) return '';
+            const d = new Date(date);
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+        }
+
+        // Initialize on modal open
+        const originalOpenModal = window.openModalSurat;
+        window.openModalSurat = function() {
+            if (originalOpenModal) originalOpenModal();
+            setTimeout(() => {
+                attachPreviewListeners();
+                setupCustomFieldForm();
+                updateFormPreview();
+            }, 100);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            attachPreviewListeners();
+            setupCustomFieldForm();
         });
 
         (function() {
