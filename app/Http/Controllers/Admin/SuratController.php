@@ -60,17 +60,36 @@ class SuratController extends Controller
             'karyawan' => 'required|string|max:255',
             'tujuan' => 'nullable|string|max:255',
             'isi' => 'required|string',
+            'sections' => 'nullable|array',
             'kop_surat_id' => 'nullable|exists:kop_surats,id',
             'placeholders' => 'nullable|array',
         ]);
 
-        // create surat record
+        // Apply placeholders (if provided) to isi/tujuan/karyawan/nomor before saving and generating
+        $placeholders = $data['placeholders'] ?? [];
+        $filled = [
+            'isi' => $data['isi'],
+            'tujuan' => $data['tujuan'] ?? '',
+            'karyawan' => $data['karyawan'],
+            'nomor' => $data['nomor'] ?? '',
+        ];
+        if (!empty($placeholders) && is_array($placeholders)) {
+            foreach ($placeholders as $k => $v) {
+                if (!is_scalar($v)) continue;
+                $key = strtoupper($k);
+                $filled = array_map(function($val) use ($key, $v) {
+                    return str_ireplace(['['.$key.']','{'.$key.'}','%'.$key.'%','{{'.$key.'}}'], $v, $val);
+                }, $filled);
+            }
+        }
+
+        // create surat record with filled values
         $surat = Surat::create([
             'user_id' => auth()->id(),
             'jenis' => $data['jenis'],
-            'nomor_surat' => $data['nomor'] ?? null,
-            'perihal' => $data['tujuan'] ?? null,
-            'isi_surat' => $data['isi'],
+            'nomor_surat' => $filled['nomor'] ?: null,
+            'perihal' => $filled['tujuan'] ?: null,
+            'isi_surat' => $filled['isi'],
             'tanggal_surat' => $data['tanggal'],
             'status' => 'Diterbitkan',
             'dibuat_oleh' => auth()->id(),
@@ -135,6 +154,79 @@ class SuratController extends Controller
         }
 
         return redirect()->back()->with('status', 'Surat berhasil diterbitkan.');
+    }
+
+    /**
+     * Generate a PDF from the provided form data and return a public URL.
+     */
+    public function generatePdf(Request $request)
+    {
+        $this->ensureAdminHRD();
+
+        $data = $request->validate([
+            'nomor' => 'nullable|string|max:255',
+            'tanggal' => 'nullable|date',
+            'jenis' => 'nullable|string|max:100',
+            'karyawan' => 'required|string|max:255',
+            'tujuan' => 'nullable|string|max:255',
+            'isi' => 'required|string',
+            'sections' => 'nullable|array',
+            'kop_surat_id' => 'nullable|exists:kop_surats,id',
+            'jabatan' => 'nullable|string|max:255',
+            'departemen' => 'nullable|string|max:255',
+        ]);
+
+        // prepare data for the view
+        $viewData = [
+            'nomor' => $data['nomor'] ?? '',
+            'tanggal' => $data['tanggal'] ?? now()->toDateString(),
+            'jenis' => $data['jenis'] ?? '',
+            'karyawan' => $data['karyawan'],
+            'tujuan' => $data['tujuan'] ?? '',
+            'isi' => $data['isi'],
+            'jabatan' => $data['jabatan'] ?? '',
+            'departemen' => $data['departemen'] ?? '',
+            'kop' => null,
+        ];
+
+        // apply placeholders if present
+        $placeholders = $request->input('placeholders', []);
+        if (!empty($placeholders) && is_array($placeholders)) {
+            foreach ($placeholders as $k => $v) {
+                if (!is_scalar($v)) continue;
+                $key = strtoupper($k);
+                // replace [KEY] or {KEY} occurrences in relevant fields
+                $viewData['isi'] = str_ireplace(['['.$key.']','{'.$key.'}','%'.$key.'%'], $v, $viewData['isi']);
+                $viewData['tujuan'] = str_ireplace(['['.$key.']','{'.$key.'}','%'.$key.'%'], $v, $viewData['tujuan']);
+                $viewData['karyawan'] = str_ireplace(['['.$key.']','{'.$key.'}','%'.$key.'%'], $v, $viewData['karyawan']);
+                $viewData['nomor'] = str_ireplace(['['.$key.']','{'.$key.'}','%'.$key.'%'], $v, $viewData['nomor']);
+            }
+        }
+
+        if (!empty($data['kop_surat_id'])) {
+            $kop = \App\Models\KopSurat::find($data['kop_surat_id']);
+            if ($kop) $viewData['kop'] = $kop;
+        }
+
+        $html = view('letters.preview', $viewData)->render();
+
+        try {
+            $dompdf = new \Dompdf\Dompdf();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $out = $dompdf->output();
+
+            $name = 'surat_preview_'.time().'_'.uniqid().'.pdf';
+            $path = storage_path('app/public/generated/'.$name);
+            if (!file_exists(dirname($path))) mkdir(dirname($path), 0755, true);
+            file_put_contents($path, $out);
+
+            $url = asset('storage/generated/'.$name);
+            return response()->json(['ok' => true, 'url' => $url]);
+        } catch (\Throwable $e) {
+            return response()->json(['ok' => false, 'error' => $e->getMessage()], 500);
+        }
     }
 
     public function destroy(Request $request, $id)

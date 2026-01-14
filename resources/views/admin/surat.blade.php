@@ -5,6 +5,9 @@
         </h2>
     </x-slot>
 
+    <!-- Load CKEditor early so it's available for all scripts below -->
+    <script src="https://cdn.ckeditor.com/4.25.1/lts/ckeditor.js"></script>
+
     <style>
         /* Hide the 'Buat Surat Baru' header button while modal is open */
         body.modal-open #btnBuatSurat {
@@ -691,11 +694,14 @@
                 aria-hidden="true" onclick="closeModalSurat()"></div>
 
             <div
-                class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto z-10">
+                class="relative bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-4 max-h-[92vh] overflow-y-auto z-10">
             <!-- Header -->
-            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h2 class="text-xl font-semibold text-gray-900">Buat Surat Resmi</h2>
-                <button onclick="closeModalSurat()" class="text-gray-500 hover:text-gray-700">
+            <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-indigo-50 to-blue-50 rounded-t-xl">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Buat Surat Resmi</h2>
+                    <p class="text-sm text-gray-600 mt-1">Lengkapi formulir untuk membuat surat resmi baru</p>
+                </div>
+                <button onclick="closeModalSurat()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-2 transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12" />
@@ -704,144 +710,168 @@
             </div>
 
             <!-- Content -->
-            <div class="px-6 py-4 space-y-4">
+            <div class="px-8 py-6 space-y-6">
                     <!-- Kop Surat selector + upload -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Kop Surat</label>
-                        <div class="flex gap-3 items-center mb-2">
-                            <select id="kopSuratSelect" class="w-2/3 px-3 py-2 border border-gray-300 rounded-md">
+                    <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                        <label class="block text-sm font-semibold text-gray-900 mb-3">🖼️ Kop Surat</label>
+                        <div class="flex gap-3 items-center mb-4">
+                            <select id="kopSuratSelect" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
                                 <option value="">-- Pilih Kop Surat (Default) --</option>
                             </select>
-
-                    <div>
-                                <input id="kopUploadInput" type="file" accept="image/*,application/pdf"
-                                    class="hidden" />
-                                <button type="button" onclick="document.getElementById('kopUploadInput').click()"
-                                    class="px-3 py-2 bg-white border rounded-md text-gray-700 hover:bg-gray-50">Upload
-                                    Kop Baru</button>
-                    </div>
+                            <input id="kopUploadInput" type="file" accept="image/*,application/pdf" class="hidden" />
+                            <button type="button" onclick="document.getElementById('kopUploadInput').click()"
+                                class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition font-medium">📤 Upload Kop Baru</button>
                         </div>
-                        <div id="kopPreview" class="text-sm text-gray-500">Tidak ada kop dipilih.</div>
+                        <div id="kopPreview" class="text-sm text-gray-600">Tidak ada kop dipilih.</div>
                         <div id="kopTemplateFields" class="mt-3 space-y-2"></div>
-                        <div id="kopUploadStatus" class="mt-2 text-xs text-gray-500"></div>
-                </div>
-
-                    <!-- STEP NAVIGATION: compact, multi-step form -->
-                    <div id="formSteps" class="space-y-4">
-
-                        <!-- STEP 1: Pilih Jenis & Kelola Template -->
-                        <div id="step-1" class="step">
-                            <h3 class="text-lg font-semibold mb-2">1. Pilih Jenis & Kelola Template</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Surat</label>
-                                    <select id="jenisSurat"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                            <option value="">Pilih Jenis</option>
-                                        <option value="pkwt">PKWT (Perjanjian Kerja Waktu Tertentu)</option>
-                                        <option value="pkwtt">PKWTT (Perjanjian Kerja Waktu Tidak Tertentu)</option>
-                                        <option value="magang">Surat Balasan Magang</option>
-                                        <option value="jalan">Surat Jalan</option>
-                                        <option value="cuti">Surat Pengajuan Cuti</option>
-                                        <option value="lembur">Surat Pengajuan Lembur</option>
-                        </select>
+                        <div id="kopUploadStatus" class="text-xs text-gray-500 mt-3"></div>
                     </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Template Surat</label>
-                                    <div class="flex items-center gap-2">
-                                        <select id="suratTemplateSelect" class="w-full px-3 py-2 border rounded">
-                                            <option value="">-- Pilih Template (opsional) --</option>
+
+                    <!-- SINGLE PAGE FORM: Left form + Right Preview -->
+                    <div id="formSteps" class="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[600px]">
+
+                        <!-- LEFT COLUMN: Form Inputs -->
+                        <div class="flex flex-col space-y-6 overflow-y-auto pr-4">
+                            
+                            <!-- Jenis & Template Selection -->
+                            <div class="bg-white border border-gray-200 rounded-xl p-6">
+                                <h3 class="text-lg font-bold text-gray-900 mb-4">📋 Jenis & Template Surat</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Jenis Surat</label>
+                                        <select id="jenisSurat" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+                                            <option value="">-- Pilih Jenis Surat --</option>
+                                            <option value="pkwt">PKWT (Perjanjian Kerja Waktu Tertentu)</option>
+                                            <option value="pkwtt">PKWTT (Perjanjian Kerja Waktu Tidak Tertentu)</option>
+                                            <option value="magang">Surat Balasan Magang</option>
+                                            <option value="jalan">Surat Jalan</option>
+                                            <option value="cuti">Surat Pengajuan Cuti</option>
+                                            <option value="lembur">Surat Pengajuan Lembur</option>
                                         </select>
-                                        <button type="button" id="openTemplateManager"
-                                            class="px-3 py-2 bg-white border rounded">Kelola Template</button>
                                     </div>
-                                    <div id="templateManager" class="mt-3 hidden">
-                                        <div class="max-h-40 overflow-auto border rounded p-2 bg-gray-50">
-                                            <ul id="suratTemplateList" class="space-y-2"></ul>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Template Surat</label>
+                                        <div class="flex items-center gap-2">
+                                            <select id="suratTemplateSelect" class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+                                                <option value="">-- Pilih Template (opsional) --</option>
+                                            </select>
+                                            <button type="button" id="openTemplateManager" class="px-4 py-3 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition font-medium">⚙️</button>
                                         </div>
-                                        <div class="flex gap-2 mt-2">
-                                            <button type="button" id="createTemplateBtn"
-                                                class="px-3 py-2 bg-indigo-600 text-white rounded">Buat Template
-                                                Baru</button>
-                                            <button type="button" id="refreshTemplatesBtn"
-                                                class="px-3 py-2 bg-white border rounded">Refresh</button>
+                                        <div id="templateLoadStatus" class="text-xs text-gray-600 mt-2">Memuat template...</div>
+                                        <div id="templateManager" class="mt-4 hidden bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                            <div class="max-h-32 overflow-auto border rounded-lg p-2 bg-white mb-3">
+                                                <ul id="suratTemplateList" class="space-y-1 text-sm"></ul>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <button type="button" id="createTemplateBtn" class="flex-1 px-3 py-2 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700 transition">+ Buat</button>
+                                                <button type="button" id="refreshTemplatesBtn" class="px-3 py-2 bg-white border text-sm rounded hover:bg-gray-50 transition">🔄</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="flex justify-end gap-2 mt-4">
-                                <button type="button" id="toStep2"
-                                    class="px-4 py-2 bg-indigo-600 text-white rounded">Lanjutkan</button>
+                            <!-- Informasi Umum -->
+                            <div class="bg-white border border-gray-200 rounded-xl p-6">
+                                <h3 class="text-lg font-bold text-gray-900 mb-4">📝 Informasi Umum</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Nomor Surat</label>
+                                        <input type="text" id="nomorSurat" placeholder="Contoh: 001/HR/2026" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Tanggal Surat</label>
+                                        <input type="date" id="tanggalSurat" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Untuk Karyawan</label>
+                                        <input type="text" id="karyawanSurat" placeholder="Nama lengkap" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Jabatan</label>
+                                        <input type="text" id="jabatanSurat" placeholder="Misal: Manager IT" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Departemen</label>
+                                        <input type="text" id="departemenSurat" placeholder="Misal: HR, IT" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-900 mb-2">Tujuan Surat</label>
+                                        <input type="text" id="tujuanSurat" placeholder="Ke Bank, Kantor Pos, dll" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+                                    </div>
+
+                                    <!-- Informasi Umum - Custom Fields Controls -->
+                                    <div id="informasiCustomControls" class="mt-4 border-t pt-4">
+                                        <div class="flex items-center gap-2">
+                                            <button id="toggleAddInformasiFieldBtn" type="button" class="px-3 py-2 bg-indigo-600 text-white rounded text-sm">+ Tambah Field Informasi</button>
+                                            <span class="text-sm text-gray-500">Tambahkan field kustom untuk Form Informasi Umum (akan berlaku untuk pembuatan surat saat ini, bisa disimpan sebagai template).</span>
+                                        </div>
+
+                                        <div id="addInformasiFieldForm" class="hidden mt-3 bg-gray-50 p-3 rounded border border-gray-200">
+                                            <div class="flex gap-2 items-center">
+                                                <select id="informasiNewFieldType" class="px-3 py-2 border rounded">
+                                                    <option value="text">Text</option>
+                                                    <option value="textarea">Textarea</option>
+                                                    <option value="date">Date</option>
+                                                    <option value="select">Select</option>
+                                                </select>
+                                                <input id="informasiNewFieldLabel" placeholder="Label (contoh: NAMA)" class="px-3 py-2 border rounded" />
+                                                <input id="informasiNewFieldKey" placeholder="Key (contoh: NAMA)" class="px-3 py-2 border rounded w-36" />
+                                                <input id="informasiNewFieldOptions" placeholder="Options (jika select, gunakan , pemisah)" class="px-3 py-2 border rounded w-64" />
+                                                <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+                                                    <input id="informasiNewFieldRequired" type="checkbox" class="h-4 w-4 border-gray-300 rounded" /> <span>Wajib</span>
+                                                </label>
+                                            </div>
+                                            <div class="flex gap-2 mt-2">
+                                                <button id="addInformasiFieldBtn" type="button" class="px-3 py-2 bg-green-600 text-white rounded">Tambah</button>
+                                                <button id="cancelInformasiFieldBtn" type="button" class="px-3 py-2 bg-white border rounded">Batal</button>
+                                            </div>
+                                        </div>
+
+                                        <div id="informasiCustomFields" class="mt-3 space-y-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sections Editor -->
+                            <div class="bg-white border border-gray-200 rounded-xl p-6">
+                                <h3 class="text-lg font-bold text-gray-900 mb-4">📄 Isi Surat (Sections)</h3>
+                                <div id="sectionsEditor" class="space-y-3 bg-gradient-to-b from-gray-50 to-white p-4 border-2 border-dashed border-gray-300 rounded-lg max-h-96 overflow-y-auto mb-3">
+                                    <p class="text-xs text-gray-500 text-center py-8">Belum ada section. Klik tombol di bawah.</p>
+                                </div>
+                                <button type="button" id="addSectionBtn" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium">+ Tambah Section</button>
+                            </div>
+
+                            <!-- Template Fields -->
+                            <div id="suratTemplateFields" class="bg-blue-50 border border-blue-200 rounded-xl p-4"></div>
+                            <div id="templateDynamicForm" class="bg-blue-50 border border-blue-200 rounded-xl p-4"></div>
+
+                        </div>
+
+                        <!-- RIGHT COLUMN: Real-time Preview -->
+                        <div class="flex flex-col space-y-4">
+                            <div class="bg-white border border-gray-200 rounded-xl p-6 flex-1 flex flex-col">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-bold text-gray-900">👀 Pratayang Surat Real-time</h3>
+                                </div>
+                                <div id="suratPreview" class="flex-1 bg-white p-4 border border-gray-200 rounded-lg overflow-auto text-sm text-gray-800 shadow-inner font-serif">
+                                    <p class="text-xs text-gray-400 text-center py-12">Preview akan muncul saat Anda mengisi form...</p>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="flex gap-3 flex-wrap">
+                                <button type="button" id="previewLetterBtn" onclick="previewLetter()" class="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">👁️ Pratayang Penuh</button>
+                                <button type="button" id="generatePdfBtn" onclick="generatePdf()" class="flex-1 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-semibold">📄 Preview PDF</button>
+                            </div>
+
+                            <div class="flex gap-3">
+                                <button type="button" id="saveTemplateConfirm" class="flex-1 px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition font-semibold">💾 Simpan Template</button>
+                                <button type="button" onclick="simpanSurat()" class="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold">✅ Terbitkan</button>
                             </div>
                         </div>
 
-                        <!-- STEP 2: Informasi Umum -->
-                        <div id="step-2" class="step hidden">
-                            <h3 class="text-lg font-semibold mb-2">2. Informasi Umum</h3>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Surat</label>
-                                    <input type="text" id="nomorSurat" placeholder="Masukkan nomor surat"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Surat</label>
-                                    <input type="date" id="tanggalSurat"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-                                </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Untuk Karyawan</label>
-                                    <input type="text" id="karyawanSurat" placeholder="Nama karyawan"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jabatan</label>
-                                    <input type="text" id="jabatanSurat" placeholder="Jabatan karyawan"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Departemen</label>
-                                    <input type="text" id="departemenSurat" placeholder="Departemen"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
                     </div>
-                </div>
-
-                            <div class="flex justify-between gap-2 mt-4">
-                                <button type="button" id="backToStep1"
-                                    class="px-4 py-2 bg-white border rounded">Kembali</button>
-                                <button type="button" id="toStep3"
-                                    class="px-4 py-2 bg-indigo-600 text-white rounded">Lanjutkan</button>
-                            </div>
-                        </div>
-
-                        <!-- STEP 3: Isi surat & publish -->
-                        <div id="step-3" class="step hidden">
-                            <h3 class="text-lg font-semibold mb-2">3. Isi & Pratayang</h3>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Tujuan Surat</label>
-                                <input type="text" id="tujuanSurat" placeholder="Ke Bank, Kantor Pos, dll..."
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-                </div>
-
-                            <div class="mt-3">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Isi Surat</label>
-                                <textarea id="isiSurat" placeholder="Ketik isi surat di sini..." rows="6"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-sm"></textarea>
-                            </div>
-
-                            <div class="flex justify-between gap-2 mt-4">
-                                <button type="button" id="backToStep2"
-                                    class="px-4 py-2 bg-white border rounded">Kembali</button>
-                                <div class="flex gap-2">
-                                    <button type="button" id="saveTemplateConfirm"
-                                        class="px-4 py-2 bg-white border rounded">Simpan Template</button>
-                                    <button type="button" onclick="simpanSurat()"
-                                        class="px-4 py-2 bg-green-600 text-white rounded">Simpan & Terbitkan
-                                        Surat</button>
-                                </div>
-                            </div>
-                        </div>
 
                 </div>
             </div>
@@ -890,6 +920,8 @@
                     if (title) title.innerText = 'Buat Surat Resmi';
                     // mark modal-open so global CSS can hide the header button
                     document.body.classList.add('modal-open');
+                    // reset sections editor to avoid stale editors
+                    try { renderTemplateSections([]); } catch (e) {}
                     // hide footer when using multi-step form for clarity
                     if (document.getElementById('formSteps')) document.body.classList.add('modal-hid-footer');
                     // clear currentRequest context
@@ -927,6 +959,8 @@
 
                     // reset editing template state
                     window.editingSuratTemplateIndex = null;
+                    // reset ad-hoc Informasi Umum fields
+                    try { window.adHocInformasiFields = []; if (window.renderInformasiCustomFields) window.renderInformasiCustomFields(); } catch(e) {}
                     // refresh template list and manager
                     populateSuratTemplateSelect();
                     renderTemplateManager();
@@ -994,7 +1028,13 @@
                     return;
                 }
                 const tujuan = tujuanEl.value.trim();
-                const isi = isiEl.value.trim();
+                // read content from CKEditor if available
+                let isi = '';
+                if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.isiSurat) {
+                    isi = CKEDITOR.instances.isiSurat.getData().trim();
+                } else {
+                    isi = isiEl.value.trim();
+                }
                 const kopId = kopSelect?.value || '';
                 const kopName = kopSelect?.selectedOptions?.[0]?.text || '';
 
@@ -1004,6 +1044,13 @@
                 }
 
                 // POST to server to create surat and optionally generate filled document
+                // include sections if present and ensure isi contains assembled sections
+                const sections = getSectionsData();
+                let finalIsi = isi;
+                if (sections && sections.length) {
+                    finalIsi = sections.map(s => (s.title ? `<h3>${escapeHtml(s.title)}</h3>` : '') + (s.content || '') + '<br/>').join('');
+                }
+
                 const payload = {
                     nomor: nomor,
                     tanggal: tanggalEl.value,
@@ -1012,22 +1059,46 @@
                     jabatan: document.getElementById('jabatanSurat')?.value || '',
                     departemen: document.getElementById('departemenSurat')?.value || '',
                     tujuan: tujuan,
-                    isi: isi,
+                    isi: finalIsi,
+                    sections: sections,
                     kop_surat_id: kopSelect?.value || null,
                     placeholders: {},
                     details: collectJenisData(),
                 };
-                // collect placeholders inputs
+                // helper to find the newly created row
+                let lastCreatedSuratNomor = null;
+
+                // disable button visual early to prevent double submits
+                const btn = document.querySelector('button[onclick="simpanSurat()"]');
+                if (btn) btn.disabled = true;
+
+                // collect placeholders inputs (kop template)
                 document.querySelectorAll('#kopTemplateFields [data-ph]').forEach(i => {
                     payload.placeholders[i.dataset.ph] = i.value || '';
+                });
+                // collect placeholders from surat template fields (if any)
+                document.querySelectorAll('#suratTemplateFields [data-tplph]').forEach(i => {
+                    payload.placeholders[i.dataset.tplph] = i.value || '';
+                });
+
+                // validate required schema-driven fields
+                const missingReq = Array.from(document.querySelectorAll('#templateDynamicForm [data-schema-required="1"], #informasiCustomFields [data-schema-required="1"]')).filter(i => !((i.value || '').toString().trim().length));
+                if (missingReq.length) {
+                    if (btn) btn.disabled = false;
+                    alert('Harap lengkapi semua field wajib pada Form Template.');
+                    return;
+                }
+
+// collect schema-driven form values (including Informasi Umum custom fields)
+                    document.querySelectorAll('#templateDynamicForm [data-schema-key], #informasiCustomFields [data-schema-key]').forEach(i => {
+                    const k = i.dataset.schemaKey;
+                    let v = '';
+                    if (i.tagName === 'INPUT' || i.tagName === 'SELECT' || i.tagName === 'TEXTAREA') v = i.value || '';
+                    payload.placeholders[k.toUpperCase()] = v;
                 });
 
                 const tokenMeta = document.querySelector('meta[name="csrf-token"]');
                 const token = tokenMeta ? tokenMeta.getAttribute('content') : '';
-
-                // disable button visual
-                const btn = document.querySelector('button[onclick="simpanSurat()"]');
-                if (btn) btn.disabled = true;
 
                 fetch('/admin/surat', {
                         method: 'POST',
@@ -1041,6 +1112,8 @@
                     .then(data => {
                         if (data && data.ok && data.surat) {
                             const s = data.surat;
+                            // record nomor for later template fill
+                            lastCreatedSuratNomor = s.nomor_surat || nomor;
                             if (tbodyPub) {
                                 const tr = document.createElement('tr');
                                 tr.className = 'hover:bg-gray-50';
@@ -1109,13 +1182,27 @@
                             }).then(r => r.json())
                             .then(data => {
                                 if (data && data.success && data.url) {
-                                    // append download link to the new row's last cell
-                                    const link = document.createElement('a');
-                                    link.href = data.url;
-                                    link.target = '_blank';
-                                    link.className = 'text-indigo-600 ml-2 underline text-sm';
-                                    link.innerText = 'Download Dokumen';
-                                    tr.querySelector('td:last-child').appendChild(link);
+                                    // Try to attach link to the newly added row in published table
+                                    let appended = false;
+                                    const rows = document.querySelectorAll('#content-daftar table tbody tr');
+                                    for (const row of rows) {
+                                        const nomorCell = row.querySelector('td:nth-child(1)')?.innerText?.trim() || '';
+                                        const karyawanCell = row.querySelector('td:nth-child(3)')?.innerText?.trim() || '';
+                                        if ((lastCreatedSuratNomor && nomorCell === lastCreatedSuratNomor) || (karyawan && karyawanCell.indexOf(karyawan) !== -1)) {
+                                            const link = document.createElement('a');
+                                            link.href = data.url;
+                                            link.target = '_blank';
+                                            link.className = 'text-indigo-600 ml-2 underline text-sm';
+                                            link.innerText = 'Download Dokumen';
+                                            row.querySelector('td:last-child').appendChild(link);
+                                            appended = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!appended) {
+                                        // fallback: open the file
+                                        window.open(data.url, '_blank');
+                                    }
                                 } else {
                                     console.warn('Template generation failed', data);
                                 }
@@ -1463,6 +1550,11 @@
             function saveSuratTemplate(name, index = null) {
                 const jenis = document.getElementById('jenisSurat')?.value || '';
                 if (!jenis) return alert('Pilih jenis surat terlebih dahulu untuk menyimpan template.');
+                // prefer CKEditor content and include per-section data if any
+                let isiVal = '';
+                try { isiVal = (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.isiSurat) ? CKEDITOR.instances.isiSurat.getData() : document.getElementById('isiSurat')?.value || ''; } catch (e) { isiVal = document.getElementById('isiSurat')?.value || ''; }
+                const sections = (typeof getSectionsData === 'function') ? getSectionsData() : [];
+
                 const template = {
                     name: name,
                     jenis: jenis,
@@ -1474,7 +1566,8 @@
                         departemen: document.getElementById('departemenSurat')?.value || '',
                         jenis_fields: collectJenisData(),
                         tujuan: document.getElementById('tujuanSurat')?.value || '',
-                        isi: document.getElementById('isiSurat')?.value || ''
+                        isi: isiVal,
+                        sections: sections
                     }
                 };
                 const arr = loadSuratTemplates();
@@ -1497,15 +1590,49 @@
             function populateSuratTemplateSelect() {
                 const sel = document.getElementById('suratTemplateSelect');
                 if (!sel) return;
-                const arr = loadSuratTemplates();
                 sel.innerHTML = '<option value="">-- Pilih Template (opsional) --</option>';
-                arr.forEach((t, idx) => {
-                    const opt = document.createElement('option');
-                    opt.value = idx;
-                    opt.text = `${t.name} (${t.jenis})`;
-                    sel.appendChild(opt);
+                // first load server templates
+                const statusEl = document.getElementById('templateLoadStatus');
+                if (statusEl) statusEl.innerText = 'Memuat template...';
+                fetch('/admin/template/list', {credentials: 'same-origin'})
+                .then(r=>{
+                    if (!r.ok) throw new Error('HTTP '+r.status);
+                    return r.json();
+                })
+                .then(resp=>{
+                    const list = resp.data || [];
+                    // clear previous server options
+                    // keep the default option
+                    sel.querySelectorAll('option:not([value=""])').forEach(o=>o.remove());
+                    list.forEach(t => {
+                        const opt = document.createElement('option');
+                        opt.value = t.id; // use id to indicate server template
+                        opt.text = `${t.name} (${t.jenis || ''})`;
+                        sel.appendChild(opt);
+                    });
+                    // then append local templates for backward compatibility
+                    const arr = loadSuratTemplates();
+                    arr.forEach((t, idx) => {
+                        const opt = document.createElement('option');
+                        opt.value = 'local-'+idx;
+                        opt.text = `${t.name} (${t.jenis})`;
+                        sel.appendChild(opt);
+                    });
+                    if (statusEl) statusEl.innerText = `Memuat ${list.length} template dari server.`;
+                    renderTemplateManager();
+                }).catch(err=>{
+                    console.error('fetch templates error', err);
+                    if (statusEl) statusEl.innerText = 'Gagal memuat template dari server. Menggunakan template lokal.';
+                    // fallback to local only
+                    const arr = loadSuratTemplates();
+                    arr.forEach((t, idx) => {
+                        const opt = document.createElement('option');
+                        opt.value = idx;
+                        opt.text = `${t.name} (${t.jenis})`;
+                        sel.appendChild(opt);
+                    });
+                    renderTemplateManager();
                 });
-                renderTemplateManager();
             }
 
             function applySuratTemplate(index) {
@@ -1523,7 +1650,48 @@
                 if (jenisSel) jenisSel.value = t.jenis;
                 renderJenisFields(t.jenis, d.jenis_fields || {});
                 if (d.tujuan) document.getElementById('tujuanSurat').value = d.tujuan;
-                if (d.isi) document.getElementById('isiSurat').value = d.isi;
+                if (d.isi) {
+                    // If template has flat isi, put into a single section editor
+                    // Create a temporary section view
+                    renderTemplateSections([{title: 'Isi', content: d.isi}], true);
+                }
+
+                // If template has schema.sections, render them
+                if (t.schema && Array.isArray(t.schema)) {
+                    // Some templates store sections in schema (we expect objects with title and content)
+                    const sections = t.schema.filter(s=>s.type && s.type==='section').map(s=>({title: s.key || s.label || 'Section', content: s.content || ''}));
+                    if (sections.length) renderTemplateSections(sections);
+                }
+
+                // render schema-driven form fields for local templates (if any)
+                const schemaForm = document.getElementById('templateDynamicForm');
+                if (schemaForm) {
+                    schemaForm.innerHTML = '';
+                    const schema = t.schema || [];
+                    if (schema.length) {
+                        let html = '<p class="text-sm font-medium text-gray-700">Form dari Template</p>';
+                        schema.forEach(f => {
+                            const key = f.key || '';
+                            const label = f.label || key;
+                            const type = f.type || 'text';
+                            const required = f.required ? true : false;
+                            const reqLabel = required ? ' <span class="text-red-600">*</span>' : '';
+                            const reqAttr = required ? ' data-schema-required="1" required' : '';
+                            html += '<div class="grid grid-cols-2 gap-2 items-center mt-2">' +
+                                `<label class="text-sm text-gray-700">${label}${reqLabel}</label>`;
+                            if (type === 'text') html += `<input type="text" data-schema-key="${key}"${reqAttr} class="px-3 py-2 border rounded w-full"/>`;
+                            else if (type === 'textarea') html += `<textarea data-schema-key="${key}"${reqAttr} class="px-3 py-2 border rounded w-full"></textarea>`;
+                            else if (type === 'date') html += `<input type="date" data-schema-key="${key}"${reqAttr} class="px-3 py-2 border rounded w-full"/>`;
+                            else if (type === 'select') {
+                                const opts = (f.options || []).map(o => `<option value="${o}">${o}</option>`).join('');
+                                html += `<select data-schema-key="${key}"${reqAttr} class="px-3 py-2 border rounded w-full">${opts}</select>`;
+                            } else html += `<input type="text" data-schema-key="${key}"${reqAttr} class="px-3 py-2 border rounded w-full"/>`;
+                            html += '</div>';
+                        });
+                        schemaForm.innerHTML = html;
+                    }
+                }
+
                 // show step-2 (informasi umum) so admin can review/edit before continuing
                 document.getElementById('step-1')?.classList.add('hidden');
                 document.getElementById('step-2')?.classList.remove('hidden');
@@ -1550,6 +1718,255 @@
                         '"': '&quot;',
                         '\'': '&#39;'
                     } [m]);
+                });
+            }
+
+            // Render sections editor inside the modal. Accepts an array of {title, content}.
+            function renderTemplateSections(sections = [], single=false) {
+                console.log('renderTemplateSections called, sections:', (sections && sections.length) || 0, 'single:', single);
+                const container = document.getElementById('sectionsEditor');
+                if (!container) {
+                    console.warn('renderTemplateSections: #sectionsEditor not found');
+                    return;
+                }
+                // Cleanup existing section CKEditor instances
+                try {
+                    Object.keys(CKEDITOR.instances || {}).forEach(k => {
+                        if (k && k.indexOf('section_') === 0) {
+                            try { CKEDITOR.instances[k].destroy(true); } catch (e) { /* ignore */ }
+                            try { delete CKEDITOR.instances[k]; } catch(e) {}
+                        }
+                    });
+                } catch(e) {}
+
+                // Normalize sections array
+                window.currentSections = Array.isArray(sections) ? sections.map(s => ({ title: s.title || '', content: s.content || '' })) : [];
+
+                container.innerHTML = '';
+
+                if (window.currentSections.length === 0 && !single) {
+                    container.innerHTML = '<p class="text-xs text-gray-500 py-8 text-center">Belum ada section. Klik tombol "Tambah Section" untuk membuat section baru.</p>';
+                }
+
+                window.currentSections.forEach((s, idx) => {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'bg-gradient-to-br from-indigo-50 to-blue-50 p-4 border-l-4 border-indigo-500 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-move';
+                    wrap.setAttribute('data-section-index', idx);
+                    wrap.setAttribute('draggable', 'true');
+                    
+                    const header = document.createElement('div');
+                    header.className = 'flex items-center gap-3 mb-3';
+                    header.innerHTML = `
+                        <div class="text-xl cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600" title="Drag untuk reorder">⋮⋮</div>
+                        <span class="px-2 py-1 bg-indigo-600 text-white text-xs font-semibold rounded">Section ${idx + 1}</span>
+                        <input type="text" class="section-title flex-1 px-3 py-1 border border-gray-300 rounded text-sm font-medium" placeholder="Judul section (misal: Isi Surat, Penutup, dll)" value="${escapeHtml(s.title)}" />
+                        <button type="button" class="text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1 rounded transition" onclick="removeSection(${idx})" title="Hapus section ini">✕</button>
+                    `;
+                    wrap.appendChild(header);
+                    
+                    const editorWrap = document.createElement('div');
+                    editorWrap.className = 'bg-white rounded border border-gray-200 p-2';
+                    const textarea = document.createElement('textarea');
+                    textarea.id = 'section_' + idx;
+                    textarea.className = 'w-full';
+                    textarea.value = s.content || '';
+                    editorWrap.appendChild(textarea);
+                    wrap.appendChild(editorWrap);
+                    
+                    container.appendChild(wrap);
+                    
+                    // Add drag event listeners
+                    wrap.addEventListener('dragstart', (e) => {
+                        e.dataTransfer.effectAllowed = 'move';
+                        e.dataTransfer.setData('text/html', wrap.innerHTML);
+                        wrap.style.opacity = '0.5';
+                        wrap.classList.add('dragging');
+                    });
+                    wrap.addEventListener('dragend', (e) => {
+                        wrap.style.opacity = '1';
+                        wrap.classList.remove('dragging');
+                    });
+                    wrap.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                        if (wrap.classList.contains('dragging')) return;
+                        wrap.style.borderTop = '3px solid #4f46e5';
+                    });
+                    wrap.addEventListener('dragleave', (e) => {
+                        wrap.style.borderTop = '';
+                    });
+                    wrap.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        wrap.style.borderTop = '';
+                        const draggingEl = document.querySelector('[data-section-index].dragging');
+                        if (!draggingEl || draggingEl === wrap) return;
+                        
+                        const fromIdx = parseInt(draggingEl.dataset.sectionIndex);
+                        const toIdx = parseInt(wrap.dataset.sectionIndex);
+                        if (fromIdx === toIdx) return;
+                        
+                        // Swap sections in array
+                        const temp = window.currentSections[fromIdx];
+                        window.currentSections[fromIdx] = window.currentSections[toIdx];
+                        window.currentSections[toIdx] = temp;
+                        renderTemplateSections(window.currentSections);
+                    });
+                });
+
+                // Initialize CKEditor for each textarea
+                window.currentSections.forEach((_, idx) => {
+                    try {
+                        CKEDITOR.replace('section_' + idx, { 
+                            height: 150,
+                            toolbar: [
+                                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
+                                { name: 'paragraph', items: ['BulletedList', 'NumberedList', '-', 'Outdent', 'Indent'] },
+                                { name: 'links', items: ['Link', 'Unlink'] },
+                            ]
+                        });
+                    } catch (e) {
+                        console.error('init section editor', e);
+                    }
+                });
+            }
+
+            function removeSection(idx) {
+                if (!window.currentSections) return;
+                window.currentSections.splice(idx, 1);
+                renderTemplateSections(window.currentSections);
+            }
+
+            function getSectionsData() {
+                const out = [];
+                document.querySelectorAll('#sectionsEditor [data-section-index]').forEach(s => {
+                    const idx = s.dataset.sectionIndex;
+                    let content = '';
+                    try { if (CKEDITOR.instances['section_' + idx]) content = CKEDITOR.instances['section_' + idx].getData(); } catch (e) { content = s.querySelector('textarea')?.value || ''; }
+                    const title = s.querySelector('.section-title')?.value || '';
+                    out.push({ title: title, content: content });
+                });
+                return out;
+            }
+
+            // Preview letter in a new window (client-side HTML preview)
+            function previewLetter() {
+                const kopSel = document.getElementById('kopSuratSelect');
+                const kopOpt = kopSel?.selectedOptions?.[0];
+                const kopUrl = kopOpt?.dataset?.url || null;
+                const nomor = document.getElementById('nomorSurat')?.value || '';
+                const tanggal = document.getElementById('tanggalSurat')?.value || '';
+                const karyawan = document.getElementById('karyawanSurat')?.value || '';
+                const jabatan = document.getElementById('jabatanSurat')?.value || '';
+                const departemen = document.getElementById('departemenSurat')?.value || '';
+                const tujuan = document.getElementById('tujuanSurat')?.value || '';
+
+                // assemble isi from sections
+                let assembled = '';
+                const sects = document.querySelectorAll('#sectionsEditor [data-section-index]');
+                if (sects.length) {
+                    sects.forEach(s => {
+                        const idx = s.dataset.sectionIndex;
+                        let c = '';
+                        try { if (CKEDITOR.instances['section_'+idx]) c = CKEDITOR.instances['section_'+idx].getData(); } catch(e) { c = s.querySelector('textarea')?.value || ''; }
+                        const title = s.querySelector('.section-title')?.value || '';
+                        if (title) assembled += `<h3>${escapeHtml(title)}</h3>`;
+                        assembled += c + '<br/>';
+                    });
+                } else {
+                    if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.isiSurat) assembled = CKEDITOR.instances.isiSurat.getData();
+                    else assembled = document.getElementById('isiSurat')?.value || '';
+                }
+
+                const html = `
+                <html>
+                <head>
+                <title>Pratayang Surat</title>
+                <meta charset="utf-8">
+                <style>body{font-family: Arial, Helvetica, sans-serif; padding:40px; color:#111} .kop{ text-align:center; margin-bottom:20px } .nomor{margin-top:10px;margin-bottom:10px} .content{margin-top:20px} .ttd{margin-top:60px;text-align:right} h3{margin:10px 0 6px}</style>
+                </head>
+                <body>
+                    <div class="kop">
+                        ${kopUrl ? `<img src="${kopUrl}" alt="kop" style="max-height:120px; object-fit:contain;" />` : `<div style="font-weight:bold; font-size:18px">Kop Surat Perusahaan</div>`}
+                        <div class="nomor">Nomor: <strong>${escapeHtml(nomor)}</strong> &nbsp; &nbsp; Tanggal: ${escapeHtml(tanggal)}</div>
+                        <div>Perihal: <strong>${escapeHtml(tujuan)}</strong></div>
+                    </div>
+                    <div>
+                        <p>Kepada Yth.,</p>
+                        <p><strong>${escapeHtml(karyawan)}</strong> &nbsp; ${escapeHtml(jabatan)} ${escapeHtml(departemen)}</p>
+                    </div>
+                    <div class="content">${assembled}</div>
+                    <div class="ttd">Hormat kami,<br><br><br>__________________<br>Admin HRD</div>
+                </body>
+                </html>`;
+
+                const w = window.open('', '_blank');
+                w.document.open();
+                w.document.write(html);
+                w.document.close();
+
+                // also update preview box in modal
+                const previewBox = document.getElementById('suratPreview');
+                if (previewBox) previewBox.innerHTML = assembled;
+            }
+
+            // Generate PDF on server from current fields, returns URL to generated PDF
+            function generatePdf() {
+                const nomor = document.getElementById('nomorSurat')?.value || '';
+                const tanggal = document.getElementById('tanggalSurat')?.value || '';
+                const jenis = document.getElementById('jenisSurat')?.value || '';
+                const karyawan = document.getElementById('karyawanSurat')?.value || '';
+                const tujuan = document.getElementById('tujuanSurat')?.value || '';
+                const kopId = document.getElementById('kopSuratSelect')?.value || null;
+                let isi = '';
+                if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.isiSurat) {
+                    isi = CKEDITOR.instances.isiSurat.getData();
+                } else {
+                    isi = document.getElementById('isiSurat')?.value || '';
+                }
+
+                // collect sections if any and build final isi to send to server
+                const sections = getSectionsData();
+                let finalIsi = isi;
+                if (sections && sections.length) {
+                    finalIsi = sections.map(s => (s.title ? `<h3>${escapeHtml(s.title)}</h3>` : '') + (s.content || '') + '<br/>').join('');
+                }
+
+                const payload = { nomor, tanggal, jenis, karyawan, tujuan, isi: finalIsi, sections: sections, kop_surat_id: kopId, jabatan: document.getElementById('jabatanSurat')?.value || '', departemen: document.getElementById('departemenSurat')?.value || '', placeholders: {} };
+                // collect placeholders
+                document.querySelectorAll('#kopTemplateFields [data-ph]').forEach(i => { payload.placeholders[i.dataset.ph] = i.value || ''; });
+                document.querySelectorAll('#suratTemplateFields [data-tplph]').forEach(i => { payload.placeholders[i.dataset.tplph] = i.value || ''; });
+                // collect schema-driven form values
+                document.querySelectorAll('#templateDynamicForm [data-schema-key]').forEach(i => {
+                    const k = i.dataset.schemaKey;
+                    let v = '';
+                    if (i.tagName === 'INPUT' || i.tagName === 'SELECT' || i.tagName === 'TEXTAREA') v = i.value || '';
+                    payload.placeholders[k.toUpperCase()] = v;
+                });
+                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const btn = document.getElementById('generatePdfBtn');
+                if (btn) btn.disabled = true;
+
+                fetch('/admin/surat/preview-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify(payload),
+                    credentials: 'same-origin'
+                }).then(r => r.json())
+                .then(data => {
+                    if (data && data.ok && data.url) {
+                        window.open(data.url, '_blank');
+                    } else {
+                        alert('Gagal membuat PDF preview.');
+                        console.error('generatePdf response', data);
+                    }
+                }).catch(err => {
+                    console.error('generatePdf error', err);
+                    alert('Gagal membuat PDF preview. Periksa console.');
+                }).finally(() => {
+                    if (btn) btn.disabled = false;
                 });
             }
 
@@ -1769,6 +2186,27 @@
 
             // Close modal when clicking outside or pressing Escape
             document.addEventListener('DOMContentLoaded', function() {
+                // Initialize CKEditor for isiSurat (WYSIWYG)
+                if (window.CKEDITOR && CKEDITOR.replace) {
+                    try {
+                        if (CKEDITOR.instances.isiSurat) CKEDITOR.instances.isiSurat.destroy(true);
+                        CKEDITOR.replace('isiSurat', { height: 220 });
+                    } catch (e) {
+                        console.warn('CKEditor init failed', e);
+                    }
+                } else {
+                    console.warn('CKEditor not found on page');
+                }
+
+                // Ensure Add Section button works even if inserted from server-side or inserted earlier
+                const addSectionBtn = document.getElementById('addSectionBtn');
+                if (addSectionBtn) {
+                    addSectionBtn.addEventListener('click', function() {
+                        if (!window.currentSections) window.currentSections = [];
+                        window.currentSections.push({ title: '', content: '' });
+                        renderTemplateSections(window.currentSections);
+                    });
+                }
                 const modal = document.getElementById('modalSurat');
                 if (modal) {
                     modal.addEventListener('click', function(e) {
@@ -1839,59 +2277,116 @@
                 fetchKopList();
                 updateKopPreview();
 
-                // Multi-step form navigation
-                const toStep2 = document.getElementById('toStep2');
-                const backToStep1 = document.getElementById('backToStep1');
-                const toStep3 = document.getElementById('toStep3');
-                const backToStep2 = document.getElementById('backToStep2');
+                // Single-page form - no step navigation needed, just render jenis fields when changed
                 const jenisSelect = document.getElementById('jenisSurat');
                 const suratTemplateSelect = document.getElementById('suratTemplateSelect');
                 const saveAsTemplateBtn = document.getElementById('saveAsTemplateBtn');
                 const saveTemplateConfirm = document.getElementById('saveTemplateConfirm');
-
-                if (toStep2) toStep2.addEventListener('click', () => {
-                    // require jenis selected on step 1
-                    const jenis = document.getElementById('jenisSurat')?.value || '';
-                    if (!jenis) return alert('Pilih jenis surat terlebih dahulu.');
-                    // render fields for preview (won't overwrite any existing inputs)
-                    renderJenisFields(jenis);
-                    document.getElementById('step-1')?.classList.add('hidden');
-                    document.getElementById('step-2')?.classList.remove('hidden');
-                });
-                if (backToStep1) backToStep1.addEventListener('click', () => {
-                    document.getElementById('step-2')?.classList.add('hidden');
-                    document.getElementById('step-1')?.classList.remove('hidden');
-                });
-                if (toStep3) toStep3.addEventListener('click', () => {
-                    // validate step-2 required fields
-                    const nomor = document.getElementById('nomorSurat')?.value?.trim();
-                    const tanggal = document.getElementById('tanggalSurat')?.value;
-                    const karyawan = document.getElementById('karyawanSurat')?.value?.trim();
-                    if (!nomor) return alert('Isi Nomor Surat terlebih dahulu.');
-                    if (!tanggal) return alert('Pilih Tanggal Surat.');
-                    if (!karyawan) return alert('Isi nama karyawan.');
-                    const jenis = jenisSelect?.value || '';
-                    if (!jenis) return alert('Pilih jenis surat terlebih dahulu.');
-                    // ensure fields rendered
-                    renderJenisFields(jenis);
-                    document.getElementById('step-2')?.classList.add('hidden');
-                    document.getElementById('step-3')?.classList.remove('hidden');
-                });
-                if (backToStep2) backToStep2.addEventListener('click', () => {
-                    document.getElementById('step-3')?.classList.add('hidden');
-                    document.getElementById('step-2')?.classList.remove('hidden');
-                });
 
                 if (jenisSelect) jenisSelect.addEventListener('change', function() {
                     renderJenisFields(this.value);
                 });
 
                 // Template select and save
-                populateSuratTemplateSelect();
+                // Load templates from server
+            populateSuratTemplateSelect();
                 if (suratTemplateSelect) suratTemplateSelect.addEventListener('change', function() {
-                    const idx = this.value;
-                    if (idx === '') return;
-                    applySuratTemplate(parseInt(idx, 10));
+                    const val = this.value;
+                    if (val === '') return;
+                    // value is template id (when loaded from server) or local index
+                    if (String(val).match(/^\d+$/)) {
+                        fetch(`/admin/template/${val}`, {credentials: 'same-origin'})
+                        .then(r=>r.json()).then(resp=>{
+                            const t = resp.data;
+                            // apply server-side template
+                            document.getElementById('nomorSurat').value = t.slug || '';
+                            if (t.jenis) document.getElementById('jenisSurat').value = t.jenis;
+                            document.getElementById('karyawanSurat').value = '';
+                            // set WYSIWYG content
+                            if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.isiSurat) CKEDITOR.instances.isiSurat.setData(t.content || '');
+                            renderJenisFields(t.jenis || '');
+                            // render placeholders area
+                            const fields = document.getElementById('suratTemplateFields');
+                            if (fields) {
+                                fields.innerHTML = '';
+                                const ph = t.placeholders || [];
+                                if (ph.length) {
+                                    let html = '<p class="text-sm font-medium text-gray-700">Fields dari Template</p>';
+                                    ph.forEach(name => {
+                                        html += '<div class="grid grid-cols-2 gap-2 items-center mt-2">' +
+                                            '<label class="text-sm text-gray-700">' + name + '</label>' +
+                                            '<input type="text" data-tplph="' + name + '" class="px-3 py-2 border rounded w-full"/>' +
+                                            '</div>';
+                                    });
+                                    fields.innerHTML = html;
+                                }
+                            }
+
+                            // render sections if present in the template schema (type 'section'), otherwise fall back to single content
+                            try {
+                                const sectionsFromSchema = (t.schema || []).filter(s => s.type === 'section').map(s => ({ title: s.key || s.label || 'Isi', content: s.content || '' }));
+                                if (sectionsFromSchema.length) {
+                                    renderTemplateSections(sectionsFromSchema);
+                                } else if (t.content) {
+                                    renderTemplateSections([{ title: 'Isi', content: t.content }], true);
+                                } else {
+                                    // clear any existing sections
+                                    renderTemplateSections([]);
+                                }
+                            } catch (e) { console.error('render sections', e); }
+
+                            // render schema-driven form fields (if any)
+                            const schemaForm = document.getElementById('templateDynamicForm');
+                            if (schemaForm) {
+                                schemaForm.innerHTML = '';
+                                const schema = t.schema || [];
+                                if (schema.length) {
+                                    let html = '<p class="text-sm font-medium text-gray-700">Form dari Template</p>';
+                                    schema.forEach(f => {
+                                        const key = f.key || '';
+                                        const label = f.label || key;
+                                        const type = f.type || 'text';
+                                        const required = f.required ? true : false;
+                                        const reqLabel = required ? ' <span class="text-red-600">*</span>' : '';
+                                        const reqAttr = required ? ' data-schema-required="1" required' : '';
+                                        html += '<div class="grid grid-cols-2 gap-2 items-center mt-2">' +
+                                            `<label class="text-sm text-gray-700">${label}${reqLabel}</label>`;
+                                        if (type === 'text') html += `<input type="text" data-schema-key="${key}"${reqAttr} class="px-3 py-2 border rounded w-full"/>`;
+                                        else if (type === 'textarea') html += `<textarea data-schema-key="${key}"${reqAttr} class="px-3 py-2 border rounded w-full"></textarea>`;
+                                        else if (type === 'date') html += `<input type="date" data-schema-key="${key}"${reqAttr} class="px-3 py-2 border rounded w-full"/>`;
+                                        else if (type === 'select') {
+                                            const opts = (f.options || []).map(o => `<option value="${o}">${o}</option>`).join('');
+                                            html += `<select data-schema-key="${key}"${reqAttr} class="px-3 py-2 border rounded w-full">${opts}</select>`;
+                                        } else html += `<input type="text" data-schema-key="${key}"${reqAttr} class="px-3 py-2 border rounded w-full"/>`;
+                                        html += '</div>';
+                                    });
+                                    schemaForm.innerHTML = html;
+                                }
+                            }
+
+                            // clear any ad-hoc informasi fields added earlier (we load template as source-of-truth)
+                            try { window.adHocInformasiFields = []; if (window.renderInformasiCustomFields) window.renderInformasiCustomFields(); } catch(e) {}
+                        }).catch(err=>{console.error('apply template', err);});
+                    } else if (String(val).startsWith('local-')) {
+                        const idx = parseInt(val.split('-')[1], 10);
+                        if (!isNaN(idx)) applySuratTemplate(idx);
+                    } else {
+                        const idx = parseInt(val, 10);
+                        if (!isNaN(idx)) applySuratTemplate(idx);
+                    }
+                });
+
+                // Add server-side 'Save as Template' support
+                if (saveTemplateConfirm) saveTemplateConfirm.addEventListener('click', function() {
+                    const name = prompt('Nama template yang ingin disimpan:');
+                    if (!name) return;
+                    const payload = {
+                        name: name,
+                        jenis: document.getElementById('jenisSurat')?.value || '',
+                        content: (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.isiSurat) ? CKEDITOR.instances.isiSurat.getData() : document.getElementById('isiSurat')?.value || ''
+                    };
+                    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    fetch('/admin/template', {method:'POST', headers:{'Content-Type':'application/json','X-CSRF-TOKEN':token}, body:JSON.stringify(payload), credentials:'same-origin'}).then(r=>r.json()).then(()=>{ alert('Template disimpan di server'); populateSuratTemplateSelect();}).catch(e=>{console.error('save tpl',e); alert('Gagal menyimpan template');});
                 });
                 if (saveAsTemplateBtn) saveAsTemplateBtn.addEventListener('click', function() {
                     const name = prompt('Nama template yang ingin disimpan (contoh: PKWT - 1 Tahun):');
@@ -1914,13 +2409,113 @@
                     function() {
                         templateManager.classList.toggle('hidden');
                     });
-                if (createTemplateBtn) createTemplateBtn.addEventListener('click', createNewTemplateForSelectedJenis);
+                if (createTemplateBtn) createTemplateBtn.addEventListener('click', function(){
+                    openTemplateModalFromSurat();
+                });
+
+                // Open the Add Template modal prefilled with current Surat modal values (jenis, content, fields)
+                function openTemplateModalFromSurat() {
+                    const jenis = document.getElementById('jenisSurat')?.value || '';
+                    if (!jenis) return alert('Pilih jenis surat dahulu sebelum membuat template.');
+                    // open add modal
+                    openTambahTemplateModal();
+                    const modal = document.getElementById('tambahTemplateModal');
+                    // prefill name
+                    modal.querySelector('input[placeholder="Nama template"]').value = `${jenis} - Template ${new Date().toISOString().slice(0,10)}`;
+                    // set jenis select in modal
+                    modal.querySelector('select').value = jenis;
+
+                    // set content from main CKEditor
+                    let content = '';
+                    try {
+                        if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.isiSurat) content = CKEDITOR.instances.isiSurat.getData();
+                    } catch (e) {}
+                    try {
+                        if (CKEDITOR.instances['tambahTemplateContent']) CKEDITOR.instances['tambahTemplateContent'].setData(content);
+                        else modal.querySelector('#tambahTemplateContent').value = content;
+                    } catch (e) { modal.querySelector('#tambahTemplateContent').value = content; }
+
+                    // collect current dynamic form fields and convert to schema (include informasiCustomFields)
+                    const schemaFields = [];
+                    document.querySelectorAll('#templateDynamicForm [data-schema-key], #informasiCustomFields [data-schema-key]').forEach(el => {
+                        const key = el.dataset.schemaKey || '';
+                        if (!key) return;
+                        let type = 'text';
+                        let options = [];
+                        const required = !!(el.dataset.schemaRequired === '1');
+                        if (el.tagName === 'SELECT') { type = 'select'; options = Array.from(el.querySelectorAll('option')).map(o=>o.value).filter(v=>v); }
+                        else if (el.tagName === 'TEXTAREA') type = 'textarea';
+                        else if (el.type === 'date') type = 'date';
+                        else type = 'text';
+                        schemaFields.push({ key: key, label: key.replaceAll('_',' '), type: type, options: options, required: required });
+                    });
+
+                    // populate currentTemplateFields and render
+                    window.currentTemplateFields = schemaFields;
+                    renderTemplateFields(document.getElementById('templateFieldsList'), window.currentTemplateFields);
+                }
                 if (refreshTemplatesBtn) refreshTemplatesBtn.addEventListener('click', function() {
                     populateSuratTemplateSelect();
                     renderTemplateManager();
                 });
                 // ensure manager initially rendered
                 renderTemplateManager();
+
+                // Init Informasi Umum ad-hoc custom fields (add/edit/delete on the fly)
+                window.adHocInformasiFields = window.adHocInformasiFields || [];
+                window.renderInformasiCustomFields = function() {
+                    const listEl = document.getElementById('informasiCustomFields');
+                    if (!listEl) return;
+                    listEl.innerHTML = '';
+                    if (!window.adHocInformasiFields.length) {
+                        listEl.innerHTML = '<p class="text-xs text-gray-500">Belum ada field kustom.</p>';
+                        return;
+                    }
+                    window.adHocInformasiFields.forEach((f, idx) => {
+                        const row = document.createElement('div');
+                        row.className = 'flex items-center gap-2 bg-gray-50 p-2 rounded';
+                        let inputHtml = '';
+                        if (f.type === 'text') inputHtml = `<input data-schema-key="${f.key}" ${f.required? 'data-schema-required="1"' : ''} placeholder="${escapeHtml(f.label)}" class="px-3 py-2 border rounded w-full"/>`;
+                        else if (f.type === 'textarea') inputHtml = `<textarea data-schema-key="${f.key}" ${f.required? 'data-schema-required="1"' : ''} class="px-3 py-2 border rounded w-full" placeholder="${escapeHtml(f.label)}"></textarea>`;
+                        else if (f.type === 'date') inputHtml = `<input type="date" data-schema-key="${f.key}" ${f.required? 'data-schema-required="1"' : ''} class="px-3 py-2 border rounded w-full"/>`;
+                        else if (f.type === 'select') {
+                            const opts = (f.options || []).map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');
+                            inputHtml = `<select data-schema-key="${f.key}" ${f.required? 'data-schema-required="1"' : ''} class="px-3 py-2 border rounded w-full">${opts}</select>`;
+                        }
+                        row.innerHTML = `<div class="flex-1">${inputHtml}</div><div class="flex gap-2"><button data-idx="${idx}" class="delInfoFieldBtn px-3 py-1 bg-red-50 text-red-700 rounded">Hapus</button></div>`;
+                        listEl.appendChild(row);
+                    });
+                    listEl.querySelectorAll('.delInfoFieldBtn').forEach(b => b.addEventListener('click', function(){
+                        const i = parseInt(this.dataset.idx,10);
+                        window.adHocInformasiFields.splice(i,1);
+                        window.renderInformasiCustomFields();
+                    }));
+                };
+
+                // bind add/cancel/toggle
+                document.getElementById('toggleAddInformasiFieldBtn')?.addEventListener('click', function(){
+                    document.getElementById('addInformasiFieldForm')?.classList.toggle('hidden');
+                });
+                document.getElementById('cancelInformasiFieldBtn')?.addEventListener('click', function(){ document.getElementById('addInformasiFieldForm')?.classList.add('hidden'); });
+                document.getElementById('addInformasiFieldBtn')?.addEventListener('click', function(){
+                    const type = document.getElementById('informasiNewFieldType').value;
+                    const label = document.getElementById('informasiNewFieldLabel').value.trim();
+                    const key = (document.getElementById('informasiNewFieldKey').value.trim() || label || 'FIELD').toUpperCase();
+                    const opts = document.getElementById('informasiNewFieldOptions').value.trim();
+                    const required = !!document.getElementById('informasiNewFieldRequired').checked;
+                    if (!label || !key) return alert('Label dan Key harus diisi');
+                    // ensure unique key
+                    const existing = window.adHocInformasiFields.concat(Array.from(document.querySelectorAll('#templateDynamicForm [data-schema-key]')).map(el=>el.dataset.schemaKey)).map(k=>k?.toUpperCase());
+                    if (existing.indexOf(key) !== -1) return alert('Key sudah ada, gunakan key lain.');
+                    const field = { type: type, label: label, key: key, options: (type==='select' && opts? opts.split(',').map(s=>s.trim()): []), required: required };
+                    window.adHocInformasiFields.push(field);
+                    document.getElementById('informasiNewFieldLabel').value = '';
+                    document.getElementById('informasiNewFieldKey').value = '';
+                    document.getElementById('informasiNewFieldOptions').value = '';
+                    document.getElementById('informasiNewFieldRequired').checked = false;
+                    document.getElementById('addInformasiFieldForm')?.classList.add('hidden');
+                    window.renderInformasiCustomFields();
+                });
 
                 // Fallback: bind header button to modal (in case inline handler fails)
                 const btnBuat = document.getElementById('btnBuatSurat');
@@ -1966,5 +2561,49 @@
                 filterRequests();
                 filterPublished();
         });
+
+        (function() {
+            console.log('surat modal failsafe init');
+            function ensureSectionUI() {
+                const container = document.getElementById('sectionsEditor');
+                if (!container) return;
+                console.log('ensureSectionUI: sectionsEditor present');
+                if (!document.getElementById('addSectionBtn')) {
+                    const addBtn = document.createElement('button');
+                    addBtn.type = 'button';
+                    addBtn.id = 'addSectionBtn';
+                    addBtn.className = 'px-3 py-1 bg-white border rounded text-sm';
+                    addBtn.innerText = 'Tambah Section';
+                    addBtn.addEventListener('click', function() {
+                        if (!window.currentSections) window.currentSections = [];
+                        window.currentSections.push({ title: '', content: '' });
+                        if (typeof renderTemplateSections === 'function') renderTemplateSections(window.currentSections);
+                        else console.warn('renderTemplateSections not available yet');
+                    });
+
+                    // Prefer inserting before preview buttons if present
+                    const actionGroup = container.nextElementSibling;
+                    if (actionGroup) actionGroup.insertBefore(addBtn, actionGroup.firstChild);
+                    else container.parentNode.insertBefore(addBtn, container.nextSibling);
+                    console.log('ensureSectionUI: addSectionBtn inserted');
+                } else {
+                    // ensure it is visible
+                    const btn = document.getElementById('addSectionBtn');
+                    btn.style.display = '';
+                }
+            }
+
+            // run immediately
+            try { ensureSectionUI(); } catch (e) { console.error('ensureSectionUI failed', e); }
+
+            // observe DOM for changes (modal open/close) and ensure button exists
+            const mo = new MutationObserver(function() { try { ensureSectionUI(); } catch (e) { console.error(e); } });
+            mo.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+            // global error capture to help debugging
+            window.addEventListener('error', function(ev) {
+                console.error('Global error captured:', ev.message, ev.filename, ev.lineno, ev.error);
+            });
+        })();
     </script>
 </x-app-layout>

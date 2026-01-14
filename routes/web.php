@@ -92,10 +92,19 @@ Route::middleware([
 
         // Create surat
         Route::post('/surat', [\App\Http\Controllers\Admin\SuratController::class, 'store'])->name('surat.store');
+        // Preview / generate PDF from form data (returns generated PDF URL)
+        Route::post('/surat/preview-pdf', [\App\Http\Controllers\Admin\SuratController::class, 'generatePdf'])->name('surat.preview-pdf');
         
         Route::get('/template', function () {
             return view('admin.template');
         })->name('template');
+
+        // Template API (CRUD)
+        Route::get('/template/list', [\App\Http\Controllers\Admin\SuratTemplateController::class, 'index']);
+        Route::get('/template/{id}', [\App\Http\Controllers\Admin\SuratTemplateController::class, 'show']);
+        Route::post('/template', [\App\Http\Controllers\Admin\SuratTemplateController::class, 'store']);
+        Route::put('/template/{id}', [\App\Http\Controllers\Admin\SuratTemplateController::class, 'update']);
+        Route::delete('/template/{id}', [\App\Http\Controllers\Admin\SuratTemplateController::class, 'destroy']);
 
         // Kop Surat (AJAX)
         Route::get('/kop-surat', [KopSuratController::class, 'index']);
