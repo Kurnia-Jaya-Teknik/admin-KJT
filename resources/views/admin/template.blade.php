@@ -254,13 +254,18 @@
                                 <option value="date">Date</option>
                                 <option value="select">Select</option>
                             </select>
-                            <input id="newFieldLabel" placeholder="Label (contoh: Nama)" class="px-3 py-2 border rounded" />
-                            <input id="newFieldKey" placeholder="Key (contoh: NAMA)" class="px-3 py-2 border rounded w-36" />
-                            <input id="newFieldOptions" placeholder="Options (jika select, gunakan , pemisah)" class="px-3 py-2 border rounded w-64" />
+                            <input id="newFieldLabel" placeholder="Label (contoh: Nama)"
+                                class="px-3 py-2 border rounded" />
+                            <input id="newFieldKey" placeholder="Key (contoh: NAMA)"
+                                class="px-3 py-2 border rounded w-36" />
+                            <input id="newFieldOptions" placeholder="Options (jika select, gunakan , pemisah)"
+                                class="px-3 py-2 border rounded w-64" />
                             <label class="inline-flex items-center gap-2 text-sm text-gray-700">
-                                <input id="newFieldRequired" type="checkbox" class="h-4 w-4 border-gray-300 rounded" /> <span>Wajib</span>
+                                <input id="newFieldRequired" type="checkbox"
+                                    class="h-4 w-4 border-gray-300 rounded" /> <span>Wajib</span>
                             </label>
-                            <button id="addFieldBtn" class="px-3 py-2 bg-indigo-600 text-white rounded">Tambah Field</button>
+                            <button id="addFieldBtn" class="px-3 py-2 bg-indigo-600 text-white rounded">Tambah
+                                Field</button>
                         </div>
                         <div id="templateFieldsList" class="space-y-2 mb-3">
                             <p class="text-xs text-gray-500">Belum ada field.</p>
@@ -268,7 +273,8 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Isi Template</label>
                         <textarea id="tambahTemplateContent" placeholder="Ketik isi template..." rows="8"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-sm"></textarea>
-                        <p class="text-xs text-gray-500 mt-2">Gunakan tombol <strong>Sisipi Placeholder</strong> untuk menambahkan placeholder sesuai key field.</p>
+                        <p class="text-xs text-gray-500 mt-2">Gunakan tombol <strong>Sisipi Placeholder</strong> untuk
+                            menambahkan placeholder sesuai key field.</p>
                     </div>
                 </div>
             </div>
@@ -321,13 +327,18 @@
                                 <option value="date">Date</option>
                                 <option value="select">Select</option>
                             </select>
-                            <input id="editNewFieldLabel" placeholder="Label (contoh: Nama)" class="px-3 py-2 border rounded" />
-                            <input id="editNewFieldKey" placeholder="Key (contoh: NAMA)" class="px-3 py-2 border rounded w-36" />
-                            <input id="editNewFieldOptions" placeholder="Options (jika select, gunakan , pemisah)" class="px-3 py-2 border rounded w-64" />
+                            <input id="editNewFieldLabel" placeholder="Label (contoh: Nama)"
+                                class="px-3 py-2 border rounded" />
+                            <input id="editNewFieldKey" placeholder="Key (contoh: NAMA)"
+                                class="px-3 py-2 border rounded w-36" />
+                            <input id="editNewFieldOptions" placeholder="Options (jika select, gunakan , pemisah)"
+                                class="px-3 py-2 border rounded w-64" />
                             <label class="inline-flex items-center gap-2 text-sm text-gray-700">
-                                <input id="editNewFieldRequired" type="checkbox" class="h-4 w-4 border-gray-300 rounded" /> <span>Wajib</span>
+                                <input id="editNewFieldRequired" type="checkbox"
+                                    class="h-4 w-4 border-gray-300 rounded" /> <span>Wajib</span>
                             </label>
-                            <button id="editAddFieldBtn" class="px-3 py-2 bg-indigo-600 text-white rounded">Tambah Field</button>
+                            <button id="editAddFieldBtn" class="px-3 py-2 bg-indigo-600 text-white rounded">Tambah
+                                Field</button>
                         </div>
                         <div id="editTemplateFieldsList" class="space-y-2 mb-3">
                             <p class="text-xs text-gray-500">Belum ada field.</p>
@@ -335,7 +346,8 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Isi Template</label>
                         <textarea id="editTemplateContent" placeholder="Ketik isi template..." rows="8"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-sm"></textarea>
-                        <p class="text-xs text-gray-500 mt-2">Gunakan tombol <strong>Sisipi Placeholder</strong> untuk menambahkan placeholder sesuai key field.</p>
+                        <p class="text-xs text-gray-500 mt-2">Gunakan tombol <strong>Sisipi Placeholder</strong> untuk
+                            menambahkan placeholder sesuai key field.</p>
                     </div>
                 </div>
             </div>
@@ -405,32 +417,52 @@
         function openTambahTemplateModal() {
             document.getElementById('tambahTemplateModal').classList.remove('hidden');
             // init editor if not ready
-            try { if (!CKEDITOR.instances['tambahTemplateContent']) CKEDITOR.replace('tambahTemplateContent', {height: 240}); } catch(e){}
+            try {
+                if (!CKEDITOR.instances['tambahTemplateContent']) CKEDITOR.replace('tambahTemplateContent', {
+                    height: 240
+                });
+            } catch (e) {}
         }
 
         function closeTambahTemplateModal() {
             document.getElementById('tambahTemplateModal').classList.add('hidden');
-            try { if (CKEDITOR.instances['tambahTemplateContent']) CKEDITOR.instances['tambahTemplateContent'].destroy(true); } catch(e){}
+            try {
+                if (CKEDITOR.instances['tambahTemplateContent']) CKEDITOR.instances['tambahTemplateContent'].destroy(true);
+            } catch (e) {}
         }
 
         function openEditTemplateModal(id) {
             // load template data
-            fetch(`/admin/template/${id}`, {credentials: 'same-origin'})
-            .then(r=>r.json()).then(resp => {
-                const tpl = resp.data;
-                const modal = document.getElementById('editTemplateModal');
-                modal.querySelector('input[placeholder="Nama template"]').value = tpl.name || '';
-                modal.querySelector('select').value = tpl.jenis || '';
-                // init editor and set data
-                try { if (CKEDITOR.instances['editTemplateContent']) CKEDITOR.instances['editTemplateContent'].destroy(true); CKEDITOR.replace('editTemplateContent', {height:240}); CKEDITOR.instances['editTemplateContent'].setData(tpl.content || ''); } catch(e) { modal.querySelector('textarea').value = tpl.content || ''; }
-                modal.dataset.editing = tpl.id;
+            fetch(`/admin/template/${id}`, {
+                    credentials: 'same-origin'
+                })
+                .then(r => r.json()).then(resp => {
+                    const tpl = resp.data;
+                    const modal = document.getElementById('editTemplateModal');
+                    modal.querySelector('input[placeholder="Nama template"]').value = tpl.name || '';
+                    modal.querySelector('select').value = tpl.jenis || '';
+                    // init editor and set data
+                    try {
+                        if (CKEDITOR.instances['editTemplateContent']) CKEDITOR.instances['editTemplateContent']
+                            .destroy(true);
+                        CKEDITOR.replace('editTemplateContent', {
+                            height: 240
+                        });
+                        CKEDITOR.instances['editTemplateContent'].setData(tpl.content || '');
+                    } catch (e) {
+                        modal.querySelector('textarea').value = tpl.content || '';
+                    }
+                    modal.dataset.editing = tpl.id;
 
-                // populate schema fields into editTemplateFields
-                window.editTemplateFields = tpl.schema || [];
-                renderTemplateFields(document.getElementById('editTemplateFieldsList'), window.editTemplateFields);
+                    // populate schema fields into editTemplateFields
+                    window.editTemplateFields = tpl.schema || [];
+                    renderTemplateFields(document.getElementById('editTemplateFieldsList'), window.editTemplateFields);
 
-                modal.classList.remove('hidden');
-            }).catch(err=>{console.error('load tpl',err); alert('Gagal memuat template');});
+                    modal.classList.remove('hidden');
+                }).catch(err => {
+                    console.error('load tpl', err);
+                    alert('Gagal memuat template');
+                });
         }
 
         function closeEditTemplateModal() {
@@ -461,11 +493,13 @@
 
         // CRUD actions
         function fetchTemplates() {
-            fetch('/admin/template/list', {credentials: 'same-origin'})
-            .then(r=>r.json()).then(resp => {
-                const list = resp.data || [];
-                renderTemplates(list);
-            }).catch(err=>console.error('fetch templates', err));
+            fetch('/admin/template/list', {
+                    credentials: 'same-origin'
+                })
+                .then(r => r.json()).then(resp => {
+                    const list = resp.data || [];
+                    renderTemplates(list);
+                }).catch(err => console.error('fetch templates', err));
         }
 
         function renderTemplates(list) {
@@ -495,17 +529,35 @@
             });
 
             // attach events
-            grid.querySelectorAll('.editBtn').forEach(b => b.addEventListener('click', (e) => openEditTemplateModal(e.currentTarget.dataset.id)));
-            grid.querySelectorAll('.toggleBtn').forEach(b => b.addEventListener('click', (e) => toggleStatus(e.currentTarget.dataset.id)));
-            grid.querySelectorAll('.delBtn').forEach(b => b.addEventListener('click', (e) => openDeleteTemplateModal(e.currentTarget.dataset.id)));
+            grid.querySelectorAll('.editBtn').forEach(b => b.addEventListener('click', (e) => openEditTemplateModal(e
+                .currentTarget.dataset.id)));
+            grid.querySelectorAll('.toggleBtn').forEach(b => b.addEventListener('click', (e) => toggleStatus(e.currentTarget
+                .dataset.id)));
+            grid.querySelectorAll('.delBtn').forEach(b => b.addEventListener('click', (e) => openDeleteTemplateModal(e
+                .currentTarget.dataset.id)));
         }
 
         function toggleStatus(id) {
             // fetch, flip, update
-            fetch(`/admin/template/${id}`, {credentials: 'same-origin'}).then(r=>r.json()).then(resp=>{
+            fetch(`/admin/template/${id}`, {
+                credentials: 'same-origin'
+            }).then(r => r.json()).then(resp => {
                 const tpl = resp.data;
                 const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                fetch(`/admin/template/${id}`, {method: 'PUT', headers: {'Content-Type':'application/json','X-CSRF-TOKEN':token}, body: JSON.stringify({name: tpl.name, jenis: tpl.jenis, content: tpl.content, is_active: !tpl.is_active}), credentials: 'same-origin'}).then(()=>fetchTemplates());
+                fetch(`/admin/template/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify({
+                        name: tpl.name,
+                        jenis: tpl.jenis,
+                        content: tpl.content,
+                        is_active: !tpl.is_active
+                    }),
+                    credentials: 'same-origin'
+                }).then(() => fetchTemplates());
             });
         }
 
@@ -534,41 +586,41 @@
                 listEl.appendChild(div);
             });
             // attach events
-            listEl.querySelectorAll('.moveUpBtn').forEach(b => b.addEventListener('click', function(){
-                const i = parseInt(this.dataset.idx,10);
-                if (i<=0) return;
-                fields.splice(i-1,0,fields.splice(i,1)[0]);
+            listEl.querySelectorAll('.moveUpBtn').forEach(b => b.addEventListener('click', function() {
+                const i = parseInt(this.dataset.idx, 10);
+                if (i <= 0) return;
+                fields.splice(i - 1, 0, fields.splice(i, 1)[0]);
                 renderTemplateFields(listEl, fields);
             }));
-            listEl.querySelectorAll('.moveDownBtn').forEach(b => b.addEventListener('click', function(){
-                const i = parseInt(this.dataset.idx,10);
-                if (i>=fields.length-1) return;
-                fields.splice(i+1,0,fields.splice(i,1)[0]);
+            listEl.querySelectorAll('.moveDownBtn').forEach(b => b.addEventListener('click', function() {
+                const i = parseInt(this.dataset.idx, 10);
+                if (i >= fields.length - 1) return;
+                fields.splice(i + 1, 0, fields.splice(i, 1)[0]);
                 renderTemplateFields(listEl, fields);
             }));
-            listEl.querySelectorAll('.delFieldBtn').forEach(b => b.addEventListener('click', function(){
-                const i = parseInt(this.dataset.idx,10);
+            listEl.querySelectorAll('.delFieldBtn').forEach(b => b.addEventListener('click', function() {
+                const i = parseInt(this.dataset.idx, 10);
                 if (!confirm('Hapus field?')) return;
-                fields.splice(i,1);
+                fields.splice(i, 1);
                 renderTemplateFields(listEl, fields);
             }));
-            listEl.querySelectorAll('.insertPhBtn').forEach(b => b.addEventListener('click', function(){
-                const i = parseInt(this.dataset.idx,10);
+            listEl.querySelectorAll('.insertPhBtn').forEach(b => b.addEventListener('click', function() {
+                const i = parseInt(this.dataset.idx, 10);
                 const f = fields[i];
-                const key = f.key || f.label || 'FIELD'+i;
+                const key = f.key || f.label || 'FIELD' + i;
                 try {
                     if (CKEDITOR.instances['tambahTemplateContent']) {
-                        CKEDITOR.instances['tambahTemplateContent'].insertHtml('{{'+key.toUpperCase()+'}}');
+                        CKEDITOR.instances['tambahTemplateContent'].insertHtml('{{ '+key.toUpperCase()+' }}');
                     }
                     if (CKEDITOR.instances['editTemplateContent']) {
-                        CKEDITOR.instances['editTemplateContent'].insertHtml('{{'+key.toUpperCase()+'}}');
+                        CKEDITOR.instances['editTemplateContent'].insertHtml('{{ '+key.toUpperCase()+' }}');
                     }
-                } catch(e) {}
+                } catch (e) {}
             }));
 
             // toggle required
-            listEl.querySelectorAll('.toggleReqBtn').forEach(b => b.addEventListener('click', function(){
-                const i = parseInt(this.dataset.idx,10);
+            listEl.querySelectorAll('.toggleReqBtn').forEach(b => b.addEventListener('click', function() {
+                const i = parseInt(this.dataset.idx, 10);
                 fields[i].required = !fields[i].required;
                 renderTemplateFields(listEl, fields);
             }));
@@ -577,8 +629,8 @@
         // collect schema array from list
         function collectSchemaFromList(listEl) {
             const out = [];
-            const children = Array.from(listEl.children).filter(c=>!c.classList.contains('text-xs'));
-            children.forEach((c,idx)=>{
+            const children = Array.from(listEl.children).filter(c => !c.classList.contains('text-xs'));
+            children.forEach((c, idx) => {
                 const label = c.querySelector('.text-sm')?.innerText || '';
                 const typeText = c.querySelector('.text-xs')?.innerText || '';
                 // parse type and options back is brittle; instead we store fields in a window var when creating
@@ -588,14 +640,20 @@
 
         // Add field handlers for Add Modal
         window.currentTemplateFields = window.currentTemplateFields || [];
-        document.getElementById('addFieldBtn')?.addEventListener('click', function(){
+        document.getElementById('addFieldBtn')?.addEventListener('click', function() {
             const type = document.getElementById('newFieldType').value;
             const label = document.getElementById('newFieldLabel').value.trim();
             const key = document.getElementById('newFieldKey').value.trim().toUpperCase();
             const opts = document.getElementById('newFieldOptions').value.trim();
             const required = !!document.getElementById('newFieldRequired')?.checked;
             if (!label || !key) return alert('Label dan Key harus diisi');
-            const field = {type: type, label: label, key: key, required: required, options: (type==='select' && opts? opts.split(',').map(s=>s.trim()): []) };
+            const field = {
+                type: type,
+                label: label,
+                key: key,
+                required: required,
+                options: (type === 'select' && opts ? opts.split(',').map(s => s.trim()) : [])
+            };
             window.currentTemplateFields.unshift(field);
             renderTemplateFields(document.getElementById('templateFieldsList'), window.currentTemplateFields);
             document.getElementById('newFieldLabel').value = '';
@@ -606,14 +664,20 @@
 
         // Add field handlers for Edit Modal
         window.editTemplateFields = window.editTemplateFields || [];
-        document.getElementById('editAddFieldBtn')?.addEventListener('click', function(){
+        document.getElementById('editAddFieldBtn')?.addEventListener('click', function() {
             const type = document.getElementById('editNewFieldType').value;
             const label = document.getElementById('editNewFieldLabel').value.trim();
             const key = document.getElementById('editNewFieldKey').value.trim().toUpperCase();
             const opts = document.getElementById('editNewFieldOptions').value.trim();
             const required = !!document.getElementById('editNewFieldRequired')?.checked;
             if (!label || !key) return alert('Label dan Key harus diisi');
-            const field = {type: type, label: label, key: key, required: required, options: (type==='select' && opts? opts.split(',').map(s=>s.trim()): []) };
+            const field = {
+                type: type,
+                label: label,
+                key: key,
+                required: required,
+                options: (type === 'select' && opts ? opts.split(',').map(s => s.trim()) : [])
+            };
             window.editTemplateFields.unshift(field);
             renderTemplateFields(document.getElementById('editTemplateFieldsList'), window.editTemplateFields);
             document.getElementById('editNewFieldLabel').value = '';
@@ -623,42 +687,106 @@
         });
 
         // Save new template (include schema)
-        document.querySelector('#tambahTemplateModal button.bg-indigo-600')?.addEventListener('click', function(){
+        document.querySelector('#tambahTemplateModal button.bg-indigo-600')?.addEventListener('click', function() {
             const modal = document.getElementById('tambahTemplateModal');
             const name = modal.querySelector('input[placeholder="Nama template"]').value.trim();
             const jenis = modal.querySelector('select').value;
             let content = '';
-            try { if (CKEDITOR.instances['tambahTemplateContent']) content = CKEDITOR.instances['tambahTemplateContent'].getData(); } catch(e) { content = modal.querySelector('#tambahTemplateContent').value; }
+            try {
+                if (CKEDITOR.instances['tambahTemplateContent']) content = CKEDITOR.instances[
+                    'tambahTemplateContent'].getData();
+            } catch (e) {
+                content = modal.querySelector('#tambahTemplateContent').value;
+            }
             const schema = window.currentTemplateFields || [];
-            if(!name) return alert('Nama template harus diisi');
+            if (!name) return alert('Nama template harus diisi');
             const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            fetch('/admin/template', {method:'POST', headers:{'Content-Type':'application/json','X-CSRF-TOKEN':token}, body:JSON.stringify({name, jenis, content, schema}), credentials:'same-origin'}).then(r=>r.json()).then(()=>{closeTambahTemplateModal(); window.currentTemplateFields=[]; renderTemplateFields(document.getElementById('templateFieldsList'), window.currentTemplateFields); fetchTemplates();}).catch(err=>{console.error(err); alert('Gagal menyimpan')});
+            fetch('/admin/template', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({
+                    name,
+                    jenis,
+                    content,
+                    schema
+                }),
+                credentials: 'same-origin'
+            }).then(r => r.json()).then(() => {
+                closeTambahTemplateModal();
+                window.currentTemplateFields = [];
+                renderTemplateFields(document.getElementById('templateFieldsList'), window
+                    .currentTemplateFields);
+                fetchTemplates();
+            }).catch(err => {
+                console.error(err);
+                alert('Gagal menyimpan')
+            });
         });
 
         // Save edit (include schema)
-        document.querySelector('#editTemplateModal button.bg-indigo-600')?.addEventListener('click', function(){
+        document.querySelector('#editTemplateModal button.bg-indigo-600')?.addEventListener('click', function() {
             const modal = document.getElementById('editTemplateModal');
             const id = modal.dataset.editing;
             const name = modal.querySelector('input[placeholder="Nama template"]').value.trim();
             const jenis = modal.querySelector('select').value;
             let content = '';
-            try { if (CKEDITOR.instances['editTemplateContent']) content = CKEDITOR.instances['editTemplateContent'].getData(); } catch(e) { content = modal.querySelector('#editTemplateContent').value; }
+            try {
+                if (CKEDITOR.instances['editTemplateContent']) content = CKEDITOR.instances['editTemplateContent']
+                    .getData();
+            } catch (e) {
+                content = modal.querySelector('#editTemplateContent').value;
+            }
             const schema = window.editTemplateFields || [];
-            if(!name) return alert('Nama template harus diisi');
+            if (!name) return alert('Nama template harus diisi');
             const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            fetch(`/admin/template/${id}`, {method:'PUT', headers:{'Content-Type':'application/json','X-CSRF-TOKEN':token}, body:JSON.stringify({name, jenis, content, schema}), credentials:'same-origin'}).then(r=>r.json()).then(()=>{closeEditTemplateModal(); window.editTemplateFields=[]; fetchTemplates();}).catch(err=>{console.error(err); alert('Gagal update')});
+            fetch(`/admin/template/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({
+                    name,
+                    jenis,
+                    content,
+                    schema
+                }),
+                credentials: 'same-origin'
+            }).then(r => r.json()).then(() => {
+                closeEditTemplateModal();
+                window.editTemplateFields = [];
+                fetchTemplates();
+            }).catch(err => {
+                console.error(err);
+                alert('Gagal update')
+            });
         });
 
         // When loading template into edit modal, populate field list
         // (this was added earlier in openEditTemplateModal)
-        
+
 
 
         // Delete confirm
-        document.querySelector('#deleteTemplateModal button.bg-red-600')?.addEventListener('click', function(){
+        document.querySelector('#deleteTemplateModal button.bg-red-600')?.addEventListener('click', function() {
             const id = document.getElementById('deleteTemplateModal').dataset.tpl;
             const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            fetch(`/admin/template/${id}`, {method:'DELETE', headers:{'X-CSRF-TOKEN':token}, credentials:'same-origin'}).then(()=>{closeDeleteTemplateModal(); fetchTemplates();}).catch(err=>{console.error(err); alert('Gagal hapus')});
+            fetch(`/admin/template/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                credentials: 'same-origin'
+            }).then(() => {
+                closeDeleteTemplateModal();
+                fetchTemplates();
+            }).catch(err => {
+                console.error(err);
+                alert('Gagal hapus')
+            });
         });
 
         // Close modal when clicking outside (scoped to .js-modal) and close on Escape
@@ -676,12 +804,19 @@
         });
 
         // init
-        document.addEventListener('DOMContentLoaded', function(){ fetchTemplates(); });
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchTemplates();
+        });
 
         function escapeHtml(unsafe) {
-            if(!unsafe) return '';
+            if (!unsafe) return '';
             return unsafe.replace(/[&<"']/g, function(m) {
-                return ({'&': '&amp;', '<': '&lt;', '"': '&quot;', '\'': '&#39;'}[m]);
+                return ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '"': '&quot;',
+                    '\'': '&#39;'
+                } [m]);
             });
         }
     </script>
