@@ -8,6 +8,505 @@
     <!-- Load CKEditor early so it's available for all scripts below -->
     <script src="https://cdn.ckeditor.com/4.25.1/lts/ckeditor.js"></script>
 
+    <!-- CRITICAL: Define modal functions EARLY so onclick handlers can access them -->
+    <script>
+        function openModalSurat() {
+            const modal = document.getElementById('modalSurat');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                // Auto-fill tanggal dengan hari ini
+                const tanggalInput = document.getElementById('tanggalSurat');
+                if (tanggalInput) {
+                    tanggalInput.valueAsDate = new Date();
+                }
+                const title = document.getElementById('modal-title');
+                if (title) title.innerText = 'Buat Surat Resmi';
+                document.body.classList.add('modal-open');
+                try {
+                    renderTemplateSections([]);
+                    initializeSignatures(); // Initialize multiple signatures section
+                    fetchKopList(); // Load list of existing kop surat
+                } catch (e) {}
+                if (document.getElementById('formSteps')) document.body.classList.add('modal-hid-footer');
+                window.currentRequest = null;
+                document.body.style.overflow = 'hidden';
+                
+                // Attach preview listeners and trigger initial preview
+                setTimeout(() => {
+                    try {
+                        if (typeof attachPreviewListeners === 'function') attachPreviewListeners();
+                        if (typeof window.updateFormPreview === 'function') window.updateFormPreview();
+                    } catch (e) {
+                        console.warn('Preview init error:', e);
+                    }
+                }, 100);
+            }
+        }
+
+        function openModalBuatSurat() {
+            try {
+                const nomorEl = document.getElementById('nomorSurat');
+                const tanggalEl = document.getElementById('tanggalSurat');
+                const jenisEl = document.getElementById('jenisSurat');
+                const karyawanEl = document.getElementById('karyawanSurat');
+                const tujuanEl = document.getElementById('tujuanSurat');
+                const isiEl = document.getElementById('isiSurat');
+                const jabatanEl = document.getElementById('jabatanSurat');
+                const departemenEl = document.getElementById('departemenSurat');
+
+                if (nomorEl) nomorEl.value = '';
+                if (tanggalEl) tanggalEl.valueAsDate = new Date();
+                if (jenisEl) jenisEl.value = '';
+                if (karyawanEl) karyawanEl.value = '';
+                if (tujuanEl) tujuanEl.value = '';
+                if (isiEl) isiEl.value = '';
+                if (jabatanEl) jabatanEl.value = '';
+                if (departemenEl) departemenEl.value = '';
+
+                document.getElementById('step-1')?.classList.remove('hidden');
+                document.getElementById('step-2')?.classList.add('hidden');
+                document.getElementById('step-3')?.classList.add('hidden');
+
+                window.editingSuratTemplateIndex = null;
+                try {
+                    window.adHocInformasiFields = [];
+                    if (window.renderInformasiCustomFields) window.renderInformasiCustomFields();
+                } catch (e) {}
+                
+                if (typeof populateSuratTemplateSelect === 'function') populateSuratTemplateSelect();
+                if (typeof renderTemplateManager === 'function') renderTemplateManager();
+                
+                const templateManager = document.getElementById('templateManager');
+                if (templateManager) templateManager.classList.add('hidden');
+
+                openModalSurat();
+            } catch (error) {
+                console.error('Error opening modal:', error);
+                alert('Terjadi kesalahan saat membuka form. Silakan refresh halaman.');
+            }
+        }
+
+        function closeModalSurat() {
+            const modal = document.getElementById('modalSurat');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.classList.remove('modal-open');
+                document.body.classList.remove('modal-hid-footer');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // ===== REAL-TIME PREVIEW FUNCTION (Moved to early block for availability) =====
+        function updateFormPreview() {
+            try {
+                console.log('[Preview] updateFormPreview called');
+                const nomor = document.getElementById('nomorSurat')?.value || '';
+                const tanggal = document.getElementById('tanggalSurat')?.value || '';
+                const karyawan = document.getElementById('karyawanSurat')?.value || '';
+                const jabatan = document.getElementById('jabatanSurat')?.value || '';
+                const departemen = document.getElementById('departemenSurat')?.value || '';
+                const tujuan = document.getElementById('tujuanSurat')?.value || '';
+                const jenis = document.getElementById('jenisSurat')?.value || '';
+                
+                let sections = [];
+                let additionalFields = {};
+                
+                try {
+                    if (typeof window.getSuratSections === 'function') {
+                        sections = window.getSuratSections();
+                    }
+                } catch (e) {
+                    console.warn('getSuratSections error:', e);
+                }
+                
+                try {
+                    if (typeof window.getAdditionalFields === 'function') {
+                        additionalFields = window.getAdditionalFields();
+                    }
+                } catch (e) {
+                    console.warn('getAdditionalFields error:', e);
+                }
+
+                let preview = '<div class="space-y-4">';
+                const hasData = nomor || tanggal || karyawan || jabatan || departemen || tujuan || jenis || sections.length > 0;
+                
+                if (!hasData) {
+                    const previewEl = document.getElementById('suratPreview');
+                    if (previewEl) {
+                        previewEl.innerHTML = `<div class="text-center text-red-300 py-12">
+                            <svg class="w-16 h-16 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <p class="text-sm text-red-500 font-medium">Mulai isi form untuk melihat pratayang</p>
+                        </div>`;
+                    }
+                    return;
+                }
+                
+                const kopSelected = document.getElementById('kopSuratSelect')?.value;
+                if (kopSelected) {
+                    const kopOpt = document.getElementById('kopSuratSelect')?.selectedOptions?.[0];
+                    const kopUrl = kopOpt?.dataset?.url || '';
+                    if (kopUrl) {
+                        const fileName = kopUrl.split('/').pop();
+                        const fileExt = fileName.split('.').pop().toLowerCase();
+                        
+                        // Display kop based on file type
+                        if (['pdf'].includes(fileExt)) {
+                            preview += '<div class="text-center text-sm text-gray-500 mb-6 p-4 border-b-2 border-rose-200/30">[Kop Surat: ' + window.escapeHtml(fileName) + ' - PDF]</div>';
+                        } else if (['doc', 'docx', 'odt', 'txt', 'xls', 'xlsx', 'ods', 'ppt', 'pptx', 'odp'].includes(fileExt)) {
+                            preview += '<div class="text-center text-sm text-gray-500 mb-6 p-4 border-b-2 border-rose-200/30">[Kop Surat: ' + window.escapeHtml(fileName) + ']</div>';
+                        } else if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'tiff'].includes(fileExt)) {
+                            preview += `<div class="text-center mb-6 pb-4 border-b-2 border-rose-200/30"><img src="${kopUrl}" alt="kop" style="max-height:100px; object-fit:contain;" /></div>`;
+                        } else {
+                            preview += '<div class="text-center text-sm text-gray-500 mb-6 p-4 border-b-2 border-rose-200/30">[Kop Surat: ' + window.escapeHtml(fileName) + ']</div>';
+                        }
+                    }
+                }
+
+                if (nomor || tanggal) {
+                    preview += `<div class="text-right text-sm border-b-2 border-red-100 pb-4 mb-4">
+                        ${nomor ? `<p><strong>Nomor:</strong> ${window.escapeHtml ? window.escapeHtml(nomor) : nomor}</p>` : ''}
+                        ${tanggal ? `<p><strong>Tanggal:</strong> ${window.formatDate ? window.formatDate(new Date(tanggal)) : tanggal}</p>` : ''}
+                    </div>`;
+                }
+
+                if (tujuan) {
+                    preview += `<div class="text-sm mb-4">
+                        <p><strong>Kepada Yth.:</strong></p>
+                        <p>${window.escapeHtml ? window.escapeHtml(tujuan) : tujuan}</p>
+                    </div>`;
+                }
+
+                preview += `<div class="text-sm mb-4"><p>Dengan hormat,</p></div>`;
+
+                if (jenis) {
+                    preview += `<div class="text-sm mb-4 p-3 bg-rose-50/40 rounded-lg border border-rose-200/40">
+                        <p><strong>Jenis Surat:</strong> ${window.escapeHtml ? window.escapeHtml(jenis) : jenis}</p>
+                    </div>`;
+                }
+
+                if (karyawan || jabatan || departemen) {
+                    preview += `<div class="text-sm mb-4 p-3 bg-gray-50 rounded border border-gray-200">
+                        ${karyawan ? `<p><strong>Nama:</strong> ${window.escapeHtml ? window.escapeHtml(karyawan) : karyawan}</p>` : ''}
+                        ${jabatan ? `<p><strong>Jabatan:</strong> ${window.escapeHtml ? window.escapeHtml(jabatan) : jabatan}</p>` : ''}
+                        ${departemen ? `<p><strong>Departemen:</strong> ${window.escapeHtml ? window.escapeHtml(departemen) : departemen}</p>` : ''}
+                    </div>`;
+                }
+
+                // Add Informasi Umum custom fields to preview
+                let informasiUmumPreview = '';
+                if (window.informasiUmumCustomFields && window.informasiUmumCustomFields.length > 0) {
+                    window.informasiUmumCustomFields.forEach(field => {
+                        const inputId = `informasi_umum_${field.key}`;
+                        const value = document.getElementById(inputId)?.value || '';
+                        if (value) {
+                            informasiUmumPreview += `<p><strong>${window.escapeHtml ? window.escapeHtml(field.label) : field.label}:</strong> ${window.escapeHtml ? window.escapeHtml(value) : value}</p>`;
+                        }
+                    });
+                }
+
+                if (informasiUmumPreview) {
+                    preview += `<div class="text-sm mb-4 p-3 bg-white border border-gray-200/50 rounded-lg">
+                        ${informasiUmumPreview}
+                    </div>`;
+                }
+
+                const additionalFieldsKeys = Object.keys(additionalFields);
+                if (additionalFieldsKeys.length > 0) {
+                    preview += `<div class="text-sm mb-4 p-3 bg-gray-50 rounded">
+                        ${additionalFieldsKeys.map(key => {
+                            const val = additionalFields[key];
+                            const escaped = window.escapeHtml ? window.escapeHtml(val) : val;
+                            return `<p><strong>${window.escapeHtml ? window.escapeHtml(key) : key}:</strong> ${escaped}</p>`;
+                        }).join('')}
+                    </div>`;
+                }
+
+                if (sections && sections.length > 0) {
+                    preview += `<div class="text-sm mt-6 leading-relaxed space-y-3">`;
+                    sections.forEach(section => {
+                        if (section.title) {
+                            preview += `<h4 class="font-bold mt-4 mb-2 text-red-700">${window.escapeHtml ? window.escapeHtml(section.title) : section.title}</h4>`;
+                        }
+                        if (section.content) {
+                            const escaped = window.escapeHtml ? window.escapeHtml(section.content) : section.content;
+                            preview += `<p>${escaped.replace(/\n/g, '<br>')}</p>`;
+                        }
+                    });
+                    preview += `</div>`;
+                }
+
+                const namaPenanda = document.getElementById('namaPenandaTangan')?.value || '';
+                const jabatanPenanda = document.getElementById('jabatanPenandaTangan')?.value || '';
+                const tempatTanda = document.getElementById('tempatTandaTangan')?.value || '';
+                const greetingText = document.getElementById('greetingText')?.value || 'Demikian surat ini kami buat untuk dapat dipergunakan sebagaimana mestinya.';
+
+                // Get all signatures from dynamic fields
+                const signatures = getSignaturesData();
+
+                preview += `<div class="text-sm mt-8 pt-6 border-t-2 border-rose-200/30">
+                    <p>${window.escapeHtml ? window.escapeHtml(greetingText) : greetingText}</p>
+                    <div class="mt-8">
+                        <p>Hormat kami,</p>
+                        ${tempatTanda ? `<div class="mt-2">
+                            <p class="text-xs">${window.escapeHtml ? window.escapeHtml(tempatTanda) : tempatTanda}, _______________</p>
+                        </div>` : ''}
+                        <div class="mt-8 ${signatures.length === 1 ? 'flex justify-end' : 'grid grid-cols-' + (signatures.length > 2 ? '3' : '2') + ' gap-6'}">
+                            ${signatures.map(sig => `
+                                <div class="${signatures.length === 1 ? 'text-right w-32' : 'text-center'}">
+                                    <div class="mb-2">
+                                        <p class="border-t-2 border-gray-800" style="min-width:120px;"></p>
+                                    </div>
+                                    <div class="mt-8">
+                                        <p class="font-semibold text-xs">${window.escapeHtml ? window.escapeHtml(sig.name) : sig.name}</p>
+                                        ${sig.position ? `<p class="text-xs text-gray-600">${window.escapeHtml ? window.escapeHtml(sig.position) : sig.position}</p>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>`;
+
+                preview += '</div>';
+
+                const previewEl = document.getElementById('suratPreview');
+                if (previewEl) {
+                    previewEl.innerHTML = preview;
+                }
+            } catch (error) {
+                console.error('updateFormPreview error:', error);
+            }
+        }
+
+        // ===== MULTIPLE SIGNATURES MANAGEMENT =====
+        let signatureCounter = 0;
+
+        function initializeSignatures() {
+            const container = document.getElementById('signatureFieldsContainer');
+            if (!container) return;
+            
+            // Add one default signature field if empty
+            if (container.children.length === 0) {
+                addSignatureField();
+            }
+        }
+
+        function addSignatureField() {
+            const container = document.getElementById('signatureFieldsContainer');
+            if (!container) return;
+
+            signatureCounter++;
+            const fieldId = 'signature_' + signatureCounter;
+            
+            const fieldDiv = document.createElement('div');
+            fieldDiv.id = fieldId;
+            fieldDiv.className = 'p-6 bg-gradient-to-br from-red-50/40 to-red-50/20 border-2 border-red-200/50 rounded-2xl shadow-sm hover:shadow-md transition-shadow';
+            fieldDiv.innerHTML = `
+                <div class="flex gap-3 mb-5 items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-red-600/80 rounded-lg flex items-center justify-center text-white text-xs font-bold">
+                            ${signatureCounter}
+                        </div>
+                        <h4 class="font-semibold text-gray-800 text-sm">Penandatangan</h4>
+                    </div>
+                    ${container.children.length > 0 ? `<button type="button" onclick="removeSignatureField('${fieldId}')" class="px-3 py-1.5 bg-gradient-to-r from-red-500/80 to-red-600/70 text-white rounded-lg text-xs hover:shadow-sm transition font-medium">✕ Hapus</button>` : ''}
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-2">
+                    <div class="space-y-2">
+                        <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide">Nama Penandatangan *</label>
+                        <input type="text" placeholder="Contoh: Budi Santoso" oninput="updateFormPreview()" onchange="updateFormPreview()" 
+                               class="w-full px-4 py-2.5 border-2 border-red-200/60 rounded-xl focus:ring-2 focus:ring-red-400/50 focus:border-red-300 bg-white hover:bg-gray-50 text-sm font-medium transition" 
+                               data-signature-name="${fieldId}" />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wide">Jabatan *</label>
+                        <input type="text" placeholder="Contoh: Direktur Utama" oninput="updateFormPreview()" onchange="updateFormPreview()" 
+                               class="w-full px-4 py-2.5 border-2 border-red-200/60 rounded-xl focus:ring-2 focus:ring-red-400/50 focus:border-red-300 bg-white hover:bg-gray-50 text-sm font-medium transition" 
+                               data-signature-position="${fieldId}" />
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-3">Isi nama dan jabatan penandatangan. Data akan ditampilkan di preview surat.</p>
+            `;
+            
+            container.appendChild(fieldDiv);
+            updateFormPreview();
+        }
+
+        function removeSignatureField(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.remove();
+                updateFormPreview();
+            }
+        }
+
+        function getSignaturesData() {
+            const signatures = [];
+            const container = document.getElementById('signatureFieldsContainer');
+            if (!container) return [{ name: 'Direktur Utama', position: '' }];
+
+            container.querySelectorAll('[data-signature-name]').forEach(nameEl => {
+                const fieldId = nameEl.dataset.signatureName;
+                const posEl = container.querySelector(`[data-signature-position="${fieldId}"]`);
+                
+                const name = (nameEl.value || '').trim();
+                const position = posEl ? (posEl.value || '').trim() : '';
+                
+                // Include signature if at least name or position is filled
+                if (name || position) {
+                    signatures.push({ 
+                        name: name || 'Penandatangan', 
+                        position: position 
+                    });
+                }
+            });
+
+            // If no signatures filled, return default
+            return signatures.length > 0 ? signatures : [{ name: 'Direktur Utama', position: '' }];
+        }
+
+        // ===== ADD SURAT SECTION FUNCTION =====
+        function addSuratSection(title = '', content = '', sectionId = null) {
+            const container = document.getElementById('suratSections');
+            const uniqueId = sectionId || 'section_' + Date.now();
+            
+            const sectionDiv = document.createElement('div');
+            sectionDiv.id = uniqueId;
+            sectionDiv.className = 'p-5 bg-rose-50/40 border-2 border-rose-200/40 rounded-2xl shadow-sm';
+            sectionDiv.innerHTML = `
+                <div class="flex gap-2 mb-4 items-center">
+                    <input type="text" placeholder="Judul Section (misal: Ketentuan Umum, Penutup, dll)" 
+                           value="${title}" oninput="updateFormPreview()" onchange="updateFormPreview()" 
+                           class="flex-1 px-3 py-2 border-2 border-red-300 rounded font-medium text-sm focus:ring-2 focus:ring-red-500" 
+                           data-section-title="${uniqueId}" />
+                    <button type="button" onclick="removeSuratSection('${uniqueId}')" 
+                            class="px-3 py-2 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition">✕ Hapus</button>
+                </div>
+                <textarea placeholder="Isi section..." oninput="updateFormPreview()" onchange="updateFormPreview()" 
+                          class="w-full px-3 py-2 border-2 border-red-300 rounded text-sm focus:ring-2 focus:ring-red-500" 
+                          rows="5" 
+                          data-section-content="${uniqueId}">${content}</textarea>
+            `;
+            if (container) container.appendChild(sectionDiv);
+            updateFormPreview();
+        }
+
+        function removeSuratSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.remove();
+                updateFormPreview();
+            }
+        }
+
+        function getSuratSections() {
+            const container = document.getElementById('suratSections');
+            const sections = [];
+            if (!container) return sections;
+            
+            container.querySelectorAll('div[id^="section_"]').forEach(sectionDiv => {
+                const titleInput = sectionDiv.querySelector('[data-section-title]');
+                const contentInput = sectionDiv.querySelector('[data-section-content]');
+                const title = titleInput?.value?.trim() || '';
+                const content = contentInput?.value?.trim() || '';
+                if (title || content) sections.push({ title, content });
+            });
+            return sections;
+        }
+
+        // Make functions globally accessible immediately
+        window.openModalSurat = openModalSurat;
+        window.openModalBuatSurat = openModalBuatSurat;
+        window.closeModalSurat = closeModalSurat;
+        window.updateFormPreview = updateFormPreview;
+        window.addSuratSection = addSuratSection;
+        window.removeSuratSection = removeSuratSection;
+        window.getSuratSections = getSuratSections;
+        
+        // Upload Kop Surat - Define EARLY so it's available for addEventListener
+        function uploadKop(e) {
+            const fileInput = e.target || document.getElementById('kopUploadInput');
+            const file = fileInput.files && fileInput.files[0];
+            if (!file) return;
+
+            const statusEl = document.getElementById('kopUploadStatus');
+            
+            // Validation: Check file size (max 10MB = 10240KB)
+            if (file.size > 10 * 1024 * 1024) {
+                if (statusEl) statusEl.innerHTML = '<span class="text-red-600">❌ File terlalu besar. Maksimal 10MB.</span>';
+                if (fileInput) fileInput.value = '';
+                return;
+            }
+
+            // Validation: RELAXED - support any common file format
+            // Block only dangerous file extensions
+            const blockedExtensions = ['exe', 'bat', 'cmd', 'com', 'scr', 'vbs', 'sh', 'jar'];
+            const fileExt = file.name.split('.').pop().toLowerCase();
+            if (blockedExtensions.includes(fileExt)) {
+                if (statusEl) statusEl.innerHTML = '<span class="text-red-600">❌ Tipe file tidak aman.</span>';
+                if (fileInput) fileInput.value = '';
+                return;
+            }
+
+            if (statusEl) statusEl.innerHTML = '<span class="text-blue-600">⏳ Mengunggah...</span>';
+
+            const form = new FormData();
+            form.append('file', file);
+
+            const tokenMeta = document.querySelector('meta[name="csrf-token"]');
+            const token = tokenMeta ? tokenMeta.getAttribute('content') : '';
+
+            fetch('/admin/kop-surat', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: form,
+                    credentials: 'same-origin'
+                }).then(r => {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                })
+                .then(data => {
+                    if (data && data.success && data.data) {
+                        // append and select
+                        const sel = document.getElementById('kopSuratSelect');
+                        const opt = document.createElement('option');
+                        opt.value = data.data.id;
+                        opt.text = data.data.name;
+                        opt.dataset.url = data.data.url || '';
+                        opt.dataset.isTemplate = data.data.is_template ? '1' : '0';
+                        if (data.data.placeholders) {
+                            opt.dataset.placeholders = JSON.stringify(data.data.placeholders || []);
+                        }
+                        if (sel) {
+                            sel.prepend(opt);
+                            sel.value = data.data.id;
+                            // Trigger preview update
+                            if (window.updateKopPreview) window.updateKopPreview();
+                            if (window.updateFormPreview) window.updateFormPreview();
+                        }
+                        if (statusEl) statusEl.innerHTML = '<span class="text-green-600">✅ Kop berhasil diunggah.</span>';
+                    } else {
+                        const errorMsg = data && data.message ? data.message : 'Gagal mengunggah';
+                        if (statusEl) statusEl.innerHTML = '<span class="text-red-600">❌ ' + errorMsg + '</span>';
+                    }
+                    // clear file input
+                    if (fileInput) fileInput.value = '';
+                })
+                .catch(err => {
+                    console.error('uploadKop error', err);
+                    const errorMsg = err.message || 'Gagal mengunggah';
+                    if (statusEl) statusEl.innerHTML = '<span class="text-red-600">❌ ' + errorMsg + '</span>';
+                    if (fileInput) fileInput.value = '';
+                });
+        }
+        
+        window.uploadKop = uploadKop;
+    </script>
     <style>
         /* Hide the 'Buat Surat Baru' header button while modal is open */
         body.modal-open #btnBuatSurat {
@@ -50,41 +549,49 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Header Section -->
                 <div class="mb-8">
-                    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg p-6 sm:p-8">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                            <div class="flex items-center gap-4">
-                                <div class="bg-indigo-50 p-3 rounded-lg">
-                                    <svg class="w-8 h-8 text-indigo-700" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h1 class="text-3xl font-bold text-white">Manajemen Surat Resmi</h1>
-                                    <p class="text-indigo-100 mt-1">Kelola surat resmi yang telah disetujui direktur</p>
-                                </div>
-                            </div>
-                            <button id="btnBuatSurat" onclick="openModalBuatSurat()" role="button"
-                                aria-haspopup="dialog" tabindex="0"
-                                style="position:relative;z-index:99999;cursor:pointer;pointer-events:auto!important;"
-                                class="inline-flex items-center px-5 py-3 bg-white text-indigo-600 font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transform transition-all duration-200 whitespace-nowrap">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 4v16m8-8H4" />
-                                </svg>
-                                Buat Surat Baru
-                            </button>
-                        </div>
-                    </div>
+    <div class="bg-gradient-to-br from-rose-500/90 via-red-500/80 to-slate-300/70 rounded-3xl shadow-sm p-6 sm:p-8 backdrop-blur-md border border-rose-400/20">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+
+            <div class="flex items-center gap-4">
+                <div class="bg-white/80 p-3 rounded-2xl shadow-sm">
+                    <svg class="w-8 h-8 text-red-700" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
                 </div>
 
+                <div>
+                    <h1 class="text-3xl font-bold text-white drop-shadow">
+                        Manajemen Surat Resmi
+                    </h1>
+                    <p class="text-white/90 mt-1">
+                        Kelola surat resmi yang telah disetujui direktur
+                    </p>
+                </div>
+            </div>
+
+            <button id="btnBuatSurat"
+                onclick="openModalBuatSurat()"
+                class="inline-flex items-center px-5 py-3 bg-white text-red-700 font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-200 whitespace-nowrap relative z-50">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 4v16m8-8H4" />
+                </svg>
+                Buat Surat Baru
+            </button>
+
+        </div>
+    </div>
+</div>
+
+
                 <!-- Tabs Navigation -->
-                <div class="mb-6">
-                    <div class="bg-white rounded-lg shadow-sm p-2">
+                <div class="mb-8">
+                    <div class="bg-white rounded-3xl shadow-md p-3 border border-gray-100/50 backdrop-blur-sm">
                         <nav class="flex space-x-2" aria-label="Tabs">
                             <button onclick="switchTab('permintaan')" id="tab-permintaan"
-                                class="group inline-flex items-center px-4 py-3 rounded-md font-medium text-sm bg-indigo-50 text-indigo-700 whitespace-nowrap focus:outline-none transition-all">
+                                class="group inline-flex items-center px-5 py-3 rounded-2xl font-medium text-sm bg-rose-50/50 text-rose-700/90 whitespace-nowrap focus:outline-none transition-all border-b-2 border-rose-400/40 shadow-sm hover:shadow-md">
                                 <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -92,7 +599,7 @@
                                 <span>Permintaan Disetujui</span>
                             </button>
                             <button onclick="switchTab('daftar')" id="tab-daftar"
-                                class="group inline-flex items-center px-4 py-3 rounded-md font-medium text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 whitespace-nowrap focus:outline-none transition-all">
+                                class="group inline-flex items-center px-5 py-3 rounded-2xl font-medium text-sm text-gray-600 hover:bg-gray-50/60 hover:text-gray-900 whitespace-nowrap focus:outline-none transition-all">
                                 <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
@@ -106,36 +613,36 @@
                 <!-- TAB 1: Permintaan Surat Disetujui Direktur -->
                 <div id="content-permintaan" class="block">
                     <!-- Info Banner -->
-                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 rounded">
+                    <div class="bg-rose-50/40 border-l-4 border-rose-300/40 p-4 mb-6 rounded-2xl">
                         <div class="flex">
                             <div class="flex-shrink-0">
-                                <svg class="h-5 w-5 text-blue-400" fill="none" stroke="currentColor"
+                                <svg class="h-5 w-5 text-rose-400/50" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <div class="ml-3">
-                                <p class="text-sm text-blue-700">Tampilan ini menunjukkan permintaan surat dari karyawan
+                                <p class="text-sm text-rose-700/60">Tampilan ini menunjukkan permintaan surat dari karyawan
                                     yang telah disetujui Direktur dan siap diterbitkan oleh Admin HRD.</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Filter Section -->
-                    <div class="bg-white shadow rounded-lg mb-6">
+                    <div class="bg-white shadow-md rounded-3xl border border-gray-100/50 mb-6 overflow-hidden backdrop-blur-sm">
                         <div class="px-6 py-5">
                             <h3 class="text-base font-medium text-gray-900 mb-4">Filter & Pencarian</h3>
                             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                                 <div class="md:col-span-2">
                                     <x-label for="search_employee" value="Cari Karyawan atau Keperluan" />
-                                    <x-input id="search_employee" type="text" class="mt-1 block w-full"
+                                    <x-input id="search_employee" type="text" class="mt-1 block w-full rounded-2xl"
                                         placeholder="Ketik nama karyawan..." />
                                 </div>
                                 <div>
                                     <x-label for="filter_type" value="Jenis Permintaan" />
                                     <select id="filter_type"
-                                        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm px-4 py-3 text-base">
+                                        class="mt-1 block w-full border-gray-200/50 focus:border-red-500 focus:ring-red-500 rounded-2xl shadow-sm px-4 py-3 text-base bg-white/70 hover:bg-white transition-colors">
                                         <option value="">Pilih Jenis</option>
                                         <option value="cuti">Cuti</option>
                                         <option value="lembur">Lembur</option>
@@ -145,23 +652,23 @@
                                 </div>
                                 <div>
                                     <x-label for="filter_date" value="Tanggal Disetujui" />
-                                    <x-input id="filter_date" type="date" class="mt-1 block w-full" />
+                                    <x-input id="filter_date" type="date" class="mt-1 block w-full rounded-2xl" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Stats Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <!-- Card 1: Menunggu Dibuat -->
-                        <div class="bg-white rounded-xl shadow-lg border-l-4 border-orange-500 hover:shadow-xl transition-shadow duration-300 stats-card cursor-pointer"
+                        <div class="bg-white rounded-3xl shadow-md border border-red-100/50 hover:shadow-lg hover:border-red-200/60 transition-all duration-300 stats-card cursor-pointer backdrop-blur-sm"
                             role="button" tabindex="0" onclick="cardFilter('permintaan','Menunggu Dibuat', this)"
                             data-status="Menunggu Dibuat" aria-pressed="false">
-                            <div class="p-6">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="p-3 bg-orange-100 rounded-lg">
-                                            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor"
+                            <div class="p-8">
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="p-3.5 bg-red-100/60 rounded-2xl">
+                                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -180,14 +687,14 @@
                         </div>
 
                         <!-- Card 2: Sedang Diproses -->
-                        <div class="bg-white rounded-xl shadow-lg border-l-4 border-blue-500 hover:shadow-xl transition-shadow duration-300 stats-card cursor-pointer"
+                        <div class="bg-white rounded-3xl shadow-md border border-gray-100/50 hover:shadow-lg hover:border-gray-200/60 transition-all duration-300 stats-card cursor-pointer backdrop-blur-sm"
                             role="button" tabindex="0" onclick="cardFilter('permintaan','Sedang Diproses', this)"
                             data-status="Sedang Diproses" aria-pressed="false">
-                            <div class="p-6">
+                            <div class="p-8">
                                 <div class="flex items-center justify-between mb-4">
                                     <div class="flex items-center space-x-3">
-                                        <div class="p-3 bg-blue-100 rounded-lg">
-                                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
+                                        <div class="p-3 bg-red-100/60 rounded-2xl">
+                                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -206,14 +713,14 @@
                         </div>
 
                         <!-- Card 3: Telah Diterbitkan -->
-                        <div class="bg-white rounded-xl shadow-lg border-l-4 border-green-500 hover:shadow-xl transition-shadow duration-300 stats-card cursor-pointer"
+                        <div class="bg-white rounded-3xl shadow-md border border-gray-100/50 hover:shadow-lg hover:border-gray-200/60 transition-all duration-300 stats-card cursor-pointer backdrop-blur-sm"
                             role="button" tabindex="0" onclick="cardFilter('daftar','Telah Diterbitkan', this)"
                             data-status="Telah Diterbitkan" aria-pressed="false">
-                            <div class="p-6">
+                            <div class="p-8">
                                 <div class="flex items-center justify-between mb-4">
                                     <div class="flex items-center space-x-3">
-                                        <div class="p-3 bg-green-100 rounded-lg">
-                                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
+                                        <div class="p-3 bg-gray-100/60 rounded-2xl">
+                                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -233,46 +740,46 @@
                     </div>
 
                     <!-- Queue Table -->
-                    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
+                    <div class="bg-white shadow-md rounded-3xl overflow-hidden border border-gray-100/50 backdrop-blur-sm">
                         <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                            <table class="min-w-full divide-y divide-gray-200/50">
+                                <thead class="bg-gradient-to-r from-rose-50/40 to-rose-100/30 border-b-2 border-rose-200/30">
                                     <tr>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Karyawan
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Jenis Permintaan
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Keperluan
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Disetujui Tgl
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Status
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-center text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Aksi
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
+                                <tbody class="bg-white divide-y divide-gray-100/50">
                                     <!-- Item 1 -->
-                                    <tr class="hover:bg-gray-50">
+                                    <tr class="hover:bg-red-50/30 transition-colors duration-200">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-8 w-8">
                                                     <div
-                                                        class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                                                        <span class="text-indigo-600 font-medium text-xs">AR</span>
+                                                        class="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center">
+                                                        <span class="text-red-600 font-medium text-xs">AR</span>
                                                     </div>
                                                 </div>
                                                 <div class="ml-3">
@@ -287,13 +794,13 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10 Jan 2026</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-800">
+                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                                 Menunggu Dibuat
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                             <button onclick="buatSurat('Ahmad Rizki', 'Cuti')"
-                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-lg hover:from-indigo-600 hover:to-purple-700 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white font-medium rounded-2xl hover:from-red-600 hover:to-red-700 hover:shadow-md transform hover:scale-105 transition-all duration-200">
                                                 <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -327,13 +834,13 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12 Jan 2026</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                                                 Sedang Diproses
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                             <button onclick="lanjutkanSurat('Siti Nurhaliza', 'Lembur')"
-                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-medium rounded-lg hover:from-gray-600 hover:to-gray-700 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-medium rounded-2xl hover:from-gray-600 hover:to-gray-700 hover:shadow-md transform hover:scale-105 transition-all duration-200">
                                                 <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -350,8 +857,8 @@
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-8 w-8">
                                                     <div
-                                                        class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                                                        <span class="text-green-600 font-medium text-xs">BS</span>
+                                                        class="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center">
+                                                        <span class="text-red-600 font-medium text-xs">BS</span>
                                                     </div>
                                                 </div>
                                                 <div class="ml-3">
@@ -366,13 +873,13 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">11 Jan 2026</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-800">
+                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                                 Menunggu Dibuat
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                             <button onclick="buatSurat('Budi Santoso', 'Resmi')"
-                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-lg hover:from-indigo-600 hover:to-purple-700 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white font-medium rounded-2xl hover:from-red-600 hover:to-red-700 hover:shadow-md transform hover:scale-105 transition-all duration-200">
                                                 <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -390,8 +897,8 @@
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-8 w-8">
                                                     <div
-                                                        class="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
-                                                        <span class="text-purple-600 font-medium text-xs">RW</span>
+                                                        class="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center">
+                                                        <span class="text-red-600 font-medium text-xs">RW</span>
                                                     </div>
                                                 </div>
                                                 <div class="ml-3">
@@ -406,13 +913,13 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">13 Jan 2026</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-800">
+                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                                 Menunggu Dibuat
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                             <button onclick="buatSurat('Rina Wijaya', 'Cuti')"
-                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-lg hover:from-indigo-600 hover:to-purple-700 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white font-medium rounded-2xl hover:from-red-600 hover:to-red-700 hover:shadow-md transform hover:scale-105 transition-all duration-200">
                                                 <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -446,13 +953,13 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">09 Jan 2026</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-800">
+                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                                 Menunggu Dibuat
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                             <button onclick="buatSurat('Dedi Gunawan', 'Cuti')"
-                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-lg hover:from-indigo-600 hover:to-purple-700 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white font-medium rounded-2xl hover:from-red-600 hover:to-red-700 hover:shadow-md transform hover:scale-105 transition-all duration-200">
                                                 <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -472,36 +979,36 @@
                 <!-- TAB 2: Daftar Surat Diterbitkan -->
                 <div id="content-daftar" class="hidden">
                     <!-- Info Banner -->
-                    <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6 rounded">
+                    <div class="bg-gray-50/60 border-l-4 border-gray-400/50 p-4 mb-6 rounded-2xl">
                         <div class="flex">
                             <div class="flex-shrink-0">
-                                <svg class="h-5 w-5 text-green-400" fill="none" stroke="currentColor"
+                                <svg class="h-5 w-5 text-gray-400/70" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                             <div class="ml-3">
-                                <p class="text-sm text-green-700">Daftar surat resmi yang telah diterbitkan oleh Admin
+                                <p class="text-sm text-gray-700/80">Daftar surat resmi yang telah diterbitkan oleh Admin
                                     HRD. Surat ini tersedia untuk diambil karyawan dan dilaporkan ke Direktur.</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Filter Section -->
-                    <div class="bg-white shadow rounded-lg mb-6">
+                    <div class="bg-white shadow-md rounded-3xl border border-gray-100/50 mb-6 overflow-hidden backdrop-blur-sm">
                         <div class="px-6 py-5">
                             <h3 class="text-base font-medium text-gray-900 mb-4">Filter & Pencarian</h3>
                             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                                 <div class="md:col-span-2">
                                     <x-label for="search_surat" value="Cari Nomor Surat atau Karyawan" />
-                                    <x-input id="search_surat" type="text" class="mt-1 block w-full"
+                                    <x-input id="search_surat" type="text" class="mt-1 block w-full rounded-2xl"
                                         placeholder="Cari..." />
                                 </div>
                                 <div>
                                     <x-label for="filter_type_publish" value="Jenis Surat" />
                                     <select id="filter_type_publish"
-                                        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm px-4 py-3 text-base">
+                                        class="mt-1 block w-full border-gray-200/50 focus:border-red-500 focus:ring-red-500 rounded-2xl shadow-sm px-4 py-3 text-base bg-white/70 hover:bg-white transition-colors">
                                         <option value="">Pilih Jenis</option>
                                         <option value="cuti">Cuti</option>
                                         <option value="lembur">Lembur</option>
@@ -510,7 +1017,7 @@
                                 </div>
                                 <div>
                                     <x-label for="filter_date_publish" value="Tanggal Terbit" />
-                                    <x-input id="filter_date_publish" type="date" class="mt-1 block w-full" />
+                                    <x-input id="filter_date_publish" type="date" class="mt-1 block w-full rounded-2xl" />
                                 </div>
                             </div>
                         </div>
@@ -529,7 +1036,7 @@
                                         <p class="text-xs text-green-500 mt-1">Januari 2026</p>
                                     </div>
                                     <div
-                                        class="p-4 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl shadow-lg">
+                                        class="p-4 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl shadow-md">
                                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -540,7 +1047,7 @@
                             </div>
                         </div>
                         <div
-                            class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-blue-100">
+                            class="bg-gradient-to-br from-red-50 to-gray-50 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-red-100">
                             <div class="px-6 py-5">
                                 <div class="flex items-center justify-between">
                                     <div>
@@ -549,7 +1056,7 @@
                                         <p class="text-xs text-blue-500 mt-1">Perlu tindak lanjut</p>
                                     </div>
                                     <div
-                                        class="p-4 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl shadow-lg">
+                                        class="p-4 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-md">
                                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -562,39 +1069,39 @@
                     </div>
 
                     <!-- Published Surat Table -->
-                    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
+                    <div class="bg-white shadow-md rounded-3xl overflow-hidden border border-gray-100/50 backdrop-blur-sm">
                         <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                            <table class="min-w-full divide-y divide-gray-200/50">
+                                <thead class="bg-gradient-to-r from-rose-50/40 to-rose-100/30 border-b-2 border-rose-200/30">
                                     <tr>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-red-700 uppercase tracking-wider">
                                             No. Surat
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Jenis
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Karyawan
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Tgl Terbit
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Status
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-center text-xs font-medium text-red-700 uppercase tracking-wider">
                                             Aksi
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr class="hover:bg-gray-50">
+                                <tbody class="bg-white divide-y divide-gray-100/50">
+                                    <tr class="hover:bg-red-50/30 transition-colors duration-200">
                                         <td
                                             class="px-6 py-4 whitespace-nowrap text-sm font-mono font-medium text-gray-900">
                                             SK-2026-001</td>
@@ -603,7 +1110,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10 Jan 2026</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                                                 Telah Diterbitkan
                                             </span>
                                         </td>
@@ -631,7 +1138,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12 Jan 2026</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                                                 Telah Diterbitkan
                                             </span>
                                         </td>
@@ -658,7 +1165,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">11 Jan 2026</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                                                 Telah Diterbitkan
                                             </span>
                                         </td>
@@ -696,12 +1203,12 @@
             <div
                 class="relative bg-white rounded-xl shadow-2xl w-full h-full lg:h-auto lg:max-w-7xl lg:max-h-[92vh] overflow-hidden z-10 flex flex-col">
             <!-- Header -->
-            <div class="px-8 py-6 border-b border-gray-200 flex justify-between items-center bg-white">
+            <div class="px-8 py-6 border-b border-gray-200 flex justify-between items-center bg-white flex-shrink-0">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900">Buat Surat Resmi</h2>
                     <p class="text-sm text-gray-600 mt-1">Lengkapi semua field untuk membuat surat resmi baru</p>
                 </div>
-                <button onclick="closeModalSurat()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-2 transition flex-shrink-0">
+                <button onclick="closeModalSurat()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-2xl p-2 transition flex-shrink-0">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12" />
@@ -710,31 +1217,37 @@
                 </div>
 
             <!-- Content - Flex to take remaining space -->
-            <div class="flex-1 overflow-hidden flex">
+            <div class="flex-1 overflow-hidden flex flex-col">
                     <!-- SINGLE PAGE FORM: Left form + Right Preview - Google Form Style -->
-                    <div id="formSteps" class="grid grid-cols-1 lg:grid-cols-3 gap-0 min-h-[calc(100vh-200px)] bg-gray-100 w-full">
+                    <div id="formSteps" class="grid grid-cols-1 lg:grid-cols-3 gap-0 flex-1 overflow-hidden bg-gray-100 w-full h-full">
 
-                        <!-- LEFT COLUMN: Form Inputs - Google Form Style -->
-                        <div class="lg:col-span-2 flex flex-col overflow-y-auto">
+                        <!-- LEFT COLUMN: Form Inputs - Google Form Style with proper scroll -->
+                        <div class="lg:col-span-2 flex flex-col overflow-y-auto h-full">
                             
                             <!-- Kop Surat Section -->
-                            <div class="bg-white border-b border-gray-200 p-8">
+                            <div class="bg-gradient-to-b from-red-50 to-gray-50 border-b-2 border-red-300 p-8">
                                 <div class="max-w-2xl">
-                                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Buat Surat Resmi</h2>
-                                    <p class="text-gray-600 mb-6">Lengkapi semua field di bawah untuk membuat surat resmi baru</p>
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                        <h2 class="text-2xl font-bold text-gray-900">Kop Surat</h2>
+                                    </div>
+                                    <p class="text-gray-600 mb-6 ml-13">Pilih atau unggah kop surat perusahaan</p>
                                     
-                                    <label class="block text-sm font-semibold text-gray-900 mb-3">Kop Surat</label>
                                     <div class="flex gap-3 items-center mb-4">
-                                        <select id="kopSuratSelect" class="flex-1 px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white">
+                                        <select id="kopSuratSelect" onchange="updateFormPreview()" class="flex-1 px-4 py-2.5 border-2 border-red-300/50 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition bg-white/70 text-gray-900 font-medium hover:bg-white">
                                             <option value="">-- Pilih Kop Surat (Default) --</option>
                                         </select>
-                                        <input id="kopUploadInput" type="file" accept="image/*,application/pdf" class="hidden" />
-                                        <button type="button" onclick="document.getElementById('kopUploadInput').click()"
-                                            class="px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-200 transition font-medium text-sm">Unggah Kop</button>
+                                        <input id="kopUploadInput" type="file" accept=".jpg,.jpeg,.png,.svg,.pdf,.docx,.xlsx,.pptx,.doc,.xls,.ppt,.gif,.bmp,.tiff,.txt,.odt,.ods,.odp" class="hidden" />
+                                        <button type="button" onclick="document.getElementById('kopUploadInput').click()" title="Unggah berbagai jenis file (JPG, PNG, PDF, DOCX, XLSX, PPTX, dll)"
+                                            class="px-4 py-2.5 bg-gradient-to-r from-red-500/80 to-red-600/80 border border-transparent rounded-2xl text-white hover:shadow-md transition font-medium text-sm flex items-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3v-6"/></svg> Unggah</button>
                                     </div>
-                                    <div id="kopPreview" class="text-xs text-gray-500 mb-4">Tidak ada kop dipilih</div>
+                                    <div id="kopPreview" class="text-sm text-gray-600 mb-4 p-4 bg-white rounded-2xl border-2 border-dashed border-red-300/40 min-h-24 flex items-center justify-center">Tidak ada kop dipilih</div>
                                     <div id="kopTemplateFields" class="space-y-4 mb-6"></div>
-                                    <div id="kopUploadStatus" class="text-xs text-gray-500"></div>
+                                    <div id="kopUploadStatus" class="text-xs font-medium h-5"></div>
                                 </div>
                             </div>
 
@@ -742,16 +1255,20 @@
                             <div class="divide-y divide-gray-200 flex-1">
                                 
                                 <!-- Section 1: Jenis Surat -->
-                                <div class="bg-white p-8 border-b border-gray-200">
+                                <div class="bg-white p-8 border-b-2 border-red-100">
                                     <div class="max-w-2xl">
-                                        <h3 class="text-lg font-bold text-gray-900 mb-1">Jenis Surat</h3>
-                                        <p class="text-sm text-gray-500 mb-6">Pilih jenis surat yang akan dibuat</p>
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center">
+                                                <span class="text-white text-sm font-bold">1</span>
+                                            </div>
+                                            <h3 class="text-lg font-bold text-gray-900">Jenis Surat</h3>
+                                        </div>
+                                        <p class="text-sm text-gray-500 mb-6 ml-11">Pilih jenis surat yang akan dibuat</p>
                                         
-                                        <select id="jenisSurat" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white text-gray-900">
+                                        <select id="jenisSurat" oninput="updateFormPreview()" onchange="updateFormPreview()" class="w-full px-4 py-3 border-2 border-rose-200/30 rounded-2xl focus:ring-2 focus:ring-rose-400/50 focus:border-rose-400/50 transition bg-white/70 text-gray-900 font-medium hover:bg-white">
                                             <option value="">-- Pilih Jenis Surat --</option>
                                             <option value="pkwt">PKWT (Perjanjian Kerja Waktu Tertentu)</option>
-                                            <option value="pkwtt">PKWTT (Perjanjian Kerja Waktu Tidak Tertentu)
-                                            </option>
+                                            <option value="pkwtt">PKWTT (Perjanjian Kerja Waktu Tidak Tertentu)</option>
                                             <option value="magang">Surat Balasan Magang</option>
                                             <option value="jalan">Surat Jalan</option>
                                             <option value="cuti">Surat Pengajuan Cuti</option>
@@ -761,61 +1278,75 @@
                                 </div>
 
                                 <!-- Section 2: Informasi Umum -->
-                                <div class="bg-white p-8 border-b border-gray-200">
+                                <div class="bg-white p-8 border-b-2 border-red-100">
                                     <div class="max-w-2xl">
-                                        <h3 class="text-lg font-bold text-gray-900 mb-1">Informasi Umum</h3>
-                                        <p class="text-sm text-gray-500 mb-6">Isi data identitas surat dan penerima</p>
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center">
+                                                <span class="text-white text-sm font-bold">2</span>
+                                            </div>
+                                            <h3 class="text-lg font-bold text-gray-900">Informasi Umum</h3>
+                                        </div>
+                                        <p class="text-sm text-gray-500 mb-6 ml-11">Isi data identitas surat dan penerima</p>
                                         
                                         <!-- Nomor Surat -->
                                         <div class="mb-6">
                                             <label class="block text-sm font-medium text-gray-900 mb-2">Nomor Surat *</label>
-                                            <input type="text" id="nomorSurat" placeholder="Contoh: 001/HR/2026" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
-                                            <p class="text-xs text-gray-500 mt-1">Format: Nomor/Departemen/Tahun</p>
+                                            <input type="text" id="nomorSurat" placeholder="Contoh: 001/HR/2026" oninput="updateFormPreview()" onchange="updateFormPreview()" class="w-full px-4 py-3 border-2 border-red-200/40 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition bg-white/70 hover:bg-white" />
+                                            <p class="text-xs text-red-600 mt-1">Format: Nomor/Departemen/Tahun</p>
                                         </div>
 
                                         <!-- Tanggal Surat -->
                                         <div class="mb-6">
                                             <label class="block text-sm font-medium text-gray-900 mb-2">Tanggal Surat *</label>
-                                            <input type="date" id="tanggalSurat" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                                            <input type="date" id="tanggalSurat" oninput="updateFormPreview()" onchange="updateFormPreview()" class="w-full px-4 py-3 border-2 border-red-200/40 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition bg-white/70 hover:bg-white" />
                                         </div>
 
                                         <!-- Nama Karyawan -->
                                         <div class="mb-6">
                                             <label class="block text-sm font-medium text-gray-900 mb-2">Nama Karyawan *</label>
-                                            <input type="text" id="karyawanSurat" placeholder="Nama lengkap" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                                            <input type="text" id="karyawanSurat" placeholder="Nama lengkap" oninput="updateFormPreview()" onchange="updateFormPreview()" class="w-full px-4 py-3 border-2 border-red-200/40 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition bg-white/70 hover:bg-white" />
                                         </div>
 
                                         <!-- Jabatan -->
                                         <div class="mb-6">
                                             <label class="block text-sm font-medium text-gray-900 mb-2">Jabatan</label>
-                                            <input type="text" id="jabatanSurat" placeholder="Misal: Manager IT" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                                            <input type="text" id="jabatanSurat" placeholder="Misal: Manager IT" oninput="updateFormPreview()" onchange="updateFormPreview()" class="w-full px-4 py-3 border-2 border-red-200/40 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition bg-white/70 hover:bg-white" />
                                         </div>
 
                                         <!-- Departemen -->
                                         <div class="mb-6">
                                             <label class="block text-sm font-medium text-gray-900 mb-2">Departemen</label>
-                                            <input type="text" id="departemenSurat" placeholder="Misal: HR, IT" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                                            <input type="text" id="departemenSurat" placeholder="Misal: HR, IT" oninput="updateFormPreview()" onchange="updateFormPreview()" class="w-full px-4 py-3 border-2 border-red-200/40 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition bg-white/70 hover:bg-white" />
                                         </div>
 
                                         <!-- Tujuan Surat -->
                                         <div class="mb-6">
                                             <label class="block text-sm font-medium text-gray-900 mb-2">Tujuan Surat</label>
-                                            <input type="text" id="tujuanSurat" placeholder="Ke mana surat ditujukan" onchange="updateFormPreview()" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" />
+                                            <input type="text" id="tujuanSurat" placeholder="Ke mana surat ditujukan" oninput="updateFormPreview()" onchange="updateFormPreview()" class="w-full px-4 py-3 border-2 border-red-200/40 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition bg-white/70 hover:bg-white" />
                                         </div>
 
-                                        
+                                        <!-- Custom Fields for Informasi Umum -->
+                                        <div id="customInformasiUmumFields" class="space-y-4 mb-6"></div>
+
+                                        <!-- Add Section Button -->
+                                        <button type="button" onclick="addCustomInformasiUmumField()" class="px-4 py-2 bg-gradient-to-r from-red-500/80 to-red-500/80 text-white rounded-2xl hover:shadow-sm transition font-medium text-sm">+ Tambah Field</button>
                                     </div>
                                 </div>
 
                                 <!-- Section 3: Isi Surat (Section-Based) -->
-                                <div class="bg-white p-8 border-b border-gray-200">
+                                <div class="bg-white p-8 border-b-2 border-red-100">
                                     <div class="max-w-2xl">
                                         <div class="flex items-center justify-between mb-6">
                                             <div>
-                                                <h3 class="text-lg font-bold text-gray-900 mb-1">Isi Surat</h3>
-                                                <p class="text-sm text-gray-500">Kelola isi surat dalam bentuk section</p>
+                                                <div class="flex items-center gap-3 mb-2">
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center">
+                                                        <span class="text-white text-sm font-bold">3</span>
+                                                    </div>
+                                                    <h3 class="text-lg font-bold text-gray-900">Isi Surat</h3>
+                                                </div>
+                                                <p class="text-sm text-gray-500 ml-11">Kelola isi surat dalam bentuk section</p>
                                             </div>
-                                            <button type="button" onclick="addSuratSection()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium text-sm">+ Tambah Section</button>
+                                            <button type="button" onclick="addSuratSection()" class="px-4 py-2 bg-gradient-to-r from-red-500/80 to-red-500/80 text-white rounded-2xl hover:shadow-sm transition font-medium text-sm">+ Section</button>
                                         </div>
                                         
                                         <div id="suratSections" class="space-y-4">
@@ -825,45 +1356,95 @@
                                     </div>
                                 </div>
 
-                                <!-- Template Fields Dynamic -->
-                                <div id="suratTemplateFields" class="bg-white p-8 border-b border-gray-200"></div>
-                                <div id="templateDynamicForm" class="bg-white p-8 border-b border-gray-200"></div>
-
-                                <!-- Action Buttons -->
-                                <div class="bg-white p-8 border-b border-gray-200 sticky bottom-0 z-10">
-                                    <div class="max-w-2xl flex gap-3">
-                                        <button type="button" onclick="closeModalSurat()" class="px-6 py-3 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition font-medium">Batal</button>
-                                        <button type="button" id="previewLetterBtn" onclick="previewLetter()" class="px-6 py-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition font-medium">Pratayang</button>
-                                        <button type="button" onclick="simpanSurat()" class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium">Terbitkan Surat</button>
+                                <!-- Section 3.5: Penutup Surat -->
+                                <div class="bg-white p-8 border-b-2 border-red-100">
+                                    <div class="max-w-2xl">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center">
+                                                <span class="text-white text-sm font-bold">3.5</span>
+                                            </div>
+                                            <h3 class="text-lg font-bold text-gray-900">Penutup Surat</h3>
+                                        </div>
+                                        <p class="text-sm text-gray-500 mb-6 ml-11">Tuliskan kalimat penutup setelah "Hormat kami,"</p>
+                                        
+                                        <!-- Greeting Text -->
+                                        <div class="mb-6">
+                                            <label class="block text-sm font-medium text-gray-900 mb-2">Teks Penutup (setelah Hormat kami,)</label>
+                                            <textarea id="greetingText" placeholder="Contoh: Demikian surat ini kami buat untuk dapat dipergunakan sebagaimana mestinya." oninput="updateFormPreview()" onchange="updateFormPreview()" rows="3" class="w-full px-4 py-3 border-2 border-red-200/40 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition bg-white/70 hover:bg-white resize-none"></textarea>
+                                            <p class="text-xs text-gray-500 mt-1">Default: Demikian surat ini kami buat untuk dapat dipergunakan sebagaimana mestinya.</p>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <!-- Section 4: Tanda Tangan -->
+                                <div class="bg-white p-8 border-b-2 border-red-100">
+                                    <div class="max-w-2xl">
+                                        <div class="flex items-center justify-between gap-3 mb-2">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center">
+                                                    <span class="text-white text-sm font-bold">4</span>
+                                                </div>
+                                                <h3 class="text-lg font-bold text-gray-900">Tanda Tangan & Penandatangan</h3>
+                                            </div>
+                                            <button type="button" onclick="addSignatureField()" class="px-3 py-1.5 bg-gradient-to-r from-red-500/85 to-red-600/75 text-white rounded-xl hover:shadow-sm transition font-medium text-sm flex items-center gap-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                                </svg>
+                                                Tambah Penandatangan
+                                            </button>
+                                        </div>
+                                        <p class="text-sm text-gray-500 mb-6 ml-11">Bisa menambahkan 1 atau lebih penandatangan surat</p>
+                                        
+                                        <!-- Tempat Tanda Tangan -->
+                                        <div class="mb-6">
+                                            <label class="block text-sm font-medium text-gray-900 mb-2">Tempat Tanda Tangan</label>
+                                            <input type="text" id="tempatTandaTangan" placeholder="Misal: Jakarta" oninput="updateFormPreview()" onchange="updateFormPreview()" class="w-full px-4 py-3 border-2 border-rose-200/30 rounded-2xl focus:ring-2 focus:ring-rose-400/50 focus:border-rose-400/50 transition bg-white/70 hover:bg-white" />
+                                        </div>
+
+                                        <!-- Daftar Penandatangan -->
+                                        <div id="signatureFieldsContainer" class="space-y-6">
+                                            <!-- Signature Fields akan ditambahkan di sini dengan JS -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Template Fields Dynamic -->
+                                <div id="suratTemplateFields" class="bg-white p-8 border-b-2 border-red-100"></div>
+                                <div id="templateDynamicForm" class="bg-white p-8 border-b-2 border-red-100"></div>
+                            </div>
+
+                            <!-- Mobile Action Buttons (Bottom Sticky) -->
+                            <div class="lg:hidden bg-white p-8 border-t-2 border-red-100 flex gap-3 justify-start sticky bottom-0 z-20">
+                                <button type="button" onclick="closeModalSurat()" class="px-6 py-3 border-2 border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition font-medium">Batal</button>
+                                <button type="button" id="previewLetterBtn" onclick="previewLetter()" class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition font-medium">Pratayang</button>
+                                <button type="button" onclick="simpanSurat()" class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium">Terbitkan Surat</button>
                             </div>
                         </div>
 
-                        <!-- RIGHT COLUMN: Real-time Preview - Sticky -->
-                        <div class="hidden lg:flex flex-col bg-gray-50 border-l border-gray-200 h-screen sticky top-0">
+                        <!-- RIGHT COLUMN: Real-time Preview -->
+                        <div class="hidden lg:flex flex-col bg-gradient-to-b from-red-50 to-gray-50 border-l-2 border-red-300 h-full overflow-hidden">
                             <div class="flex-1 overflow-y-auto flex flex-col">
                                 <!-- Preview Header -->
-                                <div class="bg-white border-b border-gray-200 p-4 sticky top-0">
-                                    <h3 class="font-bold text-gray-900">Pratayang Surat</h3>
-                                    <p class="text-xs text-gray-500">Diperbarui secara real-time</p>
+                                <div class="bg-gradient-to-r from-rose-500/50 to-red-400/50 border-b-2 border-rose-300/30 p-5 flex-shrink-0 shadow-sm rounded-t-2xl">
+                                    <h3 class="font-bold text-white text-lg">📄 Pratayang Surat</h3>
+                                    <p class="text-red-100 text-xs mt-1">Diperbarui secara real-time</p>
                                 </div>
 
                                 <!-- Preview Content -->
                                 <div class="flex-1 overflow-y-auto p-6">
-                                    <div id="suratPreview" class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 font-serif text-sm text-gray-900 min-h-full">
-                                        <div class="text-center text-gray-400 py-12">
-                                            <svg class="w-12 h-12 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div id="suratPreview" class="bg-white p-8 rounded-lg shadow-md border-2 border-red-300 font-serif text-sm text-gray-900 min-h-full">
+                                        <div class="text-center text-red-300 py-12">
+                                            <svg class="w-16 h-16 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                             </svg>
-                                            <p class="text-sm">Mulai isi form untuk melihat pratayang</p>
+                                            <p class="text-sm text-red-500 font-medium">Mulai isi form untuk melihat pratayang</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Preview Actions -->
-                                <div class="border-t border-gray-200 bg-white p-4 sticky bottom-0">
-                                    <button type="button" id="generatePdfBtn" onclick="generatePdf()" class="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition font-medium text-sm">📄 Preview PDF</button>
+                                <div class="border-t-2 border-red-300/30 bg-white p-4 sticky bottom-0 shadow-md rounded-b-3xl">
+                                    <button type="button" id="generatePdfBtn" onclick="generatePdf()" class="w-full px-4 py-3 bg-gradient-to-r from-red-500/80 to-red-500/80 text-white rounded-2xl hover:shadow-sm transition font-medium text-sm">📄 Download PDF</button>
                                 </div>
                             </div>
                         </div>
@@ -871,14 +1452,21 @@
                         </div>
 
                 </div>
+
+                    <!-- Desktop Action Buttons - FIXED FOOTER -->
+                    <div class="hidden lg:flex gap-3 justify-start bg-white border-t-2 border-red-200/30 p-8 flex-shrink-0">
+                        <button type="button" onclick="closeModalSurat()" class="px-6 py-3 border-2 border-gray-300 rounded-2xl text-gray-700 hover:bg-gray-50 transition font-medium">Batal</button>
+                        <button type="button" id="previewLetterBtn" onclick="previewLetter()" class="px-6 py-3 bg-gray-600 text-white rounded-2xl hover:bg-gray-700 transition font-medium">Pratayang</button>
+                        <button type="button" onclick="simpanSurat()" class="px-6 py-3 bg-red-600 text-white rounded-2xl hover:bg-red-700 transition font-medium">Terbitkan Surat</button>
+                    </div>
             </div>
 
             <!-- Footer - Hidden by default, shown only when needed -->
                 <div id="modalFooter" class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
                     <button onclick="closeModalSurat()"
-                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
+                        class="px-4 py-2 border border-gray-300 rounded-2xl text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
                     <button onclick="simpanSurat()"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">Terbitkan
+                        class="px-4 py-2 bg-red-600 text-white rounded-2xl hover:bg-red-700 transition-colors font-medium">Terbitkan
                         Surat</button>
             </div>
         </div>
@@ -895,7 +1483,7 @@
             const tabs = ['tab-permintaan', 'tab-daftar'];
             tabs.forEach(tabId => {
                 const tabEl = document.getElementById(tabId);
-                tabEl.classList.remove('bg-indigo-50', 'text-indigo-700');
+                tabEl.classList.remove('bg-rose-50/50', 'text-rose-700/90');
                 tabEl.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-900');
             });
 
@@ -903,104 +1491,10 @@
             document.getElementById('content-' + tab).classList.remove('hidden');
             const activeTab = document.getElementById('tab-' + tab);
             activeTab.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-900');
-            activeTab.classList.add('bg-indigo-50', 'text-indigo-700');
+            activeTab.classList.add('bg-rose-50/50', 'text-rose-700/90');
         }
 
-        function openModalSurat() {
-            const modal = document.getElementById('modalSurat');
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                document.getElementById('tanggalSurat').valueAsDate = new Date();
-                // reset modal title if present
-                const title = document.getElementById('modal-title');
-                if (title) title.innerText = 'Buat Surat Resmi';
-                // mark modal-open so global CSS can hide the header button
-                document.body.classList.add('modal-open');
-                // reset sections editor to avoid stale editors
-                try {
-                    renderTemplateSections([]);
-                } catch (e) {}
-                // hide footer when using multi-step form for clarity
-                if (document.getElementById('formSteps')) document.body.classList.add('modal-hid-footer');
-                // clear currentRequest context
-                window.currentRequest = null;
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        function openModalBuatSurat() {
-            // Convenience wrapper for header button
-            // Clear form fields and open modal
-            try {
-                const nomorEl = document.getElementById('nomorSurat');
-                const tanggalEl = document.getElementById('tanggalSurat');
-                const jenisEl = document.getElementById('jenisSurat');
-                const karyawanEl = document.getElementById('karyawanSurat');
-                const tujuanEl = document.getElementById('tujuanSurat');
-                const isiEl = document.getElementById('isiSurat');
-                const jabatanEl = document.getElementById('jabatanSurat');
-                const departemenEl = document.getElementById('departemenSurat');
-
-                if (nomorEl) nomorEl.value = '';
-                if (tanggalEl) tanggalEl.valueAsDate = new Date();
-                if (jenisEl) jenisEl.value = '';
-                if (karyawanEl) karyawanEl.value = '';
-                if (tujuanEl) tujuanEl.value = '';
-                if (isiEl) isiEl.value = '';
-                if (jabatanEl) jabatanEl.value = '';
-                if (departemenEl) departemenEl.value = '';
-
-                // reset steps (start from jenis selection)
-                document.getElementById('step-1')?.classList.remove('hidden');
-                document.getElementById('step-2')?.classList.add('hidden');
-                document.getElementById('step-3')?.classList.add('hidden');
-
-                // reset editing template state
-                window.editingSuratTemplateIndex = null;
-                // reset ad-hoc Informasi Umum fields
-                try {
-                    window.adHocInformasiFields = [];
-                    if (window.renderInformasiCustomFields) window.renderInformasiCustomFields();
-                } catch (e) {}
-                // refresh template list and manager
-                populateSuratTemplateSelect();
-                renderTemplateManager();
-                // ensure template manager hidden by default
-                const templateManager = document.getElementById('templateManager');
-                if (templateManager) templateManager.classList.add('hidden');
-
-                openModalSurat();
-            } catch (error) {
-                console.error('Error opening modal:', error);
-                alert('Terjadi kesalahan saat membuka form. Silakan refresh halaman.');
-            }
-        }
-
-        function closeModalSurat() {
-            const modal = document.getElementById('modalSurat');
-            if (modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                // remove modal-open marker so CSS will restore the header button
-                document.body.classList.remove('modal-open');
-                // ensure footer restored
-                document.body.classList.remove('modal-hid-footer');
-                document.body.style.overflow = '';
-            }
-        }
-
-            // Ensure global access for inline handlers
-            window.openModalBuatSurat = openModalBuatSurat;
-            window.closeModalSurat = closeModalSurat;
-            window.simpanSurat = simpanSurat;
-            window.addAdditionalField = addAdditionalField;
-            window.removeAdditionalField = removeAdditionalField;
-            window.getAdditionalFields = getAdditionalFields;
-            window.addSuratSection = addSuratSection;
-            window.removeSuratSection = removeSuratSection;
-            window.getSuratSections = getSuratSections;
-
+        // Assign remaining global functions (modal functions already assigned above)
         function buatSurat(karyawan, jenis) {
             // Store context so we can remove/move request row when published
             window.currentRequest = {
@@ -1056,8 +1550,11 @@
             const sections = getSectionsData();
             let finalIsi = isi;
             if (sections && sections.length) {
-                finalIsi = sections.map(s => (s.title ? `<h3>${escapeHtml(s.title)}</h3>` : '') + (s.content || '') +
-                    '<br/>').join('');
+                finalIsi = sections.map(s => {
+                    const title = s.title ? `<h3>${escapeHtml(s.title)}</h3>` : '';
+                    const content = s.content || '';
+                    return title + content + '<br/>';
+                }).join('');
             }
 
             const payload = {
@@ -1073,6 +1570,9 @@
                 kop_surat_id: kopSelect?.value || null,
                 placeholders: {},
                 details: collectJenisData(),
+                signatures: getSignaturesData(),  // Add multiple signatures
+                tempat_tanda_tangan: document.getElementById('tempatTandaTangan')?.value || '',  // Add signature location
+                greeting_text: document.getElementById('greetingText')?.value || 'Demikian surat ini kami buat untuk dapat dipergunakan sebagaimana mestinya.',  // Add greeting text
             };
             // helper to find the newly created row
             let lastCreatedSuratNomor = null;
@@ -1135,10 +1635,10 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${escapeHtml(karyawan)}${kopName ? `<div class="text-xs text-gray-400 mt-1">${escapeHtml(kopName)}</div>` : ''}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDate(tanggal)}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Telah Diterbitkan</span>
+                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Telah Diterbitkan</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                    <a href="${s.generated_file_url || '#'}" target="_blank" class="text-indigo-600 hover:underline">Lihat</a>
+                                    <a href="${s.generated_file_url || '#'}" target="_blank" class="text-red-600 hover:underline">Lihat</a>
                                 </td>
                             `;
                             tbodyPub.prepend(tr);
@@ -1205,7 +1705,7 @@
                                         const link = document.createElement('a');
                                         link.href = data.url;
                                         link.target = '_blank';
-                                        link.className = 'text-indigo-600 ml-2 underline text-sm';
+                                        link.className = 'text-red-600 ml-2 underline text-sm';
                                         link.innerText = 'Download Dokumen';
                                         row.querySelector('td:last-child').appendChild(link);
                                         appended = true;
@@ -1486,7 +1986,7 @@
                 li.className = 'flex items-center justify-between bg-white p-2 rounded';
                 li.innerHTML = `<div class="text-sm">${escapeHtml(t.name)} <span class="text-xs text-gray-400">(${t.jenis})</span></div>
                                     <div class="flex gap-2">
-                                        <button data-idx="${idx}" class="applyTpl px-2 py-1 text-xs bg-indigo-50 text-indigo-700 rounded">Apply</button>
+                                        <button data-idx="${idx}" class="applyTpl px-2 py-1 text-xs bg-red-50 text-red-700 rounded">Apply</button>
                                         <button data-idx="${idx}" class="editTpl px-2 py-1 text-xs bg-white border rounded">Edit</button>
                                         <button data-idx="${idx}" class="delTpl px-2 py-1 text-xs bg-red-50 text-red-700 rounded">Hapus</button>
                                     </div>`;
@@ -1791,7 +2291,7 @@
             window.currentSections.forEach((s, idx) => {
                 const wrap = document.createElement('div');
                 wrap.className =
-                    'bg-gradient-to-br from-indigo-50 to-blue-50 p-4 border-l-4 border-indigo-500 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-move';
+                    'bg-gradient-to-br from-red-50 to-gray-50 p-4 border-l-4 border-red-500 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-move';
                 wrap.setAttribute('data-section-index', idx);
                 wrap.setAttribute('draggable', 'true');
 
@@ -1799,7 +2299,7 @@
                 header.className = 'flex items-center gap-3 mb-3';
                 header.innerHTML = `
                         <div class="text-xl cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600" title="Drag untuk reorder">⋮⋮</div>
-                        <span class="px-2 py-1 bg-indigo-600 text-white text-xs font-semibold rounded">Section ${idx + 1}</span>
+                        <span class="px-2 py-1 bg-red-600 text-white text-xs font-semibold rounded">Section ${idx + 1}</span>
                         <input type="text" class="section-title flex-1 px-3 py-1 border border-gray-300 rounded text-sm font-medium" placeholder="Judul section (misal: Isi Surat, Penutup, dll)" value="${escapeHtml(s.title)}" />
                         <button type="button" class="text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1 rounded transition" onclick="removeSection(${idx})" title="Hapus section ini">✕</button>
                     `;
@@ -1826,127 +2326,6 @@
                 wrap.addEventListener('dragend', (e) => {
                     wrap.style.opacity = '1';
                     wrap.classList.remove('dragging');
-                });
-            }
-
-            function removeSection(idx) {
-                if (!window.currentSections) return;
-                window.currentSections.splice(idx, 1);
-                renderTemplateSections(window.currentSections);
-            }
-
-            // ========== DYNAMIC ADDITIONAL FIELDS ==========
-            function addAdditionalField(label = '', value = '', fieldId = null) {
-                const container = document.getElementById('additionalFields');
-                const uniqueId = fieldId || 'field_' + Date.now();
-                
-                const fieldDiv = document.createElement('div');
-                fieldDiv.id = uniqueId;
-                fieldDiv.className = 'p-4 bg-gray-50 border border-gray-200 rounded-md';
-                fieldDiv.innerHTML = `
-                    <div class="flex gap-3 mb-3">
-                        <input type="text" placeholder="Label (misal: Lokasi Kerja, Nama Proyek)" value="${label}" 
-                               onchange="updateFormPreview()" 
-                               class="flex-1 px-3 py-2 border border-gray-300 rounded text-sm" 
-                               data-field-label="${uniqueId}" />
-                        <button type="button" onclick="removeAdditionalField('${uniqueId}')" 
-                                class="px-3 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600">✕ Hapus</button>
-                    </div>
-                    <textarea placeholder="Nilai/Isi field" onchange="updateFormPreview()" 
-                              class="w-full px-3 py-2 border border-gray-300 rounded text-sm" 
-                              rows="2" 
-                              data-field-value="${uniqueId}">${value}</textarea>
-                `;
-                container.appendChild(fieldDiv);
-                updateFormPreview();
-            }
-
-            function removeAdditionalField(fieldId) {
-                const field = document.getElementById(fieldId);
-                if (field) {
-                    field.remove();
-                    updateFormPreview();
-                }
-            }
-
-            function getAdditionalFields() {
-                const container = document.getElementById('additionalFields');
-                const fields = {};
-                if (!container) return fields;
-                
-                container.querySelectorAll('div[id^="field_"]').forEach(fieldDiv => {
-                    const labelInput = fieldDiv.querySelector('[data-field-label]');
-                    const valueInput = fieldDiv.querySelector('[data-field-value]');
-                    const label = labelInput?.value?.trim() || '';
-                    const value = valueInput?.value?.trim() || '';
-                    if (label) fields[label] = value;
-                });
-                return fields;
-            }
-
-            // ========== SECTION-BASED CONTENT EDITOR ==========
-            function addSuratSection(title = '', content = '', sectionId = null) {
-                const container = document.getElementById('suratSections');
-                const uniqueId = sectionId || 'section_' + Date.now();
-                
-                const sectionDiv = document.createElement('div');
-                sectionDiv.id = uniqueId;
-                sectionDiv.className = 'p-5 bg-gray-50 border-2 border-gray-200 rounded-lg';
-                sectionDiv.innerHTML = `
-                    <div class="flex gap-2 mb-4 items-center">
-                        <input type="text" placeholder="Judul Section (misal: Ketentuan Umum, Penutup, dll)" 
-                               value="${title}" onchange="updateFormPreview()" 
-                               class="flex-1 px-3 py-2 border border-gray-300 rounded font-medium text-sm" 
-                               data-section-title="${uniqueId}" />
-                        <button type="button" onclick="removeSuratSection('${uniqueId}')" 
-                                class="px-3 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600">✕ Hapus</button>
-                    </div>
-                    <textarea placeholder="Isi section..." onchange="updateFormPreview()" 
-                              class="w-full px-3 py-2 border border-gray-300 rounded text-sm" 
-                              rows="5" 
-                              data-section-content="${uniqueId}">${content}</textarea>
-                `;
-                container.appendChild(sectionDiv);
-                updateFormPreview();
-            }
-
-            function removeSuratSection(sectionId) {
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    section.remove();
-                    updateFormPreview();
-                }
-            }
-
-            function getSuratSections() {
-                const container = document.getElementById('suratSections');
-                const sections = [];
-                if (!container) return sections;
-                
-                container.querySelectorAll('div[id^="section_"]').forEach(sectionDiv => {
-                    const titleInput = sectionDiv.querySelector('[data-section-title]');
-                    const contentInput = sectionDiv.querySelector('[data-section-content]');
-                    const title = titleInput?.value?.trim() || '';
-                    const content = contentInput?.value?.trim() || '';
-                    if (title || content) sections.push({ title, content });
-                });
-                return sections;
-            }
-
-            function getSectionsData() {
-                // Return sections from the new section-based editor
-                return getSuratSections();
-            }
-
-                    const fromIdx = parseInt(draggingEl.dataset.sectionIndex);
-                    const toIdx = parseInt(wrap.dataset.sectionIndex);
-                    if (fromIdx === toIdx) return;
-
-                    // Swap sections in array
-                    const temp = window.currentSections[fromIdx];
-                    window.currentSections[fromIdx] = window.currentSections[toIdx];
-                    window.currentSections[toIdx] = temp;
-                    renderTemplateSections(window.currentSections);
                 });
             });
 
@@ -1981,28 +2360,79 @@
             renderTemplateSections(window.currentSections);
         }
 
-        function getSectionsData() {
-            const out = [];
-            document.querySelectorAll('#sectionsEditor [data-section-index]').forEach(s => {
-                const idx = s.dataset.sectionIndex;
-                let content = '';
-                try {
-                    if (CKEDITOR.instances['section_' + idx]) content = CKEDITOR.instances['section_' + idx]
-                        .getData();
-                } catch (e) {
-                    content = s.querySelector('textarea')?.value || '';
-                }
-                const title = s.querySelector('.section-title')?.value || '';
-                out.push({
-                    title: title,
-                    content: content
-                });
-            });
-            return out;
-        }
+        // ========== DYNAMIC ADDITIONAL FIELDS ==========
+        function addAdditionalField(label = '', value = '', fieldId = null) {
+                const container = document.getElementById('additionalFields');
+                const uniqueId = fieldId || 'field_' + Date.now();
+                
+                const fieldDiv = document.createElement('div');
+                fieldDiv.id = uniqueId;
+                fieldDiv.className = 'p-4 bg-gray-50/60 border border-gray-200/50 rounded-2xl shadow-sm';
+                fieldDiv.innerHTML = `
+                    <div class="flex gap-3 mb-3">
+                        <input type="text" placeholder="Label (misal: Lokasi Kerja, Nama Proyek)" value="${label}" 
+                               onchange="updateFormPreview()" 
+                               class="flex-1 px-3 py-2 border border-gray-300/50 rounded-xl text-sm bg-white/70 hover:bg-white transition-colors" 
+                               data-field-label="${uniqueId}" />
+                        <button type="button" onclick="removeAdditionalField('${uniqueId}')" 
+                                class="px-3 py-2 bg-red-400/60 text-white rounded-2xl text-sm hover:bg-red-400/80 transition-colors">✕ Hapus</button>
+                    </div>
+                    <textarea placeholder="Nilai/Isi field" onchange="updateFormPreview()" 
+                              class="w-full px-3 py-2 border border-gray-300/50 rounded-xl text-sm bg-white/70 hover:bg-white transition-colors" 
+                              rows="2" 
+                              data-field-value="${uniqueId}">${value}</textarea>
+                `;
+                container.appendChild(fieldDiv);
+                updateFormPreview();
+            }
 
-        // Preview letter in a new window (client-side HTML preview)
-        function previewLetter() {
+            function removeAdditionalField(fieldId) {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.remove();
+                    updateFormPreview();
+                }
+            }
+
+            function getAdditionalFields() {
+                const container = document.getElementById('additionalFields');
+                const fields = {};
+                if (!container) return fields;
+                
+                container.querySelectorAll('div[id^="field_"]').forEach(fieldDiv => {
+                    const labelInput = fieldDiv.querySelector('[data-field-label]');
+                    const valueInput = fieldDiv.querySelector('[data-field-value]');
+                    const label = labelInput?.value?.trim() || '';
+                    const value = valueInput?.value?.trim() || '';
+                    if (label) fields[label] = value;
+                });
+                return fields;
+            }
+
+            // ========== SECTION-BASED CONTENT EDITOR ==========
+            function getSectionsData() {
+                const out = [];
+                document.querySelectorAll('#sectionsEditor [data-section-index]').forEach(s => {
+                    const idx = s.dataset.sectionIndex;
+                    let content = '';
+                    try {
+                        if (CKEDITOR.instances['section_' + idx]) {
+                            content = CKEDITOR.instances['section_' + idx].getData();
+                        }
+                    } catch (e) {
+                        content = s.querySelector('textarea')?.value || '';
+                    }
+                    const title = s.querySelector('.section-title')?.value || '';
+                    out.push({
+                        title: title,
+                        content: content
+                    });
+                });
+                return out;
+            }
+
+            // ========== DYNAMIC ADDITIONAL FIELDS ==========
+            function addAdditionalField(label = '', value = '', fieldId = null) {
             const kopSel = document.getElementById('kopSuratSelect');
             const kopOpt = kopSel?.selectedOptions?.[0];
             const kopUrl = kopOpt?.dataset?.url || null;
@@ -2021,8 +2451,9 @@
                     const idx = s.dataset.sectionIndex;
                     let c = '';
                     try {
-                        if (CKEDITOR.instances['section_' + idx]) c = CKEDITOR.instances['section_' + idx]
-                    .getData();
+                        if (CKEDITOR.instances['section_' + idx]) {
+                            c = CKEDITOR.instances['section_' + idx].getData();
+                        }
                     } catch (e) {
                         c = s.querySelector('textarea')?.value || '';
                     }
@@ -2087,8 +2518,11 @@
             const sections = getSectionsData();
             let finalIsi = isi;
             if (sections && sections.length) {
-                finalIsi = sections.map(s => (s.title ? `<h3>${escapeHtml(s.title)}</h3>` : '') + (s.content || '') +
-                    '<br/>').join('');
+                finalIsi = sections.map(s => {
+                    const title = s.title ? `<h3>${escapeHtml(s.title)}</h3>` : '';
+                    const content = s.content || '';
+                    return title + content + '<br/>';
+                }).join('');
             }
 
             const payload = {
@@ -2163,58 +2597,14 @@
                         opt.text = item.name;
                         opt.dataset.url = item.url || '';
                         opt.dataset.isTemplate = item.is_template ? '1' : '0';
-                        if (item.placeholders) opt.dataset.placeholders = JSON.stringify(item.placeholders);
+                        if (item.placeholders) {
+                            opt.dataset.placeholders = JSON.stringify(item.placeholders);
+                        }
                         sel.appendChild(opt);
                     });
                 })
-                .catch(err => console.error('fetchKopList error', err));
-        }
-
-        function uploadKop(e) {
-            const fileInput = e.target || document.getElementById('kopUploadInput');
-            const file = fileInput.files && fileInput.files[0];
-            if (!file) return;
-
-            const statusEl = document.getElementById('kopUploadStatus');
-            if (statusEl) statusEl.innerText = 'Mengunggah...';
-
-            const form = new FormData();
-            form.append('file', file);
-
-            const tokenMeta = document.querySelector('meta[name="csrf-token"]');
-            const token = tokenMeta ? tokenMeta.getAttribute('content') : '';
-
-            fetch('/admin/kop-surat', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': token
-                    },
-                    body: form,
-                    credentials: 'same-origin'
-                }).then(r => r.json())
-                .then(data => {
-                    if (data && data.success && data.data) {
-                        // append and select
-                        const sel = document.getElementById('kopSuratSelect');
-                        const opt = document.createElement('option');
-                        opt.value = data.data.id;
-                        opt.text = data.data.name;
-                        opt.dataset.url = data.data.url || '';
-                        if (sel) {
-                            sel.prepend(opt);
-                            sel.value = data.data.id;
-                            updateKopPreview();
-                        }
-                        if (statusEl) statusEl.innerText = 'Kop berhasil diunggah.';
-                    } else {
-                        if (statusEl) statusEl.innerText = 'Gagal mengunggah.';
-                    }
-                    // clear file input
-                    if (fileInput) fileInput.value = '';
-                })
                 .catch(err => {
-                    console.error('uploadKop error', err);
-                    if (statusEl) statusEl.innerText = 'Gagal mengunggah.';
+                    console.error('fetchKopList error', err);
                 });
         }
 
@@ -2225,16 +2615,37 @@
             const opt = sel.selectedOptions && sel.selectedOptions[0];
             if (!opt || !opt.dataset.url) {
                 preview.innerHTML = 'Tidak ada kop dipilih.';
+                updateFormPreview();
                 return;
             }
             const url = opt.dataset.url;
-            // if pdf, show filename; if image, show thumbnail
-            if (url.endsWith('.pdf')) {
-                preview.innerHTML =
-                    `<a href="${url}" target="_blank" class="text-indigo-600 underline">Lihat kop (PDF)</a>`;
+            const fileName = url.split('/').pop();
+            const fileExt = fileName.split('.').pop().toLowerCase();
+            
+            // Display based on file type
+            if (['pdf'].includes(fileExt)) {
+                // PDF
+                preview.innerHTML = `<a href="${url}" target="_blank" class="inline-flex items-center gap-2 text-red-600 underline hover:text-red-700"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/></svg>Lihat kop (PDF)</a>`;
+            } else if (['doc', 'docx', 'odt', 'txt'].includes(fileExt)) {
+                // Document
+                preview.innerHTML = `<div class="inline-flex items-center gap-2 text-blue-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/></svg><span>${fileName}</span></div>`;
+            } else if (['xls', 'xlsx', 'ods'].includes(fileExt)) {
+                // Spreadsheet
+                preview.innerHTML = `<div class="inline-flex items-center gap-2 text-green-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/></svg><span>${fileName}</span></div>`;
+            } else if (['ppt', 'pptx', 'odp'].includes(fileExt)) {
+                // Presentation
+                preview.innerHTML = `<div class="inline-flex items-center gap-2 text-orange-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/></svg><span>${fileName}</span></div>`;
+            } else if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'tiff'].includes(fileExt)) {
+                // Image
+                preview.innerHTML = `<img src="${url}" alt="kop" class="h-24 object-contain border rounded"/>`;
             } else {
-                preview.innerHTML = `<img src="${url}" alt="kop" class="h-16 object-contain border rounded"/>`;
+                // Unknown file type
+                preview.innerHTML = `<div class="inline-flex items-center gap-2 text-gray-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/></svg><span>${fileName}</span></div>`;
             }
+            
+            // Update main preview immediately when kop is selected
+            updateFormPreview();
+            
             // if template, load placeholders
             const fields = document.getElementById('kopTemplateFields');
             if (opt && opt.dataset && opt.dataset.isTemplate === '1') {
@@ -2295,11 +2706,11 @@
             // Toggle visual active on cards
             const isActive = el.classList.contains('ring-2');
             document.querySelectorAll('.stats-card').forEach(c => {
-                c.classList.remove('ring-2', 'ring-offset-2', 'ring-indigo-200');
+                c.classList.remove('ring-2', 'ring-offset-2', 'ring-red-200');
                 c.setAttribute('aria-pressed', 'false');
             });
             if (!isActive) {
-                el.classList.add('ring-2', 'ring-offset-2', 'ring-indigo-200');
+                el.classList.add('ring-2', 'ring-offset-2', 'ring-red-200');
                 el.setAttribute('aria-pressed', 'true');
             }
 
@@ -2663,9 +3074,11 @@
                         .instances.isiSurat.getData();
                 } catch (e) {}
                 try {
-                    if (CKEDITOR.instances['tambahTemplateContent']) CKEDITOR.instances['tambahTemplateContent']
-                        .setData(content);
-                    else modal.querySelector('#tambahTemplateContent').value = content;
+                    if (CKEDITOR.instances['tambahTemplateContent']) {
+                        CKEDITOR.instances['tambahTemplateContent'].setData(content);
+                    } else {
+                        modal.querySelector('#tambahTemplateContent').value = content;
+                    }
                 } catch (e) {
                     modal.querySelector('#tambahTemplateContent').value = content;
                 }
@@ -2826,109 +3239,29 @@
             filterPublished();
         });
 
-        // ===== REAL-TIME PREVIEW FUNCTION =====
-        function updateFormPreview() {
-            const nomor = document.getElementById('nomorSurat')?.value || '';
-            const tanggal = document.getElementById('tanggalSurat')?.value || '';
-            const karyawan = document.getElementById('karyawanSurat')?.value || '';
-            const jabatan = document.getElementById('jabatanSurat')?.value || '';
-            const departemen = document.getElementById('departemenSurat')?.value || '';
-            const tujuan = document.getElementById('tujuanSurat')?.value || '';
-            
-            // Get new section-based content and additional fields
-            const sections = getSuratSections();
-            const additionalFields = getAdditionalFields();
-
-            let preview = '<div class="space-y-4">';
-            
-            // Kop Surat
-            const kopSelected = document.getElementById('kopSuratSelect')?.value;
-            if (kopSelected) {
-                preview += '<div class="text-center text-sm text-gray-600 mb-6">[LOGO/KOP SURAT]</div>';
-            }
-
-            // Nomor, Tanggal
-            preview += `<div class="text-right text-sm">
-                ${nomor ? `<p><strong>Nomor:</strong> ${escapeHtml(nomor)}</p>` : ''}
-                ${tanggal ? `<p><strong>Tanggal:</strong> ${formatDate(new Date(tanggal))}</p>` : ''}
-            </div>`;
-
-            // Tujuan
-            if (tujuan) {
-                preview += `<div class="text-sm">
-                    <p><strong>Kepada:</strong></p>
-                    <p>${escapeHtml(tujuan)}</p>
-                </div>`;
-            }
-
-            // Pembukaan
-            preview += `<div class="text-sm mt-6">
-                <p>Yang terhormat,</p>
-            </div>`;
-
-            // Identitas Karyawan
-            if (karyawan || jabatan || departemen) {
-                preview += `<div class="text-sm mt-4">
-                    <p>Nama: <strong>${escapeHtml(karyawan)}</strong></p>
-                    ${jabatan ? `<p>Jabatan: <strong>${escapeHtml(jabatan)}</strong></p>` : ''}
-                    ${departemen ? `<p>Departemen: <strong>${escapeHtml(departemen)}</strong></p>` : ''}
-                </div>`;
-            }
-
-            // Additional Fields
-            const additionalFieldsKeys = Object.keys(additionalFields);
-            if (additionalFieldsKeys.length > 0) {
-                preview += `<div class="text-sm mt-4">
-                    ${additionalFieldsKeys.map(key => `<p><strong>${escapeHtml(key)}:</strong> ${escapeHtml(additionalFields[key]).replace(/\n/g, '<br>')}</p>`).join('')}
-                </div>`;
-            }
-
-            // Isi Surat - from Sections
-            if (sections.length > 0) {
-                preview += `<div class="text-sm mt-6 leading-relaxed">`;
-                sections.forEach(section => {
-                    if (section.title) {
-                        preview += `<h4 class="font-bold mt-4 mb-2">${escapeHtml(section.title)}</h4>`;
-                    }
-                    if (section.content) {
-                        preview += `<p>${escapeHtml(section.content).replace(/\n/g, '<br>')}</p>`;
-                    }
-                });
-                preview += `</div>`;
-            } else {
-                preview += `<div class="text-sm mt-6 text-gray-400 italic">
-                    [Isi surat akan muncul di sini]
-                </div>`;
-            }
-
-            // Penutup
-            preview += `<div class="text-sm mt-8">
-                <p>Demikian surat ini kami buat untuk dapat dipergunakan sebagaimana mestinya.</p>
-                <div class="mt-8">
-                    <p>Hormat kami,</p>
-                    <div class="mt-12">
-                        <p>______________________</p>
-                        <p>Direktur Utama</p>
-                    </div>
-                </div>
-            </div>`;
-
-            preview += '</div>';
-
-            const previewEl = document.getElementById('suratPreview');
-            if (previewEl) {
-                previewEl.innerHTML = preview;
-            }
-        }
-
-        // Attach preview to all form inputs
+        // ===== ATTACH EVENT LISTENERS FOR REAL-TIME PREVIEW =====
         function attachPreviewListeners() {
-            const inputs = document.querySelectorAll('#nomorSurat, #tanggalSurat, #karyawanSurat, #jabatanSurat, #departemenSurat, #tujuanSurat, #isiSurat');
+            const inputs = document.querySelectorAll('#nomorSurat, #tanggalSurat, #karyawanSurat, #jabatanSurat, #departemenSurat, #tujuanSurat, #jenisSurat, #kopSuratSelect, #isiSurat, [data-section-title], [data-section-content], [data-field-label], [data-field-value]');
             inputs.forEach(input => {
+                input.removeEventListener('input', updateFormPreview);
+                input.removeEventListener('change', updateFormPreview);
                 input.addEventListener('input', updateFormPreview);
                 input.addEventListener('change', updateFormPreview);
             });
         }
+
+        // Re-attach listeners when new elements are added (sections/fields)
+        const originalAddSuratSection = window.addSuratSection;
+        window.addSuratSection = function(...args) {
+            originalAddSuratSection.apply(this, args);
+            setTimeout(() => attachPreviewListeners(), 100);
+        };
+
+        const originalAddAdditionalField = window.addAdditionalField;
+        window.addAdditionalField = function(...args) {
+            originalAddAdditionalField.apply(this, args);
+            setTimeout(() => attachPreviewListeners(), 100);
+        };
 
         // Custom field manager
         let customFieldsData = [];
@@ -2944,22 +3277,22 @@
 
             let html = '';
             customFieldsData.forEach((field, idx) => {
-                html += `<div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                html += `<div class="p-4 bg-white border border-gray-200/50 rounded-2xl shadow-sm">
                     <div class="flex justify-between items-start mb-3">
                         <h4 class="font-semibold text-gray-900">${escapeHtml(field.label)}</h4>
-                        <button type="button" onclick="removeCustomField(${idx})" class="text-red-600 hover:text-red-700 text-sm font-medium">Hapus</button>
+                        <button type="button" onclick="removeCustomField(${idx})" class="text-rose-500/80 hover:text-rose-600/90 text-sm font-medium">Hapus</button>
                     </div>
                     <div>`;
 
                 if (field.type === 'text') {
-                    html += `<input type="text" placeholder="${escapeHtml(field.label)}" data-schema-key="${field.key}" ${field.required ? 'required' : ''} class="w-full px-3 py-2 border border-gray-300 rounded text-sm" />`;
+                    html += `<input type="text" placeholder="${escapeHtml(field.label)}" data-schema-key="${field.key}" ${field.required ? 'required' : ''} class="w-full px-3 py-2 border border-gray-300/50 rounded-xl text-sm bg-white/70 hover:bg-white transition-colors" />`;
                 } else if (field.type === 'textarea') {
-                    html += `<textarea placeholder="${escapeHtml(field.label)}" data-schema-key="${field.key}" ${field.required ? 'required' : ''} rows="3" class="w-full px-3 py-2 border border-gray-300 rounded text-sm"></textarea>`;
+                    html += `<textarea placeholder="${escapeHtml(field.label)}" data-schema-key="${field.key}" ${field.required ? 'required' : ''} rows="3" class="w-full px-3 py-2 border border-gray-300/50 rounded-xl text-sm bg-white/70 hover:bg-white transition-colors"></textarea>`;
                 } else if (field.type === 'date') {
-                    html += `<input type="date" data-schema-key="${field.key}" ${field.required ? 'required' : ''} class="w-full px-3 py-2 border border-gray-300 rounded text-sm" />`;
+                    html += `<input type="date" data-schema-key="${field.key}" ${field.required ? 'required' : ''} class="w-full px-3 py-2 border border-gray-300/50 rounded-xl text-sm bg-white/70 hover:bg-white transition-colors" />`;
                 } else if (field.type === 'select') {
                     const options = field.options || [];
-                    html += `<select data-schema-key="${field.key}" ${field.required ? 'required' : ''} class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                    html += `<select data-schema-key="${field.key}" ${field.required ? 'required' : ''} class="w-full px-3 py-2 border border-gray-300/50 rounded-xl text-sm bg-white/70 hover:bg-white transition-colors">
                         <option value="">-- Pilih ${escapeHtml(field.label)} --</option>`;
                     options.forEach(opt => {
                         html += `<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`;
@@ -3036,6 +3369,48 @@
             }
         }
 
+        // Simple custom field manager for Informasi Umum
+        window.informasiUmumCustomFields = [];
+
+        window.addCustomInformasiUmumField = function() {
+            const fieldName = prompt('Masukkan nama field (misal: Lokasi, Proyek, Catatan):');
+            if (!fieldName || !fieldName.trim()) return;
+
+            const fieldKey = fieldName.toLowerCase().replace(/\s+/g, '_');
+            window.informasiUmumCustomFields.push({ label: fieldName.trim(), key: fieldKey });
+            window.renderInformasiUmumCustomFields();
+            updateFormPreview();
+        };
+
+        window.renderInformasiUmumCustomFields = function() {
+            const container = document.getElementById('customInformasiUmumFields');
+            if (!container) return;
+
+            let html = '';
+            window.informasiUmumCustomFields.forEach((field, idx) => {
+                html += `
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-900 mb-2">${escapeHtml(field.label)}</label>
+                        <div class="flex gap-3">
+                            <input type="text" id="informasi_umum_${field.key}" placeholder="Isi ${escapeHtml(field.label)}" 
+                                   oninput="updateFormPreview()" onchange="updateFormPreview()"
+                                   class="flex-1 px-4 py-3 border-2 border-rose-200/30 rounded-2xl focus:ring-2 focus:ring-rose-400/50 focus:border-rose-400/50 transition bg-white/70 hover:bg-white" />
+                            <button type="button" onclick="window.removeInformasiUmumField(${idx})"
+                                    class="px-4 py-3 bg-rose-100/30 text-rose-500/80 rounded-2xl hover:bg-rose-100/50 transition text-sm font-medium">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        };
+
+        window.removeInformasiUmumField = function(idx) {
+            window.informasiUmumCustomFields.splice(idx, 1);
+            window.renderInformasiUmumCustomFields();
+            updateFormPreview();
+        };
+
         // Helper functions
         function escapeHtml(text) {
             if (!text) return '';
@@ -3056,6 +3431,7 @@
         window.openModalSurat = function() {
             if (originalOpenModal) originalOpenModal();
             setTimeout(() => {
+                console.log('Initializing preview listeners on modal open');
                 attachPreviewListeners();
                 setupCustomFieldForm();
                 updateFormPreview();
@@ -3064,6 +3440,7 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('Page loaded, attaching preview listeners');
             attachPreviewListeners();
             setupCustomFieldForm();
         });
@@ -3130,5 +3507,23 @@
                 console.error('Global error captured:', ev.message, ev.filename, ev.lineno, ev.error);
             });
         })();
+
+        // Final assignment of all remaining global functions after they are defined
+        if (typeof simpanSurat === 'function') window.simpanSurat = simpanSurat;
+        if (typeof addAdditionalField === 'function') window.addAdditionalField = addAdditionalField;
+        if (typeof removeAdditionalField === 'function') window.removeAdditionalField = removeAdditionalField;
+        if (typeof getAdditionalFields === 'function') window.getAdditionalFields = getAdditionalFields;
+        if (typeof addSuratSection === 'function') window.addSuratSection = addSuratSection;
+        if (typeof removeSuratSection === 'function') window.removeSuratSection = removeSuratSection;
+        if (typeof getSuratSections === 'function') window.getSuratSections = getSuratSections;
+        if (typeof previewLetter === 'function') window.previewLetter = previewLetter;
+        if (typeof generatePdf === 'function') window.generatePdf = generatePdf;
+        if (typeof updateKopPreview === 'function') window.updateKopPreview = updateKopPreview;
+        if (typeof buatSurat === 'function') window.buatSurat = buatSurat;
+        if (typeof escapeHtml === 'function') window.escapeHtml = escapeHtml;
+        if (typeof formatDate === 'function') window.formatDate = formatDate;
+        if (typeof addCustomInformasiUmumField === 'function') window.addCustomInformasiUmumField = addCustomInformasiUmumField;
+        if (typeof renderInformasiUmumCustomFields === 'function') window.renderInformasiUmumCustomFields = renderInformasiUmumCustomFields;
+        if (typeof removeInformasiUmumField === 'function') window.removeInformasiUmumField = removeInformasiUmumField;
     </script>
 </x-app-layout>

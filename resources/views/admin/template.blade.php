@@ -20,7 +20,7 @@
                     <p class="text-gray-600 mt-1">Kelola template surat untuk mempercepat pembuatan</p>
                 </div>
                 <button onclick="openTambahTemplateModal()"
-                    class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center gap-2">
+                    class="px-6 py-3 bg-gradient-to-r from-red-500/85 to-red-600/75 text-white rounded-2xl hover:from-red-500 hover:to-red-600 shadow-sm hover:shadow-md transition-all duration-300 font-medium flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -29,20 +29,20 @@
             </div>
 
             <!-- Filter Section -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 mb-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- Search -->
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Cari Template</label>
                         <input type="text" placeholder="Ketik nama template..."
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+                            class="w-full px-4 py-2.5 border border-gray-200/60 rounded-2xl focus:ring-2 focus:ring-red-400/40 focus:border-transparent bg-white/80" />
                     </div>
 
                     <!-- Filter Status -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                         <select
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            class="w-full px-4 py-2.5 border border-gray-200/60 rounded-2xl focus:ring-2 focus:ring-red-400/40 focus:border-transparent bg-white/80">
                             <option value="">Semua Status</option>
                             <option value="aktif">Aktif</option>
                             <option value="nonaktif">Nonaktif</option>
@@ -53,148 +53,184 @@
 
             <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <p class="text-sm text-gray-600">Total Template</p>
-                    <p class="text-3xl font-bold text-gray-900 mt-2">12</p>
+                <div class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-md transition-all duration-300 group overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-slate-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="w-10 h-10 bg-gradient-to-br from-slate-100/60 to-slate-50/30 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-5 h-5 text-slate-600/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.972 1.972 0 013 12V7a4 4 0 014-4z"/>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Total Template</p>
+                        <p class="text-3xl font-bold text-gray-900">12</p>
+                    </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <p class="text-sm text-gray-600">Template Aktif</p>
-                    <p class="text-3xl font-bold text-green-600 mt-2">11</p>
+                <div class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-md transition-all duration-300 group overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="w-10 h-10 bg-gradient-to-br from-green-100/60 to-green-50/30 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-5 h-5 text-green-500/70" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Template Aktif</p>
+                        <p class="text-3xl font-bold text-green-600/80">11</p>
+                    </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <p class="text-sm text-gray-600">Digunakan Bulan Ini</p>
-                    <p class="text-3xl font-bold text-red-600 mt-2">36</p>
+                <div class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-md transition-all duration-300 group overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="w-10 h-10 bg-gradient-to-br from-red-100/60 to-red-50/30 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-5 h-5 text-red-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Digunakan Bulan Ini</p>
+                        <p class="text-3xl font-bold text-red-600/80">36</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Template List Grid -->
             <div id="templateGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Template Card 1 -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <div class="flex items-start justify-between mb-4">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-900">Surat Keterangan Kerja</h3>
-                            <p class="text-sm text-gray-600 mt-1">Template standar untuk surat keterangan kerja</p>
+                <div class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-red-100/40 transition-all duration-300 group overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Surat Keterangan Kerja</h3>
+                                <p class="text-sm text-gray-600 mt-1">Template standar untuk surat keterangan kerja</p>
+                            </div>
+                            <span
+                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-50/70 text-green-600/80 border border-green-200/30 shadow-sm flex-shrink-0">✓ Aktif</span>
                         </div>
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Aktif</span>
-                    </div>
 
-                    <div
-                        class="bg-gray-50 rounded-lg p-4 mb-4 max-h-40 overflow-hidden text-xs font-mono text-gray-600 whitespace-pre-wrap line-clamp-6">
-                        Nomor : [NOMOR-SURAT]
-                        Tanggal : [TANGGAL]
+                        <div
+                            class="bg-gradient-to-br from-gray-50/60 to-slate-50/30 rounded-2xl p-4 mb-4 max-h-40 overflow-hidden text-xs font-mono text-gray-600 whitespace-pre-wrap line-clamp-6 border border-gray-100/30">
+                            Nomor : [NOMOR-SURAT]
+                            Tanggal : [TANGGAL]
 
-                        Kepada Yth. [TUJUAN]
+                            Kepada Yth. [TUJUAN]
 
-                        Dengan hormat,
-                        Kami, [PERUSAHAAN] menerangkan bahwa [NAMA KARYAWAN] adalah karyawan kami...
-                    </div>
+                            Dengan hormat,
+                            Kami, [PERUSAHAAN] menerangkan bahwa [NAMA KARYAWAN] adalah karyawan kami...
+                        </div>
 
-                    <div class="flex gap-2">
-                        <button onclick="openEditTemplateModal(1)"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm">Edit</button>
-                        <button onclick="openToggleStatusModal(1)"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm">Nonaktifkan</button>
-                        <button onclick="openDeleteTemplateModal(1)"
-                            class="px-4 py-2 border border-red-300 rounded-lg text-red-700 hover:bg-red-50 transition-colors font-medium text-sm">Hapus</button>
+                        <div class="flex gap-2">
+                            <button onclick="openEditTemplateModal(1)"
+                                class="flex-1 px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium text-sm">Edit</button>
+                            <button onclick="openToggleStatusModal(1)"
+                                class="flex-1 px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium text-sm">Nonaktifkan</button>
+                            <button onclick="openDeleteTemplateModal(1)"
+                                class="px-4 py-2.5 border border-red-200/40 rounded-2xl text-red-600/80 hover:bg-red-50/40 hover:border-red-200/60 transition-all duration-300 font-medium text-sm">Hapus</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Template Card 2 -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <div class="flex items-start justify-between mb-4">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-900">Surat Pengajuan Cuti</h3>
-                            <p class="text-sm text-gray-600 mt-1">Template untuk pengajuan cuti resmi</p>
+                <div class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-red-100/40 transition-all duration-300 group overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Surat Pengajuan Cuti</h3>
+                                <p class="text-sm text-gray-600 mt-1">Template untuk pengajuan cuti resmi</p>
+                            </div>
+                            <span
+                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-50/70 text-green-600/80 border border-green-200/30 shadow-sm flex-shrink-0">✓ Aktif</span>
                         </div>
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Aktif</span>
-                    </div>
 
-                    <div
-                        class="bg-gray-50 rounded-lg p-4 mb-4 max-h-40 overflow-hidden text-xs font-mono text-gray-600 whitespace-pre-wrap line-clamp-6">
-                        Nomor : [NOMOR-SURAT]
-                        Tanggal : [TANGGAL]
+                        <div
+                            class="bg-gradient-to-br from-gray-50/60 to-slate-50/30 rounded-2xl p-4 mb-4 max-h-40 overflow-hidden text-xs font-mono text-gray-600 whitespace-pre-wrap line-clamp-6 border border-gray-100/30">
+                            Nomor : [NOMOR-SURAT]
+                            Tanggal : [TANGGAL]
 
-                        PENGAJUAN CUTI
+                            PENGAJUAN CUTI
 
-                        Nama Karyawan : [NAMA]
-                        Jenis Cuti : [JENIS]
-                        Tanggal Mulai : [TGL-MULAI]
-                        Tanggal Selesai: [TGL-SELESAI]
-                    </div>
+                            Nama Karyawan : [NAMA]
+                            Jenis Cuti : [JENIS]
+                            Tanggal Mulai : [TGL-MULAI]
+                            Tanggal Selesai: [TGL-SELESAI]
+                        </div>
 
-                    <div class="flex gap-2">
-                        <button onclick="openEditTemplateModal(2)"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm">Edit</button>
-                        <button onclick="openToggleStatusModal(2)"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm">Nonaktifkan</button>
-                        <button onclick="openDeleteTemplateModal(2)"
-                            class="px-4 py-2 border border-red-300 rounded-lg text-red-700 hover:bg-red-50 transition-colors font-medium text-sm">Hapus</button>
+                        <div class="flex gap-2">
+                            <button onclick="openEditTemplateModal(2)"
+                                class="flex-1 px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium text-sm">Edit</button>
+                            <button onclick="openToggleStatusModal(2)"
+                                class="flex-1 px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium text-sm">Nonaktifkan</button>
+                            <button onclick="openDeleteTemplateModal(2)"
+                                class="px-4 py-2.5 border border-red-200/40 rounded-2xl text-red-600/80 hover:bg-red-50/40 hover:border-red-200/60 transition-all duration-300 font-medium text-sm">Hapus</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Template Card 3 -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <div class="flex items-start justify-between mb-4">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-900">Surat Izin Sakit</h3>
-                            <p class="text-sm text-gray-600 mt-1">Template untuk surat izin sakit</p>
+                <div class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-red-100/40 transition-all duration-300 group overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Surat Izin Sakit</h3>
+                                <p class="text-sm text-gray-600 mt-1">Template untuk surat izin sakit</p>
+                            </div>
+                            <span
+                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-50/70 text-green-600/80 border border-green-200/30 shadow-sm flex-shrink-0">✓ Aktif</span>
                         </div>
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Aktif</span>
-                    </div>
 
-                    <div
-                        class="bg-gray-50 rounded-lg p-4 mb-4 max-h-40 overflow-hidden text-xs font-mono text-gray-600 whitespace-pre-wrap line-clamp-6">
-                        Nomor : [NOMOR-SURAT]
-                        Tanggal : [TANGGAL]
+                        <div
+                            class="bg-gradient-to-br from-gray-50/60 to-slate-50/30 rounded-2xl p-4 mb-4 max-h-40 overflow-hidden text-xs font-mono text-gray-600 whitespace-pre-wrap line-clamp-6 border border-gray-100/30">
+                            Nomor : [NOMOR-SURAT]
+                            Tanggal : [TANGGAL]
 
-                        SURAT IZIN SAKIT
+                            SURAT IZIN SAKIT
 
-                        Nama Karyawan : [NAMA]
-                        Tanggal : [TANGGAL-SAKIT]
-                        Keterangan : [KETERANGAN]
-                    </div>
+                            Nama Karyawan : [NAMA]
+                            Tanggal : [TANGGAL-SAKIT]
+                            Keterangan : [KETERANGAN]
+                        </div>
 
-                    <div class="flex gap-2">
-                        <button onclick="openEditTemplateModal(3)"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm">Edit</button>
-                        <button onclick="openToggleStatusModal(3)"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm">Nonaktifkan</button>
-                        <button onclick="openDeleteTemplateModal(3)"
-                            class="px-4 py-2 border border-red-300 rounded-lg text-red-700 hover:bg-red-50 transition-colors font-medium text-sm">Hapus</button>
+                        <div class="flex gap-2">
+                            <button onclick="openEditTemplateModal(3)"
+                                class="flex-1 px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium text-sm">Edit</button>
+                            <button onclick="openToggleStatusModal(3)"
+                                class="flex-1 px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium text-sm">Nonaktifkan</button>
+                            <button onclick="openDeleteTemplateModal(3)"
+                                class="px-4 py-2.5 border border-red-200/40 rounded-2xl text-red-600/80 hover:bg-red-50/40 hover:border-red-200/60 transition-all duration-300 font-medium text-sm">Hapus</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Template Card 4 -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <div class="flex items-start justify-between mb-4">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-900">Surat Rekomendasi</h3>
-                            <p class="text-sm text-gray-600 mt-1">Template untuk surat rekomendasi kerja</p>
+                <div class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-gray-200/40 transition-all duration-300 group overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Surat Rekomendasi</h3>
+                                <p class="text-sm text-gray-600 mt-1">Template untuk surat rekomendasi kerja</p>
+                            </div>
+                            <span
+                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100/70 text-gray-600/80 border border-gray-200/30 shadow-sm flex-shrink-0">○ Nonaktif</span>
                         </div>
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Nonaktif</span>
-                    </div>
 
-                    <div
-                        class="bg-gray-50 rounded-lg p-4 mb-4 max-h-40 overflow-hidden text-xs font-mono text-gray-600 whitespace-pre-wrap line-clamp-6">
-                        Nomor : [NOMOR-SURAT]
-                        Tanggal : [TANGGAL]
+                        <div
+                            class="bg-gradient-to-br from-gray-50/60 to-slate-50/30 rounded-2xl p-4 mb-4 max-h-40 overflow-hidden text-xs font-mono text-gray-600 whitespace-pre-wrap line-clamp-6 border border-gray-100/30">
+                            Nomor : [NOMOR-SURAT]
+                            Tanggal : [TANGGAL]
 
-                        Dengan hormat,
-                        [ISI REKOMENDASI]
-                    </div>
+                            Dengan hormat,
+                            [ISI REKOMENDASI]
+                        </div>
 
-                    <div class="flex gap-2">
-                        <button onclick="openEditTemplateModal(4)"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm">Edit</button>
-                        <button onclick="openToggleStatusModal(4)"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm">Aktifkan</button>
-                        <button onclick="openDeleteTemplateModal(4)"
-                            class="px-4 py-2 border border-red-300 rounded-lg text-red-700 hover:bg-red-50 transition-colors font-medium text-sm">Hapus</button>
+                        <div class="flex gap-2">
+                            <button onclick="openEditTemplateModal(4)"
+                                class="flex-1 px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium text-sm">Edit</button>
+                            <button onclick="openToggleStatusModal(4)"
+                                class="flex-1 px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium text-sm">Aktifkan</button>
+                            <button onclick="openDeleteTemplateModal(4)"
+                                class="px-4 py-2.5 border border-red-200/40 rounded-2xl text-red-600/80 hover:bg-red-50/40 hover:border-red-200/60 transition-all duration-300 font-medium text-sm">Hapus</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -204,10 +240,10 @@
                 <p class="text-sm text-gray-600" id="templateCount">Menampilkan 0 template</p>
                 <div class="flex gap-2">
                     <button
-                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                        class="px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 disabled:opacity-50 font-medium"
                         disabled>Sebelumnya</button>
                     <button
-                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">Berikutnya</button>
+                        class="px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium">Berikutnya</button>
                 </div>
             </div>
         </div>
@@ -215,13 +251,13 @@
 
     <!-- Modal: Tambah Template -->
     <div id="tambahTemplateModal"
-        class="hidden js-modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+        class="hidden js-modal fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4"
         data-modal-id="tambahTemplateModal">
-        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full">
+            <div class="px-6 py-4 border-b border-gray-100/40 bg-gradient-to-r from-red-50/40 to-slate-50/20 flex items-center justify-between rounded-t-3xl">
                 <h3 class="text-lg font-semibold text-gray-800">Template Surat Baru</h3>
-                <button onclick="closeTambahTemplateModal()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="closeTambahTemplateModal()" class="p-2 hover:bg-white/50 rounded-2xl transition-colors flex-shrink-0">
+                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -232,12 +268,12 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Nama Template</label>
                         <input type="text" placeholder="Nama template"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2.5 border border-gray-200/60 rounded-2xl focus:ring-2 focus:ring-red-400/40 focus:border-transparent bg-white/80" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Surat</label>
                         <select
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            class="w-full px-4 py-2.5 border border-gray-200/60 rounded-2xl focus:ring-2 focus:ring-red-400/40 focus:border-transparent bg-white/80">
                             <option value="">Pilih Jenis</option>
                             <option value="kerja">Surat Keterangan Kerja</option>
                             <option value="cuti">Surat Pengajuan Cuti</option>
@@ -247,24 +283,24 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Fields Template</label>
-                        <div class="flex gap-2 mb-2">
-                            <select id="newFieldType" class="px-3 py-2 border rounded">
+                        <div class="flex gap-2 mb-2 flex-wrap">
+                            <select id="newFieldType" class="px-3 py-2 border border-gray-200/60 rounded-2xl bg-white/80">
                                 <option value="text">Text</option>
                                 <option value="textarea">Textarea</option>
                                 <option value="date">Date</option>
                                 <option value="select">Select</option>
                             </select>
                             <input id="newFieldLabel" placeholder="Label (contoh: Nama)"
-                                class="px-3 py-2 border rounded" />
+                                class="px-3 py-2 border border-gray-200/60 rounded-2xl bg-white/80" />
                             <input id="newFieldKey" placeholder="Key (contoh: NAMA)"
-                                class="px-3 py-2 border rounded w-36" />
+                                class="px-3 py-2 border border-gray-200/60 rounded-2xl bg-white/80 w-36" />
                             <input id="newFieldOptions" placeholder="Options (jika select, gunakan , pemisah)"
-                                class="px-3 py-2 border rounded w-64" />
+                                class="px-3 py-2 border border-gray-200/60 rounded-2xl bg-white/80 w-64" />
                             <label class="inline-flex items-center gap-2 text-sm text-gray-700">
                                 <input id="newFieldRequired" type="checkbox"
                                     class="h-4 w-4 border-gray-300 rounded" /> <span>Wajib</span>
                             </label>
-                            <button id="addFieldBtn" class="px-3 py-2 bg-indigo-600 text-white rounded">Tambah
+                            <button id="addFieldBtn" class="px-4 py-2 bg-gradient-to-r from-red-500/85 to-red-600/75 text-white rounded-2xl hover:from-red-500 hover:to-red-600 shadow-sm hover:shadow-md transition-all duration-300 text-sm font-medium">Tambah
                                 Field</button>
                         </div>
                         <div id="templateFieldsList" class="space-y-2 mb-3">
@@ -272,17 +308,17 @@
                         </div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Isi Template</label>
                         <textarea id="tambahTemplateContent" placeholder="Ketik isi template..." rows="8"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-sm"></textarea>
+                            class="w-full px-4 py-2.5 border border-gray-200/60 rounded-2xl focus:ring-2 focus:ring-red-400/40 focus:border-transparent bg-white/80 font-mono text-sm"></textarea>
                         <p class="text-xs text-gray-500 mt-2">Gunakan tombol <strong>Sisipi Placeholder</strong> untuk
                             menambahkan placeholder sesuai key field.</p>
                     </div>
                 </div>
             </div>
-            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+            <div class="px-6 py-4 border-t border-gray-100/40 bg-gradient-to-r from-red-50/30 to-slate-50/15 flex justify-end gap-3 rounded-b-3xl">
                 <button onclick="closeTambahTemplateModal()"
-                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
+                    class="px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium">Batal</button>
                 <button
-                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium">Simpan
+                    class="px-4 py-2.5 bg-gradient-to-r from-red-500/85 to-red-600/75 text-white rounded-2xl hover:from-red-500 hover:to-red-600 shadow-sm hover:shadow-md transition-all duration-300 font-medium">Simpan
                     Template</button>
             </div>
         </div>
@@ -290,13 +326,13 @@
 
     <!-- Modal: Edit Template -->
     <div id="editTemplateModal"
-        class="hidden js-modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+        class="hidden js-modal fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4"
         data-modal-id="editTemplateModal">
-        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full">
+            <div class="px-6 py-4 border-b border-gray-100/40 bg-gradient-to-r from-red-50/40 to-slate-50/20 flex items-center justify-between rounded-t-3xl">
                 <h3 class="text-lg font-semibold text-gray-800">Edit Template</h3>
-                <button onclick="closeEditTemplateModal()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="closeEditTemplateModal()" class="p-2 hover:bg-white/50 rounded-2xl transition-colors flex-shrink-0">
+                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -307,12 +343,12 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Nama Template</label>
                         <input type="text" placeholder="Nama template"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                            class="w-full px-4 py-2.5 border border-gray-200/60 rounded-2xl focus:ring-2 focus:ring-red-400/40 focus:border-transparent bg-white/80" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Surat</label>
                         <select
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            class="w-full px-4 py-2.5 border border-gray-200/60 rounded-2xl focus:ring-2 focus:ring-red-400/40 focus:border-transparent bg-white/80">
                             <option value="kerja">Surat Keterangan Kerja</option>
                             <option value="cuti">Surat Pengajuan Cuti</option>
                             <option value="izin">Surat Izin</option>
@@ -320,24 +356,24 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Fields Template</label>
-                        <div class="flex gap-2 mb-2">
-                            <select id="editNewFieldType" class="px-3 py-2 border rounded">
+                        <div class="flex gap-2 mb-2 flex-wrap">
+                            <select id="editNewFieldType" class="px-3 py-2 border border-gray-200/60 rounded-2xl bg-white/80">
                                 <option value="text">Text</option>
                                 <option value="textarea">Textarea</option>
                                 <option value="date">Date</option>
                                 <option value="select">Select</option>
                             </select>
                             <input id="editNewFieldLabel" placeholder="Label (contoh: Nama)"
-                                class="px-3 py-2 border rounded" />
+                                class="px-3 py-2 border border-gray-200/60 rounded-2xl bg-white/80" />
                             <input id="editNewFieldKey" placeholder="Key (contoh: NAMA)"
-                                class="px-3 py-2 border rounded w-36" />
+                                class="px-3 py-2 border border-gray-200/60 rounded-2xl bg-white/80 w-36" />
                             <input id="editNewFieldOptions" placeholder="Options (jika select, gunakan , pemisah)"
-                                class="px-3 py-2 border rounded w-64" />
+                                class="px-3 py-2 border border-gray-200/60 rounded-2xl bg-white/80 w-64" />
                             <label class="inline-flex items-center gap-2 text-sm text-gray-700">
                                 <input id="editNewFieldRequired" type="checkbox"
                                     class="h-4 w-4 border-gray-300 rounded" /> <span>Wajib</span>
                             </label>
-                            <button id="editAddFieldBtn" class="px-3 py-2 bg-indigo-600 text-white rounded">Tambah
+                            <button id="editAddFieldBtn" class="px-4 py-2 bg-gradient-to-r from-red-500/85 to-red-600/75 text-white rounded-2xl hover:from-red-500 hover:to-red-600 shadow-sm hover:shadow-md transition-all duration-300 text-sm font-medium">Tambah
                                 Field</button>
                         </div>
                         <div id="editTemplateFieldsList" class="space-y-2 mb-3">
@@ -345,17 +381,17 @@
                         </div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Isi Template</label>
                         <textarea id="editTemplateContent" placeholder="Ketik isi template..." rows="8"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-sm"></textarea>
+                            class="w-full px-4 py-2.5 border border-gray-200/60 rounded-2xl focus:ring-2 focus:ring-red-400/40 focus:border-transparent bg-white/80 font-mono text-sm"></textarea>
                         <p class="text-xs text-gray-500 mt-2">Gunakan tombol <strong>Sisipi Placeholder</strong> untuk
                             menambahkan placeholder sesuai key field.</p>
                     </div>
                 </div>
             </div>
-            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+            <div class="px-6 py-4 border-t border-gray-100/40 bg-gradient-to-r from-red-50/30 to-slate-50/15 flex justify-end gap-3 rounded-b-3xl">
                 <button onclick="closeEditTemplateModal()"
-                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
+                    class="px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium">Batal</button>
                 <button
-                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium">Simpan
+                    class="px-4 py-2.5 bg-gradient-to-r from-red-500/85 to-red-600/75 text-white rounded-2xl hover:from-red-500 hover:to-red-600 shadow-sm hover:shadow-md transition-all duration-300 font-medium">Simpan
                     Perubahan</button>
             </div>
         </div>
@@ -363,12 +399,12 @@
 
     <!-- Modal: Konfirmasi Toggle Status -->
     <div id="toggleStatusModal"
-        class="hidden js-modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+        class="hidden js-modal fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4"
         data-modal-id="toggleStatusModal">
-        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full">
             <div class="p-6">
-                <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-12 h-12 rounded-full bg-amber-50/70 border border-amber-100/30 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6 text-amber-600/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -376,11 +412,11 @@
                 <h3 class="text-lg font-semibold text-gray-800 text-center mb-2">Ubah Status Template?</h3>
                 <p class="text-gray-600 text-center mb-6">Ubah status template aktif/nonaktif?</p>
             </div>
-            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+            <div class="px-6 py-4 border-t border-gray-100/40 bg-gradient-to-r from-amber-50/30 to-slate-50/15 flex justify-end gap-3 rounded-b-3xl">
                 <button onclick="closeToggleStatusModal()"
-                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
+                    class="px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium">Batal</button>
                 <button
-                    class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium">Ya,
+                    class="px-4 py-2.5 bg-gradient-to-r from-amber-500/80 to-amber-600/70 text-white rounded-2xl hover:from-amber-500 hover:to-amber-600 shadow-sm hover:shadow-md transition-all duration-300 font-medium">Ya,
                     Ubah Status</button>
             </div>
         </div>
@@ -388,12 +424,12 @@
 
     <!-- Modal: Konfirmasi Hapus -->
     <div id="deleteTemplateModal"
-        class="hidden js-modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+        class="hidden js-modal fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4"
         data-modal-id="deleteTemplateModal">
-        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full">
             <div class="p-6">
-                <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-12 h-12 rounded-full bg-red-50/70 border border-red-100/30 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6 text-red-600/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -402,11 +438,11 @@
                 <p class="text-gray-600 text-center mb-6">Template akan dihapus permanen. Aksi ini tidak dapat
                     dibatalkan.</p>
             </div>
-            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+            <div class="px-6 py-4 border-t border-gray-100/40 bg-gradient-to-r from-red-50/30 to-slate-50/15 flex justify-end gap-3 rounded-b-3xl">
                 <button onclick="closeDeleteTemplateModal()"
-                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">Batal</button>
+                    class="px-4 py-2.5 border border-gray-200/60 rounded-2xl text-gray-700 hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 font-medium">Batal</button>
                 <button
-                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">Ya,
+                    class="px-4 py-2.5 bg-gradient-to-r from-red-500/85 to-red-600/75 text-white rounded-2xl hover:from-red-500 hover:to-red-600 shadow-sm hover:shadow-md transition-all duration-300 font-medium">Ya,
                     Hapus</button>
             </div>
         </div>

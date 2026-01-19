@@ -25,21 +25,21 @@
                     </div>
                 </div>
             @else
-                <div class="relative overflow-hidden bg-gradient-to-r from-slate-400 via-slate-400 to-slate-500 rounded-2xl p-8 mb-8 shadow-lg">
+                <div class="relative overflow-hidden bg-gradient-to-r from-red-500/85 via-red-600/80 to-slate-600/75 rounded-3xl p-8 mb-8 shadow-lg border border-red-200/30">
                     <div class="relative flex items-center justify-between">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                            <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                                 </svg>
                             </div>
                             <div>
                                 <h1 class="text-2xl font-bold mb-2 text-white">Selamat Datang, {{ Auth::user()->name }}! 👋</h1>
-                                <p class="text-slate-50 text-sm">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                                <p class="text-red-50/90 text-sm">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
                             </div>
                         </div>
                         <div class="hidden md:block">
-                            <svg class="w-24 h-24 text-white/20" fill="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-24 h-24 text-white/15" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                             </svg>
                         </div>
@@ -48,144 +48,279 @@
             @endif
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 @if (Auth::user()->role === 'direktur')
-                    <!-- Direktur Stats -->
-                    <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
+                    <!-- Direktur Stats Card 1: Total Karyawan -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-slate-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-slate-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100/60 to-slate-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-slate-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-slate-600/80 bg-slate-50/70 px-2.5 py-1.5 rounded-full border border-slate-200/30 shadow-sm">👥 Aktif</span>
                             </div>
-                            <span
-                                class="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-1 rounded-full">Aktif</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">156</h3>
+                            <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">156</h3>
-                        <p class="text-sm text-gray-500">Total Karyawan Aktif</p>
                     </div>
 
-                    <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
+                    <!-- Direktur Stats Card 2: Cuti Pending -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-amber-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-amber-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-100/60 to-amber-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">⏳ Pending</span>
                             </div>
-                            <span
-                                class="text-xs font-medium text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">Pending</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">8</h3>
+                            <p class="text-sm text-gray-600 font-medium">Cuti Menunggu Persetujuan</p>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">8</h3>
-                        <p class="text-sm text-gray-500">Cuti Menunggu Approval</p>
                     </div>
 
-                    <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                    <!-- Direktur Stats Card 3: Lembur Pending -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-orange-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-100/60 to-orange-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-orange-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-orange-600/80 bg-orange-50/70 px-2.5 py-1.5 rounded-full border border-orange-200/30 shadow-sm">⏳ Pending</span>
                             </div>
-                            <span
-                                class="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">Pending</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">5</h3>
+                            <p class="text-sm text-gray-600 font-medium">Lembur Menunggu Persetujuan</p>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">5</h3>
-                        <p class="text-sm text-gray-500">Lembur Menunggu Approval</p>
                     </div>
 
-                    <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3l-4 4z" />
-                                </svg>
+                    <!-- Direktur Stats Card 4: Surat Pending -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-red-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-100/60 to-red-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-red-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3l-4 4z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">📋 Proses</span>
                             </div>
-                            <span
-                                class="text-xs font-medium text-red-600 bg-red-100 px-2 py-1 rounded-full">Proses</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">3</h3>
+                            <p class="text-sm text-gray-600 font-medium">Surat Menunggu Proses</p>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">3</h3>
-                        <p class="text-sm text-gray-500">Surat Menunggu Proses</p>
+                    </div>
+
+                    <!-- Direktur Stats Card 5: Persetujuan Selesai -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-green-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-green-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-100/60 to-green-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-green-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">✅ Selesai</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">47</h3>
+                            <p class="text-sm text-gray-600 font-medium">Persetujuan Selesai Bulan Ini</p>
+                        </div>
+                    </div>
+
+                    <!-- Direktur Stats Card 6: Kehadiran Hari Ini -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-blue-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-100/60 to-blue-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-blue-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">📊 92%</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">143</h3>
+                            <p class="text-sm text-gray-600 font-medium">Hadir Hari Ini</p>
+                        </div>
+                    </div>
+
+                    <!-- Direktur Stats Card 7: Surat Dikirim -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-purple-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100/60 to-purple-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-purple-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">📤 Terkirim</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">12</h3>
+                            <p class="text-sm text-gray-600 font-medium">Surat Sudah Dikirim</p>
+                        </div>
+                    </div>
+
+                    <!-- Direktur Stats Card 8: Tindakan Diperlukan -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-rose-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-rose-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-100/60 to-rose-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-rose-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0 4v2M7 8a5 5 0 1110 0H7z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">⚠️ Penting</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">16</h3>
+                            <p class="text-sm text-gray-600 font-medium">Memerlukan Tindakan Segera</p>
+                        </div>
                     </div>
                 @elseif(Auth::user()->role === 'admin_hrd')
-                    <!-- Admin HRD Stats -->
-                    <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
+                    <!-- Admin HRD Stats - 8 Cards Grid -->
+                    <!-- Card 1: Total Karyawan -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-slate-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-slate-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100/60 to-slate-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-slate-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">+12%</span>
                             </div>
-                            <span
-                                class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">+12%</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">156</h3>
+                            <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">156</h3>
-                        <p class="text-sm text-gray-500">Total Karyawan</p>
                     </div>
 
-                    <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                    <!-- Card 2: Hadir Hari Ini -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-green-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-green-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-100/60 to-green-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-green-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">92%</span>
                             </div>
-                            <span
-                                class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">92%</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">143</h3>
+                            <p class="text-sm text-gray-600 font-medium">Hadir Hari Ini</p>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">143</h3>
-                        <p class="text-sm text-gray-500">Hadir Hari Ini</p>
                     </div>
 
-                    <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                    <!-- Card 3: Cuti Pending -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-amber-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-amber-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-100/60 to-amber-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">Menunggu</span>
                             </div>
-                            <span
-                                class="text-xs font-medium text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">Approved</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">8</h3>
+                            <p class="text-sm text-gray-600 font-medium">Pengajuan Cuti Pending</p>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">24</h3>
-                        <p class="text-sm text-gray-500">Pengajuan Disetujui</p>
                     </div>
 
-                    <div
-                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
+                    <!-- Card 4: Lembur Pending -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-orange-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-100/60 to-orange-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-orange-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-orange-600/80 bg-orange-50/70 px-2.5 py-1.5 rounded-full border border-orange-200/30 shadow-sm">Pending</span>
                             </div>
-                            <span
-                                class="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">Draft</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">5</h3>
+                            <p class="text-sm text-gray-600 font-medium">Pengajuan Lembur Pending</p>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-1">8</h3>
-                        <p class="text-sm text-gray-500">Surat Siap Dikirim</p>
+                    </div>
+
+                    <!-- Card 5: Surat Pending -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-red-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-100/60 to-red-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-red-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3l-4 4z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">Proses</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">3</h3>
+                            <p class="text-sm text-gray-600 font-medium">Surat dalam Proses</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Disetujui -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-blue-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-100/60 to-blue-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-blue-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">Approved</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">47</h3>
+                            <p class="text-sm text-gray-600 font-medium">Pengajuan Disetujui</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 7: Surat Siap -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-purple-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100/60 to-purple-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-purple-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">Siap</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">12</h3>
+                            <p class="text-sm text-gray-600 font-medium">Surat Siap Dikirim</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 8: Ditolak/Revisi -->
+                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-rose-100/60 transition-all duration-300 hover:-translate-y-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-rose-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-100/60 to-rose-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-rose-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Revisi</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">2</h3>
+                            <p class="text-sm text-gray-600 font-medium">Pengajuan Perlu Revisi</p>
+                        </div>
                     </div>
                 @else
                     <!-- Karyawan Stats - Personal (Soft Modern Design) -->
@@ -267,134 +402,172 @@
                 @if (Auth::user()->role === 'direktur')
                     <!-- Charts Section - Direktur (2 kolom) -->
                     <div class="lg:col-span-2 space-y-6">
-                        <!-- Pengajuan Bulan Ini Chart - Simpel -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Pengajuan per Bulan (6 Bulan Terakhir)
-                            </h3>
-                            <div class="flex items-end justify-between h-40 gap-2 mb-6">
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-red-600 rounded-t" style="height: 80px;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Agu</span>
+                        <!-- Pengajuan Bulan Ini Chart - Normal Bar Chart with Tooltip -->
+                        <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
+                            <div class="absolute inset-0 bg-gradient-to-br from-rose-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="relative">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Pengajuan per Bulan (6 Bulan Terakhir)</h3>
+                                <div class="flex items-end justify-between h-56 gap-3 mb-6 px-2 relative border-b-2 border-gray-200/50 pb-4">
+                                    <!-- Agustus -->
+                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
+                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
+                                            <span>80</span>
+                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
+                                        </div>
+                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 80px;"></div>
+                                        <span class="text-xs text-gray-600 font-medium">Agu</span>
+                                    </div>
+                                    <!-- September -->
+                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
+                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
+                                            <span>95</span>
+                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
+                                        </div>
+                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 95px;"></div>
+                                        <span class="text-xs text-gray-600 font-medium">Sep</span>
+                                    </div>
+                                    <!-- Oktober -->
+                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
+                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
+                                            <span>70</span>
+                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
+                                        </div>
+                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 70px;"></div>
+                                        <span class="text-xs text-gray-600 font-medium">Okt</span>
+                                    </div>
+                                    <!-- November -->
+                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
+                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
+                                            <span>110</span>
+                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
+                                        </div>
+                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 110px;"></div>
+                                        <span class="text-xs text-gray-600 font-medium">Nov</span>
+                                    </div>
+                                    <!-- Desember -->
+                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
+                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
+                                            <span>105</span>
+                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
+                                        </div>
+                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 105px;"></div>
+                                        <span class="text-xs text-gray-600 font-medium">Des</span>
+                                    </div>
+                                    <!-- Januari -->
+                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
+                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
+                                            <span>95</span>
+                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
+                                        </div>
+                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 75px;"></div>
+                                        <span class="text-xs text-gray-600 font-medium">Jan</span>
+                                    </div>
                                 </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-red-600 rounded-t" style="height: 95px;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Sep</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-red-600 rounded-t" style="height: 70px;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Okt</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-red-600 rounded-t" style="height: 110px;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Nov</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-red-600 rounded-t" style="height: 105px;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Des</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-red-600 rounded-t" style="height: 75px;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Jan</span>
-                                </div>
-                            </div>
-                            <div class="pt-4 border-t border-gray-100">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
-                                    <span class="text-lg font-bold text-indigo-600">555 pengajuan</span>
+                                <div class="pt-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
+                                        <span class="text-lg font-bold bg-gradient-to-r from-rose-500 to-rose-400 bg-clip-text text-transparent">550 pengajuan</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Lembur Per Divisi - Progress Bar Sederhana -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Lembur per Divisi (Bulan Ini)</h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm font-medium text-gray-700">IT & Teknologi</span>
-                                        <span class="text-sm font-bold text-red-600">42 jam</span>
+                        <!-- Lembur Per Divisi - Soft Gradient Progress Bars -->
+                        <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
+                            <div class="absolute inset-0 bg-gradient-to-br from-orange-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="relative">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-6">Lembur per Divisi (Bulan Ini)</h3>
+                                <div class="space-y-5">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2.5">
+                                            <span class="text-sm font-medium text-gray-700">IT & Teknologi</span>
+                                            <span class="text-sm font-bold bg-gradient-to-r from-orange-500 to-orange-400 bg-clip-text text-transparent">42 jam</span>
+                                        </div>
+                                        <div class="w-full bg-gradient-to-r from-gray-200/40 to-gray-100/30 rounded-full h-3 shadow-sm overflow-hidden">
+                                            <div class="bg-gradient-to-r from-orange-400/80 to-orange-300/60 h-3 rounded-full shadow-md transition-all duration-300 hover:shadow-lg" style="width: 60%"></div>
+                                        </div>
                                     </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-red-600 h-2 rounded-full" style="width: 60%"></div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2.5">
+                                            <span class="text-sm font-medium text-gray-700">Finance</span>
+                                            <span class="text-sm font-bold bg-gradient-to-r from-blue-500 to-blue-400 bg-clip-text text-transparent">35 jam</span>
+                                        </div>
+                                        <div class="w-full bg-gradient-to-r from-gray-200/40 to-gray-100/30 rounded-full h-3 shadow-sm overflow-hidden">
+                                            <div class="bg-gradient-to-r from-blue-400/80 to-blue-300/60 h-3 rounded-full shadow-md transition-all duration-300 hover:shadow-lg" style="width: 50%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2.5">
+                                            <span class="text-sm font-medium text-gray-700">Operations</span>
+                                            <span class="text-sm font-bold bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent">31 jam</span>
+                                        </div>
+                                        <div class="w-full bg-gradient-to-r from-gray-200/40 to-gray-100/30 rounded-full h-3 shadow-sm overflow-hidden">
+                                            <div class="bg-gradient-to-r from-emerald-400/80 to-emerald-300/60 h-3 rounded-full shadow-md transition-all duration-300 hover:shadow-lg" style="width: 44%"></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm font-medium text-gray-700">Finance</span>
-                                        <span class="text-sm font-bold text-slate-600">35 jam</span>
-                                    </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-slate-600 h-2 rounded-full" style="width: 50%"></div>
-                                    </div>
+                                <div class="mt-5 pt-4 border-t border-gray-100/30 flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-600">Total Lembur</span>
+                                    <span class="text-lg font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">150 jam</span>
                                 </div>
-                                <div>
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm font-medium text-gray-700">Operations</span>
-                                        <span class="text-sm font-bold text-emerald-600">31 jam</span>
-                                    </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-emerald-600 h-2 rounded-full" style="width: 44%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-600">Total Lembur</span>
-                                <span class="text-lg font-bold text-gray-800">150 jam</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Right Column Charts - Direktur -->
                     <div class="space-y-6">
-                        <!-- Status Pengajuan Donut FULL 360° - SOLID COLOR -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-6">Status Pengajuan</h3>
-                            <div class="flex items-center justify-center mb-6">
-                                <div class="relative w-48 h-48">
-                                    <svg class="w-full h-full" viewBox="0 0 140 140"
-                                        style="transform: rotate(-90deg)">
-                                        <!-- Approved (green) - 60/140 = 43% = 154.8° -->
-                                        <circle cx="70" cy="70" r="55" fill="none" stroke="#059669"
-                                            stroke-width="22" stroke-dasharray="119.3 340.6"
-                                            stroke-linecap="round" />
-                                        <!-- Pending (amber) - 70/140 = 50% = 180° -->
-                                        <circle cx="70" cy="70" r="55" fill="none" stroke="#d97706"
-                                            stroke-width="22" stroke-dasharray="136 340.6" stroke-dashoffset="-119.3"
-                                            stroke-linecap="round" />
-                                        <!-- Rejected (red) - 10/140 = 7% = 25.2° -->
-                                        <circle cx="70" cy="70" r="55" fill="none" stroke="#dc2626"
-                                            stroke-width="22" stroke-dasharray="24.4 340.6"
-                                            stroke-dashoffset="-255.3" stroke-linecap="round" />
-                                    </svg>
-                                    <div class="absolute inset-0 flex items-center justify-center">
-                                        <div class="text-center">
-                                            <div class="text-3xl font-bold text-gray-800">140</div>
-                                            <div class="text-xs text-gray-500">Total</div>
+                        <!-- Status Pengajuan Donut - Soft Gradient Colors -->
+                        <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
+                            <div class="absolute inset-0 bg-gradient-to-br from-green-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="relative">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-6">Status Pengajuan</h3>
+                                <div class="flex items-center justify-center mb-6">
+                                    <div class="relative w-48 h-48">
+                                        <svg class="w-full h-full drop-shadow-sm" viewBox="0 0 140 140"
+                                            style="transform: rotate(-90deg)">
+                                            <!-- Approved (soft green) - 60/140 = 43% = 154.8° -->
+                                            <circle cx="70" cy="70" r="55" fill="none" stroke="#10b981"
+                                                stroke-width="22" stroke-dasharray="119.3 340.6"
+                                                stroke-linecap="round" opacity="0.8" />
+                                            <!-- Pending (soft amber) - 70/140 = 50% = 180° -->
+                                            <circle cx="70" cy="70" r="55" fill="none" stroke="#f59e0b"
+                                                stroke-width="22" stroke-dasharray="136 340.6" stroke-dashoffset="-119.3"
+                                                stroke-linecap="round" opacity="0.8" />
+                                            <!-- Rejected (soft red) - 10/140 = 7% = 25.2° -->
+                                            <circle cx="70" cy="70" r="55" fill="none" stroke="#ef4444"
+                                                stroke-width="22" stroke-dasharray="24.4 340.6"
+                                                stroke-dashoffset="-255.3" stroke-linecap="round" opacity="0.8" />
+                                        </svg>
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <div class="text-center">
+                                                <div class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">140</div>
+                                                <div class="text-xs text-gray-500">Total</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-4 h-4 rounded-full bg-green-600 flex-shrink-0"></div>
-                                        <span class="text-gray-600">Disetujui</span>
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-green-50/40 hover:to-transparent transition-colors duration-300">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-4 h-4 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex-shrink-0 shadow-sm"></div>
+                                            <span class="text-gray-600">Disetujui</span>
+                                        </div>
+                                        <span class="font-bold text-gray-800">60 (43%)</span>
                                     </div>
-                                    <span class="font-bold text-gray-800">60 (43%)</span>
-                                </div>
-                                <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-4 h-4 rounded-full bg-yellow-600 flex-shrink-0"></div>
-                                        <span class="text-gray-600">Menunggu</span>
+                                    <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-amber-50/40 hover:to-transparent transition-colors duration-300">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-4 h-4 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 flex-shrink-0 shadow-sm"></div>
+                                            <span class="text-gray-600">Menunggu</span>
+                                        </div>
+                                        <span class="font-bold text-gray-800">70 (50%)</span>
                                     </div>
-                                    <span class="font-bold text-gray-800">70 (50%)</span>
-                                </div>
-                                <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-4 h-4 rounded-full bg-red-600 flex-shrink-0"></div>
-                                        <span class="text-gray-600">Ditolak</span>
+                                    <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-red-50/40 hover:to-transparent transition-colors duration-300">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-4 h-4 rounded-full bg-gradient-to-br from-red-400 to-red-500 flex-shrink-0 shadow-sm"></div>
+                                            <span class="text-gray-600">Ditolak</span>
+                                        </div>
+                                        <span class="font-bold text-gray-800">10 (7%)</span>
                                     </div>
-                                    <span class="font-bold text-gray-800">10 (7%)</span>
                                 </div>
                             </div>
                         </div>
@@ -433,114 +606,117 @@
                 @elseif(Auth::user()->role === 'admin_hrd')
                     <!-- Charts Section - Admin HRD -->
                     <div class="lg:col-span-2 space-y-6">
-                        <!-- Kehadiran per Divisi - Vertical Bar Chart -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-6">Kehadiran per Divisi (Hari Ini)</h3>
+                        <!-- Kehadiran per Divisi - Soft Gradient Vertical Bar Chart -->
+                        <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="relative">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-6">Kehadiran per Divisi (Hari Ini)</h3>
 
-                            <!-- Chart Container -->
-                            <div class="flex gap-6 items-end border-l-2 border-b-2 border-gray-300 pl-6 pb-6 pt-4"
-                                style="height: 320px;">
-                                <!-- IT & Teknologi -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-3">
-                                    <div class="w-full bg-slate-500 rounded-t-lg" style="height: 180px;"></div>
-                                    <div class="text-center">
-                                        <p class="text-xs font-semibold text-gray-700 mb-1">IT & Teknologi</p>
-                                        <p class="text-sm font-bold text-slate-600">18/20</p>
+                                <!-- Chart Container -->
+                                <div class="flex gap-4 items-end border-l-2 border-b-2 border-gray-200/50 pl-4 pb-4 pt-2"
+                                    style="height: 300px;">
+                                    <!-- IT & Teknologi -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-slate-400/70 to-slate-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-slate-400/90 group-hover/bar:to-slate-300/70 transition-all duration-300" style="height: 160px;"></div>
+                                        <div class="text-center">
+                                            <p class="text-xs font-semibold text-gray-700 mb-0.5">IT & Teknologi</p>
+                                            <p class="text-sm font-bold bg-gradient-to-r from-slate-500 to-slate-400 bg-clip-text text-transparent">18/20</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Finance -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-green-400/70 to-green-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-green-400/90 group-hover/bar:to-green-300/70 transition-all duration-300" style="height: 230px;"></div>
+                                        <div class="text-center">
+                                            <p class="text-xs font-semibold text-gray-700 mb-0.5">Finance</p>
+                                            <p class="text-sm font-bold bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent">25/25</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Operations -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-amber-400/70 to-amber-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-amber-400/90 group-hover/bar:to-amber-300/70 transition-all duration-300" style="height: 170px;"></div>
+                                        <div class="text-center">
+                                            <p class="text-xs font-semibold text-gray-700 mb-0.5">Operations</p>
+                                            <p class="text-sm font-bold bg-gradient-to-r from-amber-500 to-amber-400 bg-clip-text text-transparent">38/45</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Marketing -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-indigo-400/70 to-indigo-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-indigo-400/90 group-hover/bar:to-indigo-300/70 transition-all duration-300" style="height: 190px;"></div>
+                                        <div class="text-center">
+                                            <p class="text-xs font-semibold text-gray-700 mb-0.5">Marketing</p>
+                                            <p class="text-sm font-bold bg-gradient-to-r from-indigo-500 to-indigo-400 bg-clip-text text-transparent">28/30</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- HRD -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-cyan-400/70 to-cyan-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-cyan-400/90 group-hover/bar:to-cyan-300/70 transition-all duration-300" style="height: 230px;"></div>
+                                        <div class="text-center">
+                                            <p class="text-xs font-semibold text-gray-700 mb-0.5">HRD</p>
+                                            <p class="text-sm font-bold bg-gradient-to-r from-cyan-500 to-cyan-400 bg-clip-text text-transparent">10/10</p>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- Finance -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-3">
-                                    <div class="w-full bg-green-500 rounded-t-lg" style="height: 250px;"></div>
-                                    <div class="text-center">
-                                        <p class="text-xs font-semibold text-gray-700 mb-1">Finance</p>
-                                        <p class="text-sm font-bold text-green-600">25/25</p>
-                                    </div>
+                                <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
+                                    <span class="text-sm font-medium text-gray-600">Total Kehadiran Hari Ini</span>
+                                    <span class="text-lg font-bold bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent">143/156 (92%)</span>
                                 </div>
-
-                                <!-- Operations -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-3">
-                                    <div class="w-full bg-yellow-500 rounded-t-lg" style="height: 190px;"></div>
-                                    <div class="text-center">
-                                        <p class="text-xs font-semibold text-gray-700 mb-1">Operations</p>
-                                        <p class="text-sm font-bold text-yellow-600">38/45</p>
-                                    </div>
-                                </div>
-
-                                <!-- Marketing -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-3">
-                                    <div class="w-full bg-indigo-500 rounded-t-lg" style="height: 210px;"></div>
-                                    <div class="text-center">
-                                        <p class="text-xs font-semibold text-gray-700 mb-1">Marketing</p>
-                                        <p class="text-sm font-bold text-red-600">28/30</p>
-                                    </div>
-                                </div>
-
-                                <!-- HRD -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-3">
-                                    <div class="w-full bg-slate-500 rounded-t-lg" style="height: 250px;"></div>
-                                    <div class="text-center">
-                                        <p class="text-xs font-semibold text-gray-700 mb-1">HRD</p>
-                                        <p class="text-sm font-bold text-slate-600">10/10</p>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                            <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-600">Total Kehadiran Hari Ini</span>
-                                <span class="text-lg font-bold text-green-600">143/156 (92%)</span>
                             </div>
                         </div>
 
-                        <!-- Pengajuan Masuk Chart -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-6">Pengajuan Masuk (6 Bulan Terakhir)
-                            </h3>
+                        <!-- Pengajuan Masuk - Soft Gradient Chart -->
+                        <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
+                            <div class="absolute inset-0 bg-gradient-to-br from-purple-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="relative">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-6">Pengajuan Masuk (6 Bulan Terakhir)</h3>
 
-                            <!-- Chart Container -->
-                            <div class="flex gap-4 items-end border-b-2 border-gray-300 pb-4" style="height: 240px;">
-                                <!-- Agustus -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-2">
-                                    <div class="w-full bg-indigo-500 rounded-t-lg" style="height: 140px;"></div>
-                                    <span class="text-xs text-gray-700 font-medium mt-2">Agu</span>
+                                <!-- Chart Container -->
+                                <div class="flex gap-3 items-end border-b-2 border-gray-200/50 pb-4" style="height: 240px;">
+                                    <!-- Agustus -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300" style="height: 140px;"></div>
+                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Agu</span>
+                                    </div>
+
+                                    <!-- September -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300" style="height: 170px;"></div>
+                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Sep</span>
+                                    </div>
+
+                                    <!-- Oktober -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300" style="height: 120px;"></div>
+                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Okt</span>
+                                    </div>
+
+                                    <!-- November -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300" style="height: 190px;"></div>
+                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Nov</span>
+                                    </div>
+
+                                    <!-- Desember -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300" style="height: 210px;"></div>
+                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Des</span>
+                                    </div>
+
+                                    <!-- Januari -->
+                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                        <div class="w-full bg-gradient-to-t from-indigo-400/70 to-indigo-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-indigo-400/90 group-hover/bar:to-indigo-300/70 transition-all duration-300" style="height: 150px;"></div>
+                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Jan</span>
+                                    </div>
                                 </div>
 
-                                <!-- September -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-2">
-                                    <div class="w-full bg-indigo-500 rounded-t-lg" style="height: 170px;"></div>
-                                    <span class="text-xs text-gray-700 font-medium mt-2">Sep</span>
+                                <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
+                                    <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
+                                    <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">342 pengajuan</span>
                                 </div>
-
-                                <!-- Oktober -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-2">
-                                    <div class="w-full bg-indigo-500 rounded-t-lg" style="height: 120px;"></div>
-                                    <span class="text-xs text-gray-700 font-medium mt-2">Okt</span>
-                                </div>
-
-                                <!-- November -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-2">
-                                    <div class="w-full bg-indigo-500 rounded-t-lg" style="height: 190px;"></div>
-                                    <span class="text-xs text-gray-700 font-medium mt-2">Nov</span>
-                                </div>
-
-                                <!-- Desember -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-2">
-                                    <div class="w-full bg-indigo-500 rounded-t-lg" style="height: 210px;"></div>
-                                    <span class="text-xs text-gray-700 font-medium mt-2">Des</span>
-                                </div>
-
-                                <!-- Januari -->
-                                <div class="flex-1 flex flex-col items-center justify-end gap-2">
-                                    <div class="w-full bg-indigo-600 rounded-t-lg" style="height: 150px;"></div>
-                                    <span class="text-xs text-gray-700 font-medium mt-2">Jan</span>
-                                </div>
-                            </div>
-
-                            <div class="pt-4 border-t border-gray-100 flex items-center justify-between mt-4">
-                                <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
-                                <span class="text-lg font-bold text-indigo-600">342 pengajuan</span>
                             </div>
                         </div>
                     </div>

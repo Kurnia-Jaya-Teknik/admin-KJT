@@ -16,6 +16,8 @@ class KopSurat extends Model
         'file_path',
         'mime',
         'uploaded_by',
+        'is_template',
+        'placeholders',
     ];
 
     // Helper to get public url

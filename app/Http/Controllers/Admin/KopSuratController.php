@@ -78,41 +78,59 @@ class KopSuratController extends Controller
     }
     public function store(Request $request)
     {
+        // Validasi: file required dan max 10MB
+        // Relax MIME type restrictions - support semua format file yang umum
         $request->validate([
-            'file' => 'required|file|mimes:png,jpg,jpeg,svg,pdf,docx|max:10240',
+            'file' => 'required|file|max:10240',
             'name' => 'nullable|string|max:255',
         ]);
 
         $file = $request->file('file');
         $name = $request->input('name') ?? $file->getClientOriginalName();
         $mime = $file->getMimeType();
+        $extension = strtolower($file->getClientOriginalExtension());
 
-        $path = $file->store('kop-surat','public');
+        // Store file with explicit public disk
+        $path = $file->store('kop-surat', 'public');
 
-        $isTemplate = in_array($file->extension(), ['docx']);
+        // Ensure storage link exists
+        if (!file_exists(public_path('storage'))) {
+            @symlink(storage_path('app/public'), public_path('storage'));
+        }
+
+        // Detect if it's a template based on extension
+        // Support template processing untuk: docx, xlsx, pptx
+        $templateExtensions = ['docx', 'xlsx', 'pptx'];
+        $isTemplate = in_array($extension, $templateExtensions);
 
         $kop = KopSurat::create([
             'name' => $name,
             'file_path' => $path,
             'mime' => $mime,
             'is_template' => $isTemplate,
-            'uploaded_by' => $request->user()? $request->user()->id : null,
+            'uploaded_by' => $request->user() ? $request->user()->id : null,
         ]);
 
-        // If docx template, try to extract placeholders and save to placeholders column
+        // If docx/xlsx/pptx template, try to extract placeholders and save to placeholders column
         if ($isTemplate) {
             try {
-                $full = storage_path('app/public/'.$path);
-                $tp = new \PhpOffice\PhpWord\TemplateProcessor($full);
-                $vars = $tp->getVariables();
-                $kop->placeholders = $vars;
-                $kop->save();
+                $full = storage_path('app/public/' . $path);
+                if ($extension === 'docx') {
+                    $tp = new \PhpOffice\PhpWord\TemplateProcessor($full);
+                    $vars = $tp->getVariables();
+                    $kop->placeholders = $vars;
+                    $kop->save();
+                }
+                // Untuk xlsx/pptx bisa ditambahkan processing di masa depan
             } catch (\Throwable $e) {
-                // ignore extraction failure
+                // ignore extraction failure - file tetap tersimpan
             }
         }
 
-        $kop->url = asset('storage/'.$kop->file_path);
+        $kop->url = asset('storage/' . $kop->file_path);
+        
+        // Ensure placeholders is an array
+        $kop->placeholders = $kop->placeholders ? (is_array($kop->placeholders) ? $kop->placeholders : json_decode($kop->placeholders, true)) : [];
 
         return response()->json(['success' => true, 'data' => $kop], 201);
     }
