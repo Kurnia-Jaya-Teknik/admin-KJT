@@ -35,11 +35,6 @@ class ApprovalController extends Controller
             }
             $model->save();
 
-            // notify requester
-            if ($model->user) {
-                \Illuminate\Support\Facades\Notification::send($model->user, new \App\Notifications\CutiStatusChanged($model));
-            }
-
             return redirect()->back()->with('status', 'Pengajuan cuti disetujui.');
         }
 
@@ -67,11 +62,6 @@ class ApprovalController extends Controller
             $model->tanggal_persetujuan = now();
             $model->keterangan_persetujuan = $request->input('keterangan');
             $model->save();
-
-            // notify requester
-            if ($model->user) {
-                \Illuminate\Support\Facades\Notification::send($model->user, new \App\Notifications\CutiStatusChanged($model));
-            }
 
             return redirect()->back()->with('status', 'Pengajuan cuti ditolak.');
         }

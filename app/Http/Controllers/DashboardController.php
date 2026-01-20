@@ -170,57 +170,21 @@ class DashboardController extends Controller
         // Sisa cuti
         $sisaCuti = $user->sisa_cuti ?? 12;
 
-        // Cuti yang sudah dipakai tahun ini (sum durasi_hari dari cuti disetujui)
-        $cutiDipakai = Cuti::where('user_id', $user->id)
+        // Pengajuan disetujui
+        $pengajuanDisetujui = Cuti::where('user_id', $user->id)
             ->where('status', 'Disetujui')
-            ->whereYear('tanggal_persetujuan', now()->year)
-            ->sum('durasi_hari');
-
-        // Count per-status for cuti (this year)
-        $cutiApprovedCount = Cuti::where('user_id', $user->id)
-            ->where('status', 'Disetujui')
-            ->whereYear('tanggal_persetujuan', now()->year)
-            ->count();
-        $cutiPendingCount = Cuti::where('user_id', $user->id)->where('status', 'Pending')->count();
-        $cutiRejectedCount = Cuti::where('user_id', $user->id)->where('status', 'Ditolak')->count();
-
-        // Pengajuan disetujui (total)
-        $pengajuanDisetujui = $cutiApprovedCount +
-            Lembur::where('user_id', $user->id)
-            ->where('status', 'Disetujui')
-            ->count();
-
-        // Pengajuan menunggu (pending)
-        $pendingRequests = Cuti::where('user_id', $user->id)
-            ->where('status', 'Pending')
             ->count() +
             Lembur::where('user_id', $user->id)
-            ->where('status', 'Pending')
+            ->where('status', 'Disetujui')
             ->count();
 
         // Status kontrak
         $statusKontrak = $user->status_kontrak ?? 'PKWTT';
 
-        // Use configured yearly entitlement as the fixed total (company policy)
-        $cutiEntitlement = config('leave.cuti_tahunan_default', 20);
-
-        // Remaining is taken from user.sisa_cuti (source of truth)
-        $cutiRemaining = $sisaCuti ?? 0;
-
-        // Derive used for display convenience
-        $cutiUsed = max(0, $cutiEntitlement - $cutiRemaining);
-
         return [
             'statusAbsensi' => $statusAbsensi,
-            'sisaCuti' => $cutiRemaining,
-            // use actual approved cuti sum for display
-            'cutiDipakai' => $cutiDipakai,
-            'cutiApprovedCount' => $cutiApprovedCount,
-            'cutiPendingCount' => $cutiPendingCount,
-            'cutiRejectedCount' => $cutiRejectedCount,
-            'cutiEntitlement' => $cutiEntitlement,
+            'sisaCuti' => $sisaCuti,
             'pengajuanDisetujui' => $pengajuanDisetujui,
-            'pendingRequests' => $pendingRequests,
             'statusKontrak' => $statusKontrak,
         ];
     }
