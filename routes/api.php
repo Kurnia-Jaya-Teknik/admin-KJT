@@ -14,5 +14,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::get('/employee/requests', [\App\Http\Controllers\Api\Employee\RequestController::class, 'index']);
     Route::post('/employee/requests', [\App\Http\Controllers\Api\Employee\RequestController::class, 'store']);
+    Route::put('/employee/requests/{cuti}', [\App\Http\Controllers\Api\Employee\RequestController::class, 'update']);
+    Route::delete('/employee/requests/{cuti}', [\App\Http\Controllers\Api\Employee\RequestController::class, 'destroy']);
 
 });
