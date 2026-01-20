@@ -19,6 +19,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // listen to logout event and revoke web-session tokens
+        \Illuminate\Support\Facades\Event::listen(\Illuminate\Auth\Events\Logout::class, function ($event) {
+            try {
+                $user = $event->user;
+                if ($user) {
+                    $user->tokens()->where('name', 'web-session')->delete();
+                }
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Failed to revoke web-session token: ' . $e->getMessage());
+            }
+        });
     }
 }
