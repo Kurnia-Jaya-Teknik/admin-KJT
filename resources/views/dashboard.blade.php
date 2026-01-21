@@ -80,7 +80,7 @@
                                 <span class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">⏳ Pending</span>
                             </div>
                             <h3 class="text-2xl font-bold text-gray-800 mb-0.5">8</h3>
-                            <p class="text-sm text-gray-600 font-medium">Cuti Menunggu Persetujuan</p>
+                            <p class="text-sm text-gray-600 font-medium">Cuti Menunggu Persetujuan Direktur</p>
                         </div>
                     </div>
 
@@ -200,7 +200,7 @@
                                 <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">+12%</span>
                             </div>
                             <h3 class="text-2xl font-bold text-gray-800 mb-0.5">156</h3>
-                            <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
+                            <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif </p>
                         </div>
                     </div>
 
