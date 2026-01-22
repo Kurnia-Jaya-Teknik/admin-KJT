@@ -12,478 +12,234 @@
 
     <!-- Scrollable Main Content -->
     <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
-        <div class="p-6 lg:p-8 bg-gray-50/50 min-h-full">
-            <!-- Filters -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <form method="GET" class="contents">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Pengajuan</label>
-                        <select name="jenis"
-                            class="filterSelect w-full px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all">
-                            <option value="">Semua</option>
-                            <option value="cuti" {{ request('jenis') === 'cuti' ? 'selected' : '' }}>Cuti</option>
-                            <option value="lembur" {{ request('jenis') === 'lembur' ? 'selected' : '' }}>Lembur</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                        <select name="status"
-                            class="filterSelect w-full px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all">
-                            <option value="">Semua</option>
-                            <option value="menunggu" {{ request('status') === 'menunggu' ? 'selected' : '' }}>Menunggu
-                            </option>
-                            <option value="disetujui" {{ request('status') === 'disetujui' ? 'selected' : '' }}>
-                                Disetujui</option>
-                            <option value="ditolak" {{ request('status') === 'ditolak' ? 'selected' : '' }}>Ditolak
-                            </option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Periode</label>
-                        <input type="month" name="periode" value="{{ request('periode', '') }}"
-                            class="w-full px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all">
-                    </div>
-                    <div class="flex items-end gap-2">
-                        <button type="submit"
-                            class="w-full px-4 py-2 rounded-lg bg-amber-500 text-white font-medium hover:bg-amber-600 transition-colors">
-                            Terapkan Filter
-                        </button>
-                        <a href="{{ route('direktur.persetujuan-cuti-lembur') }}"
-                            class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-colors">
-                            Reset
-                        </a>
-                    </div>
-                </form>
+        <div class="p-6 lg:p-8 bg-white min-h-full">
+            <!-- Filters - Clean Red-Grey Style -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Jenis Pengajuan</label>
+                    <select class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 hover:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all shadow-sm hover:shadow-md">
+                        <option>Semua</option>
+                        <option>Cuti</option>
+                        <option>Lembur</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
+                    <select class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 hover:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all shadow-sm hover:shadow-md">
+                        <option>Semua</option>
+                        <option>Menunggu</option>
+                        <option>Disetujui</option>
+                        <option>Ditolak</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Periode</label>
+                    <input type="month" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 hover:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all shadow-sm hover:shadow-md">
+                </div>
+                <div class="flex items-end">
+                    <button class="w-full px-4 py-2.5 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 shadow-md hover:shadow-lg transition-all duration-200">
+                        Terapkan Filter
+                    </button>
+                </div>
             </div>
 
-            <!-- Table -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <!-- Table - Vibrant Red-Grey -->
+            <div class="group relative overflow-hidden bg-white rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
                 <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead>
-                            <tr class="bg-gray-50 border-b border-gray-100">
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Nama
-                                    Karyawan</th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Jenis</th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Tanggal
-                                </th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Durasi
-                                </th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Keterangan
-                                </th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Status
-                                </th>
-                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase">Aksi
-                                </th>
+                            <tr class="bg-gradient-to-r from-red-600 to-red-700 border-b-2 border-red-800">
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Nama Karyawan</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Jenis</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Tanggal</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Durasi</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Keterangan</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-4 text-center text-xs font-bold text-white uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            @forelse($requests as $request)
-                                <tr class="hover:bg-gray-50/50 transition-colors">
-                                    <td class="px-6 py-4 text-sm font-medium text-gray-800">
-                                        {{ $request->user->name ?? 'Unknown' }}</td>
-                                    <td class="px-6 py-4 text-sm">
-                                        @if ($request::class === 'App\Models\Cuti')
-                                            <span
-                                                class="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">{{ $request->jenis }}</span>
-                                        @else
-                                            <span
-                                                class="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Lembur</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-600">
-                                        @if ($request::class === 'App\Models\Cuti')
-                                            {{ \Carbon\Carbon::parse($request->tanggal_mulai)->format('d M Y') }} -
-                                            {{ \Carbon\Carbon::parse($request->tanggal_selesai)->format('d M Y') }}
-                                        @else
-                                            {{ \Carbon\Carbon::parse($request->tanggal)->format('d M Y') }}
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-600">
-                                        @if ($request::class === 'App\Models\Cuti')
-                                            {{ $request->durasi_hari }} hari
-                                        @else
-                                            {{ $request->durasi_jam ?? 0 }} jam
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-600">
-                                        <span title="{{ $request->alasan ?? ($request->keterangan ?? '-') }}"
-                                            class="truncate block max-w-xs">
-                                            {{ Str::limit($request->alasan ?? ($request->keterangan ?? '-'), 40) }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm">
-                                        @if ($request->status === 'Pending')
-                                            <span
-                                                class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 ring-1 ring-yellow-100">
-                                                <svg class="w-3 h-3 text-yellow-700" fill="none"
-                                                    stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span>Menunggu</span>
-                                            </span>
-                                        @elseif ($request->status === 'Disetujui')
-                                            <span
-                                                class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 ring-1 ring-green-100">
-                                                <svg class="w-3 h-3 text-green-600" fill="currentColor"
-                                                    viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd"
-                                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                                <span>Disetujui</span>
-                                            </span>
-                                        @elseif ($request->status === 'Ditolak')
-                                            <span
-                                                class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 ring-1 ring-red-100">
-                                                <svg class="w-3 h-3 text-red-600" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                                </svg>
-                                                <span>Ditolak</span>
-                                            </span>
-                                        @else
-                                            <span
-                                                class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 ring-1 ring-gray-100">{{ $request->status }}</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="flex items-center justify-center gap-2">
-                                            @if ($request->status === 'Pending')
-                                                <div class="flex items-center gap-2">
-                                                    <button
-                                                        onclick="approveRequest('{{ $request::class }}', {{ $request->id }})"
-                                                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 text-green-700 hover:bg-green-100 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-green-200">
-                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M5 13l4 4L19 7" />
-                                                        </svg>
-                                                        <span>Setujui</span>
-                                                    </button>
-                                                    <button
-                                                        onclick="rejectRequest('{{ $request::class }}', {{ $request->id }})"
-                                                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 text-red-700 hover:bg-red-100 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-red-200">
-                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                                        </svg>
-                                                        <span>Tolak</span>
-                                                    </button>
-                                                </div>
-                                            @else
-                                                <span class="text-xs text-gray-500">-</span>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="px-6 py-8 text-center text-sm text-gray-500">
-                                        <div class="flex flex-col items-center justify-center">
-                                            <svg class="w-12 h-12 text-gray-300 mb-3" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                                </path>
-                                            </svg>
-                                            <p class="text-gray-600 font-medium">Tidak ada pengajuan untuk ditampilkan
-                                            </p>
-                                            <p class="text-gray-400 text-xs">Coba ubah filter atau cek kembali nanti
-                                            </p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-red-50 transition-colors duration-150">
+                                <td class="px-6 py-5 text-sm font-medium text-gray-800">Ahmad Rizki</td>
+                                <td class="px-6 py-5 text-sm"><span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-100 text-blue-800">Cuti Tahunan</span></td>
+                                <td class="px-6 py-5 text-sm text-gray-600">10-12 Jan 2026</td>
+                                <td class="px-6 py-5 text-sm text-gray-600">3 hari</td>
+                                <td class="px-6 py-5 text-sm text-gray-600">Liburan keluarga</td>
+                                <td class="px-6 py-5 text-sm"><span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800">Menunggu</span></td>
+                                <td class="px-6 py-5 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="openApprovalModal('Ahmad Rizki', 'Cuti Tahunan', '10-12 Jan 2026', 'Approve')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
+                                        <button onclick="openApprovalModal('Ahmad Rizki', 'Cuti Tahunan', '10-12 Jan 2026', 'Reject')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-red-50 transition-colors duration-150">
+                                <td class="px-6 py-5 text-sm font-medium text-gray-800">Siti Nurhaliza</td>
+                                <td class="px-6 py-5 text-sm"><span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-100 text-purple-800">Lembur</span></td>
+                                <td class="px-6 py-5 text-sm text-gray-600">7 Jan 2026</td>
+                                <td class="px-6 py-5 text-sm text-gray-600">5 jam</td>
+                                <td class="px-6 py-5 text-sm text-gray-600">Project deadline</td>
+                                <td class="px-6 py-5 text-sm"><span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800">Menunggu</span></td>
+                                <td class="px-6 py-5 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="openApprovalModal('Siti Nurhaliza', 'Lembur', '7 Jan 2026', 'Approve')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
+                                        <button onclick="openApprovalModal('Siti Nurhaliza', 'Lembur', '7 Jan 2026', 'Reject')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-red-50 transition-colors duration-150">
+                                <td class="px-6 py-5 text-sm font-medium text-gray-800">Budi Santoso</td>
+                                <td class="px-6 py-5 text-sm"><span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-100 text-blue-800">Cuti Sakit</span></td>
+                                <td class="px-6 py-5 text-sm text-gray-600">6 Jan 2026</td>
+                                <td class="px-6 py-5 text-sm text-gray-600">2 hari</td>
+                                <td class="px-6 py-5 text-sm text-gray-600">Sakit demam</td>
+                                <td class="px-6 py-5 text-sm"><span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800">Menunggu</span></td>
+                                <td class="px-6 py-5 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="openApprovalModal('Budi Santoso', 'Cuti Sakit', '6 Jan 2026', 'Approve')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
+                                        <button onclick="openApprovalModal('Budi Santoso', 'Cuti Sakit', '6 Jan 2026', 'Reject')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-red-50 transition-colors duration-150">
+                                <td class="px-6 py-5 text-sm font-medium text-gray-800">Rina Wijaya</td>
+                                <td class="px-6 py-5 text-sm"><span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-100 text-purple-800">Lembur</span></td>
+                                <td class="px-6 py-5 text-sm text-gray-600">8 Jan 2026</td>
+                                <td class="px-6 py-5 text-sm text-gray-600">4 jam</td>
+                                <td class="px-6 py-5 text-sm text-gray-600">Meeting klien</td>
+                                <td class="px-6 py-5 text-sm"><span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800">Menunggu</span></td>
+                                <td class="px-6 py-5 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="openApprovalModal('Rina Wijaya', 'Lembur', '8 Jan 2026', 'Approve')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
+                                        <button onclick="openApprovalModal('Rina Wijaya', 'Lembur', '8 Jan 2026', 'Reject')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-red-50 transition-colors duration-150">
+                                <td class="px-6 py-5 text-sm font-medium text-gray-800">Dani Hermawan</td>
+                                <td class="px-6 py-5 text-sm"><span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-100 text-blue-800">Cuti Tahunan</span></td>
+                                <td class="px-6 py-5 text-sm text-gray-600">15-17 Jan 2026</td>
+                                <td class="px-6 py-5 text-sm text-gray-600">3 hari</td>
+                                <td class="px-6 py-5 text-sm text-gray-600">Acara keluarga</td>
+                                <td class="px-6 py-5 text-sm"><span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800">Menunggu</span></td>
+                                <td class="px-6 py-5 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="openApprovalModal('Dani Hermawan', 'Cuti Tahunan', '15-17 Jan 2026', 'Approve')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
+                                        <button onclick="openApprovalModal('Dani Hermawan', 'Cuti Tahunan', '15-17 Jan 2026', 'Reject')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-                    <p class="text-sm text-gray-600">Menampilkan {{ count($requests) }} pengajuan</p>
+                <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50">
+                    <p class="text-sm text-gray-600">Menampilkan 5 dari 12 pengajuan</p>
+                    <div class="flex gap-2">
+                        <button class="px-3 py-1.5 text-sm rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md">← Sebelumnya</button>
+                        <button class="px-3 py-1.5 text-sm rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md">Selanjutnya →</button>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
 
-    <!-- Modal Confirm Approve -->
-    <div id="approveModal"
-        class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all">
-            <div class="p-6 border-b border-gray-100">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
-                            </path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Setujui Pengajuan?</h3>
-                        <p class="text-sm text-gray-500">Tindakan ini tidak dapat dibatalkan</p>
-                    </div>
+    <!-- Approval Modal - Clean & Cohesive Red-Grey -->
+    <div id="approvalModal" class="fixed inset-0 bg-black/30 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-200 max-w-md w-full animate-in fade-in zoom-in-95 duration-300">
+            <!-- Header -->
+            <div class="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-red-600 to-red-700">
+                <h3 class="text-lg font-bold text-white">
+                    <span id="modalAction">Konfirmasi Persetujuan</span>
+                </h3>
+            </div>
+
+            <!-- Content -->
+            <div class="px-6 py-6 space-y-4">
+                <div class="space-y-2">
+                    <p class="text-sm text-gray-600 font-semibold">Nama Karyawan</p>
+                    <p id="modalEmployeeName" class="text-base font-bold text-gray-800">-</p>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-sm text-gray-600 font-semibold">Jenis Pengajuan</p>
+                    <p id="modalRequestType" class="text-base font-bold text-gray-800">-</p>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-sm text-gray-600 font-semibold">Periode</p>
+                    <p id="modalRequestDate" class="text-base font-bold text-gray-800">-</p>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan (Opsional)</label>
+                    <textarea id="modalNotes" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all shadow-sm resize-none" rows="3" placeholder="Tambahkan catatan jika diperlukan..."></textarea>
                 </div>
             </div>
-            <div class="p-6">
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    Apakah Anda yakin ingin <span class="font-semibold">menyetujui pengajuan ini</span>?
-                    Karyawan akan menerima notifikasi via email.
-                </p>
-            </div>
-            <div class="flex gap-3 px-6 py-4 bg-gray-50 rounded-b-2xl">
-                <button type="button" onclick="closeApproveModal()"
-                    class="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-colors">
+
+            <!-- Actions -->
+            <div class="px-6 py-5 border-t border-gray-200 flex items-center justify-between gap-3 bg-gray-50">
+                <button onclick="closeApprovalModal()" class="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md">
                     Batal
                 </button>
-                <button type="button" onclick="submitApproval()"
-                    class="flex-1 px-4 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition-colors">
-                    Ya, Setujui
+                <button id="modalConfirmBtn" onclick="confirmApproval()" class="flex-1 px-4 py-2.5 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 shadow-md hover:shadow-lg transition-all duration-200">
+                    Konfirmasi
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Confirm Reject -->
-    <div id="rejectModal"
-        class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all">
-            <div class="p-6 border-b border-gray-100">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Tolak Pengajuan?</h3>
-                        <p class="text-sm text-gray-500">Berikan alasan penolakan</p>
-                    </div>
-                </div>
-            </div>
-            <div class="p-6">
-                <p class="text-gray-600 text-sm mb-4">
-                    Masukkan alasan penolakan pengajuan ini. Karyawan akan menerima notifikasi dengan alasan Anda.
-                </p>
-                <textarea id="rejectReason" placeholder="Masukkan alasan penolakan..."
-                    class="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
-                    rows="3"></textarea>
-                <p class="text-xs text-gray-400 mt-2">Minimal 5 karakter</p>
-            </div>
-            <div class="flex gap-3 px-6 py-4 bg-gray-50 rounded-b-2xl">
-                <button type="button" onclick="closeRejectModal()"
-                    class="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-colors">
-                    Batal
-                </button>
-                <button type="button" onclick="submitReject()"
-                    class="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    id="submitRejectBtn">
-                    Ya, Tolak
-                </button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Scripts -->
     <script>
-        let currentRequestData = {
-            modelClass: null,
-            requestId: null
+        let currentApprovalData = {
+            employee: '',
+            type: '',
+            date: '',
+            action: ''
         };
 
-        function approveRequest(modelClass, requestId) {
-            currentRequestData = {
-                modelClass,
-                requestId
+        function openApprovalModal(employeeName, requestType, requestDate, action) {
+            currentApprovalData = {
+                employee: employeeName,
+                type: requestType,
+                date: requestDate,
+                action: action
             };
-            document.getElementById('approveModal').classList.remove('hidden');
+
+            const modal = document.getElementById('approvalModal');
+            const actionText = action === 'Approve' ? 'Setujui Pengajuan' : 'Tolak Pengajuan';
+
+            document.getElementById('modalAction').textContent = actionText;
+            document.getElementById('modalEmployeeName').textContent = employeeName;
+            document.getElementById('modalRequestType').textContent = requestType;
+            document.getElementById('modalRequestDate').textContent = requestDate;
+            document.getElementById('modalNotes').value = '';
+
+            const btnText = action === 'Approve' ? 'Setujui' : 'Tolak';
+            const btnClass = action === 'Approve' 
+                ? 'bg-emerald-600 hover:bg-emerald-700' 
+                : 'bg-red-600 hover:bg-red-700';
+            
+            document.getElementById('modalConfirmBtn').textContent = btnText;
+            document.getElementById('modalConfirmBtn').className = `flex-1 px-4 py-2.5 rounded-lg ${btnClass} text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200`;
+
+            modal.classList.remove('hidden');
         }
 
-        function closeApproveModal() {
-            document.getElementById('approveModal').classList.add('hidden');
-            currentRequestData = {
-                modelClass: null,
-                requestId: null
-            };
+        function closeApprovalModal() {
+            document.getElementById('approvalModal').classList.add('hidden');
         }
 
-        async function submitApproval() {
-            const {
-                modelClass,
-                requestId
-            } = currentRequestData;
-            const isLembur = modelClass.includes('Lembur');
-            const endpoint = isLembur ? `/direktur/api/lembur/${requestId}/approve` :
-                `/direktur/api/cuti/${requestId}/approve`;
-
-            console.log('Submitting approval to:', endpoint);
-            console.log('Model class:', modelClass, 'Request ID:', requestId);
-
-            try {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-                console.log('CSRF Token:', csrfToken ? 'Found' : 'NOT FOUND');
-
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Content-Type': 'application/json',
-                    }
-                });
-
-                console.log('Response status:', response.status);
-                const responseText = await response.text();
-                console.log('Response body:', responseText);
-
-                if (response.ok) {
-                    closeApproveModal();
-                    showSuccessAlert('Pengajuan telah disetujui!');
-                    setTimeout(() => location.reload(), 1000);
-                } else if (response.status === 401) {
-                    closeApproveModal();
-                    showErrorAlert('Anda tidak memiliki akses untuk menyetujui pengajuan ini.');
-                } else {
-                    try {
-                        const data = JSON.parse(responseText);
-                        closeApproveModal();
-                        showErrorAlert('Error: ' + (data.message || 'Gagal menyetujui pengajuan'));
-                    } catch (e) {
-                        closeApproveModal();
-                        showErrorAlert('Error: ' + responseText);
-                    }
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                closeApproveModal();
-                showErrorAlert('Terjadi kesalahan saat memproses permintaan: ' + error.message);
-            }
+        function confirmApproval() {
+            const notes = document.getElementById('modalNotes').value;
+            const action = currentApprovalData.action === 'Approve' ? 'DISETUJUI' : 'DITOLAK';
+            
+            // Show success message (in real app, this would send to backend)
+            alert(`${currentApprovalData.employee}\n${currentApprovalData.type}\n\n${action}\n\nCatatan: ${notes || '(tidak ada)'}`);
+            
+            closeApprovalModal();
         }
 
-        function rejectRequest(modelClass, requestId) {
-            currentRequestData = {
-                modelClass,
-                requestId
-            };
-            document.getElementById('rejectModal').classList.remove('hidden');
-            document.getElementById('rejectReason').value = '';
-            document.getElementById('rejectReason').focus();
-        }
-
-        function closeRejectModal() {
-            document.getElementById('rejectModal').classList.add('hidden');
-            document.getElementById('rejectReason').value = '';
-            currentRequestData = {
-                modelClass: null,
-                requestId: null
-            };
-        }
-
-        async function submitReject() {
-            const reason = document.getElementById('rejectReason').value.trim();
-
-            if (reason.length < 5) {
-                showErrorAlert('Alasan penolakan minimal 5 karakter');
-                return;
-            }
-
-            const {
-                modelClass,
-                requestId
-            } = currentRequestData;
-            const isLembur = modelClass.includes('Lembur');
-            const endpoint = isLembur ? `/direktur/api/lembur/${requestId}/reject` :
-                `/direktur/api/cuti/${requestId}/reject`;
-
-            console.log('Submitting reject to:', endpoint);
-            console.log('Model class:', modelClass, 'Request ID:', requestId);
-            console.log('Reason:', reason);
-
-            try {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-                console.log('CSRF Token:', csrfToken ? 'Found' : 'NOT FOUND');
-
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        reason: reason
-                    })
-                });
-
-                console.log('Response status:', response.status);
-                const responseText = await response.text();
-                console.log('Response body:', responseText);
-
-                if (response.ok) {
-                    closeRejectModal();
-                    showSuccessAlert('Pengajuan telah ditolak!');
-                    setTimeout(() => location.reload(), 1000);
-                } else if (response.status === 401) {
-                    closeRejectModal();
-                    showErrorAlert('Anda tidak memiliki akses untuk menolak pengajuan ini.');
-                } else {
-                    try {
-                        const data = JSON.parse(responseText);
-                        closeRejectModal();
-                        showErrorAlert('Error: ' + (data.message || 'Gagal menolak pengajuan'));
-                    } catch (e) {
-                        closeRejectModal();
-                        showErrorAlert('Error: ' + responseText);
-                    }
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                closeRejectModal();
-                showErrorAlert('Terjadi kesalahan saat memproses permintaan: ' + error.message);
-            }
-        }
-
-        // Validasi alasan real-time
-        document.getElementById('rejectReason')?.addEventListener('input', function() {
-            const btn = document.getElementById('submitRejectBtn');
-            btn.disabled = this.value.trim().length < 5;
-        });
-
-        // Close modals on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeApproveModal();
-                closeRejectModal();
+        // Close modal when clicking outside
+        document.getElementById('approvalModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'approvalModal') {
+                closeApprovalModal();
             }
         });
-
-        function showSuccessAlert(message) {
-            const alert = document.createElement('div');
-            alert.className =
-                'fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 z-[100] animate-in';
-            alert.innerHTML = `
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                </svg>
-                <span>${message}</span>
-            `;
-            document.body.appendChild(alert);
-            setTimeout(() => alert.remove(), 3000);
-        }
-
-        function showErrorAlert(message) {
-            const alert = document.createElement('div');
-            alert.className =
-                'fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 z-[100] animate-in';
-            alert.innerHTML = `
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                </svg>
-                <span>${message}</span>
-            `;
-            document.body.appendChild(alert);
-            setTimeout(() => alert.remove(), 3000);
-        }
     </script>
 </x-app-layout>
