@@ -12,8 +12,7 @@
 
     <!-- Scrollable Main Content -->
     <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
-        <div
-            class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gradient-to-br from-red-50/80 via-slate-50/20 to-red-50/10 min-h-full">
+        <div class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gradient-to-br from-red-50/60 via-slate-50/20 to-gray-50/5 min-h-full">
             <!-- Welcome Header -->
             <div class="mb-6">
                 <h1 class="text-2xl font-semibold text-gray-800 mb-1.5">Pengajuan Cuti</h1>
@@ -22,10 +21,8 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Form Pengajuan -->
-                <div
-                    class="lg:col-span-2 bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/40 overflow-hidden hover:shadow-md transition-all duration-300">
-                    <div
-                        class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/20 via-slate-50/20 to-slate-50/15">
+                <div class="lg:col-span-2 bg-white/90 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 overflow-hidden hover:shadow-md transition-all duration-300">
+                    <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/40 via-slate-50/30 to-slate-50/20">
                         <h3 class="text-sm font-semibold text-gray-800">Ajukan Cuti Baru</h3>
                     </div>
                     <div class="p-6">
@@ -34,7 +31,7 @@
                             <div>
                                 <label class="block text-xs font-medium text-gray-700 mb-2.5">Jenis Cuti</label>
                                 <select id="jenis" name="jenis"
-                                    class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400/40 focus:border-red-300/60 transition-all duration-300 text-sm text-gray-700">
+                                class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/40 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-400/40 focus:border-red-300/50 transition-all duration-300 text-sm text-gray-700 hover:bg-white">
                                     <option selected disabled value="">Pilih jenis cuti</option>
                                     <option value="Cuti Tahunan">Cuti Tahunan</option>
                                     <option value="Cuti Sakit">Cuti Sakit</option>
@@ -150,9 +147,9 @@
 
             <!-- Riwayat Pengajuan Cuti -->
             <div
-                class="mt-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
+                class="mt-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/40 overflow-hidden hover:shadow-md transition-all duration-300">
                 <div
-                    class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/20 via-slate-50/20 to-red-50/15">
+                    class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/40 via-slate-50/20 to-slate-50/15">
                     <h3 class="text-sm font-semibold text-gray-800">Riwayat Pengajuan Cuti</h3>
                 </div>
                 <div id="riwayatList" class="divide-y divide-gray-100/50">
@@ -161,7 +158,7 @@
                         class="px-6 py-4 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-transparent transition-all duration-300 group">
                         <div class="flex items-start gap-3 mb-2">
                             <div
-                                class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-50/60 to-green-50/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                class="w-10 h-10 rounded-2xl bg-gradient-to-br from-green-50/60 to-green-50/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
                                 <svg class="w-5 h-5 text-green-500/70" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -179,7 +176,7 @@
                                 </div>
                                 <p class="text-xs text-gray-400 mb-2">Diproses oleh: Direktur • 7 Januari 2026</p>
                                 <button
-                                    class="text-xs text-red-600/90 hover:text-red-700 font-medium transition-colors">Lihat
+                                    class="text-xs text-red-500/80 hover:text-red-600/80 font-medium transition-colors">Lihat
                                     Detail →</button>
                             </div>
                         </div>
@@ -480,17 +477,17 @@
                                                 <div class="flex items-center gap-3">
                                                     ${badgeHtml}
                                                     ${status === 'Pending' ? `
-                                                                        <div class="flex items-center gap-2">
-                                                                            <button data-action="edit" data-id="${i.id}" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200">
-                                                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3z"/></svg>
-                                                                                <span>Ubah</span>
-                                                                            </button>
-                                                                            <button data-action="cancel" data-id="${i.id}" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 text-red-700 hover:bg-red-100 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-red-200">
-                                                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                                                                                <span>Batalkan</span>
-                                                                            </button>
-                                                                        </div>
-                                                                    ` : ''}
+                                                                                <div class="flex items-center gap-2">
+                                                                                    <button data-action="edit" data-id="${i.id}" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200">
+                                                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3z"/></svg>
+                                                                                        <span>Ubah</span>
+                                                                                    </button>
+                                                                                    <button data-action="cancel" data-id="${i.id}" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 text-red-700 hover:bg-red-100 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-red-200">
+                                                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                                                                        <span>Batalkan</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                            ` : ''}
                                                 </div>
                                             </div>
                                             <p class="text-sm text-gray-700 mt-3">${alasanShort} ${i.alasan && (i.alasan || '').length > 140 ? `<a href="#" data-toggle="${detailId}" class="text-sm text-indigo-600 hover:underline">Lihat</a>` : ''}</p>
