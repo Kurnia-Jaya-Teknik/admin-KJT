@@ -37,11 +37,9 @@ Route::middleware([
         Route::get('/laporan', [DirekturController::class, 'laporan'])->name('laporan');
         Route::get('/riwayat-persetujuan', [DirekturController::class, 'riwayatPersetujuan'])->name('riwayat-persetujuan');
         
-        // Director approval API endpoints (web-authenticated)
-        Route::post('/api/cuti/{cuti}/approve', [\App\Http\Controllers\Api\Director\ApprovalController::class, 'approveCuti'])->name('cuti.approve');
-        Route::post('/api/cuti/{cuti}/reject', [\App\Http\Controllers\Api\Director\ApprovalController::class, 'rejectCuti'])->name('cuti.reject');
-        Route::post('/api/lembur/{lembur}/approve', [\App\Http\Controllers\Api\Director\ApprovalController::class, 'approveLembur'])->name('lembur.approve');
-        Route::post('/api/lembur/{lembur}/reject', [\App\Http\Controllers\Api\Director\ApprovalController::class, 'rejectLembur'])->name('lembur.reject');
+        // Director approval endpoints (AJAX calls from view) - type harus di URL untuk match method signature
+        Route::post('/api/{type}/{id}/approve', [\App\Http\Controllers\ApprovalController::class, 'approve'])->name('approve');
+        Route::post('/api/{type}/{id}/reject', [\App\Http\Controllers\ApprovalController::class, 'reject'])->name('reject');
     });
 
     // Karyawan Routes
@@ -68,11 +66,6 @@ Route::middleware([
         Route::post('/api/requests', [\App\Http\Controllers\Api\Employee\RequestController::class, 'store'])->name('requests.store');
         Route::put('/api/requests/{cuti}', [\App\Http\Controllers\Api\Employee\RequestController::class, 'update'])->name('requests.update');
         Route::delete('/api/requests/{cuti}', [\App\Http\Controllers\Api\Employee\RequestController::class, 'destroy'])->name('requests.destroy');
-
-        // Absensi (basic) - endpoints for today's status + checkin/checkout
-        Route::get('/api/absensi/today', [\App\Http\Controllers\Employee\AbsensiController::class, 'today'])->name('api.absensi.today');
-        Route::post('/api/absensi/checkin', [\App\Http\Controllers\Employee\AbsensiController::class, 'checkIn'])->name('api.absensi.checkin');
-        Route::post('/api/absensi/checkout', [\App\Http\Controllers\Employee\AbsensiController::class, 'checkOut'])->name('api.absensi.checkout');
 
 // also expose a top-level alias so client scripts using /session/api-token won't 404
 Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class, 'token'])->middleware('auth')->name('session.api-token.alias');

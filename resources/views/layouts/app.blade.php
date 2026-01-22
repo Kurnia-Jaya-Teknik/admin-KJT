@@ -32,5 +32,12 @@
         @stack('modals')
 
         @livewireScripts
+        
+        <script>
+            // Fallback untuk window.highlight jika tidak ada (fix Livewire error)
+            if (typeof window.highlight === 'undefined') {
+                window.highlight = function(code) { return code; };
+            }
+        </script>
     </body>
 </html>
