@@ -36,6 +36,7 @@ class NewCutiSubmitted extends Notification implements ShouldQueue
             'tanggal_selesai' => $this->cuti->tanggal_selesai,
             'durasi_hari' => $this->cuti->durasi_hari,
             'message' => 'Pengajuan cuti baru dari ' . ($this->cuti->user->name ?? 'Karyawan'),
+            'url' => url('/direktur/persetujuan-cuti-lembur') . '?type=cuti&id=' . $this->cuti->id,
         ];
     }
 }

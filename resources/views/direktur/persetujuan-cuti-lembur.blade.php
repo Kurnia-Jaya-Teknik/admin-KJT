@@ -110,10 +110,18 @@
                                     <td class="px-6 py-5 text-center">
                                         @if ($request->status === 'Pending')
                                             <div class="flex items-center justify-center gap-2">
-                                                <button
+                                                <button data-request-id="{{ $request->id }}"
+                                                    data-request-type="{{ $type }}"
+                                                    data-employee-name="{{ $request->user->name }}"
+                                                    data-jenis="{{ $jenisLabel }}"
+                                                    data-tanggal="{{ $tanggal }}"
                                                     onclick="openApprovalModal('{{ $request->user->name }}', '{{ $jenisLabel }}', '{{ $tanggal }}', 'Approve', {{ $request->id }}, '{{ $type }}')"
                                                     class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
-                                                <button
+                                                <button data-request-id="{{ $request->id }}"
+                                                    data-request-type="{{ $type }}"
+                                                    data-employee-name="{{ $request->user->name }}"
+                                                    data-jenis="{{ $jenisLabel }}"
+                                                    data-tanggal="{{ $tanggal }}"
                                                     onclick="openApprovalModal('{{ $request->user->name }}', '{{ $jenisLabel }}', '{{ $tanggal }}', 'Reject', {{ $request->id }}, '{{ $type }}')"
                                                     class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
                                             </div>
@@ -241,6 +249,9 @@
                         <textarea id="modalNotes"
                             class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all shadow-sm resize-none"
                             rows="3" placeholder="Tambahkan catatan jika diperlukan..."></textarea>
+                        <div id="approvalError"
+                            class="hidden mt-2 p-2 rounded-md bg-red-50 border border-red-200 text-red-700 text-sm">
+                        </div>
                     </div>
                 </div>
 
@@ -328,19 +339,42 @@
                         },
                         credentials: 'same-origin',
                         body: JSON.stringify({
-                            catatan: notes
+                            keterangan: notes
                         })
                     });
 
                     if (!response.ok) {
-                        const error = await response.json().catch(() => ({
-                            message: 'Terjadi kesalahan'
-                        }));
-                        throw new Error(error.message || 'Gagal memproses request');
+                        const body = await response.json().catch(() => ({}));
+                        // show validation or server errors inline
+                        const errEl = document.getElementById('approvalError');
+                        if (errEl) {
+                            if (response.status === 422 && body.errors) {
+                                errEl.textContent = Object.values(body.errors).flat().join(' ') || (body.message ||
+                                    'Validasi gagal');
+                            } else {
+                                errEl.textContent = body.message || ('Status: ' + response.status);
+                            }
+                            errEl.classList.remove('hidden');
+                        } else {
+                            alert(body.message || ('Status: ' + response.status));
+                        }
+
+                        console.debug('approval failed', response.status, body);
+                        return;
                     }
 
                     const result = await response.json();
-                    alert(result.message || 'Berhasil diproses');
+
+                    // show a light toast notification
+                    const toast = document.createElement('div');
+                    toast.className = 'fixed top-6 right-6 z-50 bg-white border rounded-xl p-3 shadow-lg';
+                    toast.innerHTML =
+                        `<p class="text-sm font-medium text-gray-800">${result.message || 'Berhasil diproses'}</p>`;
+                    document.body.appendChild(toast);
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 3500);
+
                     closeApprovalModal();
 
                     // Reload page to update list
@@ -357,5 +391,30 @@
                     closeApprovalModal();
                 }
             });
+            // Auto-open modal when directed from notification link: ?type=cuti&id=123
+            (function() {
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    const id = params.get('id');
+                    const type = params.get('type');
+                    if (id && type) {
+                        // find button with matching data-request-id
+                        const btn = document.querySelector(`[data-request-id="${id}"]`);
+                        if (btn) {
+                            const employee = btn.getAttribute('data-employee-name') || '';
+                            const jenis = btn.getAttribute('data-jenis') || '';
+                            const tanggal = btn.getAttribute('data-tanggal') || '';
+                            // Show Approve modal by default when coming from notification
+                            openApprovalModal(employee, jenis, tanggal, 'Approve', parseInt(id), type);
+                            btn.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        }
+                    }
+                } catch (e) {
+                    console.debug('auto-open modal failed', e);
+                }
+            })();
         </script>
 </x-app-layout>

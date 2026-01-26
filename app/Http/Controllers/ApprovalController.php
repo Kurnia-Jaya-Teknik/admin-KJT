@@ -40,6 +40,10 @@ class ApprovalController extends Controller
                 \Illuminate\Support\Facades\Notification::send($model->user, new \App\Notifications\CutiStatusChanged($model));
             }
 
+            if ($request->expectsJson() || $request->is('*/api/*')) {
+                return response()->json(['message' => 'Pengajuan cuti disetujui.', 'status' => $model->status], 200);
+            }
+
             return redirect()->back()->with('status', 'Pengajuan cuti disetujui.');
         }
 
@@ -49,6 +53,10 @@ class ApprovalController extends Controller
             $model->disetujui_oleh = Auth::id();
             $model->tanggal_persetujuan = now();
             $model->save();
+
+            if ($request->expectsJson() || $request->is('*/api/*')) {
+                return response()->json(['message' => 'Pengajuan lembur disetujui.', 'status' => $model->status], 200);
+            }
 
             return redirect()->back()->with('status', 'Pengajuan lembur disetujui.');
         }
@@ -73,6 +81,10 @@ class ApprovalController extends Controller
                 \Illuminate\Support\Facades\Notification::send($model->user, new \App\Notifications\CutiStatusChanged($model));
             }
 
+            if ($request->expectsJson() || $request->is('*/api/*')) {
+                return response()->json(['message' => 'Pengajuan cuti ditolak.', 'status' => $model->status], 200);
+            }
+
             return redirect()->back()->with('status', 'Pengajuan cuti ditolak.');
         }
 
@@ -83,6 +95,10 @@ class ApprovalController extends Controller
             $model->tanggal_persetujuan = now();
             $model->keterangan_persetujuan = $request->input('keterangan');
             $model->save();
+
+            if ($request->expectsJson() || $request->is('*/api/*')) {
+                return response()->json(['message' => 'Pengajuan lembur ditolak.', 'status' => $model->status], 200);
+            }
 
             return redirect()->back()->with('status', 'Pengajuan lembur ditolak.');
         }
