@@ -193,7 +193,6 @@ class DashboardController extends Controller
             'statusTotal' => $statusTotal,
         ];
     }
-    }
 
     private function getAdminHRDData()
     {
