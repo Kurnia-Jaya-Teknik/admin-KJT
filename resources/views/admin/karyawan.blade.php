@@ -339,62 +339,61 @@
                     <!-- Nama Lengkap -->
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap<span class="text-red-500">*</span></label>
-                        <input type="text" placeholder="Ketik nama lengkap karyawan" required
+                        <input type="text" name="name" placeholder="Ketik nama lengkap karyawan" required
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
                     </div>
 
                     <!-- NIK -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">NIK<span class="text-red-500">*</span></label>
-                        <input type="text" placeholder="Nomor Identitas" required
+                        <input type="text" name="nik" placeholder="Nomor Identitas" required
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
                     </div>
 
                     <!-- Email -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Email<span class="text-red-500">*</span></label>
-                        <input type="email" placeholder="email@company.com" required
+                        <input type="email" name="email" placeholder="email@company.com" required
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
                     </div>
 
                     <!-- Jabatan -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Jabatan<span class="text-red-500">*</span></label>
-                        <input type="text" placeholder="Contoh: Staff Finance" required
+                        <input type="text" name="jabatan" placeholder="Contoh: Staff Finance" required
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
                     </div>
 
                     <!-- Departemen -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Departemen<span class="text-red-500">*</span></label>
-                        <select required
+                        <select name="departemen_id" required
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
                             <option value="">-- Pilih Departemen --</option>
-                            <option value="finance">Finance</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="ops">Operations</option>
-                            <option value="hr">Human Resources</option>
+                            @foreach(App\Models\Departemen::all() as $dept)
+                                <option value="{{ $dept->id }}">{{ $dept->nama }}</option>
+                            @endforeach
                         </select>
                     </div>
 
                     <!-- Nomor HP -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor HP<span class="text-red-500">*</span></label>
-                        <input type="tel" placeholder="0812xxxxxxxx" required
+                        <input type="tel" name="phone" placeholder="0812xxxxxxxx" required
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
                     </div>
 
                     <!-- Tanggal Bergabung -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Bergabung<span class="text-red-500">*</span></label>
-                        <input type="date" required
+                        <input type="date" name="tanggal_bergabung" required
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
                     </div>
 
                     <!-- Alamat -->
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat</label>
-                        <textarea placeholder="Alamat lengkap karyawan" rows="3"
+                        <textarea name="alamat" placeholder="Alamat lengkap karyawan" rows="3"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"></textarea>
                     </div>
                 </div>
@@ -402,13 +401,14 @@
                 <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <p class="text-xs text-blue-800"><span class="font-semibold">Catatan:</span> Setelah penambahan, karyawan akan menerima email dengan link verifikasi dan instruksi setup password.</p>
                 </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" onclick="closeTambahModal()"
+                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:shadow-lg transition-all font-medium">Simpan Karyawan</button>
+                </div>
             </form>
-            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3 sticky bottom-0">
-                <button onclick="closeTambahModal()"
-                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">Batal</button>
-                <button
-                    class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:shadow-lg transition-all font-medium">Simpan Karyawan</button>
-            </div>
         </div>
     </div>
 
@@ -434,14 +434,14 @@
                     <!-- Nama Lengkap -->
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
-                        <input type="text" placeholder="Nama lengkap"
+                        <input type="text" name="name" placeholder="Nama lengkap"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
                     </div>
 
                     <!-- NIK (Readonly) -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">NIK</label>
-                        <input type="text" placeholder="Nomor Identitas"
+                        <input type="text" name="nik" placeholder="Nomor Identitas"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" readonly />
                         <p class="text-xs text-gray-500 mt-1">NIK tidak dapat diubah</p>
                     </div>
@@ -449,57 +449,51 @@
                     <!-- Email -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-                        <input type="email" placeholder="email@company.com"
+                        <input type="email" name="email" placeholder="email@company.com"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
                     </div>
 
                     <!-- Jabatan -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Jabatan</label>
-                        <input type="text" placeholder="Jabatan"
+                        <input type="text" name="jabatan" placeholder="Jabatan"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
                     </div>
 
                     <!-- Departemen -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Departemen</label>
-                        <select
+                        <select name="departemen_id"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
-                            <option value="finance">Finance</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="ops">Operations</option>
-                            <option value="hr">Human Resources</option>
+                            <option value="">-- Pilih Departemen --</option>
+                            @foreach(App\Models\Departemen::all() as $dept)
+                                <option value="{{ $dept->id }}">{{ $dept->nama }}</option>
+                            @endforeach
                         </select>
                     </div>
 
                     <!-- Nomor HP -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor HP</label>
-                        <input type="tel" placeholder="0812xxxxxxxx"
-                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
-                    </div>
-
-                    <!-- Tanggal Bergabung -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Bergabung</label>
-                        <input type="date"
+                        <input type="tel" name="phone" placeholder="0812xxxxxxxx"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all" />
                     </div>
 
                     <!-- Alamat -->
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat</label>
-                        <textarea placeholder="Alamat lengkap karyawan" rows="3"
+                        <textarea name="alamat" placeholder="Alamat lengkap karyawan" rows="3"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"></textarea>
                     </div>
                 </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" onclick="closeEditModal()"
+                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:shadow-lg transition-all font-medium">Simpan Perubahan</button>
+                </div>
             </form>
-            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3 sticky bottom-0">
-                <button onclick="closeEditModal()"
-                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">Batal</button>
-                <button
-                    class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:shadow-lg transition-all font-medium">Simpan Perubahan</button>
-            </div>
         </div>
     </div>
 
@@ -525,7 +519,7 @@
             <div class="px-8 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
                 <button onclick="closeResetModal()"
                     class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">Batal</button>
-                <button
+                <button onclick="confirmReset()"
                     class="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors font-medium">Ya, Reset Akses</button>
             </div>
         </div>
@@ -553,13 +547,503 @@
             <div class="px-8 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
                 <button onclick="closeDeactivateModal()"
                     class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">Batal</button>
-                <button
+                <button onclick="confirmDeactivate()"
                     class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">Ya, Nonaktifkan Karyawan</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal: Konfirmasi Aktifkan -->
+    <div id="activateModal"
+        class="hidden js-modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+        data-modal-id="activateModal">
+        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full">
+            <div class="p-8">
+                <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 text-center mb-2">Aktifkan Karyawan?</h3>
+                <p class="text-gray-600 text-center mb-6 text-sm">Karyawan akan dapat login dan mengakses sistem kembali dengan akun yang sama.</p>
+                
+                <div class="p-4 bg-green-50 border border-green-200 rounded-lg mb-6">
+                    <p class="text-xs text-green-800"><span class="font-semibold">Informasi:</span> Akses karyawan akan dipulihkan sepenuhnya.</p>
+                </div>
+            </div>
+            <div class="px-8 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+                <button onclick="closeActivateModal()"
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">Batal</button>
+                <button onclick="confirmActivate()"
+                    class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">Ya, Aktifkan Karyawan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="leaveModal"
+        class="hidden js-modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+        data-modal-id="leaveModal">
+        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full">
+            <div class="p-8">
+                <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 text-center mb-2">Tandai Sedang Cuti?</h3>
+                <p class="text-gray-600 text-center mb-6 text-sm">Karyawan akan ditandai sedang cuti. Akses sistem akan dibatasi untuk karyawan cuti.</p>
+                
+                <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg mb-6">
+                    <p class="text-xs text-yellow-800"><span class="font-semibold">Informasi:</span> Status karyawan akan berubah menjadi "Sedang Cuti".</p>
+                </div>
+            </div>
+            <div class="px-8 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+                <button onclick="closeLeaveModal()"
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">Batal</button>
+                <button onclick="confirmLeave()"
+                    class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium">Ya, Tandai Cuti</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="returnFromLeaveModal"
+        class="hidden js-modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+        data-modal-id="returnFromLeaveModal">
+        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full">
+            <div class="p-8">
+                <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14 10h4.764a2 2 0 011.789 2.894l-3.646 7.23a2 2 0 01-1.789 1.106H5a2 2 0 01-2-2V8a2 2 0 012-2h1.05a2 2 0 011.664.89l1.812 2.71a2 2 0 001.664.89h2.41m-9.653-4h6.06a2 2 0 011.995 2.129V15M9 19h3m0 0h3" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 text-center mb-2">Kembali dari Cuti?</h3>
+                <p class="text-gray-600 text-center mb-6 text-sm">Karyawan akan kembali ke status aktif dan dapat mengakses sistem kembali.</p>
+                
+                <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg mb-6">
+                    <p class="text-xs text-blue-800"><span class="font-semibold">Informasi:</span> Status karyawan akan berubah menjadi "Aktif".</p>
+                </div>
+            </div>
+            <div class="px-8 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+                <button onclick="closeReturnFromLeaveModal()"
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">Batal</button>
+                <button onclick="confirmReturnFromLeave()"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">Ya, Kembali Aktif</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        let currentKaryawanId = null;
+        let scrollPosition = 0;  // Track scroll position untuk maintain view
+
+        // Load karyawan data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ DOM loaded, initializing...');
+            loadKaryawanData();
+            attachFormHandlers();
+            attachEventDelegation();
+            attachSearchFilters();
+        });
+
+        // Attach event delegation for dynamic buttons
+        function attachEventDelegation() {
+            console.log('🔗 Attaching event delegation...');
+            const tbody = document.querySelector('tbody');
+            if (!tbody) {
+                console.error('❌ tbody not found!');
+                return;
+            }
+
+            tbody.addEventListener('click', function(e) {
+                const btn = e.target.closest('button[data-action]');
+                if (!btn) return;
+
+                const action = btn.getAttribute('data-action');
+                const karyawanId = btn.getAttribute('data-id');
+
+                console.log('✓ Button clicked:', action, 'ID:', karyawanId);
+
+                if (action === 'edit') openEditModal(karyawanId);
+                else if (action === 'reset') openResetModal(karyawanId);
+                else if (action === 'deactivate') openDeactivateModal(karyawanId);
+                else if (action === 'activate') openActivateModal(karyawanId);
+                else if (action === 'leave') openLeaveModal(karyawanId);
+                else if (action === 'return-leave') openReturnFromLeaveModal(karyawanId);
+            });
+            console.log('✓ Event delegation ready');
+        }
+
+        // Attach search and filter listeners
+        function attachSearchFilters() {
+            console.log('🔍 Attaching search/filter listeners...');
+            
+            const searchInput = document.getElementById('searchInput');
+            const filterDept = document.getElementById('filterDepartemen');
+            const filterStatus = document.getElementById('filterStatus');
+
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    console.log('🔎 Search changed:', e.target.value);
+                    const search = e.target.value.trim();
+                    const dept = filterDept?.value || '';
+                    const status = filterStatus?.value || '';
+                    loadKaryawanData(search, dept, status);
+                });
+                console.log('✓ Search listener attached');
+            } else {
+                console.error('❌ searchInput not found!');
+            }
+
+            if (filterDept) {
+                filterDept.addEventListener('change', function(e) {
+                    console.log('🏢 Department filter changed:', e.target.value);
+                    const search = searchInput?.value?.trim() || '';
+                    const dept = e.target.value;
+                    const status = filterStatus?.value || '';
+                    loadKaryawanData(search, dept, status);
+                });
+                console.log('✓ Department filter listener attached');
+            }
+
+            if (filterStatus) {
+                filterStatus.addEventListener('change', function(e) {
+                    console.log('📊 Status filter changed:', e.target.value);
+                    const search = searchInput?.value?.trim() || '';
+                    const dept = filterDept?.value || '';
+                    const status = e.target.value;
+                    loadKaryawanData(search, dept, status);
+                });
+                console.log('✓ Status filter listener attached');
+            }
+        }
+
+        // Load karyawan data from API
+        async function loadKaryawanData(search = '', departemen = '', status = '') {
+            try {
+                let url = '/admin/karyawan/list';
+                const params = new URLSearchParams();
+                
+                if (search && search.trim()) params.append('search', search.trim());
+                if (departemen && departemen.trim()) params.append('departemen', departemen.trim());
+                if (status && status.trim()) params.append('status', status.trim());
+                
+                const queryString = params.toString();
+                if (queryString) url += '?' + queryString;
+
+                console.log('📡 Fetching:', url);
+
+                const response = await fetch(url, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrf
+                    }
+                });
+
+                console.log('📊 Response status:', response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('❌ API error:', response.status, errorText.substring(0, 200));
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const responseText = await response.text();
+                console.log('📝 Raw response length:', responseText.length);
+
+                let karyawan = [];
+                try {
+                    karyawan = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('❌ JSON parse error:', e.message);
+                    console.error('Response:', responseText.substring(0, 300));
+                    throw new Error('Invalid JSON response');
+                }
+
+                console.log('✅ Loaded', karyawan.length, 'karyawan');
+
+                // Update table
+                updateKaryawanTable(karyawan);
+                
+                // Update stats
+                updateStats(karyawan);
+
+                // Restore scroll position after a short delay to allow DOM to settle
+                setTimeout(() => {
+                    window.scrollTo(0, scrollPosition);
+                    console.log('↩️ Scrolled back to:', scrollPosition);
+                }, 100);
+            } catch (error) {
+                console.error('❌ Load error:', error.message);
+                showMessage('❌ Gagal memuat data: ' + error.message, 'error');
+            }
+        }
+
+        // Update table with karyawan data
+        function updateKaryawanTable(karyawan) {
+            const tbody = document.querySelector('tbody');
+            if (!tbody) return;
+
+            if (karyawan.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center px-6 py-8 text-gray-500">Tidak ada data karyawan</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = karyawan.map(k => `
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-4 md:px-6 py-4 text-sm font-medium text-gray-900">${k.nik || '-'}</td>
+                    <td class="px-4 md:px-6 py-4">
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">${k.name}</p>
+                            <p class="text-xs text-gray-500 md:hidden">${k.departemen?.nama || '-'} • ${k.status}</p>
+                        </div>
+                    </td>
+                    <td class="px-4 md:px-6 py-4 text-sm text-gray-600 hidden md:table-cell">${k.jabatan || '-'}</td>
+                    <td class="px-4 md:px-6 py-4 text-sm text-gray-600 hidden lg:table-cell">${k.departemen?.nama || '-'}</td>
+                    <td class="px-4 md:px-6 py-4 text-sm text-gray-600 hidden lg:table-cell">${k.email}</td>
+                    <td class="px-4 md:px-6 py-4 text-sm">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadgeClass(k.status)}">${capitalizeFirst(k.status)}</span>
+                    </td>
+                    <td class="px-4 md:px-6 py-4 text-sm">
+                        <div class="flex justify-center gap-1 flex-wrap">
+                            <button type="button" data-action="edit" data-id="${k.id}"
+                                class="px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 rounded transition-colors">Edit</button>
+                            <button type="button" data-action="reset" data-id="${k.id}"
+                                class="px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 rounded transition-colors">Reset</button>
+                            ${k.status === 'aktif' ? `
+                            <button type="button" data-action="leave" data-id="${k.id}"
+                                class="px-3 py-1.5 text-xs font-medium text-yellow-600 hover:bg-yellow-50 rounded transition-colors">Cuti</button>
+                            <button type="button" data-action="deactivate" data-id="${k.id}"
+                                class="px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 rounded transition-colors">Nonaktif</button>
+                            ` : k.status === 'cuti' ? `
+                            <button type="button" data-action="return-leave" data-id="${k.id}"
+                                class="px-3 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded transition-colors">Aktif</button>
+                            <button type="button" data-action="deactivate" data-id="${k.id}"
+                                class="px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 rounded transition-colors">Nonaktif</button>
+                            ` : `
+                            <button type="button" data-action="activate" data-id="${k.id}"
+                                class="px-3 py-1.5 text-xs font-medium text-green-600 hover:bg-green-50 rounded transition-colors">Aktifkan</button>
+                            `}
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Update stats cards
+        function updateStats(karyawan) {
+            const total = karyawan.length;
+            const aktif = karyawan.filter(k => k.status === 'aktif').length;
+            const cuti = karyawan.filter(k => k.status === 'cuti').length;
+            const nonaktif = karyawan.filter(k => k.status === 'nonaktif').length;
+
+            const statCards = document.querySelectorAll('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 > div');
+            if (statCards.length >= 4) {
+                statCards[0].querySelector('p:last-child').textContent = total;
+                statCards[1].querySelector('p:last-child').textContent = aktif;
+                statCards[2].querySelector('p:last-child').textContent = cuti;
+                statCards[3].querySelector('p:last-child').textContent = nonaktif;
+            }
+        }
+
+        // Get status badge CSS class
+        function getStatusBadgeClass(status) {
+            const classes = {
+                'aktif': 'bg-green-100 text-green-800',
+                'cuti': 'bg-yellow-100 text-yellow-800',
+                'nonaktif': 'bg-gray-100 text-gray-800'
+            };
+            return classes[status] || classes.aktif;
+        }
+
+        // Capitalize first letter
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        // Attach form handlers
+        function attachFormHandlers() {
+            console.log('🔧 Attaching form handlers...');
+            
+            // Tambah form
+            const tambahForm = document.querySelector('#tambahModal form');
+            if (tambahForm) {
+                tambahForm.removeEventListener('submit', handleTambahSubmit);
+                tambahForm.addEventListener('submit', handleTambahSubmit);
+                console.log('✓ Tambah form handler attached');
+            } else {
+                console.error('❌ Tambah form not found!');
+            }
+
+            // Edit form
+            const editForm = document.querySelector('#editModal form');
+            if (editForm) {
+                editForm.removeEventListener('submit', handleEditSubmit);
+                editForm.addEventListener('submit', handleEditSubmit);
+                console.log('✓ Edit form handler attached');
+            } else {
+                console.error('❌ Edit form not found!');
+            }
+        }
+
+        async function handleTambahSubmit(e) {
+            e.preventDefault();
+            console.log('📝 Tambah form submitted');
+            scrollPosition = window.scrollY;  // Save scroll position
+            console.log('📍 Saved scroll position:', scrollPosition);
+            await saveTambahKaryawan(e.target);
+        }
+
+        async function handleEditSubmit(e) {
+            e.preventDefault();
+            console.log('✏️ Edit form submitted');
+            scrollPosition = window.scrollY;  // Save scroll position
+            console.log('📍 Saved scroll position:', scrollPosition);
+            await saveEditKaryawan(e.target);
+        }
+
+        // Save tambah karyawan
+        async function saveTambahKaryawan(form) {
+            console.log('💾 Starting save tambah karyawan...');
+            
+            const formData = new FormData(form);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                nik: formData.get('nik'),
+                jabatan: formData.get('jabatan'),
+                departemen_id: parseInt(formData.get('departemen_id')) || null,
+                phone: formData.get('phone'),
+                alamat: formData.get('alamat'),
+                tanggal_bergabung: formData.get('tanggal_bergabung'),
+            };
+
+            console.log('📋 Data to save:', data);
+
+            // Validate required fields
+            if (!data.name || !data.email || !data.nik || !data.jabatan || !data.departemen_id || !data.phone || !data.tanggal_bergabung) {
+                console.error('❌ Validation failed - missing required fields');
+                showMessage('⚠️ Semua field yang ditandai (*) wajib diisi!', 'error');
+                return;
+            }
+
+            try {
+                console.log('📤 POSTing to /admin/karyawan...');
+                const response = await fetch('/admin/karyawan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                console.log('Response Status:', response.status);
+
+                // Read response text first
+                const responseText = await response.text();
+                console.log('Raw Response:', responseText.substring(0, 300));
+
+                let result = {};
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('❌ JSON Parse Error:', e.message);
+                    console.error('Response text:', responseText);
+                }
+
+                console.log('Parsed Result:', result);
+
+                if (!response.ok) {
+                    const errorMsg = result.message || result.error || 'Gagal menambah karyawan';
+                    console.error('❌ API Error:', errorMsg);
+                    throw new Error(errorMsg);
+                }
+
+                console.log('✅ Karyawan saved successfully:', result);
+                showMessage('✅ Karyawan berhasil ditambahkan!', 'success');
+                closeTambahModal();
+                form.reset();
+                
+                // Reload data dengan delay
+                setTimeout(() => {
+                    loadKaryawanData();
+                }, 500);
+            } catch (error) {
+                console.error('❌ Save error:', error.message);
+                showMessage('❌ Gagal: ' + error.message, 'error');
+            }
+        }
+
+        // Save edit karyawan
+        async function saveEditKaryawan(form) {
+            if (!currentKaryawanId) {
+                console.error('❌ currentKaryawanId is null');
+                showMessage('ID tidak valid', 'error');
+                return;
+            }
+
+            console.log('💾 Starting save edit karyawan ID:', currentKaryawanId);
+
+            const formData = new FormData(form);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                jabatan: formData.get('jabatan'),
+                departemen_id: parseInt(formData.get('departemen_id')) || null,
+                phone: formData.get('phone'),
+                alamat: formData.get('alamat'),
+            };
+
+            console.log('📋 Data to update:', data);
+
+            try {
+                console.log('📤 PUTing to /admin/karyawan/' + currentKaryawanId);
+                const response = await fetch(`/admin/karyawan/${currentKaryawanId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                console.log('Response Status:', response.status);
+
+                const responseText = await response.text();
+                console.log('Raw Response:', responseText.substring(0, 300));
+
+                let result = {};
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('❌ JSON Parse Error:', e.message);
+                }
+
+                if (!response.ok) {
+                    const errorMsg = result.message || result.error || 'Gagal memperbarui';
+                    console.error('❌ API Error:', errorMsg);
+                    throw new Error(errorMsg);
+                }
+
+                console.log('✅ Karyawan updated successfully');
+                showMessage('✅ Data karyawan berhasil diperbarui!', 'success');
+                closeEditModal();
+                
+                setTimeout(() => {
+                    loadKaryawanData();
+                }, 500);
+            } catch (error) {
+                console.error('❌ Update error:', error.message);
+                showMessage('❌ Gagal: ' + error.message, 'error');
+            }
+        }
+
         // Modal Management Functions
         function openTambahModal() {
             const modal = document.getElementById('tambahModal');
@@ -573,17 +1057,50 @@
             document.body.style.overflow = '';
         }
 
-        function openEditModal(nik, nama) {
-            document.getElementById('editModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+        async function openEditModal(id) {
+            currentKaryawanId = id;
+            console.log('Opening edit modal for:', id);
+            
+            try {
+                const response = await fetch(`/admin/karyawan/${id}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrf
+                    }
+                });
+
+                if (!response.ok) throw new Error('Gagal memuat data');
+                const karyawan = await response.json();
+
+                console.log('Loaded karyawan:', karyawan);
+
+                // Fill form
+                const form = document.querySelector('#editModal form');
+                form.querySelector('input[name="name"]').value = karyawan.name;
+                form.querySelector('input[name="email"]').value = karyawan.email;
+                form.querySelector('input[name="nik"]').value = karyawan.nik || '';
+                form.querySelector('input[name="jabatan"]').value = karyawan.jabatan || '';
+                form.querySelector('select[name="departemen_id"]').value = karyawan.departemen_id || '';
+                form.querySelector('input[name="phone"]').value = karyawan.phone || '';
+                form.querySelector('textarea[name="alamat"]').value = karyawan.alamat || '';
+
+                document.getElementById('editModal').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } catch (error) {
+                console.error('Edit error:', error);
+                showMessage(error.message, 'error');
+            }
         }
 
         function closeEditModal() {
             document.getElementById('editModal').classList.add('hidden');
             document.body.style.overflow = '';
+            currentKaryawanId = null;
         }
 
-        function openResetModal(nik) {
+        async function openResetModal(id) {
+            currentKaryawanId = id;
+            console.log('Opening reset modal for:', id);
             document.getElementById('resetModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -591,28 +1108,263 @@
         function closeResetModal() {
             document.getElementById('resetModal').classList.add('hidden');
             document.body.style.overflow = '';
+            currentKaryawanId = null;
         }
 
-        function openDeactivateModal(nik) {
+        async function confirmReset() {
+            if (!currentKaryawanId) return;
+
+            console.log('🔄 Resetting password for:', currentKaryawanId);
+            scrollPosition = window.scrollY;  // Save scroll position
+            console.log('📍 Saved scroll position:', scrollPosition);
+
+            try {
+                const response = await fetch(`/admin/karyawan/${currentKaryawanId}/reset-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const responseText = await response.text();
+                let result = {};
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('❌ JSON parse error:', e.message);
+                }
+
+                if (!response.ok) throw new Error(result.message || 'Gagal mereset password');
+
+                console.log('✅ Password reset successful');
+                showMessage('✅ Password berhasil direset! Temp: ' + result.temp_password, 'success');
+                closeResetModal();
+                setTimeout(() => loadKaryawanData(), 500);
+            } catch (error) {
+                console.error('❌ Reset error:', error.message);
+                showMessage('❌ Gagal: ' + error.message, 'error');
+            }
+        }
+
+        async function openDeactivateModal(id) {
+            currentKaryawanId = id;
+            console.log('🚫 Opening deactivate modal for:', id);
             document.getElementById('deactivateModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
         function closeDeactivateModal() {
+            console.log('Closing deactivate modal');
             document.getElementById('deactivateModal').classList.add('hidden');
             document.body.style.overflow = '';
+            currentKaryawanId = null;
+        }
+
+        async function confirmDeactivate() {
+            if (!currentKaryawanId) return;
+
+            console.log('⏸️ Deactivating:', currentKaryawanId);
+            scrollPosition = window.scrollY;  // Save scroll position
+            console.log('📍 Saved scroll position:', scrollPosition);
+
+            try {
+                const response = await fetch(`/admin/karyawan/${currentKaryawanId}/deactivate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const responseText = await response.text();
+                let result = {};
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('❌ JSON parse error:', e.message);
+                }
+
+                if (!response.ok) throw new Error(result.message || 'Gagal menonaktifkan');
+
+                console.log('✅ Deactivate successful');
+                showMessage('✅ Karyawan berhasil dinonaktifkan!', 'success');
+                closeDeactivateModal();
+                setTimeout(() => loadKaryawanData(), 500);
+            } catch (error) {
+                console.error('❌ Deactivate error:', error.message);
+                showMessage('❌ Gagal: ' + error.message, 'error');
+            }
+        }
+
+        async function openActivateModal(id) {
+            currentKaryawanId = id;
+            console.log('✅ Opening activate modal for:', id);
+            document.getElementById('activateModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeActivateModal() {
+            console.log('Closing activate modal');
+            document.getElementById('activateModal').classList.add('hidden');
+            document.body.style.overflow = '';
+            currentKaryawanId = null;
+        }
+
+        async function confirmActivate() {
+            if (!currentKaryawanId) return;
+
+            console.log('✅ Activating:', currentKaryawanId);
+            scrollPosition = window.scrollY;  // Save scroll position
+            console.log('📍 Saved scroll position:', scrollPosition);
+
+            try {
+                const response = await fetch(`/admin/karyawan/${currentKaryawanId}/activate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const responseText = await response.text();
+                let result = {};
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('❌ JSON parse error:', e.message);
+                }
+
+                if (!response.ok) throw new Error(result.message || 'Gagal mengaktifkan');
+
+                console.log('✅ Activate successful');
+                showMessage('✅ Karyawan berhasil diaktifkan!', 'success');
+                closeActivateModal();
+                setTimeout(() => loadKaryawanData(), 500);
+            } catch (error) {
+                console.error('❌ Activate error:', error.message);
+                showMessage('❌ Gagal: ' + error.message, 'error');
+            }
+        }
+
+        async function openLeaveModal(id) {
+            currentKaryawanId = id;
+            console.log('✅ Opening leave modal for:', id);
+            document.getElementById('leaveModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLeaveModal() {
+            console.log('Closing leave modal');
+            document.getElementById('leaveModal').classList.add('hidden');
+            document.body.style.overflow = '';
+            currentKaryawanId = null;
+        }
+
+        async function confirmLeave() {
+            if (!currentKaryawanId) return;
+
+            console.log('✅ Setting leave status for:', currentKaryawanId);
+            scrollPosition = window.scrollY;  // Save scroll position
+            console.log('📍 Saved scroll position:', scrollPosition);
+
+            try {
+                const response = await fetch(`/admin/karyawan/${currentKaryawanId}/set-leave`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const responseText = await response.text();
+                let result = {};
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('❌ JSON parse error:', e.message);
+                }
+
+                if (!response.ok) throw new Error(result.message || 'Gagal mengatur cuti');
+
+                console.log('✅ Leave status set successful');
+                showMessage('✅ Karyawan berhasil ditandai cuti!', 'success');
+                closeLeaveModal();
+                setTimeout(() => loadKaryawanData(), 500);
+            } catch (error) {
+                console.error('❌ Leave status error:', error.message);
+                showMessage('❌ Gagal: ' + error.message, 'error');
+            }
+        }
+
+        async function openReturnFromLeaveModal(id) {
+            currentKaryawanId = id;
+            console.log('✅ Opening return from leave modal for:', id);
+            document.getElementById('returnFromLeaveModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReturnFromLeaveModal() {
+            console.log('Closing return from leave modal');
+            document.getElementById('returnFromLeaveModal').classList.add('hidden');
+            document.body.style.overflow = '';
+            currentKaryawanId = null;
+        }
+
+        async function confirmReturnFromLeave() {
+            if (!currentKaryawanId) return;
+
+            console.log('✅ Returning from leave for:', currentKaryawanId);
+            scrollPosition = window.scrollY;  // Save scroll position
+            console.log('📍 Saved scroll position:', scrollPosition);
+
+            try {
+                const response = await fetch(`/admin/karyawan/${currentKaryawanId}/return-from-leave`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const responseText = await response.text();
+                let result = {};
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('❌ JSON parse error:', e.message);
+                }
+
+                if (!response.ok) throw new Error(result.message || 'Gagal mengembalikan dari cuti');
+
+                console.log('✅ Return from leave successful');
+                showMessage('✅ Karyawan berhasil kembali aktif!', 'success');
+                closeReturnFromLeaveModal();
+                setTimeout(() => loadKaryawanData(), 500);
+            } catch (error) {
+                console.error('❌ Return from leave error:', error.message);
+                showMessage('❌ Gagal: ' + error.message, 'error');
+            }
         }
 
         function resetFilters() {
+            console.log('🔄 Resetting filters');
             document.getElementById('searchInput').value = '';
             document.getElementById('filterDepartemen').value = '';
             document.getElementById('filterStatus').value = '';
+            loadKaryawanData();
         }
 
-        // Close modal when clicking outside (scoped to .js-modal)
+        // Close modal when clicking outside
         document.querySelectorAll('.js-modal').forEach(modal => {
             modal.addEventListener('click', function(e) {
                 if (e.target === this) {
+                    console.log('Closing modal via outside click');
                     this.classList.add('hidden');
                     document.body.style.overflow = '';
                 }
@@ -622,6 +1374,7 @@
         // Close modal on Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
+                console.log('Closing modals via Escape key');
                 document.querySelectorAll('.js-modal').forEach(m => {
                     if (!m.classList.contains('hidden')) {
                         m.classList.add('hidden');
@@ -631,59 +1384,20 @@
             }
         });
 
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const query = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
-            
-            rows.forEach(row => {
-                const nik = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
-                const nama = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                
-                if (nik.includes(query) || nama.includes(query)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-
-        // Filter functionality
-        document.getElementById('filterDepartemen').addEventListener('change', function() {
-            filterTable();
-        });
-
-        document.getElementById('filterStatus').addEventListener('change', function() {
-            filterTable();
-        });
-
-        function filterTable() {
-            const deptFilter = document.getElementById('filterDepartemen').value.toLowerCase();
-            const statusFilter = document.getElementById('filterStatus').value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
-
-            rows.forEach(row => {
-                const dept = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
-                const status = row.querySelector('td:nth-child(6) span').textContent.toLowerCase();
-
-                const deptMatch = !deptFilter || dept.includes(deptFilter);
-                const statusMatch = !statusFilter || status.includes(statusFilter);
-
-                row.style.display = deptMatch && statusMatch ? '' : 'none';
-            });
-        }
-
-        // Show success message (optional)
-        function showSuccessMessage(message) {
+        // Show message helper
+        function showMessage(message, type = 'success') {
+            const bgClass = type === 'success' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700';
             const alert = document.createElement('div');
-            alert.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg shadow-lg z-50 animate-fade-in';
+            alert.className = `fixed top-4 right-4 border px-6 py-4 rounded-lg shadow-lg z-50 animate-fade-in ${bgClass}`;
             alert.textContent = message;
             document.body.appendChild(alert);
 
             setTimeout(() => {
                 alert.remove();
-            }, 3000);
+            }, 4000);
         }
+
+        console.log('=== SCRIPT INITIALIZATION COMPLETE ===');
     </script>
 
     <style>

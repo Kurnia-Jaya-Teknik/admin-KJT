@@ -229,6 +229,99 @@ class SuratController extends Controller
         }
     }
 
+    public function storeCutiSurat(Request $request, $cutiId)
+    {
+        $this->ensureAdminHRD();
+        
+        $cuti = \App\Models\Cuti::findOrFail($cutiId);
+        
+        if ($cuti->status !== 'Disetujui') {
+            return response()->json(['ok' => false, 'message' => 'Pengajuan cuti belum disetujui'], 400);
+        }
+        
+        $karyawan = $cuti->user;
+        if (!$karyawan) {
+            return response()->json(['ok' => false, 'message' => 'Data karyawan tidak ditemukan'], 404);
+        }
+        
+        try {
+            $logoPath = public_path('img/image.png');
+            
+            $html = view('surat.cuti', [
+                'karyawan' => $karyawan,
+                'cuti' => $cuti,
+                'logoPath' => $logoPath,
+            ])->render();
+            
+            $dompdf = new \Dompdf\Dompdf();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            
+            $fileName = 'Surat_Cuti_'.$karyawan->name.'_'.time().'.pdf';
+            $path = storage_path('app/public/generated/'.$fileName);
+            if (!file_exists(dirname($path))) mkdir(dirname($path), 0755, true);
+            file_put_contents($path, $dompdf->output());
+            
+            $url = asset('storage/generated/'.$fileName);
+            return response()->json(['ok' => true, 'url' => $url]);
+            
+        } catch (\Throwable $e) {
+            \Log::error('PDF Error: ' . $e->getMessage());
+            return response()->json(['ok' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Create a surat (letter) from an approved lembur (overtime) request
+     * POST /admin/lembur/{lemburId}/buat-surat
+     */
+    public function storeLemburSurat(Request $request, $lemburId)
+    {
+        $this->ensureAdminHRD();
+        
+        // Get the lembur request
+        $lembur = \App\Models\Lembur::findOrFail($lemburId);
+        
+        // Verify it's approved
+        if ($lembur->status !== 'Disetujui') {
+            return response()->json(['ok' => false, 'message' => 'Pengajuan lembur belum disetujui'], 400);
+        }
+        
+        // Get karyawan info
+        $karyawan = $lembur->user;
+        if (!$karyawan) {
+            return response()->json(['ok' => false, 'message' => 'Data karyawan tidak ditemukan'], 404);
+        }
+        
+        try {
+            $logoPath = public_path('img/image.png');
+            
+            $html = view('surat.lembur', [
+                'karyawan' => $karyawan,
+                'lembur' => $lembur,
+                'logoPath' => $logoPath,
+            ])->render();
+            
+            $dompdf = new \Dompdf\Dompdf();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            
+            // Save and return URL for preview
+            $fileName = 'Surat_Lembur_'.$karyawan->name.'_'.time().'.pdf';
+            $path = storage_path('app/public/generated/'.$fileName);
+            if (!file_exists(dirname($path))) mkdir(dirname($path), 0755, true);
+            file_put_contents($path, $dompdf->output());
+            
+            $url = asset('storage/generated/'.$fileName);
+            return response()->json(['ok' => true, 'url' => $url]);
+            
+        } catch (\Throwable $e) {
+            return response()->json(['ok' => false, 'message' => 'Error: '.$e->getMessage()], 500);
+        }
+    }
+
     public function destroy(Request $request, $id)
     {
         $this->ensureAdminHRD();

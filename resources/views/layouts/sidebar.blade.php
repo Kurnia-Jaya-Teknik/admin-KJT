@@ -51,11 +51,11 @@
                     <span>Pengajuan Cuti</span>
                 </a>
 
-                <a href="{{ route('admin.lembur') }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.lembur') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
+                <a href="{{ route('admin.magang') }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.magang') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C6.248 6.253 2 10.5 2 15.5S6.248 24.747 12 24.747s10-4.244 10-9.247S17.752 6.253 12 6.253z"/>
                     </svg>
-                    <span>Pengajuan Lembur</span>
+                    <span>Pengajuan Magang</span>
                 </a>
 
                 <a href="{{ route('admin.surat') }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.surat') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">

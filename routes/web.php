@@ -93,17 +93,36 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
             return view('admin.dashboard');
         })->name('dashboard');
         
-        Route::get('/karyawan', function () {
-            return view('admin.karyawan');
-        })->name('karyawan');
+        // Karyawan Management
+        Route::get('/karyawan', [\App\Http\Controllers\Admin\KaryawanController::class, 'index'])->name('karyawan');
+        Route::get('/karyawan/list', [\App\Http\Controllers\Admin\KaryawanController::class, 'index'])->name('karyawan.list');
+        Route::get('/karyawan/{id}', [\App\Http\Controllers\Admin\KaryawanController::class, 'show'])->name('karyawan.show');
+        Route::post('/karyawan', [\App\Http\Controllers\Admin\KaryawanController::class, 'store'])->name('karyawan.store');
+        Route::put('/karyawan/{id}', [\App\Http\Controllers\Admin\KaryawanController::class, 'update'])->name('karyawan.update');
+        Route::delete('/karyawan/{id}', [\App\Http\Controllers\Admin\KaryawanController::class, 'destroy'])->name('karyawan.destroy');
+        Route::post('/karyawan/{id}/reset-password', [\App\Http\Controllers\Admin\KaryawanController::class, 'resetPassword'])->name('karyawan.reset-password');
+        Route::post('/karyawan/{id}/deactivate', [\App\Http\Controllers\Admin\KaryawanController::class, 'deactivate'])->name('karyawan.deactivate');
+        Route::post('/karyawan/{id}/activate', [\App\Http\Controllers\Admin\KaryawanController::class, 'activate'])->name('karyawan.activate');
+        Route::post('/karyawan/{id}/set-leave', [\App\Http\Controllers\Admin\KaryawanController::class, 'setLeave'])->name('karyawan.set-leave');
+        Route::post('/karyawan/{id}/return-from-leave', [\App\Http\Controllers\Admin\KaryawanController::class, 'returnFromLeave'])->name('karyawan.return-from-leave');
+        Route::get('/karyawan-stats', [\App\Http\Controllers\Admin\KaryawanController::class, 'getStats'])->name('karyawan.stats');
         
         Route::get('/cuti', function () {
             return view('admin.cuti');
         })->name('cuti');
+        Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratController::class, 'storeCutiSurat'])->name('cuti.buat-surat');
         
-        Route::get('/lembur', function () {
-            return view('admin.lembur');
-        })->name('lembur');
+        Route::get('/magang', [\App\Http\Controllers\Admin\MagangController::class, 'index'])->name('magang');
+        Route::get('/magang/{id}/detail', [\App\Http\Controllers\Admin\MagangController::class, 'detail'])->name('magang.detail');
+        Route::post('/magang/{id}/buat-surat', [\App\Http\Controllers\Admin\MagangController::class, 'storeMagangSurat'])->name('magang.buat-surat');
+        Route::get('/magang/{id}/preview-surat', [\App\Http\Controllers\Admin\MagangController::class, 'previewMagangSurat'])->name('magang.preview-surat');
+        Route::post('/magang/{id}/mark-created', [\App\Http\Controllers\Admin\MagangController::class, 'markSuratCreated'])->name('magang.mark-created');
+        
+        // Lembur routes disabled for now
+        // Route::get('/lembur', function () {
+        //     return view('admin.lembur');
+        // })->name('lembur');
+        // Route::post('/lembur/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratController::class, 'storeLemburSurat'])->name('lembur.buat-surat');
         
         Route::get('/surat', function () {
             return view('admin.surat');

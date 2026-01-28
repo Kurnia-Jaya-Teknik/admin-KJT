@@ -197,9 +197,9 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
                                 </div>
-                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">+12%</span>
+                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">Aktif</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">156</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $totalKaryawan }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
                         </div>
                     </div>
@@ -214,9 +214,9 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
-                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">92%</span>
+                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">{{ $persentaseHadirHariIni }}%</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">143</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $hadirHariIni }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Hadir Hari Ini</p>
                         </div>
                     </div>
@@ -233,7 +233,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">Menunggu</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">8</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $cutiPending }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Pengajuan Cuti Pending</p>
                         </div>
                     </div>
@@ -250,7 +250,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-orange-600/80 bg-orange-50/70 px-2.5 py-1.5 rounded-full border border-orange-200/30 shadow-sm">Pending</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">5</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $lemburPending }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Pengajuan Lembur Pending</p>
                         </div>
                     </div>
@@ -267,7 +267,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">Proses</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">3</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $suratPending }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Surat dalam Proses</p>
                         </div>
                     </div>
@@ -284,7 +284,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">Approved</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">47</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $totalApproved }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Pengajuan Disetujui</p>
                         </div>
                     </div>
@@ -301,7 +301,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">Siap</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">12</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $suratDisetujui }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Surat Siap Dikirim</p>
                         </div>
                     </div>
@@ -316,10 +316,10 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </div>
-                                <span class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Revisi</span>
+                                <span class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Ditolak</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">2</h3>
-                            <p class="text-sm text-gray-600 font-medium">Pengajuan Perlu Revisi</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $totalRejected }}</h3>
+                            <p class="text-sm text-gray-600 font-medium">Pengajuan Ditolak</p>
                         </div>
                     </div>
                 @else
@@ -615,55 +615,32 @@
                                 <!-- Chart Container -->
                                 <div class="flex gap-4 items-end border-l-2 border-b-2 border-gray-200/50 pl-4 pb-4 pt-2"
                                     style="height: 300px;">
-                                    <!-- IT & Teknologi -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-slate-400/70 to-slate-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-slate-400/90 group-hover/bar:to-slate-300/70 transition-all duration-300" style="height: 160px;"></div>
-                                        <div class="text-center">
-                                            <p class="text-xs font-semibold text-gray-700 mb-0.5">IT & Teknologi</p>
-                                            <p class="text-sm font-bold bg-gradient-to-r from-slate-500 to-slate-400 bg-clip-text text-transparent">18/20</p>
+                                    @php
+                                        $colors = ['slate', 'green', 'amber', 'indigo', 'cyan'];
+                                        $colorIndex = 0;
+                                        $maxHadir = collect($chartKehadiran)->max(fn($item) => $item['total']);
+                                    @endphp
+                                    @foreach($chartKehadiran as $divisi => $data)
+                                        @php
+                                            $heightPercent = ($data['total'] > 0) ? ($data['hadir'] / $data['total']) * 100 : 0;
+                                            $heightPx = max(40, ($heightPercent / 100) * 240); // Scale to 240px max
+                                            $color = $colors[$colorIndex % count($colors)];
+                                            $colorIndex++;
+                                        @endphp
+                                        <!-- {{ $divisi }} -->
+                                        <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                            <div class="w-full bg-gradient-to-t from-{{ $color }}-400/70 to-{{ $color }}-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-{{ $color }}-400/90 group-hover/bar:to-{{ $color }}-300/70 transition-all duration-300" style="height: {{ $heightPx }}px;"></div>
+                                            <div class="text-center">
+                                                <p class="text-xs font-semibold text-gray-700 mb-0.5">{{ Str::limit($divisi, 15) }}</p>
+                                                <p class="text-sm font-bold bg-gradient-to-r from-{{ $color }}-500 to-{{ $color }}-400 bg-clip-text text-transparent">{{ $data['hadir'] }}/{{ $data['total'] }}</p>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <!-- Finance -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-green-400/70 to-green-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-green-400/90 group-hover/bar:to-green-300/70 transition-all duration-300" style="height: 230px;"></div>
-                                        <div class="text-center">
-                                            <p class="text-xs font-semibold text-gray-700 mb-0.5">Finance</p>
-                                            <p class="text-sm font-bold bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent">25/25</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Operations -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-amber-400/70 to-amber-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-amber-400/90 group-hover/bar:to-amber-300/70 transition-all duration-300" style="height: 170px;"></div>
-                                        <div class="text-center">
-                                            <p class="text-xs font-semibold text-gray-700 mb-0.5">Operations</p>
-                                            <p class="text-sm font-bold bg-gradient-to-r from-amber-500 to-amber-400 bg-clip-text text-transparent">38/45</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Marketing -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-indigo-400/70 to-indigo-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-indigo-400/90 group-hover/bar:to-indigo-300/70 transition-all duration-300" style="height: 190px;"></div>
-                                        <div class="text-center">
-                                            <p class="text-xs font-semibold text-gray-700 mb-0.5">Marketing</p>
-                                            <p class="text-sm font-bold bg-gradient-to-r from-indigo-500 to-indigo-400 bg-clip-text text-transparent">28/30</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- HRD -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-cyan-400/70 to-cyan-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-cyan-400/90 group-hover/bar:to-cyan-300/70 transition-all duration-300" style="height: 230px;"></div>
-                                        <div class="text-center">
-                                            <p class="text-xs font-semibold text-gray-700 mb-0.5">HRD</p>
-                                            <p class="text-sm font-bold bg-gradient-to-r from-cyan-500 to-cyan-400 bg-clip-text text-transparent">10/10</p>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
 
                                 <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
                                     <span class="text-sm font-medium text-gray-600">Total Kehadiran Hari Ini</span>
-                                    <span class="text-lg font-bold bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent">143/156 (92%)</span>
+                                    <span class="text-lg font-bold bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent">{{ $hadirHariIni }}/{{ $totalKaryawan }} ({{ $persentaseHadirHariIni }}%)</span>
                                 </div>
                             </div>
                         </div>
@@ -676,46 +653,29 @@
 
                                 <!-- Chart Container -->
                                 <div class="flex gap-3 items-end border-b-2 border-gray-200/50 pb-4" style="height: 240px;">
-                                    <!-- Agustus -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300" style="height: 140px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Agu</span>
-                                    </div>
-
-                                    <!-- September -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300" style="height: 170px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Sep</span>
-                                    </div>
-
-                                    <!-- Oktober -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300" style="height: 120px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Okt</span>
-                                    </div>
-
-                                    <!-- November -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300" style="height: 190px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Nov</span>
-                                    </div>
-
-                                    <!-- Desember -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300" style="height: 210px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Des</span>
-                                    </div>
-
-                                    <!-- Januari -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-indigo-400/70 to-indigo-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-indigo-400/90 group-hover/bar:to-indigo-300/70 transition-all duration-300" style="height: 150px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Jan</span>
-                                    </div>
+                                    @php
+                                        $maxPengajuan = collect($pengajuanPerBulan)->max() ?: 1;
+                                        $bulanColors = ['blue', 'blue', 'blue', 'blue', 'blue', 'indigo'];
+                                        $bulanIndex = 0;
+                                    @endphp
+                                    @foreach($pengajuanPerBulan as $bulan => $count)
+                                        @php
+                                            $heightPercent = ($count / $maxPengajuan) * 100;
+                                            $heightPx = max(40, $heightPercent / 100 * 240);
+                                            $color = $bulanColors[$bulanIndex % count($bulanColors)];
+                                            $bulanIndex++;
+                                        @endphp
+                                        <!-- {{ $bulan }} -->
+                                        <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
+                                            <div class="w-full bg-gradient-to-t from-{{ $color }}-400/70 to-{{ $color }}-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-{{ $color }}-400/90 group-hover/bar:to-{{ $color }}-300/70 transition-all duration-300" style="height: {{ $heightPx }}px;" title="{{ $count }} pengajuan"></div>
+                                            <span class="text-xs text-gray-700 font-medium mt-1.5">{{ $bulan }}</span>
+                                        </div>
+                                    @endforeach
                                 </div>
 
                                 <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
                                     <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
-                                    <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">342 pengajuan</span>
+                                    <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">{{ collect($pengajuanPerBulan)->sum() }} pengajuan</span>
                                 </div>
                             </div>
                         </div>
@@ -747,7 +707,7 @@
                                             <div class="w-3 h-3 rounded-full bg-green-600"></div>
                                             <span class="text-sm text-gray-700">Disetujui</span>
                                         </div>
-                                        <div id="countApproved" class="text-sm font-bold text-gray-800">45</div>
+                                        <div id="countApproved" class="text-sm font-bold text-gray-800">{{ $totalApproved }}</div>
                                     </div>
 
                                     <div class="flex items-center justify-between mb-3">
@@ -755,7 +715,7 @@
                                             <div class="w-3 h-3 rounded-full bg-yellow-600"></div>
                                             <span class="text-sm text-gray-700">Menunggu</span>
                                         </div>
-                                        <div id="countPending" class="text-sm font-bold text-gray-800">36</div>
+                                        <div id="countPending" class="text-sm font-bold text-gray-800">{{ $totalPendingAll }}</div>
                                     </div>
 
                                     <div class="flex items-center justify-between">
@@ -763,7 +723,7 @@
                                             <div class="w-3 h-3 rounded-full bg-red-600"></div>
                                             <span class="text-sm text-gray-700">Ditolak</span>
                                         </div>
-                                        <div id="countRejected" class="text-sm font-bold text-gray-800">8</div>
+                                        <div id="countRejected" class="text-sm font-bold text-gray-800">{{ $totalRejected }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -772,9 +732,9 @@
                             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                             <script>
                                 (function() {
-                                    const approved = 45;
-                                    const pending = 36;
-                                    const rejected = 8;
+                                    const approved = {{ $totalApproved }};
+                                    const pending = {{ $totalPendingAll }};
+                                    const rejected = {{ $totalRejected }};
                                     const total = approved + pending + rejected;
                                     // set total display (safe selector fallback)
                                     const totalEl = document.getElementById('statusTotal');
@@ -825,19 +785,19 @@
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <span class="text-sm text-gray-600">Menunggu Proses</span>
-                                    <span class="font-bold text-lg text-yellow-600">5</span>
+                                    <span class="font-bold text-lg text-yellow-600">{{ $suratPending }}</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-                                    <span class="text-sm text-gray-600">Sedang Diproses</span>
-                                    <span class="font-bold text-lg text-blue-600">3</span>
+                                    <span class="text-sm text-gray-600">Disetujui</span>
+                                    <span class="font-bold text-lg text-blue-600">{{ $suratDisetujui }}</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-                                    <span class="text-sm text-gray-600">Siap Dikirim</span>
-                                    <span class="font-bold text-lg text-purple-600">8</span>
+                                    <span class="text-sm text-gray-600">Diterbitkan</span>
+                                    <span class="font-bold text-lg text-purple-600">{{ $suratDiterbitkan }}</span>
                                 </div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-sm text-gray-600">Dikirim Bulan Ini</span>
-                                    <span class="font-bold text-lg text-green-600">24</span>
+                                    <span class="text-sm text-gray-600">Ditolak</span>
+                                    <span class="font-bold text-lg text-red-600">{{ $suratDitolak }}</span>
                                 </div>
                             </div>
                         </div>
@@ -1638,7 +1598,19 @@
                                     },
                                     body: JSON.stringify(data || {})
                                 });
-                                return res.ok ? res.json() : Promise.reject(await res.json());
+                                const text = await res.text();
+                                console.log('POST Response:', { url, status: res.status, statusText: res.statusText, body: text });
+                                let json = {};
+                                try {
+                                    json = JSON.parse(text);
+                                } catch(e) {
+                                    console.error('JSON Parse Error:', e, text);
+                                    throw new Error('Response is not valid JSON. Status: ' + res.status);
+                                }
+                                if (!res.ok) {
+                                    throw new Error(json.message || json.error || 'HTTP ' + res.status);
+                                }
+                                return json;
                             }
 
                             async function del(url) {
@@ -1646,10 +1618,23 @@
                                     method: 'DELETE',
                                     headers: {
                                         'X-CSRF-TOKEN': csrf,
-                                        'Accept': 'application/json'
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
                                     }
                                 });
-                                return res.ok ? res.json() : Promise.reject(await res.json());
+                                const text = await res.text();
+                                console.log('DELETE Response:', { url, status: res.status, statusText: res.statusText, body: text });
+                                let json = {};
+                                try {
+                                    json = JSON.parse(text);
+                                } catch(e) {
+                                    console.error('JSON Parse Error:', e, text);
+                                    throw new Error('Response is not valid JSON. Status: ' + res.status);
+                                }
+                                if (!res.ok) {
+                                    throw new Error(json.message || json.error || 'HTTP ' + res.status);
+                                }
+                                return json;
                             }
 
                             // delegate click events on list
@@ -1658,15 +1643,15 @@
                                 if (!btn) return;
                                 const action = btn.getAttribute('data-action');
                                 const item = btn.closest('[data-id]');
-                                if (!item) return;
                                 const id = item.getAttribute('data-id');
 
                                 if (action === 'approve') {
                                     if (!confirm('Setujui surat ini?')) return;
-                                    post(`/admin/surat/${id}/approve`).then(() => {
+                                    post(`/admin/surat/${id}/approve`, {}).then(() => {
+                                        alert('Surat berhasil disetujui');
                                         item.remove();
                                         setCount(-1);
-                                    }).catch(() => alert('Gagal menyetujui'));
+                                    }).catch((err) => alert('Gagal: ' + (err.message || 'Tidak diketahui')));
                                 }
 
                                 if (action === 'reject') {
@@ -1675,17 +1660,19 @@
                                     post(`/admin/surat/${id}/reject`, {
                                         keterangan: reason
                                     }).then(() => {
+                                        alert('Surat berhasil ditolak');
                                         item.remove();
                                         setCount(-1);
-                                    }).catch(() => alert('Gagal menolak'));
+                                    }).catch((err) => alert('Gagal: ' + (err.message || 'Tidak diketahui')));
                                 }
 
                                 if (action === 'delete') {
                                     if (!confirm('Hapus surat ini?')) return;
                                     del(`/admin/surat/${id}`).then(() => {
+                                        alert('Surat berhasil dihapus');
                                         item.remove();
                                         setCount(-1);
-                                    }).catch(() => alert('Gagal menghapus'));
+                                    }).catch((err) => alert('Gagal: ' + (err.message || 'Tidak diketahui')));
                                 }
 
                                 if (action === 'view') {
@@ -1792,6 +1779,170 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Modals untuk Surat Detail -->
+                @foreach($suratMenunggu as $surat)
+                    <div id="surat-modal-{{ $surat->id }}" class="js-modal hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                            <!-- Modal Header -->
+                            <div class="sticky top-0 px-6 py-5 bg-gradient-to-r from-purple-50 to-purple-50 border-b border-gray-200 flex items-center justify-between">
+                                <h2 class="text-lg font-bold text-gray-800">Detail Surat</h2>
+                                <button onclick="document.getElementById('surat-modal-{{ $surat->id }}').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Modal Content -->
+                            <div class="px-6 py-6 space-y-6">
+                                <!-- Info Pengajuan -->
+                                <div class="bg-gray-50 rounded-lg p-4 space-y-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500">Pengajuan Oleh</p>
+                                            <p class="text-sm font-semibold text-gray-800">{{ $surat->user->name }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-xs text-gray-500">Jenis Surat</p>
+                                            <p class="text-sm font-semibold text-gray-800">{{ $surat->jenis }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500">Nomor Surat</p>
+                                            <p class="text-sm font-semibold text-gray-800">{{ $surat->nomor_surat }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500">Status</p>
+                                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full {{ $surat->status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800' }}">{{ $surat->status }}</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500">Tanggal Pengajuan</p>
+                                            <p class="text-sm font-semibold text-gray-800">{{ $surat->created_at->format('d M Y') }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Detail Surat -->
+                                <div class="space-y-3">
+                                    <h3 class="font-semibold text-gray-800">Detail Surat</h3>
+                                    <div class="bg-gray-50 rounded-lg p-4 space-y-3">
+                                        <div>
+                                            <p class="text-xs text-gray-500 mb-1">Perihal</p>
+                                            <p class="text-sm text-gray-800">{{ $surat->perihal }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500 mb-1">Isi Surat</p>
+                                            <p class="text-sm text-gray-800 whitespace-pre-wrap">{{ $surat->isi_surat }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500 mb-1">Keterangan Tambahan</p>
+                                            <p class="text-sm text-gray-800">{{ $surat->keterangan ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="flex items-center gap-3 pt-4 border-t">
+                                    <button onclick="approveAction({{ $surat->id }})" class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors">
+                                        Setujui
+                                    </button>
+                                    <button onclick="rejectAction({{ $surat->id }})" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
+                                        Tolak
+                                    </button>
+                                    <button onclick="deleteAction({{ $surat->id }})" class="flex-1 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors">
+                                        Hapus
+                                    </button>
+                                    <button onclick="document.getElementById('surat-modal-{{ $surat->id }}').classList.add('hidden')" class="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-lg transition-colors">
+                                        Tutup
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+                <!-- Helper Functions untuk Modal Actions -->
+                <script>
+                    function approveAction(id) {
+                        if (!confirm('Setujui surat ini?')) return;
+                        const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        fetch(`/admin/surat/${id}/approve`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrf,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({})
+                        }).then(async res => {
+                            const json = await res.json();
+                            if (res.ok) {
+                                alert('Surat berhasil disetujui');
+                                document.querySelector(`[data-id="${id}"]`)?.remove();
+                                document.getElementById(`surat-modal-${id}`)?.classList.add('hidden');
+                                location.reload();
+                            } else {
+                                alert('Gagal: ' + (json.message || 'Tidak diketahui'));
+                            }
+                        }).catch((err) => alert('Error: ' + err.message));
+                    }
+
+                    function rejectAction(id) {
+                        const reason = prompt('Alasan penolakan (wajib):');
+                        if (!reason) return;
+                        const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        fetch(`/admin/surat/${id}/reject`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrf,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ keterangan: reason })
+                        }).then(async res => {
+                            const json = await res.json();
+                            if (res.ok) {
+                                alert('Surat berhasil ditolak');
+                                document.querySelector(`[data-id="${id}"]`)?.remove();
+                                document.getElementById(`surat-modal-${id}`)?.classList.add('hidden');
+                                location.reload();
+                            } else {
+                                alert('Gagal: ' + (json.message || 'Tidak diketahui'));
+                            }
+                        }).catch((err) => alert('Error: ' + err.message));
+                    }
+
+                    function deleteAction(id) {
+                        if (!confirm('Hapus surat ini? (Tidak dapat dibatalkan)')) return;
+                        const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        fetch(`/admin/surat/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrf,
+                                'Accept': 'application/json'
+                            }
+                        }).then(async res => {
+                            const text = await res.text();
+                            const json = text ? JSON.parse(text) : {};
+                            if (res.ok) {
+                                alert('Surat berhasil dihapus');
+                                document.querySelector(`[data-id="${id}"]`)?.remove();
+                                document.getElementById(`surat-modal-${id}`)?.classList.add('hidden');
+                                location.reload();
+                            } else {
+                                alert('Gagal: ' + (json.message || 'Error ' + res.status));
+                            }
+                        }).catch((err) => alert('Error: ' + err.message));
+                    }
+                </script>
             @endif
 
             <!-- Content Grid -->

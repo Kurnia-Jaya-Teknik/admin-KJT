@@ -107,7 +107,7 @@
             <!-- List of Submissions -->
             <div class="space-y-4">
                 <!-- Pending Item 1 -->
-                <div class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-rose-200/40 transition-all duration-300 group overflow-hidden relative">
+                <div data-id="8" data-status="pending" data-name="Ahmad Rizki" data-nik="EMP001" data-email="ahmad.rizki@company.com" data-dept="IT" data-created="10 Januari 2026, 14:30" data-jenis="Cuti Tahunan" data-tanggal-mulai="15-01-2026" data-tanggal-selesai="17-01-2026" data-durasi="3 hari" data-alasan="Libur keluarga" class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-rose-200/40 transition-all duration-300 group overflow-hidden relative">
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-rose-500/80 to-rose-400/30 rounded-l-3xl"></div>
                     <div class="flex items-start justify-between">
                         <div class="flex-1 ml-2">
@@ -145,12 +145,12 @@
                                 <p class="text-sm text-gray-600"><span class="font-medium">Alasan:</span> Libur keluarga</p>
                             </div>
                         </div>
-                        <button onclick="openDetailModal()" class="ml-4 px-4 py-2 bg-gradient-to-r from-rose-500/80 to-rose-400/70 text-white font-medium rounded-2xl hover:from-rose-500 hover:to-rose-400 shadow-sm hover:shadow-md transition-all duration-300 text-sm whitespace-nowrap flex-shrink-0 group-hover:scale-105">Lihat Detail</button>
+                        <button onclick="openDetailModal('pending', this.closest('[data-id]').dataset.id)" class="ml-4 px-4 py-2 bg-gradient-to-r from-rose-500/80 to-rose-400/70 text-white font-medium rounded-2xl hover:from-rose-500 hover:to-rose-400 shadow-sm hover:shadow-md transition-all duration-300 text-sm whitespace-nowrap flex-shrink-0 group-hover:scale-105">Lihat Detail</button>
                     </div>
                 </div>
 
                 <!-- Approved Item 1 -->
-                <div class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-green-200/40 transition-all duration-300 group overflow-hidden relative">
+                <div data-id="3" data-status="approved" data-name="Budi Santoso" data-nik="EMP002" data-email="budi.santoso@company.com" data-dept="Finance" data-created="12 Januari 2026, 09:15" data-approved="14 Januari 2026, 10:30" data-jenis="Cuti Tahunan" data-tanggal-mulai="20-01-2026" data-tanggal-selesai="22-01-2026" data-durasi="3 hari" data-alasan="Liburan ke luar kota" class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-green-200/40 transition-all duration-300 group overflow-hidden relative">
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-green-500/80 to-green-400/30 rounded-l-3xl"></div>
                     <div class="flex items-start justify-between">
                         <div class="flex-1 ml-2">
@@ -164,7 +164,7 @@
                                     <h3 class="text-lg font-semibold text-gray-900">Budi Santoso</h3>
                                     <p class="text-xs text-gray-500">ID: EMP002</p>
                                 </div>
-                                <span class="ml-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-green-100/60 to-green-50/40 text-green-600/80 border border-green-200/30 shadow-sm">✓ Disetujui</span>
+                                <span class="ml-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-green-100/60 to-green-50/40 text-green-600/80 border border-green-200/30 shadow-sm">✓ Disetujui Direktur</span>
                             </div>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4 p-4 bg-gradient-to-br from-gray-50/50 to-slate-50/30 rounded-2xl border border-gray-100/30">
                                 <div>
@@ -188,7 +188,7 @@
                                 <p class="text-sm text-gray-600"><span class="font-medium">Alasan:</span> Cuti panjang</p>
                             </div>
                         </div>
-                        <button onclick="openDetailModal()" class="ml-4 px-4 py-2 bg-gradient-to-r from-green-500/80 to-green-400/70 text-white font-medium rounded-2xl hover:from-green-500 hover:to-green-400 shadow-sm hover:shadow-md transition-all duration-300 text-sm whitespace-nowrap flex-shrink-0 group-hover:scale-105">Lihat Detail</button>
+                        <button onclick="openDetailModal('approved', this.closest('[data-id]').dataset.id)" class="ml-4 px-4 py-2 bg-gradient-to-r from-green-500/80 to-green-400/70 text-white font-medium rounded-2xl hover:from-green-500 hover:to-green-400 shadow-sm hover:shadow-md transition-all duration-300 text-sm whitespace-nowrap flex-shrink-0 group-hover:scale-105">Lihat Detail</button>
                     </div>
                 </div>
 
@@ -293,7 +293,7 @@
                                     <h3 class="text-lg font-semibold text-gray-900">Dedi Gunawan</h3>
                                     <p class="text-xs text-gray-500">ID: EMP005</p>
                                 </div>
-                                <span class="ml-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-green-100/60 to-green-50/40 text-green-600/80 border border-green-200/30 shadow-sm">✓ Disetujui</span>
+                                <span class="ml-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-green-100/60 to-green-50/40 text-green-600/80 border border-green-200/30 shadow-sm">✓ Disetujui Direktur</span>
                             </div>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4 p-4 bg-gradient-to-br from-gray-50/50 to-slate-50/30 rounded-2xl border border-gray-100/30">
                                 <div>
@@ -317,7 +317,7 @@
                                 <p class="text-sm text-gray-600"><span class="font-medium">Alasan:</span> Cuti panjang + hari libur</p>
                             </div>
                         </div>
-                        <button onclick="openDetailModal()" class="ml-4 px-4 py-2 bg-gradient-to-r from-green-500/80 to-green-400/70 text-white font-medium rounded-2xl hover:from-green-500 hover:to-green-400 shadow-sm hover:shadow-md transition-all duration-300 text-sm whitespace-nowrap flex-shrink-0 group-hover:scale-105">Lihat Detail</button>
+                        <button onclick="openDetailModal('approved')" class="ml-4 px-4 py-2 bg-gradient-to-r from-green-500/80 to-green-400/70 text-white font-medium rounded-2xl hover:from-green-500 hover:to-green-400 shadow-sm hover:shadow-md transition-all duration-300 text-sm whitespace-nowrap flex-shrink-0 group-hover:scale-105">Lihat Detail</button>
                     </div>
                 </div>
 
@@ -404,79 +404,62 @@
                             </svg>
                         </div>
                         <div class="flex-1">
-                            <h3 class="text-xl font-bold text-gray-900">Ahmad Rizki</h3>
-                            <p class="text-sm text-gray-600 mt-0.5">ID: EMP001 • Departemen: IT</p>
-                            <p class="text-sm text-gray-500 mt-1">Email: ahmad.rizki@company.com</p>
+                            <h3 class="text-xl font-bold text-gray-900" id="employeeName">-</h3>
+                            <p class="text-sm text-gray-600 mt-0.5" id="employeeIdDept">-</p>
+                            <p class="text-sm text-gray-500 mt-1" id="employeeEmail">-</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Status Badge -->
-                <div class="flex items-center gap-2 p-3 bg-amber-50/40 border border-amber-100/30 rounded-2xl w-fit">
+                <!-- Status Badge - Dynamic based on status -->
+                <div id="statusBadge" class="flex items-center gap-2 p-3 bg-amber-50/40 border border-amber-100/30 rounded-2xl w-fit">
                     <div class="w-3 h-3 rounded-full bg-amber-500/80 animate-pulse"></div>
-                    <span class="font-medium text-amber-700/80">Status: Menunggu Persetujuan</span>
+                    <span class="font-medium text-amber-700/80">Status: <span id="statusText">Menunggu Persetujuan</span></span>
                 </div>
 
                 <!-- Cuti Details Grid -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-gradient-to-br from-slate-50/60 to-gray-50/40 rounded-2xl p-4 border border-gray-100/40">
                         <p class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Jenis Cuti</p>
-                        <p class="text-lg font-bold text-gray-900">Cuti Tahunan</p>
+                        <p class="text-lg font-bold text-gray-900" data-detail="jenis">-</p>
                     </div>
                     <div class="bg-gradient-to-br from-slate-50/60 to-gray-50/40 rounded-2xl p-4 border border-gray-100/40">
                         <p class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Durasi</p>
-                        <p class="text-lg font-bold text-gray-900">3 hari</p>
+                        <p class="text-lg font-bold text-gray-900" data-detail="durasi">-</p>
                     </div>
                     <div class="bg-gradient-to-br from-slate-50/60 to-gray-50/40 rounded-2xl p-4 border border-gray-100/40">
                         <p class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Tanggal Mulai</p>
-                        <p class="text-lg font-bold text-gray-900">15 Jan 2026</p>
+                        <p class="text-lg font-bold text-gray-900" data-detail="tanggal-mulai">-</p>
                     </div>
                     <div class="bg-gradient-to-br from-slate-50/60 to-gray-50/40 rounded-2xl p-4 border border-gray-100/40">
                         <p class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Tanggal Selesai</p>
-                        <p class="text-lg font-bold text-gray-900">17 Jan 2026</p>
+                        <p class="text-lg font-bold text-gray-900" data-detail="tanggal-selesai">-</p>
                     </div>
                 </div>
 
                 <!-- Alasan Section -->
                 <div class="bg-white/70 rounded-2xl p-5 border border-gray-100/40">
                     <h4 class="text-sm font-semibold text-gray-900 mb-2">Alasan Pengajuan</h4>
-                    <p class="text-gray-700 leading-relaxed">Libur keluarga bersama untuk merayakan hari ulang tahun anak di kampung halaman. Sudah direncanakan jauh sebelumnya dan tidak ada pengganti yang dapat menangani pekerjaan selama periode tersebut.</p>
+                    <p class="text-gray-700 leading-relaxed" id="alasanText">-</p>
                 </div>
 
                 <!-- Timeline -->
                 <div class="space-y-3">
                     <h4 class="text-sm font-semibold text-gray-900">Riwayat Pengajuan</h4>
-                    <div class="space-y-2">
-                        <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-blue-50/40 to-slate-50/30 rounded-2xl border border-blue-100/30">
-                            <div class="w-2 h-2 rounded-full bg-blue-500/80 mt-2 flex-shrink-0"></div>
-                            <div class="flex-1 text-sm">
-                                <p class="font-medium text-gray-900">Pengajuan Dibuat</p>
-                                <p class="text-gray-600">10 Januari 2026, 14:30</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-gray-50/40 to-slate-50/30 rounded-2xl border border-gray-100/30">
-                            <div class="w-2 h-2 rounded-full bg-gray-400/50 mt-2 flex-shrink-0"></div>
-                            <div class="flex-1 text-sm">
-                                <p class="font-medium text-gray-900">Menunggu Persetujuan Direktur</p>
-                                <p class="text-gray-600">Belum diproses</p>
-                            </div>
-                        </div>
+                    <div class="space-y-2" id="timelineContainer">
+                        <div class="text-gray-500">Memuat...</div>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex gap-3 pt-4 border-t border-gray-100/40">
-                    <button onclick="openApprovalModal()" class="flex-1 px-4 py-3 bg-gradient-to-r from-green-500/80 to-green-400/70 text-white font-medium rounded-2xl hover:from-green-500 hover:to-green-400 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2">
+                <!-- NOTE: Approval/Rejection hanya untuk Direktur, Admin hanya bisa lihat dan buat surat jika disetujui -->
+                <div id="actionButtons" class="flex gap-3 pt-4 border-t border-gray-100/40">
+                    <!-- Button 'Buat Surat' hanya muncul jika sudah disetujui direktur -->
+                    <button id="buatSuratBtn" onclick="buatSurat()" class="hidden flex-1 px-4 py-3 bg-gradient-to-r from-blue-500/80 to-blue-400/70 text-white font-medium rounded-2xl hover:from-blue-500 hover:to-blue-400 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        Setujui
-                    </button>
-                    <button onclick="openRejectModal()" class="flex-1 px-4 py-3 bg-gradient-to-r from-red-500/80 to-red-400/70 text-white font-medium rounded-2xl hover:from-red-500 hover:to-red-400 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                        Tolak
+                        Buat Surat
                     </button>
                     <button onclick="closeDetailModal()" class="flex-1 px-4 py-3 bg-gray-100/50 text-gray-700 font-medium rounded-2xl hover:bg-gray-100 transition-colors">
                         Tutup
@@ -486,49 +469,153 @@
         </div>
     </div>
 
-    <!-- Approval Confirmation Modal -->
-    <div id="approvalModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <!-- Modal Buat Surat -->
+    <div id="buatSuratModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full animate-in fade-in zoom-in duration-300">
             <div class="p-8 text-center">
-                <div class="w-16 h-16 bg-gradient-to-br from-green-100/60 to-green-50/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-green-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-100/60 to-blue-50/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-blue-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Setujui Pengajuan?</h3>
-                <p class="text-gray-600 mb-6">Anda akan menyetujui pengajuan cuti Ahmad Rizki untuk 3 hari (15-17 Jan 2026)</p>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Buat Surat Cuti?</h3>
+                <p class="text-gray-600 mb-6">Surat cuti untuk <span id="buatSuratEmployeeName">-</span> akan dibuat. Pastikan sudah disetujui oleh direktur.</p>
                 <div class="flex gap-3">
-                    <button onclick="closeApprovalModal()" class="flex-1 px-4 py-2.5 bg-gray-100/50 text-gray-700 font-medium rounded-2xl hover:bg-gray-100 transition-colors">Batal</button>
-                    <button onclick="confirmApproval()" class="flex-1 px-4 py-2.5 bg-gradient-to-r from-green-500/80 to-green-400/70 text-white font-medium rounded-2xl hover:from-green-500 hover:to-green-400 shadow-sm transition-all">Ya, Setujui</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reject Confirmation Modal -->
-    <div id="rejectModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full animate-in fade-in zoom-in duration-300">
-            <div class="p-8">
-                <div class="w-16 h-16 bg-gradient-to-br from-red-100/60 to-red-50/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-red-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2 text-center">Tolak Pengajuan?</h3>
-                <p class="text-gray-600 mb-4 text-center">Masukkan alasan penolakan pengajuan cuti</p>
-                <textarea placeholder="Masukkan alasan penolakan..." class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/40 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-400/40 text-sm resize-none mb-4" rows="3"></textarea>
-                <div class="flex gap-3">
-                    <button onclick="closeRejectModal()" class="flex-1 px-4 py-2.5 bg-gray-100/50 text-gray-700 font-medium rounded-2xl hover:bg-gray-100 transition-colors">Batal</button>
-                    <button onclick="confirmReject()" class="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-500/80 to-red-400/70 text-white font-medium rounded-2xl hover:from-red-500 hover:to-red-400 shadow-sm transition-all">Ya, Tolak</button>
+                    <button onclick="closeBuatSuratModal()" class="flex-1 px-4 py-2.5 bg-gray-100/50 text-gray-700 font-medium rounded-2xl hover:bg-gray-100 transition-colors">Batal</button>
+                    <button onclick="confirmBuatSurat()" class="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-500/80 to-blue-400/70 text-white font-medium rounded-2xl hover:from-blue-500 hover:to-blue-400 shadow-sm transition-all">Ya, Buat Surat</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function openDetailModal() {
-            document.getElementById('detailModal').classList.remove('hidden');
+        let currentRequestStatus = 'pending'; // track status: pending, approved, rejected
+
+        function openDetailModal(status = 'pending', cutiId = null) {
+            currentRequestStatus = status || 'pending';
+            const modal = document.getElementById('detailModal');
+            const buatSuratBtn = document.getElementById('buatSuratBtn');
+            
+            // Get row element
+            const rowElement = document.querySelector(`[data-id="${cutiId}"]`);
+            if (!rowElement) return;
+            
+            // Extract data from row attributes
+            const employeeName = rowElement.dataset.name || '-';
+            const employeeNik = rowElement.dataset.nik || '-';
+            const employeeEmail = rowElement.dataset.email || '-';
+            const employeeDept = rowElement.dataset.dept || '-';
+            const createdDate = rowElement.dataset.created || '-';
+            const approvedDate = rowElement.dataset.approved || null;
+            const jenis = rowElement.dataset.jenis || '-';
+            const tanggalMulai = rowElement.dataset.tanggalMulai || '-';
+            const tanggalSelesai = rowElement.dataset.tanggalSelesai || '-';
+            const durasi = rowElement.dataset.durasi || '-';
+            const alasan = rowElement.dataset.alasan || '-';
+            
+            // Set data to modal
+            modal.dataset.cutiId = cutiId || '';
+            
+            // Update employee info in modal
+            document.getElementById('employeeName').textContent = employeeName;
+            document.getElementById('employeeIdDept').textContent = `ID: ${employeeNik} • Departemen: ${employeeDept}`;
+            document.getElementById('employeeEmail').textContent = `Email: ${employeeEmail}`;
+            
+            // Update cuti details
+            document.querySelectorAll('[data-detail]').forEach(el => {
+                const detailKey = el.dataset.detail;
+                if (detailKey === 'jenis') el.textContent = jenis;
+                if (detailKey === 'durasi') el.textContent = durasi;
+                if (detailKey === 'tanggal-mulai') el.textContent = tanggalMulai;
+                if (detailKey === 'tanggal-selesai') el.textContent = tanggalSelesai;
+            });
+            
+            // Update alasan
+            const alasanEl = document.getElementById('alasanText');
+            if (alasanEl) alasanEl.textContent = alasan;
+            
+            // Update timeline/riwayat
+            updateTimelineDisplay(status, createdDate, approvedDate);
+            
+            // Update buat surat confirmation modal
+            document.getElementById('buatSuratEmployeeName').textContent = employeeName;
+            
+            modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+            
+            // Update status badge berdasarkan status
+            const statusBadge = document.getElementById('statusBadge');
+            const statusText = document.getElementById('statusText');
+            
+            if (status === 'approved') {
+                statusBadge.className = 'flex items-center gap-2 p-3 bg-green-50/40 border border-green-100/30 rounded-2xl w-fit';
+                statusBadge.innerHTML = '<div class="w-3 h-3 rounded-full bg-green-500/80"></div><span class="font-medium text-green-700/80">Status: <span id="statusText">Disetujui Direktur</span></span>';
+                buatSuratBtn.classList.remove('hidden');
+                buatSuratBtn.classList.add('flex');
+            } else if (status === 'rejected') {
+                statusBadge.className = 'flex items-center gap-2 p-3 bg-red-50/40 border border-red-100/30 rounded-2xl w-fit';
+                statusBadge.innerHTML = '<div class="w-3 h-3 rounded-full bg-red-500/80"></div><span class="font-medium text-red-700/80">Status: <span id="statusText">Ditolak</span></span>';
+                buatSuratBtn.classList.add('hidden');
+            } else {
+                // pending
+                statusBadge.className = 'flex items-center gap-2 p-3 bg-amber-50/40 border border-amber-100/30 rounded-2xl w-fit';
+                statusBadge.innerHTML = '<div class="w-3 h-3 rounded-full bg-amber-500/80 animate-pulse"></div><span class="font-medium text-amber-700/80">Status: <span id="statusText">Menunggu Persetujuan</span></span>';
+                buatSuratBtn.classList.add('hidden');
+            }
+        }
+
+        function updateTimelineDisplay(status, createdDate, approvedDate) {
+            const timelineContainer = document.getElementById('timelineContainer');
+            if (!timelineContainer) return;
+            
+            let timelineHTML = '';
+            
+            // Timeline item 1: Pengajuan dibuat
+            timelineHTML += `
+                <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-blue-50/40 to-slate-50/30 rounded-2xl border border-blue-100/30">
+                    <div class="w-2 h-2 rounded-full bg-blue-500/80 mt-2 flex-shrink-0"></div>
+                    <div class="flex-1 text-sm">
+                        <p class="font-medium text-gray-900">Pengajuan Dibuat</p>
+                        <p class="text-gray-600">${createdDate}</p>
+                    </div>
+                </div>
+            `;
+            
+            // Timeline item 2: Status sesuai kondisi
+            if (status === 'approved' && approvedDate) {
+                timelineHTML += `
+                    <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-green-50/40 to-slate-50/30 rounded-2xl border border-green-100/30">
+                        <div class="w-2 h-2 rounded-full bg-green-500/80 mt-2 flex-shrink-0"></div>
+                        <div class="flex-1 text-sm">
+                            <p class="font-medium text-gray-900">Disetujui Direktur</p>
+                            <p class="text-gray-600">${approvedDate}</p>
+                        </div>
+                    </div>
+                `;
+            } else if (status === 'rejected') {
+                timelineHTML += `
+                    <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-red-50/40 to-slate-50/30 rounded-2xl border border-red-100/30">
+                        <div class="w-2 h-2 rounded-full bg-red-500/80 mt-2 flex-shrink-0"></div>
+                        <div class="flex-1 text-sm">
+                            <p class="font-medium text-gray-900">Ditolak</p>
+                            <p class="text-gray-600">${approvedDate || 'Belum diproses'}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // pending
+                timelineHTML += `
+                    <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-gray-50/40 to-slate-50/30 rounded-2xl border border-gray-100/30">
+                        <div class="w-2 h-2 rounded-full bg-gray-400/50 mt-2 flex-shrink-0"></div>
+                        <div class="flex-1 text-sm">
+                            <p class="font-medium text-gray-900">Menunggu Persetujuan Direktur</p>
+                            <p class="text-gray-600">Belum diproses</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            timelineContainer.innerHTML = timelineHTML;
         }
 
         function closeDetailModal() {
@@ -536,32 +623,168 @@
             document.body.style.overflow = 'auto';
         }
 
-        function openApprovalModal() {
-            document.getElementById('approvalModal').classList.remove('hidden');
+        function buatSurat() {
+            document.getElementById('buatSuratModal').classList.remove('hidden');
         }
 
-        function closeApprovalModal() {
-            document.getElementById('approvalModal').classList.add('hidden');
+        function closeBuatSuratModal() {
+            document.getElementById('buatSuratModal').classList.add('hidden');
         }
 
-        function confirmApproval() {
-            alert('Pengajuan cuti telah disetujui!');
-            closeApprovalModal();
-            closeDetailModal();
+        function confirmBuatSurat() {
+            const modal = document.getElementById('detailModal');
+            const cutiId = modal.dataset.cutiId;
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+            
+            if (!cutiId) {
+                showNotification('Error: ID cuti tidak ditemukan', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Membuat...';
+            
+            fetch(`/admin/cuti/${cutiId}/buat-surat`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    closeBuatSuratModal();
+                    showPdfPreviewModal(data.url);
+                    showNotification('Surat berhasil dibuat!', 'success');
+                } else {
+                    showNotification(`Error: ${data.message}`, 'error');
+                }
+            })
+            .catch(error => {
+                showNotification(`Error: ${error.message}`, 'error');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
         }
 
-        function openRejectModal() {
-            document.getElementById('rejectModal').classList.remove('hidden');
+        function showPdfPreviewModal(previewUrl) {
+            // Create modal if not exists
+            let previewModal = document.getElementById('pdfPreviewModal');
+            if (!previewModal) {
+                previewModal = document.createElement('div');
+                previewModal.id = 'pdfPreviewModal';
+                previewModal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 hidden';
+                previewModal.innerHTML = `
+                    <div class="bg-white rounded-lg shadow-2xl w-full h-full max-h-screen flex flex-col">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
+                            <h3 class="text-xl font-bold text-gray-900">Preview Surat Cuti</h3>
+                            <button onclick="closePdfPreviewModal()" class="text-gray-500 hover:text-gray-700 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- PDF Viewer -->
+                        <div class="flex-1 overflow-hidden bg-gray-100 p-4">
+                            <iframe id="pdfViewer" src="" class="w-full h-full border-0 rounded" style="display: none;"></iframe>
+                            <div id="pdfLoading" class="flex items-center justify-center h-full">
+                                <div class="text-center">
+                                    <div class="inline-block">
+                                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+                                    </div>
+                                    <p class="mt-4 text-gray-600">Memuat PDF...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div class="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-50">
+                            <button onclick="downloadCurrentPdf()" class="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-medium rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all shadow-sm flex items-center gap-2">
+                                <svg class="inline-block w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                                Download
+                            </button>
+                            <button onclick="closePdfPreviewModal()" class="px-6 py-2 bg-gray-300 text-gray-800 font-medium rounded-lg hover:bg-gray-400 transition-all">
+                                Tutup
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(previewModal);
+            }
+            
+            // Set PDF source
+            const iframe = previewModal.querySelector('#pdfViewer');
+            const loading = previewModal.querySelector('#pdfLoading');
+            
+            // Store URL globally for download
+            window.currentPdfUrl = previewUrl;
+            
+            iframe.src = previewUrl;
+            
+            iframe.onload = () => {
+                loading.style.display = 'none';
+                iframe.style.display = 'block';
+            };
+            
+            // Show modal
+            previewModal.classList.remove('hidden');
         }
 
-        function closeRejectModal() {
-            document.getElementById('rejectModal').classList.add('hidden');
+        function downloadCurrentPdf() {
+            if (!window.currentPdfUrl) return;
+            
+            const a = document.createElement('a');
+            a.href = window.currentPdfUrl;
+            a.download = window.currentPdfUrl.split('/').pop();
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showNotification('✓ PDF berhasil diunduh!', 'success');
         }
 
-        function confirmReject() {
-            alert('Pengajuan cuti telah ditolak!');
-            closeRejectModal();
-            closeDetailModal();
+        function closePdfPreviewModal() {
+            const previewModal = document.getElementById('pdfPreviewModal');
+            if (previewModal) {
+                previewModal.classList.add('hidden');
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification if not exists
+            let notification = document.getElementById('notification');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.id = 'notification';
+                notification.className = 'fixed top-4 right-4 max-w-md z-[60] hidden';
+                document.body.appendChild(notification);
+            }
+            
+            // Set colors based on type
+            let bgColor = 'bg-blue-500';
+            if (type === 'success') bgColor = 'bg-green-500';
+            if (type === 'error') bgColor = 'bg-red-500';
+            
+            notification.innerHTML = `
+                <div class="rounded-lg shadow-lg p-4 text-white ${bgColor} flex items-center gap-3">
+                    <span>${message}</span>
+                </div>
+            `;
+            notification.classList.remove('hidden');
+            
+            // Auto hide after 4 seconds
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 4000);
         }
 
         // Close modal when clicking outside
@@ -569,12 +792,8 @@
             if (e.target === this) closeDetailModal();
         });
 
-        document.getElementById('approvalModal')?.addEventListener('click', function(e) {
-            if (e.target === this) closeApprovalModal();
-        });
-
-        document.getElementById('rejectModal')?.addEventListener('click', function(e) {
-            if (e.target === this) closeRejectModal();
+        document.getElementById('buatSuratModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeBuatSuratModal();
         });
     </script>
 </x-app-layout>

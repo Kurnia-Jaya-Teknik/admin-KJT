@@ -33,6 +33,12 @@ class User extends Authenticatable
         'departemen_id',
         'status_kontrak',
         'sisa_cuti',
+        'nik',
+        'jabatan',
+        'phone',
+        'alamat',
+        'status',
+        'tanggal_bergabung',
     ];
 
     /**
