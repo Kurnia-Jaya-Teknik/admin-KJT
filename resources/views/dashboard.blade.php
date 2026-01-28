@@ -201,30 +201,7 @@
                         </div>
                     </div>
 
-                    <!-- Direktur Stats Card 6: Kehadiran Hari Ini -->
-                    <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-blue-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-100/60 to-blue-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-blue-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">📊
-                                    {{ $persentaseKehadiran }}%</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $hadirHariIni }}</h3>
-                            <p class="text-sm text-gray-600 font-medium">Hadir Hari Ini</p>
-                        </div>
-                    </div>
+                    <!-- Kehadiran card removed per user request -->
 
                     <!-- Direktur Stats Card 7: Surat Dikirim -->
                     <div
@@ -301,29 +278,7 @@
                         </div>
                     </div>
 
-                    <!-- Card 2: Hadir Hari Ini -->
-                    <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-green-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-green-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-100/60 to-green-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-green-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">{{ $persentaseKehadiran }}%</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $hadirHariIni }}</h3>
-                            <p class="text-sm text-gray-600 font-medium">Hadir Hari Ini</p>
-                        </div>
-                    </div>
+                    <!-- Kehadiran card removed per user request -->
 
                     <!-- Card 3: Cuti Pending -->
                     <div
@@ -766,46 +721,11 @@
                 @elseif(Auth::user()->role === 'admin_hrd')
                     <!-- Charts Section - Admin HRD -->
                     <div class="lg:col-span-2 space-y-6">
-                        <!-- Kehadiran per Divisi - Soft Gradient Vertical Bar Chart -->
-                        <div
-                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-br from-blue-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            </div>
+                        <!-- Kehadiran per Divisi removed per user request -->
+                        <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
                             <div class="relative">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-6">Kehadiran per Divisi (Hari Ini)
-                                </h3>
-
-                                <!-- Chart Container -->
-                                <div class="flex gap-4 items-end border-l-2 border-b-2 border-gray-200/50 pl-4 pb-4 pt-2"
-                                    style="height: 300px;">
-                                    @php
-                                        $maxDeptTotal = collect($departemenStats)->max(function($d){ return $d['total'] ?? 0; }) ?: 1;
-                                    @endphp
-                                    @foreach($departemenStats as $stat)
-                                        @php
-                                            $pct = $stat['total'] ? ($stat['present'] / $stat['total']) : 0;
-                                            $height = floor($pct * 260); // scale to fit 300px container
-                                        @endphp
-                                        <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                            <div class="w-full bg-gradient-to-t from-slate-400/70 to-slate-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg transition-all duration-300"
-                                                style="height: {{ $height }}px;"></div>
-                                            <div class="text-center">
-                                                <p class="text-xs font-semibold text-gray-700 mb-0.5">{{ $stat['nama'] }}</p>
-                                                <p
-                                                    class="text-sm font-bold bg-gradient-to-r from-slate-500 to-slate-400 bg-clip-text text-transparent">
-                                                    {{ $stat['present'] }}/{{ $stat['total'] }}</p>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                                <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
-                                    <span class="text-sm font-medium text-gray-600">Total Kehadiran Hari Ini</span>
-                                    <span
-                                        class="text-lg font-bold bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent">143/156
-                                        (92%)</span>
-                                </div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Kehadiran dihapus</h3>
+                                <p class="text-sm text-gray-600">Laporan kehadiran telah dipindahkan; gunakan menu <strong>Ijin Sakit</strong> untuk pengajuan ketidakhadiran akibat sakit.</p>
                             </div>
                         </div>
 
