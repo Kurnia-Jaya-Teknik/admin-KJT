@@ -191,3 +191,21 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         })->name('profil');
     });
 });
+
+// Temporary route to reset OPcache and clear caches (restricted to local requests)
+Route::get('/_opcache_reset', function () {
+    // allow only local/in-development access
+    if (!app()->environment('local') && request()->ip() !== '127.0.0.1' && request()->ip() !== '::1') {
+        abort(403);
+    }
+
+    if (function_exists('opcache_reset')) {
+        opcache_reset();
+    }
+
+    // clear Laravel caches
+    \Artisan::call('view:clear');
+    \Artisan::call('optimize:clear');
+
+    return response('OPcache reset and caches cleared', 200);
+});
