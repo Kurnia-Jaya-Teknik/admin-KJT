@@ -20,130 +20,215 @@
             <!-- Welcome Header -->
             <div class="mb-6">
                 <h1 class="text-2xl font-semibold text-gray-800 mb-1.5">Pengajuan Cuti</h1>
-                <p class="text-sm text-gray-500">Ajukan cuti tahunan, sakit, atau khusus</p>
+                <p class="text-sm text-gray-500">Ajukan cuti tahunan atau khusus</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Form Pengajuan -->
-                <div
-                    class="lg:col-span-2 bg-white/90 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 overflow-hidden hover:shadow-md transition-all duration-300">
-                    <div
-                        class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/40 via-slate-50/30 to-slate-50/20">
-                        <h3 class="text-sm font-semibold text-gray-800">Ajukan Cuti Baru</h3>
-                    </div>
-                    <div class="p-6">
-                        <form id="cutiForm" class="space-y-5">
-                            <div id="cutiAlert" class="hidden"></div>
-                            <!-- Jenis Cuti -->
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-2.5">Jenis Cuti</label>
-                                <select id="jenis" name="jenis"
-                                    class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/40 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-400/40 focus:border-red-300/50 transition-all duration-300 text-sm text-gray-700 hover:bg-white">
-                                    <option selected disabled value="">Pilih jenis cuti</option>
-                                    <option value="Cuti Tahunan">Cuti Tahunan</option>
-                                    <option value="Cuti Sakit">Cuti Sakit</option>
-                                    <option value="Cuti Darurat">Cuti Darurat</option>
-                                </select>
-                            </div>
-
-                            <!-- Tanggal Mulai & Selesai -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-700 mb-2.5">Tanggal Mulai</label>
-                                    <input id="tanggal_mulai" name="tanggal_mulai" type="date"
-                                        class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400/40 focus:border-red-300/60 transition-all duration-300 text-sm text-gray-700">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-700 mb-2.5">Tanggal
-                                        Selesai</label>
-                                    <input id="tanggal_selesai" name="tanggal_selesai" type="date"
-                                        class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400/40 focus:border-red-300/60 transition-all duration-300 text-sm text-gray-700">
-                                </div>
-                            </div>
-
-                            <!-- Alasan -->
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-2.5">Alasan /
-                                    Keterangan</label>
-                                <textarea id="alasan" name="alasan" rows="4" placeholder="Jelaskan alasan pengajuan cuti Anda..."
-                                    class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/40 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-400/40 focus:border-red-300/50 transition-all duration-300 text-sm resize-none text-gray-700 placeholder-gray-400 hover:bg-white"></textarea>
-                            </div>
-
-                            <!-- Info -->
-                            <div
-                                class="bg-gradient-to-r from-red-50/40 to-slate-50/30 border border-red-200/30 rounded-2xl p-4">
-                                <div class="flex items-start gap-3">
-                                    <div class="p-1.5 bg-red-100/40 rounded-2xl flex-shrink-0 mt-0.5">
-                                        <svg class="w-4 h-4 text-red-400/60" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                    <p class="text-xs text-gray-600 leading-relaxed">
-                                        <span class="font-medium text-gray-700">Catatan:</span> Sisa cuti tahunan Anda
-                                        <strong class="text-red-500/80">8 hari</strong>. Pastikan pengajuan tidak
-                                        melebihi jumlah sisa cuti.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Button -->
-                            <div class="flex gap-3 pt-2">
-                                <button type="submit" id="submitCuti"
-                                    class="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-500/85 to-red-600/75 text-white font-medium rounded-2xl hover:from-red-500 hover:to-red-600 shadow-sm hover:shadow-md transition-all duration-300 text-sm">
-                                    Ajukan Cuti
-                                </button>
-                                <button type="reset"
-                                    class="flex-1 px-4 py-2.5 bg-white/80 border border-gray-200/60 text-gray-600 font-medium rounded-xl hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 text-sm">
-                                    Batal
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+            <!-- Form Pengajuan - Formal Style -->
+            <div class="bg-white/95 rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="px-8 py-6 border-b border-gray-200 bg-gray-50">
+                    <h2 class="text-lg font-bold text-gray-800">FORMULIR CUTI</h2>
                 </div>
+                <div class="p-8">
+                    <form id="cutiForm" class="space-y-6">
+                        <div id="cutiAlert" class="hidden"></div>
 
-                <!-- Info Card -->
-                <div
-                    class="bg-white/80 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 overflow-hidden hover:shadow-md transition-all duration-300">
-                    <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/40 to-slate-50/20">
-                        <h3 class="text-sm font-semibold text-gray-800">Informasi Cuti</h3>
-                    </div>
-                    <div class="p-6 space-y-5">
-                        <div>
-                            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-2">Sisa Cuti Tahunan
-                            </p>
-                            <p
-                                class="text-2xl font-semibold bg-gradient-to-r from-red-500/70 to-red-600/60 bg-clip-text text-transparent">
-                                8 hari</p>
-                            <div class="mt-3 bg-gray-100/30 rounded-full h-2 overflow-hidden">
-                                <div class="bg-gradient-to-r from-red-500/60 to-red-400/50 h-2 rounded-full transition-all duration-500 shadow-sm"
-                                    style="width: 67%"></div>
+                        <!-- Yang bertanda tangan di bawah ini (Header) -->
+                        <div class="text-sm text-gray-700 mb-6">
+                            <p class="font-semibold mb-4">Yang bertanda tangan di bawah ini:</p>
+                        </div>
+
+                        <!-- Nama -->
+                        <div class="grid grid-cols-12 gap-4 items-center mb-4">
+                            <div class="col-span-4">
+                                <label class="text-sm font-medium text-gray-700">Nama</label>
                             </div>
-                            <p class="text-xs text-gray-500 mt-2">Digunakan 4 dari 12 hari</p>
+                            <div class="col-span-8">
+                                <div class="border-b-2 border-gray-300 px-2 py-1 text-sm text-gray-600">
+                                    {{ auth()->user()->name }}
+                                </div>
+                            </div>
                         </div>
-                        <div class="border-t border-gray-100/50 pt-5">
-                            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-3">Kebijakan Cuti</p>
-                            <ul class="space-y-2.5 text-xs text-gray-600">
-                                <li class="flex items-start gap-2.5">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-red-400/50 mt-1.5 flex-shrink-0"></div>
-                                    <span class="leading-relaxed">Pengajuan minimal 3 hari sebelumnya</span>
-                                </li>
-                                <li class="flex items-start gap-2.5">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-red-400/50 mt-1.5 flex-shrink-0"></div>
-                                    <span class="leading-relaxed">Max 5 hari dalam satu pengajuan</span>
-                                </li>
-                                <li class="flex items-start gap-2.5">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-red-400/50 mt-1.5 flex-shrink-0"></div>
-                                    <span class="leading-relaxed">Approval dari direktur</span>
-                                </li>
-                                <li class="flex items-start gap-2.5">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-red-400/50 mt-1.5 flex-shrink-0"></div>
-                                    <span class="leading-relaxed">Cuti tidak bisa dibatalkan 1 hari sebelumnya</span>
-                                </li>
-                            </ul>
+
+                        <!-- Jabatan/Devisi -->
+                        <div class="grid grid-cols-12 gap-4 items-center mb-4">
+                            <div class="col-span-4">
+                                <label class="text-sm font-medium text-gray-700">Jabatan/Divisi</label>
+                            </div>
+                            <div class="col-span-8">
+                                <div class="border-b-2 border-gray-300 px-2 py-1 text-sm text-gray-600">
+                                    {{ auth()->user()->departemen->nama ?? '-' }}
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                        <!-- Tanggal Masuk ke Perusahaan -->
+                        {{-- <div class="grid grid-cols-12 gap-4 items-center mb-6">
+                            <div class="col-span-4">
+                                <label class="text-sm font-medium text-gray-700">Tanggal Masuk ke Perusahaan</label>
+                            </div>
+                            <div class="col-span-8">
+                                <div class="border-b-2 border-gray-300 px-2 py-1 text-sm text-gray-600">
+                                    {{ auth()->user()->created_at ? auth()->user()->created_at->format('d/m/Y') : '-' }}
+                                </div>
+                            </div>
+                        </div> --}}
+
+                        <!-- Mengajukan Cuti -->
+                        <div class="border-t border-gray-200 pt-6 mb-6">
+                            <p class="text-sm font-semibold text-gray-700 mb-4">Mengajukan cuti</p>
+                            <div class="flex gap-8">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" id="jenis-tahunan" name="jenis" value="Cuti Tahunan"
+                                        class="w-4 h-4 text-red-500">
+                                    <span class="text-sm text-gray-700">a. Tahunan</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" id="jenis-lainnya" name="jenis" value="Cuti Khusus"
+                                        class="w-4 h-4 text-red-500">
+                                    <span class="text-sm text-gray-700">b. Lainnya (Khusus / Darurat)</span>
+                                </label>
+                            </div>
+                            <div id="jenis-error" class="text-red-500 text-xs mt-2 hidden"></div>
+                        </div>
+
+                        <!-- Mengajukan Cuti Terhitung -->
+                        <div class="border-t border-gray-200 pt-6 mb-6">
+                            <p class="text-sm font-semibold text-gray-700 mb-4">Mengajukan Cuti Terhitung:</p>
+
+                            <div class="grid grid-cols-12 gap-4 items-center mb-4">
+                                <div class="col-span-3">
+                                    <label class="text-sm font-medium text-gray-700">Mulai Tanggal</label>
+                                </div>
+                                <div class="col-span-3">
+                                    <input id="tanggal_mulai" name="tanggal_mulai" type="date"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                                </div>
+                                <div class="col-span-2">
+                                    <span class="text-sm text-gray-600">Tahun</span>
+                                </div>
+                                <div class="col-span-4">
+                                    <input type="text" placeholder="20__"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded text-sm" disabled>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-12 gap-4 items-center mb-4">
+                                <div class="col-span-3">
+                                    <label class="text-sm font-medium text-gray-700">Sampai Tanggal</label>
+                                </div>
+                                <div class="col-span-3">
+                                    <input id="tanggal_selesai" name="tanggal_selesai" type="date"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                                </div>
+                                <div class="col-span-2">
+                                    <span class="text-sm text-gray-600">Tahun</span>
+                                </div>
+                                <div class="col-span-4">
+                                    <input type="text" placeholder="20__"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded text-sm" disabled>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-12 gap-4 items-center">
+                                <div class="col-span-3"></div>
+                                <div class="col-span-9 flex items-center gap-4">
+                                    <span class="text-sm font-medium text-gray-700">Total Hari:</span>
+                                    <span id="editDurasiLabel"
+                                        class="text-sm font-semibold text-gray-800 min-w-12">-</span>
+                                </div>
+                            </div>
+                            <div id="tanggal-error" class="text-red-500 text-xs mt-2 hidden"></div>
+                        </div>
+
+                        <!-- Keterangan -->
+                        <div class="border-t border-gray-200 pt-6 mb-6">
+                            <label class="text-sm font-medium text-gray-700 mb-2 block">Keterangan / Alasan</label>
+                            <textarea id="alasan" name="alasan" rows="3"
+                                class="w-full px-3 py-2 border border-gray-300 rounded text-sm resize-none"></textarea>
+                        </div>
+
+                        <!-- Pelimpahan Tugas (by department) -->
+                        <div class="grid grid-cols-12 gap-4 items-center mb-4">
+                            <div class="col-span-4">
+                                <label class="text-sm font-medium text-gray-700">Pelimpahan Tugas (berdasarkan
+                                    divisi)</label>
+                                <p class="text-xs text-gray-400 mt-1">Pilih divisi, lalu pilih karyawan dari divisi
+                                    tersebut untuk dilimpahkan tugasnya.</p>
+                            </div>
+                            <div class="col-span-8">
+                                <div class="grid grid-cols-12 gap-4 mb-2">
+                                    <div class="col-span-6">
+                                        <select id="filter_departemen"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                                            <option value="">-- Semua Divisi --</option>
+                                            @foreach ($departemens ?? [] as $d)
+                                                <option value="{{ $d->id }}"
+                                                    @if (auth()->user()->departemen_id == $d->id) selected @endif>
+                                                    {{ $d->nama }} ({{ $d->kode }})</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-span-6 text-right">
+                                        <button type="button" id="clearPelimpahan"
+                                            class="px-3 py-2 rounded bg-gray-100 text-sm">Bersihkan</button>
+                                    </div>
+                                </div>
+
+                                <!-- Search input + suggestion list (professional tagging) -->
+                                <div class="relative">
+                                    <input id="pelimpahan_search" type="text"
+                                        placeholder="Cari rekan untuk dilimpahkan..."
+                                        class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                                        autocomplete="off" />
+                                    <ul id="pelimpahan_suggestions"
+                                        class="hidden absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded shadow-sm max-h-48 overflow-auto text-sm">
+                                    </ul>
+                                </div>
+
+                                <!-- Selected chips -->
+                                <div id="pelimpahan_chips" class="flex flex-wrap gap-2 mt-2"></div>
+
+                                <!-- Hidden inputs for selected IDs (form submission) -->
+                                <div id="pelimpahan_hidden_inputs"></div>
+
+                                <p class="text-xs text-gray-400 mt-1">Tip: ketik nama rekan, lalu klik dari daftar
+                                    untuk menambah. Klik tanda × untuk menghapus.</p>
+                            </div>
+                        </div>
+
+                        <!-- Telepon -->
+                        <div class="grid grid-cols-12 gap-4 items-center mb-6">
+                            <div class="col-span-4">
+                                <label class="text-sm font-medium text-gray-700">Telp. Yang bisa dihubungi</label>
+                            </div>
+                            <div class="col-span-8">
+                                <input type="tel" id="telp" name="telp"
+                                    placeholder="Nomor telepon / kontak yang bisa dihubungi"
+                                    value="{{ old('telp', auth()->user()->phone ?? '') }}"
+                                    class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm" />
+                            </div>
+                        </div>
+
+                        <!-- Info Box -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6 mb-6">
+                            <p class="text-xs text-blue-700">
+                                <span class="font-semibold">Sisa Cuti Anda:</span>
+                                <span id="sisaCutiLabel" class="font-bold">-</span> hari
+                            </p>
+                        </div>
+
+                        <!-- Button -->
+                        <div class="flex gap-3 pt-4 border-t border-gray-200">
+                            <button type="submit" id="submitCuti"
+                                class="flex-1 px-4 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all duration-300 text-sm">
+                                Ajukan Cuti
+                            </button>
+                            <button type="reset"
+                                class="flex-1 px-4 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-all duration-300 text-sm">
+                                Batal
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -417,10 +502,10 @@
                                 <p class="text-sm text-gray-600 mb-2 truncate">${i.alasan || '-'}</p>
                                 <div class="flex gap-3">
                                     ${status === 'Pending' ? `
-                                                                <button data-action="edit-cuti" data-id="${i.id}" data-jenis="${i.jenis || ''}" data-tanggal-mulai="${i.tanggal_mulai || ''}" data-tanggal-selesai="${tanggalSelesai}" data-alasan="${i.alasan || ''}" class="text-xs text-indigo-600 hover:underline font-medium">Ubah</button>
-                                                                <button data-action="delete-cuti" data-id="${i.id}" class="text-xs text-red-600 hover:underline font-medium">Hapus</button>
-                                                            ` : ''}
-                                    <button class="text-xs text-red-500/80 hover:text-red-600/80 font-medium transition-colors">Lihat Detail →</button>
+                                                                                                                <button data-action="edit-cuti" data-id="${i.id}" data-jenis="${i.jenis || ''}" data-tanggal-mulai="${i.tanggal_mulai || ''}" data-tanggal-selesai="${tanggalSelesai}" data-alasan="${i.alasan || ''}" data-telp="${i.telp || ''}" class="text-xs text-indigo-600 hover:underline font-medium">Ubah</button>
+                                                                                                                <button data-action="delete-cuti" data-id="${i.id}" class="text-xs text-red-600 hover:underline font-medium">Hapus</button>
+                                                                                                            ` : ''}
+                                    <button data-action="view-detail" data-id="${i.id}" class="text-xs text-red-500/80 hover:text-red-600/80 font-medium transition-colors">Lihat Detail →</button>
                                 </div>
                             </div>
                         </div>
@@ -467,16 +552,14 @@
                 }
 
                 if (form) {
-                    form.addEventListener('submit', async function(e) {
-                        e.preventDefault();
-                        const data = {
-                            jenis: document.getElementById('jenis')?.value,
-                            tanggal_mulai: document.getElementById('tanggal_mulai')?.value,
-                            tanggal_selesai: document.getElementById('tanggal_selesai')?.value,
-                            alasan: document.getElementById('alasan')?.value,
-                        };
+                    // Update durasi when dates change
+                    document.getElementById('tanggal_mulai')?.addEventListener('change', updateEditDurasi);
+                    document.getElementById('tanggal_selesai')?.addEventListener('change', updateEditDurasi);
 
+                    // helper to actually send cuti data to server
+                    async function sendCuti(data, modalEl) {
                         try {
+                            console.debug('sendCuti payload', data);
                             setSubmitting(true);
                             // ensure csrf cookie
                             await fetch('/sanctum/csrf-cookie', {
@@ -492,15 +575,24 @@
                                 body: JSON.stringify(data)
                             });
                             if (!res.ok) {
+                                // Try to get text body for debugging (may be HTML / stack trace)
+                                const text = await res.text().catch(() => null);
+                                console.error('sendCuti response error', res.status, text);
                                 if (res.status === 401) {
                                     showAlert('error', 'Sesi tidak valid. Silakan login ulang.');
                                     window.location.href = '/login';
                                     return;
                                 }
-                                const err = await res.json().catch(() => ({
-                                    message: 'Terjadi kesalahan'
-                                }));
-                                showAlert('error', err.message || 'Validasi gagal');
+                                // If JSON, parse message; otherwise show text
+                                let errMsg = 'Terjadi kesalahan';
+                                try {
+                                    const obj = text ? JSON.parse(text) : null;
+                                    errMsg = (obj && (obj.message || obj.error)) ? (obj.message || obj.error) : (text ||
+                                        errMsg);
+                                } catch (e) {
+                                    errMsg = text || errMsg;
+                                }
+                                showAlert('error', errMsg || 'Validasi gagal (lihat console untuk detail)');
                                 return;
                             }
                             const json = await res.json();
@@ -508,11 +600,119 @@
                             form.reset();
                             await fetchRiwayat();
                             await fetchProfile();
+                            if (modalEl) modalEl.classList.add('hidden');
+                            // clear selected chips after successful submission
+                            if (window.clearPelimpahanSelected) window.clearPelimpahanSelected();
                         } catch (err) {
-                            console.error(err);
-                            showAlert('error', 'Terjadi kesalahan sistem');
+                            console.error('sendCuti exception', err);
+                            showAlert('error', 'Terjadi kesalahan sistem (cek console)');
                         } finally {
                             setSubmitting(false);
+                        }
+                    }
+
+                    // submit handler with confirmation modal when delegation selected
+                    form.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        const jenisRadio = document.querySelector('input[name="jenis"]:checked');
+
+                        // Validate jenis
+                        if (!jenisRadio || !jenisRadio.value) {
+                            const err = document.getElementById('jenis-error');
+                            if (err) {
+                                err.textContent = 'Pilih jenis cuti terlebih dahulu';
+                                err.classList.remove('hidden');
+                            }
+                            return;
+                        } else {
+                            const err = document.getElementById('jenis-error');
+                            if (err) err.classList.add('hidden');
+                        }
+
+                        // build selected ids from hidden inputs or global set
+                        const selectedIds = Array.from((window.pelimpahanSelectedIds || new Set()));
+                        const data = {
+                            jenis: jenisRadio.value,
+                            tanggal_mulai: document.getElementById('tanggal_mulai')?.value,
+                            tanggal_selesai: document.getElementById('tanggal_selesai')?.value,
+                            alasan: document.getElementById('alasan')?.value,
+                            telp: document.getElementById('telp')?.value,
+                            dilimpahkan_ke: selectedIds.map(id => parseInt(id)),
+                        };
+
+                        // Validate dates
+                        if (!data.tanggal_mulai || !data.tanggal_selesai) {
+                            const err = document.getElementById('tanggal-error');
+                            if (err) {
+                                err.textContent = 'Isi tanggal mulai dan tanggal selesai';
+                                err.classList.remove('hidden');
+                            }
+                            return;
+                        } else {
+                            const err = document.getElementById('tanggal-error');
+                            if (err) err.classList.add('hidden');
+                        }
+
+                        // Validate date order (tanggal_selesai >= tanggal_mulai)
+                        try {
+                            const sDate = new Date(data.tanggal_mulai);
+                            const eDate = new Date(data.tanggal_selesai);
+                            if (isNaN(sDate) || isNaN(eDate) || eDate < sDate) {
+                                const err = document.getElementById('tanggal-error');
+                                if (err) {
+                                    err.textContent = 'Tanggal selesai harus sama atau setelah tanggal mulai';
+                                    err.classList.remove('hidden');
+                                }
+                                return;
+                            } else {
+                                const err = document.getElementById('tanggal-error');
+                                if (err) err.classList.add('hidden');
+                            }
+                        } catch (ex) {
+                            // ignore parsing errors here; server will validate
+                        }
+
+                        // If there are delegated users, show confirmation modal
+                        if (data.dilimpahkan_ke && data.dilimpahkan_ke.length > 0) {
+                            const modal = document.getElementById('confirmDelegationModal');
+                            const list = document.getElementById('delegationList');
+                            list.innerHTML = '';
+                            // list selected names
+                            data.dilimpahkan_ke.forEach(id => {
+                                const li = document.createElement('li');
+                                li.textContent = getPelimpahanNameById(id);
+                                list.appendChild(li);
+                            });
+                            modal.classList.remove('hidden');
+                            // store pending data on modal element
+                            modal._pendingData = data;
+                            return;
+                        }
+
+                        // otherwise send immediately
+                        await sendCuti(data);
+                    });
+
+                    // modal button handlers (confirm / cancel)
+                    document.addEventListener('click', function(e) {
+                        const modal = document.getElementById('confirmDelegationModal');
+                        if (!modal) return;
+
+                        if (e.target.closest('[data-action="close-delegation-modal"]') || e.target.closest(
+                                '[data-action="cancel-delegation"]')) {
+                            modal.classList.add('hidden');
+                            modal._pendingData = null;
+                            return;
+                        }
+
+                        if (e.target.closest('[data-action="confirm-delegation"]')) {
+                            console.debug('confirm-delegation clicked', modal._pendingData);
+                            const pending = modal._pendingData;
+                            if (pending) {
+                                sendCuti(pending, modal);
+                                modal._pendingData = null;
+                            }
+                            return;
                         }
                     });
 
@@ -521,6 +721,282 @@
                         await ensureApiToken();
                         await fetchProfile();
                         await fetchRiwayat();
+
+                        // Setup department filter + search + chips for pelimpahan (modern UI)
+                        try {
+                            const filterSelect = document.getElementById('filter_departemen');
+                            const searchInput = document.getElementById('pelimpahan_search');
+                            const suggestionsEl = document.getElementById('pelimpahan_suggestions');
+                            const chipsContainer = document.getElementById('pelimpahan_chips');
+                            const hiddenInputs = document.getElementById('pelimpahan_hidden_inputs');
+                            const clearBtn = document.getElementById('clearPelimpahan');
+
+                            window.pelimpahanEmployeesList = {!! json_encode(
+                                ($employees ?? collect())->map(function ($e) {
+                                    return [
+                                        'id' => $e->id,
+                                        'name' => $e->name,
+                                        'departemen_id' => $e->departemen_id,
+                                        'departemen_name' => $e->departemen->nama ?? '',
+                                    ];
+                                }),
+                            ) !!};
+
+                            window.pelimpahanSelectedIds = window.pelimpahanSelectedIds || new Set();
+
+                            // expose helper to resolve name globally
+                            window.getPelimpahanNameById = function(id) {
+                                const e = (window.pelimpahanEmployeesList || []).find(x => String(x.id) ===
+                                    String(id));
+                                return e ? e.name : String(id);
+                            }
+
+                            function renderSuggestions(list) {
+                                suggestionsEl.innerHTML = '';
+                                if (!list || !list.length) {
+                                    suggestionsEl.classList.add('hidden');
+                                    return;
+                                }
+                                list.forEach(emp => {
+                                    const li = document.createElement('li');
+                                    li.className = 'px-3 py-2 hover:bg-gray-50 cursor-pointer';
+                                    li.textContent = emp.name + (emp.departemen_name ? (' (' + emp
+                                        .departemen_name + ')') : '');
+                                    li.addEventListener('click', function() {
+                                        addSelected(emp);
+                                    });
+                                    suggestionsEl.appendChild(li);
+                                });
+                                suggestionsEl.classList.remove('hidden');
+                            }
+
+                            function updateSuggestions() {
+                                const deptId = filterSelect ? filterSelect.value : '';
+                                const q = (searchInput ? searchInput.value.toLowerCase().trim() : '');
+                                const listSource = (window.pelimpahanEmployeesList || []);
+                                const matches = listSource.filter(emp => {
+                                    if ((window.pelimpahanSelectedIds || new Set()).has(String(emp.id)))
+                                        return false;
+                                    if (deptId && String(emp.departemen_id) !== String(deptId))
+                                        return false;
+                                    if (!q) return true;
+                                    return emp.name.toLowerCase().includes(q) || (emp.departemen_name || '')
+                                        .toLowerCase().includes(q);
+                                });
+                                renderSuggestions(matches);
+                            }
+
+                            function addSelected(emp) {
+                                if ((window.pelimpahanSelectedIds || new Set()).has(String(emp.id))) return;
+                                window.pelimpahanSelectedIds.add(String(emp.id));
+                                // chip
+                                const chip = document.createElement('div');
+                                chip.className =
+                                    'px-3 py-1 rounded-full bg-gray-100 text-sm flex items-center gap-2';
+                                chip.setAttribute('data-id', emp.id);
+                                const span = document.createElement('span');
+                                span.textContent = emp.name;
+                                const btn = document.createElement('button');
+                                btn.type = 'button';
+                                btn.className = 'text-xs text-gray-500 hover:text-gray-700';
+                                btn.innerHTML = '&times;';
+                                btn.addEventListener('click', function() {
+                                    removeSelected(emp.id);
+                                });
+                                chip.appendChild(span);
+                                chip.appendChild(btn);
+                                chipsContainer.appendChild(chip);
+                                // hidden input
+                                const hi = document.createElement('input');
+                                hi.type = 'hidden';
+                                hi.name = 'dilimpahkan_ke[]';
+                                hi.value = emp.id;
+                                hi.setAttribute('data-id', emp.id);
+                                hiddenInputs.appendChild(hi);
+                                // reset search and suggestions
+                                if (searchInput) searchInput.value = '';
+                                suggestionsEl.classList.add('hidden');
+                            }
+
+                            function removeSelected(id) {
+                                (window.pelimpahanSelectedIds || new Set()).delete(String(id));
+                                const chip = chipsContainer.querySelector('[data-id="' + id + '"]');
+                                if (chip) chip.remove();
+                                const hi = hiddenInputs.querySelector('input[data-id="' + id + '"]');
+                                if (hi) hi.remove();
+                            }
+
+                            function clearSelected() {
+                                (window.pelimpahanSelectedIds || new Set()).clear();
+                                chipsContainer.innerHTML = '';
+                                hiddenInputs.innerHTML = '';
+                                if (searchInput) searchInput.value = '';
+                                if (filterSelect) filterSelect.value = '';
+                                suggestionsEl.classList.add('hidden');
+                            }
+
+                            // wire events
+                            filterSelect && filterSelect.addEventListener('change', updateSuggestions);
+                            searchInput && searchInput.addEventListener('input', updateSuggestions);
+                            // show suggestions on focus
+                            searchInput && searchInput.addEventListener('focus', updateSuggestions);
+
+                            // click outside suggestions to close
+                            document.addEventListener('click', function(e) {
+                                if (!e.target.closest('#pelimpahan_search') && !e.target.closest(
+                                        '#pelimpahan_suggestions')) {
+                                    suggestionsEl.classList.add('hidden');
+                                }
+                            });
+
+                            clearBtn && clearBtn.addEventListener('click', function() {
+                                clearSelected();
+                            });
+
+                            // expose clear function globally so sendCuti can reset tags after success
+                            window.clearPelimpahanSelected = clearSelected;
+
+                            // initial suggestions state
+                            updateSuggestions();
+                        } catch (e) {
+                            console.debug('setup pelimpahan filter', e);
+                        }
+                    })();
+
+                    // Setup pelimpahan controls for the EDIT modal (separate namespace)
+                    (function() {
+                        try {
+                            const searchInput = document.getElementById('edit_pelimpahan_search');
+                            const filterSelect = document.getElementById('edit_pelimpahan_filter');
+                            const suggestionsEl = document.getElementById('edit_pelimpahan_suggestions');
+                            const chipsContainer = document.getElementById('edit_pelimpahan_chips');
+                            const hiddenInputs = document.getElementById('edit_pelimpahan_hidden_inputs');
+                            const clearBtn = document.getElementById('edit_pelimpahan_clear');
+
+                            window.editPelimpahanSelectedIds = window.editPelimpahanSelectedIds || new Set();
+
+                            function renderSuggestions(list) {
+                                if (!suggestionsEl) return;
+                                suggestionsEl.innerHTML = '';
+                                if (!Array.isArray(list) || list.length === 0) {
+                                    suggestionsEl.classList.add('hidden');
+                                    return;
+                                }
+                                list.slice(0, 20).forEach(u => {
+                                    const el = document.createElement('div');
+                                    el.className = 'px-3 py-2 text-sm hover:bg-gray-50 cursor-pointer';
+                                    el.textContent = u.name + ' — ' + (u.departemen || u.division || '-');
+                                    el.setAttribute('data-id', u.id);
+                                    el.addEventListener('click', function() {
+                                        editAddSelected(u.id);
+                                    });
+                                    suggestionsEl.appendChild(el);
+                                });
+                                suggestionsEl.classList.remove('hidden');
+                            }
+
+                            function updateSuggestions() {
+                                try {
+                                    const q = (searchInput && searchInput.value || '').trim().toLowerCase();
+                                    const filter = (filterSelect && filterSelect.value || '').toLowerCase();
+                                    let list = (window.pelimpahanEmployeesList || []).filter(u => {
+                                        if (!u) return false;
+                                        if (filter && (u.departemen || '').toLowerCase() !== filter)
+                                        return false;
+                                        if (!q) return true;
+                                        return (u.name || '').toLowerCase().indexOf(q) !== -1 || (u.email || '')
+                                            .toLowerCase().indexOf(q) !== -1;
+                                    });
+                                    // exclude already selected
+                                    list = list.filter(u => !(window.editPelimpahanSelectedIds || new Set()).has(String(
+                                        u.id)));
+                                    renderSuggestions(list);
+                                } catch (err) {
+                                    console.debug('edit updateSuggestions', err);
+                                }
+                            }
+
+                            function createChip(u) {
+                                const chip = document.createElement('div');
+                                chip.className = 'px-2 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2';
+                                chip.setAttribute('data-id', u.id);
+                                chip.innerHTML = '<span>' + (u.name || 'User') + '</span>' +
+                                    '<button type="button" class="ml-2 text-xs text-gray-500" data-action="edit-remove-pelimpahan">&times;</button>';
+                                return chip;
+                            }
+
+                            window.editAddSelected = function(id) {
+                                id = String(id);
+                                window.editPelimpahanSelectedIds = window.editPelimpahanSelectedIds || new Set();
+                                if (window.editPelimpahanSelectedIds.has(id)) return;
+                                const u = (window.pelimpahanEmployeesList || []).find(x => String(x.id) === String(
+                                    id));
+                                if (!u) return;
+                                window.editPelimpahanSelectedIds.add(String(id));
+                                if (chipsContainer) chipsContainer.appendChild(createChip(u));
+                                if (hiddenInputs) {
+                                    const hi = document.createElement('input');
+                                    hi.type = 'hidden';
+                                    hi.name = 'dilimpahkan_ke[]';
+                                    hi.setAttribute('data-id', id);
+                                    hi.value = id;
+                                    hiddenInputs.appendChild(hi);
+                                }
+                                // refresh suggestions
+                                updateSuggestions();
+                            };
+
+                            window.editRemoveSelected = function(id) {
+                                id = String(id);
+                                window.editPelimpahanSelectedIds = window.editPelimpahanSelectedIds || new Set();
+                                window.editPelimpahanSelectedIds.delete(String(id));
+                                const chip = chipsContainer && chipsContainer.querySelector('[data-id="' + id +
+                                    '"]');
+                                if (chip) chip.remove();
+                                const hi = hiddenInputs && hiddenInputs.querySelector('input[data-id="' + id +
+                                '"]');
+                                if (hi) hi.remove();
+                                updateSuggestions();
+                            };
+
+                            window.editClearSelected = function() {
+                                window.editPelimpahanSelectedIds = new Set();
+                                if (chipsContainer) chipsContainer.innerHTML = '';
+                                if (hiddenInputs) hiddenInputs.innerHTML = '';
+                                if (searchInput) searchInput.value = '';
+                                if (filterSelect) filterSelect.value = '';
+                                suggestionsEl && suggestionsEl.classList.add('hidden');
+                            };
+
+                            // delegate remove click
+                            document.addEventListener('click', function(e) {
+                                const rem = e.target.closest('[data-action="edit-remove-pelimpahan"]');
+                                if (rem) {
+                                    const id = rem.closest('[data-id]')?.getAttribute('data-id');
+                                    if (id) window.editRemoveSelected(id);
+                                }
+                            });
+
+                            filterSelect && filterSelect.addEventListener('change', updateSuggestions);
+                            searchInput && searchInput.addEventListener('input', updateSuggestions);
+                            searchInput && searchInput.addEventListener('focus', updateSuggestions);
+                            clearBtn && clearBtn.addEventListener('click', function() {
+                                window.editClearSelected();
+                            });
+
+                            // click outside suggestions close
+                            document.addEventListener('click', function(e) {
+                                if (!e.target.closest('#edit_pelimpahan_search') && !e.target.closest(
+                                        '#edit_pelimpahan_suggestions')) {
+                                    suggestionsEl && suggestionsEl.classList.add('hidden');
+                                }
+                            });
+
+                            // initial
+                            updateSuggestions();
+                        } catch (e) {
+                            console.debug('setup edit pelimpahan', e);
+                        }
                     })();
 
                     // Delegated click handler for riwayat actions (cancel)
@@ -556,8 +1032,71 @@
                         }
                     });
 
-                    // Delegated click handler for edit cuti
+                    // Delegated click handler for edit / view detail cuti
                     document.addEventListener('click', function(e) {
+                        const viewBtn = e.target.closest('[data-action="view-detail"]');
+                        if (viewBtn) {
+                            const id = viewBtn.getAttribute('data-id');
+                            if (!id) return;
+                            try {
+                                let payload = requestsCache[id] || {
+                                    id
+                                };
+                                if (payload && typeof payload === 'object' && payload.data) payload = payload.data;
+                                // normalize
+                                const name = payload.user?.name || payload.name || '-';
+                                const jenis = payload.jenis || '-';
+                                const tMulai = toIsoDate(payload.tanggal_mulai || '');
+                                const tSelesai = toIsoDate(payload.tanggal_selesai || '');
+                                let durasi = '-';
+                                try {
+                                    if (tMulai && tSelesai) {
+                                        const s = new Date(tMulai);
+                                        const eDate = new Date(tSelesai);
+                                        if (!isNaN(s) && !isNaN(eDate) && eDate >= s) {
+                                            durasi = (Math.round((eDate - s) / (1000 * 60 * 60 * 24)) + 1) +
+                                            ' hari';
+                                        }
+                                    }
+                                } catch (err) {
+                                    /* ignore */ }
+
+                                document.getElementById('detailPengaju').textContent = name;
+                                document.getElementById('detailJenis').textContent = jenis;
+                                document.getElementById('detailTanggal').textContent = (tMulai || '-') + (tSelesai ?
+                                    (' — ' + tSelesai) : '');
+                                document.getElementById('detailDurasi').textContent = durasi;
+                                document.getElementById('detailTelp').textContent = payload.telp || '-';
+                                document.getElementById('detailAlasan').textContent = payload.alasan || '-';
+                                document.getElementById('detailStatus').textContent = payload.status || '-';
+
+                                // pelimpahan list
+                                const pelEl = document.getElementById('detailPelimpahan');
+                                if (pelEl) {
+                                    pelEl.innerHTML = '';
+                                    const arr = payload.dilimpahkan_ke || [];
+                                    if (Array.isArray(arr) && arr.length) {
+                                        arr.forEach(id => {
+                                            const u = (window.pelimpahanEmployeesList || []).find(x =>
+                                                String(x.id) === String(id));
+                                            const li = document.createElement('li');
+                                            li.textContent = u ? (u.name + ' — ' + (u.departemen || '')) :
+                                                String(id);
+                                            pelEl.appendChild(li);
+                                        });
+                                    } else {
+                                        pelEl.innerHTML = '<li>-</li>';
+                                    }
+                                }
+
+                                document.getElementById('detailCutiModal').classList.remove('hidden');
+                            } catch (err) {
+                                console.error('view detail', err);
+                                showAlert('error', 'Gagal menampilkan detail.');
+                            }
+                            return;
+                        }
+
                         const editBtn = e.target.closest('[data-action="edit-cuti"]');
                         if (editBtn) {
                             const id = editBtn.getAttribute('data-id');
@@ -585,10 +1124,34 @@
                                     .tanggal_mulai || payload.tanggal_mulai_raw || '');
                                 document.getElementById('editTanggalSelesai').value = toIsoDate(payload
                                     .tanggal_selesai || payload.tanggal_selesai_raw || '');
+                                document.getElementById('editTelp').value = payload.telp || payload.phone || '';
                                 document.getElementById('editAlasan').value = payload.alasan || '';
 
                                 clearModalError();
                                 updateEditDurasi();
+
+                                // initialize edit pelimpahan selections if available
+                                try {
+                                    window.editPelimpahanSelectedIds = window.editPelimpahanSelectedIds ||
+                                new Set();
+                                    // clear any previous selections in edit UI
+                                    const editChipsContainer = document.getElementById('edit_pelimpahan_chips');
+                                    const editHiddenInputs = document.getElementById(
+                                        'edit_pelimpahan_hidden_inputs');
+                                    if (editChipsContainer) editChipsContainer.innerHTML = '';
+                                    if (editHiddenInputs) editHiddenInputs.innerHTML = '';
+
+                                    const arr = (payload && payload.dilimpahkan_ke) || [];
+                                    if (Array.isArray(arr)) {
+                                        arr.forEach(id => {
+                                            try {
+                                                editAddSelected(id);
+                                            } catch (e) {}
+                                        });
+                                    }
+                                } catch (e) {
+                                    console.debug('init edit pelimpahan', e);
+                                }
 
                                 document.getElementById('editCutiModal').classList.remove('hidden');
                                 setTimeout(() => document.getElementById('editJenis')?.focus(), 100);
@@ -639,6 +1202,11 @@
                         // Close modal (delete)
                         if (e.target.closest('[data-action="close-delete-modal"]')) {
                             document.getElementById('confirmDeleteModal').classList.add('hidden');
+                        }
+
+                        // Close modal (detail)
+                        if (e.target.closest('[data-action="close-detail-modal"]')) {
+                            document.getElementById('detailCutiModal').classList.add('hidden');
                         }
 
                         // Confirm delete (from modal)
@@ -697,7 +1265,20 @@
                                 tanggal_mulai: document.getElementById('editTanggalMulai').value,
                                 tanggal_selesai: document.getElementById('editTanggalSelesai').value,
                                 alasan: document.getElementById('editAlasan').value,
+                                telp: document.getElementById('editTelp').value,
+                                dilimpahkan_ke: Array.from(window.editPelimpahanSelectedIds || []).map(x =>
+                                    Number(x))
                             };
+
+                            // client-side date order validation
+                            if (data.tanggal_mulai && data.tanggal_selesai) {
+                                const s = new Date(data.tanggal_mulai);
+                                const e = new Date(data.tanggal_selesai);
+                                if (isNaN(s) || isNaN(e) || e < s) {
+                                    showModalError('Tanggal selesai harus sama atau setelah tanggal mulai.');
+                                    return;
+                                }
+                            }
 
                             (async () => {
                                 try {
@@ -741,6 +1322,33 @@
             })();
         </script>
     @endpush
+
+    <!-- Delegation Confirmation Modal -->
+    <div id="confirmDelegationModal"
+        class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-lg max-w-md w-full mx-4 p-4">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-semibold text-gray-800">Konfirmasi Pelimpahan Tugas</h3>
+                <button data-action="close-delegation-modal" aria-label="Tutup modal"
+                    class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="delegationModalBody" class="text-sm text-gray-700 mb-4">
+                <p>Anda akan melimpahkan tugas sementara ke:</p>
+                <ul id="delegationList" class="list-disc list-inside mt-2 text-sm text-gray-800"></ul>
+            </div>
+            <div class="flex items-center justify-end gap-3">
+                <button data-action="cancel-delegation"
+                    class="px-4 py-2 rounded bg-gray-100 text-sm text-gray-700">Tidak</button>
+                <button data-action="confirm-delegation"
+                    class="px-4 py-2 rounded bg-red-600 text-sm text-white">Yakin</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Edit Cuti Modal (compact) -->
     <div id="editCutiModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
@@ -793,6 +1401,37 @@
                     <div class="text-right text-xs text-gray-500">Catatan: durasi inklusif</div>
                 </div>
 
+                <!-- Pelimpahan (edit modal) -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-2">Pelimpahan Tugas (sementara)</label>
+                    <div class="flex gap-2 mb-2">
+                        <select id="edit_pelimpahan_filter" class="text-xs px-2 py-1 border rounded bg-white">
+                            <option value="">Semua divisi</option>
+                            <option value="mekanik">Mekanik</option>
+                            <option value="elektrik">Elektrik</option>
+                            <option value="cleaning">Cleaning</option>
+                        </select>
+                        <div class="flex-1 relative">
+                            <input id="edit_pelimpahan_search" placeholder="Cari karyawan untuk dilimpahkan..."
+                                class="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm" />
+                            <div id="edit_pelimpahan_suggestions"
+                                class="hidden absolute left-0 right-0 mt-1 bg-white border border-gray-100 rounded shadow-sm z-20">
+                            </div>
+                        </div>
+                        <button id="edit_pelimpahan_clear" type="button"
+                            class="px-3 py-2 border rounded text-sm">Bersihkan</button>
+                    </div>
+                    <div id="edit_pelimpahan_chips" class="flex gap-2 flex-wrap mb-2"></div>
+                    <div id="edit_pelimpahan_hidden_inputs"></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-2">Telp yang bisa dihubungi</label>
+                    <input type="tel" id="editTelp" name="telp"
+                        placeholder="Nomor telepon / kontak yang bisa dihubungi"
+                        class="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm" />
+                </div>
+
                 <div>
                     <label class="block text-xs font-medium text-gray-700 mb-2">Alasan</label>
                     <textarea id="editAlasan" rows="3" name="alasan"
@@ -841,6 +1480,42 @@
                     class="flex-1 px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg text-sm">Hapus</button>
                 <button data-action="close-delete-modal"
                     class="flex-1 px-3 py-2 bg-white border border-gray-200 text-gray-600 rounded-lg text-sm">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Cuti Modal -->
+    <div id="detailCutiModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-lg max-w-[720px] w-full mx-4 sm:mx-6 p-4 sm:p-6">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-semibold text-gray-800">Detail Pengajuan Cuti</h3>
+                <button data-action="close-detail-modal" aria-label="Tutup modal"
+                    class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-2 text-sm text-gray-700">
+                <div><strong>Pengaju:</strong> <span id="detailPengaju">-</span></div>
+                <div><strong>Jenis:</strong> <span id="detailJenis">-</span></div>
+                <div><strong>Tanggal:</strong> <span id="detailTanggal">-</span></div>
+                <div><strong>Durasi:</strong> <span id="detailDurasi">-</span></div>
+                <div><strong>Telp:</strong> <span id="detailTelp">-</span></div>
+                <div><strong>Alasan:</strong>
+                    <div id="detailAlasan" class="text-sm text-gray-600 mt-1">-</div>
+                </div>
+                <div><strong>Pelimpahan Tugas:</strong>
+                    <ul id="detailPelimpahan" class="list-disc list-inside mt-2 text-sm text-gray-800"></ul>
+                </div>
+                <div><strong>Status:</strong> <span id="detailStatus">-</span></div>
+            </div>
+
+            <div class="flex gap-3 pt-4">
+                <button data-action="close-detail-modal"
+                    class="flex-1 px-3 py-2 bg-white border border-gray-200 text-gray-600 rounded-lg text-sm">Tutup</button>
             </div>
         </div>
     </div>

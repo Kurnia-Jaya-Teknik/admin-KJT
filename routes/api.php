@@ -11,11 +11,18 @@ Route::middleware(['auth:sanctum', \Laravel\Sanctum\Http\Middleware\EnsureFronte
     // Employee area
     Route::get('/employee/dashboard', [\App\Http\Controllers\Api\Employee\DashboardController::class, 'index']);
     Route::get('/employee/profile', [\App\Http\Controllers\Api\Employee\ProfileController::class, 'show']);
+
+    // Attendance
+    Route::post('/employee/attendance/check-in', [\App\Http\Controllers\Api\Employee\AttendanceController::class, 'checkIn']);
+    Route::post('/employee/attendance/check-out', [\App\Http\Controllers\Api\Employee\AttendanceController::class, 'checkOut']);
     Route::put('/employee/profile', [\App\Http\Controllers\Api\Employee\ProfileController::class, 'update']);
 
     Route::get('/employee/requests', [\App\Http\Controllers\Api\Employee\RequestController::class, 'index']);
     Route::post('/employee/requests', [\App\Http\Controllers\Api\Employee\RequestController::class, 'store']);
     Route::put('/employee/requests/{cuti}', [\App\Http\Controllers\Api\Employee\RequestController::class, 'update']);
     Route::delete('/employee/requests/{cuti}', [\App\Http\Controllers\Api\Employee\RequestController::class, 'destroy']);
+
+    // Reports
+    Route::get('/reports/cuti', [\App\Http\Controllers\Api\ReportsController::class, 'cuti']);
 
 });

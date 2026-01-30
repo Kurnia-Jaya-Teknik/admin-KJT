@@ -334,4 +334,71 @@ class SuratController extends Controller
 
         return redirect()->back()->with('status', 'Surat dihapus.');
     }
+
+    public function show(Request $request, $id)
+    {
+        $this->ensureAdminHRD();
+        $surat = Surat::with('user','creator')->findOrFail($id);
+        if ($request->ajax() || $request->is('*/admin/surat/*')) {
+            return response()->json(['ok' => true, 'surat' => $surat]);
+        }
+        return view('admin.surat-show', ['surat' => $surat]);
+    }
+
+    /**
+     * Return list of surat ready to be sent (status = Disetujui)
+     */
+    public function pendingList()
+    {
+        $this->ensureAdminHRD();
+        $list = Surat::where('status', 'Disetujui')->with('user')->orderBy('created_at', 'desc')->get(['id','nomor_surat','perihal','user_id','generated_file_url','created_at']);
+        // map to include user name for convenience
+        $mapped = $list->map(function($s) {
+            return [
+                'id' => $s->id,
+                'nomor_surat' => $s->nomor_surat,
+                'perihal' => $s->perihal,
+                'user_id' => $s->user_id,
+                'user_name' => $s->user->name ?? null,
+                'generated_file_url' => $s->generated_file_url,
+                'created_at' => $s->created_at,
+            ];
+        });
+        return response()->json(['ok' => true, 'list' => $mapped]);
+    }
+
+    /**
+     * Kirim surat ke karyawan (mengirim email dan update status)
+     */
+    public function kirim(Request $request, $id)
+    {
+        $this->ensureAdminHRD();
+        $surat = Surat::findOrFail($id);
+
+        // allow admin to optionally edit isi before sending via request
+        $isi = $request->input('isi');
+        if ($isi) $surat->isi_surat = $isi;
+
+        try {
+            if ($surat->user && $surat->user->email) {
+                \Mail::to($surat->user->email)->send(new \App\Mail\KirimSuratMailable($surat));
+            }
+            $surat->status = 'Diterbitkan';
+            $surat->dikirim_oleh = auth()->id();
+            $surat->dikirim_at = now();
+            $surat->save();
+
+            if ($request->ajax()) {
+                return response()->json(['ok' => true, 'surat' => $surat]);
+            }
+
+            return redirect()->back()->with('status', 'Surat berhasil dikirim.');
+        } catch (\Throwable $e) {
+            \Log::error('Gagal kirim surat: '.$e->getMessage());
+            if ($request->ajax()) {
+                return response()->json(['ok' => false, 'error' => $e->getMessage()], 500);
+            }
+            return redirect()->back()->with('error', 'Gagal mengirim surat.');
+        }
+    }
 }

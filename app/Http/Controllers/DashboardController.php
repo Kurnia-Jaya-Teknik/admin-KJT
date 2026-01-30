@@ -152,7 +152,7 @@ class DashboardController extends Controller
         for ($i = 5; $i >= 0; $i--) {
             $m = now()->copy()->subMonths($i);
             $count = Cuti::whereYear('tanggal_mulai', $m->year)->whereMonth('tanggal_mulai', $m->month)->count()
-                + Lembur::whereYear('tanggal_mulai', $m->year)->whereMonth('tanggal_mulai', $m->month)->count();
+                + Lembur::whereYear('tanggal', $m->year)->whereMonth('tanggal', $m->month)->count();
             $pengajuanPerBulan->push(['label' => $m->format('M'), 'count' => $count]);
         }
         $totalPengajuan6 = $pengajuanPerBulan->sum('count');
@@ -204,26 +204,20 @@ class DashboardController extends Controller
             ->where('status', 'Hadir')
             ->count();
 
-<<<<<<< HEAD
-        // Total hadir hari ini (untuk persentase)
-        $totalKaryawanHariIni = Absensi::whereDate('tanggal', today())->count();
-        $persentaseHadirHariIni = $totalKaryawanHariIni > 0 ? round(($hadirHariIni / $totalKaryawan) * 100, 1) : 0;
-
-        // Pengajuan pending (cuti + lembur)
-        $cutiPending = Cuti::where('status', 'Pending')->count();
-        $lemburPending = Lembur::where('status', 'Pending')->count();
-        $totalPending = $cutiPending + $lemburPending;
-=======
-        // calculate monthly attendance percentage
+        // calculate attendance percentage (preserve view variable name)
         $totalHariKerja = now()->day;
         $totalAbsensi = Absensi::whereYear('tanggal', now()->year)
             ->whereMonth('tanggal', now()->month)
             ->where('status', 'Hadir')
             ->count();
-        $persentaseKehadiran = $totalKaryawan > 0 && $totalHariKerja > 0
+        $persentaseHadirHariIni = $totalKaryawan > 0 && $totalHariKerja > 0
             ? round(($totalAbsensi / ($totalKaryawan * $totalHariKerja)) * 100, 1)
             : 0;
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
+
+        // Pengajuan pending (cuti + lembur)
+        $cutiPending = Cuti::where('status', 'Pending')->count();
+        $lemburPending = Lembur::where('status', 'Pending')->count();
+        $totalPending = $cutiPending + $lemburPending;
 
         // Pengajuan disetujui bulan ini
         $pengajuanDisetujui = Cuti::where('status', 'Disetujui')
@@ -249,38 +243,28 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-<<<<<<< HEAD
-        // Kehadiran per divisi hari ini
-        $kehadiranPerDivisi = DB::table('users')
-            ->join('absensi', 'users.id', '=', 'absensi.user_id')
-            ->join('departemen', 'users.departemen_id', '=', 'departemen.id')
-            ->where('users.role', 'karyawan')
-            ->whereDate('absensi.tanggal', today())
-            ->select('departemen.nama', DB::raw('COUNT(*) as total'))
-            ->groupBy('departemen.nama')
-            ->pluck('total', 'departemen.nama')
-            ->toArray();
+        // pending counts (cuti + lembur)
+        $cutiPending = $cutiPending ?? Cuti::where('status', 'Pending')->count();
+        $lemburPending = $lemburPending ?? Lembur::where('status', 'Pending')->count();
+        $totalPending = $cutiPending + $lemburPending;
 
-        // Total kehadiran per divisi (semua karyawan)
-        $totalPerDivisi = User::where('role', 'karyawan')
-            ->join('departemen', 'users.departemen_id', '=', 'departemen.id')
-            ->select('departemen.nama', DB::raw('COUNT(*) as total'))
-            ->groupBy('departemen.nama')
-            ->pluck('total', 'departemen.nama')
-            ->toArray();
+        // Surat per status (Admin HRD cards)
+        $suratPending = Surat::where('status', 'Draft')->count() + Surat::where('status', 'Menunggu Persetujuan')->count();
+        $suratDisetujui = Surat::where('status', 'Disetujui')->count();
+        $suratDiterbitkan = Surat::where('status', 'Diterbitkan')->count();
+        $suratDitolak = Surat::where('status', 'Ditolak')->count();
 
-        // Data untuk chart kehadiran per divisi (format untuk view)
-        $chartKehadiran = [];
-        foreach ($totalPerDivisi as $divisi => $total) {
-            $hadir = $kehadiranPerDivisi[$divisi] ?? 0;
-            $chartKehadiran[$divisi] = [
-                'hadir' => $hadir,
-                'total' => $total,
-                'persentase' => $total > 0 ? round(($hadir / $total) * 100, 1) : 0,
-            ];
-        }
+        // Revisi / Ditolak (counts)
+        $revisiCount = Cuti::where('status', 'Ditolak')->count() + Lembur::where('status', 'Ditolak')->count();
 
-        // Data pengajuan per bulan (6 bulan terakhir)
+        // Surat menunggu (for card listing)
+        $suratMenunggu = Surat::whereIn('status', ['Draft', 'Menunggu Persetujuan'])
+            ->with('user')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // Data pengajuan per bulan (6 bulan terakhir) - dynamic
         $pengajuanPerBulan = [];
         for ($i = 5; $i >= 0; $i--) {
             $bulan = now()->subMonths($i);
@@ -292,23 +276,13 @@ class DashboardController extends Controller
                 ->count();
             $pengajuanPerBulan[$bulan->format('M')] = $countCuti + $countLembur;
         }
-
-        // Status pengajuan (total)
-        $totalApproved = Cuti::where('status', 'Disetujui')->count() + Lembur::where('status', 'Disetujui')->count();
-        $totalPendingAll = Cuti::where('status', 'Pending')->count() + Lembur::where('status', 'Pending')->count();
-        $totalRejected = Cuti::where('status', 'Ditolak')->count() + Lembur::where('status', 'Ditolak')->count();
-=======
-        // pending counts
-        $cutiPending = Cuti::where('status', 'Pending')->count();
-        $lemburPending = Lembur::where('status', 'Pending')->count();
-        $suratPending = Surat::where('status', 'Pending')->count();
+        $totalPengajuan6 = array_sum($pengajuanPerBulan);
 
         // overall status counts for charts
         $statusApproved = Cuti::where('status','Disetujui')->count() + Lembur::where('status','Disetujui')->count() + Surat::where('status','Disetujui')->count();
         $statusPending = Cuti::where('status','Pending')->count() + Lembur::where('status','Pending')->count() + Surat::where('status','Pending')->count();
         $statusRejected = Cuti::where('status','Ditolak')->count() + Lembur::where('status','Ditolak')->count() + Surat::where('status','Ditolak')->count();
         $statusTotal = $statusApproved + $statusPending + $statusRejected;
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
 
         return [
             'totalKaryawan' => $totalKaryawan,
@@ -323,23 +297,13 @@ class DashboardController extends Controller
             'suratDiterbitkan' => $suratDiterbitkan,
             'suratDitolak' => $suratDitolak,
             'suratMenunggu' => $suratMenunggu,
-<<<<<<< HEAD
-            'chartKehadiran' => $chartKehadiran,
             'pengajuanPerBulan' => $pengajuanPerBulan,
-            'totalApproved' => $totalApproved,
-            'totalPendingAll' => $totalPendingAll,
-            'totalRejected' => $totalRejected,
-=======
-            'cutiPending' => $cutiPending,
-            'lemburPending' => $lemburPending,
-            'suratPending' => $suratPending,
-            'persentaseKehadiran' => $persentaseKehadiran,
+            'totalPengajuan6' => $totalPengajuan6,
             'revisiCount' => $revisiCount,
             'statusApproved' => $statusApproved,
             'statusPending' => $statusPending,
             'statusRejected' => $statusRejected,
             'statusTotal' => $statusTotal,
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
         ];
     }
 

@@ -50,7 +50,8 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 8px;
-            table-layout: fixed; /* ensure column widths are respected */
+            table-layout: fixed;
+            /* ensure column widths are respected */
         }
 
         th,

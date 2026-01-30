@@ -6,7 +6,7 @@
 
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Daftar Akun Baru</h2>
-            <p class="text-gray-600 text-sm mt-1">Bergabunglah dengan sistem HRD kami</p>
+            <p class="text-gray-600 text-sm mt-1">Bergabunglah dengan sistem ADMIN KJT kami</p>
         </div>
 
         <x-validation-errors class="mb-4" />
@@ -31,13 +31,55 @@
             <!-- Role Selection -->
             <div class="mt-4">
                 <x-label for="role" value="{{ __('Pilih Role') }}" />
-                <select id="role" name="role" required @change="selectedRole = $event.target.value"
+                <select id="role" name="role" required x-model="selectedRole" @change="if (selectedRole !== 'karyawan') departemenId = ''"
                     class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 px-4 py-3 text-base">
                     <option value="">-- Pilih Role --</option>
                     <option value="karyawan" @selected(old('role') === 'karyawan')>Karyawan</option>
                     <option value="direktur" @selected(old('role') === 'direktur')>Direktur</option>
                     <option value="admin_hrd" @selected(old('role') === 'admin_hrd')>Admin HRD</option>
                 </select>
+
+                <!-- Live preview (name / role / divisi) -->
+                <div class="mt-3 bg-gray-50 p-3 rounded text-sm text-gray-700" x-show="name || selectedRole || departemenId" x-cloak>
+                    <p class="font-semibold mb-2">Preview Akun</p>
+                    <p>Nama: <span x-text="name || '-'" class="font-medium"></span></p>
+                    <p>Role: <span x-text="selectedRole || '-'" class="font-medium"></span></p>
+                    <template x-if="selectedRole === 'karyawan'">
+                        <p>Divisi: <span x-text="departemenLabel()" class="font-medium"></span></p>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Department Selection (only for karyawan) -->
+            <div class="mt-4" x-show="selectedRole === 'karyawan'" x-cloak>
+                <x-label for="departemen_id" value="{{ __('Pilih Divisi') }}" />
+                @php
+                    $departemens = \App\Models\Departemen::whereIn('kode', ['mekanik','elektrik','cleaning'])->orderBy('nama')->get();
+                    $fallback = collect([
+                        (object)['kode' => 'mekanik', 'nama' => 'Mekanik'],
+                        (object)['kode' => 'elektrik', 'nama' => 'Elektrik'],
+                        (object)['kode' => 'cleaning', 'nama' => 'Cleaning'],
+                    ]);
+
+                    // build options for JS
+                    $deptOptions = $departemens->isNotEmpty()
+                        ? $departemens->map(fn($d) => ['value' => (string) $d->id, 'label' => $d->nama . ' - ' . $d->kode])->values()
+                        : $fallback->map(fn($d) => ['value' => $d->kode, 'label' => $d->nama . ' - ' . $d->kode])->values();
+                @endphp
+                <select id="departemen_id" name="departemen_id" x-model="departemenId"
+                    class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 px-4 py-3 text-base">
+                    <option value="">-- Pilih Divisi --</option>
+                    @if($departemens->isNotEmpty())
+                        @foreach($departemens as $d)
+                            <option value="{{ $d->id }}" @selected(old('departemen_id') == $d->id)>{{ $d->nama }} - {{ $d->kode }}</option>
+                        @endforeach
+                    @else
+                        @foreach($fallback as $d)
+                            <option value="{{ $d->kode }}" @selected(old('departemen_id') == $d->kode)>{{ $d->nama }} - {{ $d->kode }}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <p class="text-xs text-gray-500 mt-1">Pilih divisi kerja Anda. (Mekanik, Elektrik, Cleaning)</p>
             </div>
 
             <!-- Verification Code (Conditional) -->
@@ -99,6 +141,23 @@
                     {{ __('Daftar') }}
                 </x-button>
             </div>
+        </form>
+    </x-authentication-card>
+
+    <script>
+        function roleForm() {
+            return {
+                name: '{{ old('name') }}',
+                selectedRole: '{{ old('role') }}',
+                departemenId: '{{ old('departemen_id') }}',
+                departemensList: {!! json_encode($deptOptions ?? []) !!},
+                departemenLabel() {
+                    const d = (this.departemensList || []).find(x => String(x.value) === String(this.departemenId));
+                    return d ? d.label : '-';
+                }
+            }
+        }
+    </script>
         </form>
     </x-authentication-card>
 

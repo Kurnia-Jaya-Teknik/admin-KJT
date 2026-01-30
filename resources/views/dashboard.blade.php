@@ -270,40 +270,14 @@
                                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
                                 </div>
-<<<<<<< HEAD
-                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">Aktif</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $totalKaryawan }}</h3>
-=======
-                                <span
-                                    class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">+12%</span>
+                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">+12%</span>
                             </div>
                             <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ number_format($totalKaryawan) }}</h3>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
                             <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
                         </div>
                     </div>
 
-<<<<<<< HEAD
-                    <!-- Card 2: Hadir Hari Ini -->
-                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-green-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div class="absolute inset-0 bg-gradient-to-br from-green-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-100/60 to-green-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-green-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">{{ $persentaseHadirHariIni }}%</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $hadirHariIni }}</h3>
-                            <p class="text-sm text-gray-600 font-medium">Hadir Hari Ini</p>
-                        </div>
-                    </div>
-=======
                     <!-- Kehadiran card removed per user request -->
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
 
                     <!-- Card 3: Cuti Pending -->
                     <div
@@ -396,11 +370,7 @@
                                 <span
                                     class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">Approved</span>
                             </div>
-<<<<<<< HEAD
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $totalApproved }}</h3>
-=======
                             <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $pengajuanDisetujui }}</h3>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
                             <p class="text-sm text-gray-600 font-medium">Pengajuan Disetujui</p>
                         </div>
                     </div>
@@ -424,11 +394,7 @@
                                 <span
                                     class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">Siap</span>
                             </div>
-<<<<<<< HEAD
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $suratDisetujui }}</h3>
-=======
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $suratSiapDikirim }}</h3>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $suratDiterbitkan }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Surat Siap Dikirim</p>
                         </div>
                     </div>
@@ -449,18 +415,10 @@
                                             d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </div>
-<<<<<<< HEAD
-                                <span class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Ditolak</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $totalRejected }}</h3>
-                            <p class="text-sm text-gray-600 font-medium">Pengajuan Ditolak</p>
-=======
-                                <span
-                                    class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Revisi</span>
+                                <span class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Revisi</span>
                             </div>
                             <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $revisiCount }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Pengajuan Perlu Revisi</p>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
                         </div>
                     </div>
                 @else
@@ -567,9 +525,11 @@
                                     Terakhir)</h3>
                                 <div
                                     class="flex items-end justify-between h-56 gap-3 mb-6 px-2 relative border-b-2 border-gray-200/50 pb-4">
-                                    @foreach($pengajuanPerBulan as $entry)
+                                    @foreach ($pengajuanPerBulan as $entry)
                                         @php
-                                            $height = $maxPengajuan ? floor(($entry['count'] / $maxPengajuan) * 110) : 20;
+                                            $height = $maxPengajuan
+                                                ? floor(($entry['count'] / $maxPengajuan) * 110)
+                                                : 20;
                                         @endphp
                                         <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
                                             <div
@@ -581,7 +541,8 @@
                                             </div>
                                             <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer"
                                                 style="height: {{ $height }}px;"></div>
-                                            <span class="text-xs text-gray-600 font-medium">{{ $entry['label'] }}</span>
+                                            <span
+                                                class="text-xs text-gray-600 font-medium">{{ $entry['label'] }}</span>
                                         </div>
                                     @endforeach
                                 </div>
@@ -762,45 +723,11 @@
                     <!-- Charts Section - Admin HRD -->
                     <div class="lg:col-span-2 space-y-6">
                         <!-- Kehadiran per Divisi removed per user request -->
-                        <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
+                        <div
+                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
                             <div class="relative">
-<<<<<<< HEAD
-                                <h3 class="text-lg font-semibold text-gray-800 mb-6">Kehadiran per Divisi (Hari Ini)</h3>
-
-                                <!-- Chart Container -->
-                                <div class="flex gap-4 items-end border-l-2 border-b-2 border-gray-200/50 pl-4 pb-4 pt-2"
-                                    style="height: 300px;">
-                                    @php
-                                        $colors = ['slate', 'green', 'amber', 'indigo', 'cyan'];
-                                        $colorIndex = 0;
-                                        $maxHadir = collect($chartKehadiran)->max(fn($item) => $item['total']);
-                                    @endphp
-                                    @foreach($chartKehadiran as $divisi => $data)
-                                        @php
-                                            $heightPercent = ($data['total'] > 0) ? ($data['hadir'] / $data['total']) * 100 : 0;
-                                            $heightPx = max(40, ($heightPercent / 100) * 240); // Scale to 240px max
-                                            $color = $colors[$colorIndex % count($colors)];
-                                            $colorIndex++;
-                                        @endphp
-                                        <!-- {{ $divisi }} -->
-                                        <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                            <div class="w-full bg-gradient-to-t from-{{ $color }}-400/70 to-{{ $color }}-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-{{ $color }}-400/90 group-hover/bar:to-{{ $color }}-300/70 transition-all duration-300" style="height: {{ $heightPx }}px;"></div>
-                                            <div class="text-center">
-                                                <p class="text-xs font-semibold text-gray-700 mb-0.5">{{ Str::limit($divisi, 15) }}</p>
-                                                <p class="text-sm font-bold bg-gradient-to-r from-{{ $color }}-500 to-{{ $color }}-400 bg-clip-text text-transparent">{{ $data['hadir'] }}/{{ $data['total'] }}</p>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                                <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
-                                    <span class="text-sm font-medium text-gray-600">Total Kehadiran Hari Ini</span>
-                                    <span class="text-lg font-bold bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent">{{ $hadirHariIni }}/{{ $totalKaryawan }} ({{ $persentaseHadirHariIni }}%)</span>
-                                </div>
-=======
                                 <h3 class="text-lg font-semibold text-gray-800 mb-2">Kehadiran dihapus</h3>
                                 <p class="text-sm text-gray-600">Laporan kehadiran telah dipindahkan; gunakan menu <strong>Ijin Sakit</strong> untuk pengajuan ketidakhadiran akibat sakit.</p>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
                             </div>
                         </div>
 
@@ -815,7 +742,6 @@
                                 </h3>
 
                                 <!-- Chart Container -->
-<<<<<<< HEAD
                                 <div class="flex gap-3 items-end border-b-2 border-gray-200/50 pb-4" style="height: 240px;">
                                     @php
                                         $maxPengajuan = collect($pengajuanPerBulan)->max() ?: 1;
@@ -835,62 +761,12 @@
                                             <span class="text-xs text-gray-700 font-medium mt-1.5">{{ $bulan }}</span>
                                         </div>
                                     @endforeach
-=======
-                                <div class="flex gap-3 items-end border-b-2 border-gray-200/50 pb-4"
-                                    style="height: 240px;">
-                                    <!-- Agustus -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300"
-                                            style="height: 140px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Agu</span>
-                                    </div>
-
-                                    <!-- September -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300"
-                                            style="height: 170px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Sep</span>
-                                    </div>
-
-                                    <!-- Oktober -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300"
-                                            style="height: 120px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Okt</span>
-                                    </div>
-
-                                    <!-- November -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300"
-                                            style="height: 190px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Nov</span>
-                                    </div>
-
-                                    <!-- Desember -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-blue-400/70 to-blue-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-blue-400/90 group-hover/bar:to-blue-300/70 transition-all duration-300"
-                                            style="height: 210px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Des</span>
-                                    </div>
-
-                                    <!-- Januari -->
-                                    <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                        <div class="w-full bg-gradient-to-t from-indigo-400/70 to-indigo-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-indigo-400/90 group-hover/bar:to-indigo-300/70 transition-all duration-300"
-                                            style="height: 150px;"></div>
-                                        <span class="text-xs text-gray-700 font-medium mt-1.5">Jan</span>
-                                    </div>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
+                                </div>
                                 </div>
 
                                 <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
                                     <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
-<<<<<<< HEAD
-                                    <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">{{ collect($pengajuanPerBulan)->sum() }} pengajuan</span>
-=======
-                                    <span
-                                        class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">{{ $totalPengajuan6 }}
-                                        pengajuan</span>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
+                                    <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">{{ $totalPengajuan6 }} pengajuan</span>
                                 </div>
                             </div>
                         </div>
@@ -909,7 +785,8 @@
                                     <div id="statusTotal"
                                         class="absolute inset-0 m-auto flex flex-col items-center justify-center z-10 pointer-events-none">
                                         <div class="bg-white rounded-full px-3 py-2 shadow-sm text-center">
-                                            <div class="text-lg font-bold text-gray-800 leading-none">{{ $statusTotal }}</div>
+                                            <div class="text-lg font-bold text-gray-800 leading-none">
+                                                {{ $statusTotal }}</div>
                                             <div class="text-xs text-gray-500 -mt-0.5">Total</div>
                                         </div>
                                     </div>
@@ -922,11 +799,7 @@
                                             <div class="w-3 h-3 rounded-full bg-green-600"></div>
                                             <span class="text-sm text-gray-700">Disetujui</span>
                                         </div>
-<<<<<<< HEAD
-                                        <div id="countApproved" class="text-sm font-bold text-gray-800">{{ $totalApproved }}</div>
-=======
                                         <div id="countApproved" class="text-sm font-bold text-gray-800">{{ $statusApproved }}</div>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
                                     </div>
 
                                     <div class="flex items-center justify-between mb-3">
@@ -934,11 +807,7 @@
                                             <div class="w-3 h-3 rounded-full bg-yellow-600"></div>
                                             <span class="text-sm text-gray-700">Menunggu</span>
                                         </div>
-<<<<<<< HEAD
-                                        <div id="countPending" class="text-sm font-bold text-gray-800">{{ $totalPendingAll }}</div>
-=======
                                         <div id="countPending" class="text-sm font-bold text-gray-800">{{ $statusPending }}</div>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
                                     </div>
 
                                     <div class="flex items-center justify-between">
@@ -946,11 +815,7 @@
                                             <div class="w-3 h-3 rounded-full bg-red-600"></div>
                                             <span class="text-sm text-gray-700">Ditolak</span>
                                         </div>
-<<<<<<< HEAD
-                                        <div id="countRejected" class="text-sm font-bold text-gray-800">{{ $totalRejected }}</div>
-=======
                                         <div id="countRejected" class="text-sm font-bold text-gray-800">{{ $statusRejected }}</div>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
                                     </div>
                                 </div>
                             </div>
@@ -959,15 +824,9 @@
                             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                             <script>
                                 (function() {
-<<<<<<< HEAD
-                                    const approved = {{ $totalApproved }};
-                                    const pending = {{ $totalPendingAll }};
-                                    const rejected = {{ $totalRejected }};
-=======
                                     const approved = {{ $statusApproved ?? 0 }};
                                     const pending = {{ $statusPending ?? 0 }};
                                     const rejected = {{ $statusRejected ?? 0 }};
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
                                     const total = approved + pending + rejected;
                                     // set total display (safe selector fallback)
                                     const totalEl = document.getElementById('statusTotal');
@@ -1021,7 +880,6 @@
                                     <span class="font-bold text-lg text-yellow-600">{{ $suratPending }}</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-<<<<<<< HEAD
                                     <span class="text-sm text-gray-600">Disetujui</span>
                                     <span class="font-bold text-lg text-blue-600">{{ $suratDisetujui }}</span>
                                 </div>
@@ -1032,18 +890,6 @@
                                 <div class="flex items-center justify-between">
                                     <span class="text-sm text-gray-600">Ditolak</span>
                                     <span class="font-bold text-lg text-red-600">{{ $suratDitolak }}</span>
-=======
-                                    <span class="text-sm text-gray-600">Sedang Diproses</span>
-                                    <span class="font-bold text-lg text-blue-600">{{ $suratDiterbitkan }}</span>
-                                </div>
-                                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-                                    <span class="text-sm text-gray-600">Siap Dikirim</span>
-                                    <span class="font-bold text-lg text-purple-600">{{ $suratSiapDikirim }}</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm text-gray-600">Dikirim Bulan Ini</span>
-                                    <span class="font-bold text-lg text-green-600">{{ $suratDikirimBulan }}</span>
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
                                 </div>
                             </div>
                         </div>
@@ -1051,119 +897,17 @@
                 @else
                     <!-- Charts Section - Karyawan (Personal) - Soft Modern Design -->
                     <div class="lg:col-span-2 space-y-5">
-                        <!-- Personal Attendance Chart - Monthly with Dummy Data -->
-                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
-                            <div class="flex items-center justify-between mb-5">
-                                <h3 class="text-base font-semibold text-gray-800">Kehadiran Saya - {{ now()->locale('id')->isoFormat('MMMM YYYY') }}</h3>
-                                <span class="text-xs font-medium text-pink-600 bg-pink-50 px-2.5 py-1 rounded-full">{{ $presentDaysThisMonth }} / {{ $daysInMonth }} Hari</span>
+                        <!-- Personal Attendance chart removed per user request -->
+                        {{-- <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-base font-semibold text-gray-800">Ijin Sakit Saya</h3>
+                                <a href="{{ route('karyawan.ijin-sakit') }}"
+                                    class="text-xs font-medium text-red-600 bg-red-50 px-2.5 py-1 rounded-full">Ajukan
+                                    Ijin Sakit</a>
                             </div>
-                            <div class="h-48 flex items-end justify-between gap-1 px-1 overflow-x-auto">
-                                @foreach($attendanceDays as $d)
-                                    <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                        @if($d['present'])
-                                            <div class="w-full bg-red-600 rounded-t-lg transition-all duration-300 hover:bg-red-700" style="height: 100%;" title="Hadir"></div>
-                                        @else
-                                            <div class="w-full bg-slate-400 rounded-t-lg transition-all duration-300 hover:bg-slate-500" style="height: 5%; min-height:4px;" title="Tidak Hadir"></div>
-                                        @endif
-                                        <span class="text-xs text-gray-600 font-medium">{{ $d['day'] }}</span>
-                                    </div>
-                                @endforeach
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">7</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-yellow-400/70 to-yellow-300/50 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400"
-                                        style="height: 50%;" title="Setengah Hari"></div>
-                                    <span class="text-xs text-gray-600 font-medium">8</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">9</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">10</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">11</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">12</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">13</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">14</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">15</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">16</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">17</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">18</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">19</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">20</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">21</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400"
-                                        style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">22</span>
-                                </div>
-                            </div>
-                            <div class="mt-5 grid grid-cols-3 gap-4 pt-4 border-t border-gray-100">
-                                <div class="text-center">
-                                    <p class="text-gray-500 mb-1 text-xs font-medium">Hadir</p>
-                                    <p class="font-semibold text-lg text-red-600">20</p>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-gray-500 mb-1 text-xs font-medium">Tidak Hadir</p>
-                                    <p class="font-semibold text-lg text-slate-600">1</p>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-gray-500 mb-1 text-xs font-medium">Setengah Hari</p>
-                                    <p class="font-semibold text-lg text-yellow-600">1</p>
-                                </div>
-                            </div>
-                        </div>
+                            <p class="text-sm text-gray-600">Grafik kehadiran dihapus. Gunakan tombol di atas untuk
+                                mengajukan ijin sakit atau lihat riwayat pengajuan.</p>
+                        </div> --}}
 
                         <!-- Pengajuan Cuti Chart - 6 Bulan Terakhir -->
                         <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
@@ -1597,8 +1341,7 @@
                                         <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
                                             <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2"
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                             </svg>
                                         </div>
@@ -1838,8 +1581,7 @@
                 <!-- Pending Requests - Admin HRD -->
                 <div class="grid grid-cols-2 gap-6 mb-6">
                     <!-- Surat Menunggu Proses -->
-                    <div id="surat-card"
-                        class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div id="surat-card" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-purple-50">
                             <h3 class="text-lg font-bold text-gray-800">Surat Menunggu Proses (<span
                                     id="surat-count">{{ $suratMenunggu->count() }}</span>)</h3>
@@ -2719,7 +2461,8 @@
                                             </div>
                                             <div>
                                                 <p class="text-sm font-medium text-gray-800">Review Pengajuan</p>
-                                                <p class="text-xs text-gray-600">{{ $pendingApprovals ?? 0 }} pengajuan menunggu</p>
+                                                <p class="text-xs text-gray-600">{{ $pendingApprovals ?? 0 }}
+                                                    pengajuan menunggu</p>
                                             </div>
                                         </div>
                                         <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"

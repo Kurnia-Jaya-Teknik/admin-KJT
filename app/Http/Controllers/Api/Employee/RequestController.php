@@ -19,26 +19,61 @@ class RequestController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
+
+        // Validate first so Laravel returns 422 on validation errors (not caught as 500)
         $data = $request->validate([
             'jenis' => 'required|in:Cuti Tahunan,Cuti Sakit,Cuti Darurat',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'alasan' => 'required|string|max:1000',
+            'dilimpahkan_ke' => 'nullable|array',
+            'dilimpahkan_ke.*' => 'exists:users,id',
         ]);
 
-        $data['user_id'] = $user->id;
-        $data['durasi_hari'] = (new \DateTime($data['tanggal_selesai']))->diff(new \DateTime($data['tanggal_mulai']))->days + 1;
-        $data['status'] = 'Pending';
+        try {
+            \Log::info('Cuti store payload', $data);
 
-        $cuti = Cuti::create($data);
+            $data['user_id'] = $user->id;
+            $data['durasi_hari'] = (new \DateTime($data['tanggal_selesai']))->diff(new \DateTime($data['tanggal_mulai']))->days + 1;
+            $data['status'] = 'Pending';
 
-        // notify directors / HRD
-        $directors = \App\Models\User::whereIn('role', ['direktur','admin_hrd'])->get();
-        if ($directors->isNotEmpty()) {
-            \Illuminate\Support\Facades\Notification::send($directors, new \App\Notifications\NewCutiSubmitted($cuti));
+            // ensure empty array becomes null so DB stores null if none
+            if (isset($data['dilimpahkan_ke']) && is_array($data['dilimpahkan_ke'])) {
+                // remove self if present
+                $data['dilimpahkan_ke'] = array_values(array_filter($data['dilimpahkan_ke'], fn($id) => intval($id) !== intval($user->id)));
+                if (empty($data['dilimpahkan_ke'])) $data['dilimpahkan_ke'] = null;
+            }
+
+            $cuti = Cuti::create($data);
+
+            // notify directors / HRD
+            $directors = \App\Models\User::whereIn('role', ['direktur','admin_hrd'])->get();
+            if ($directors->isNotEmpty()) {
+                \Illuminate\Support\Facades\Notification::send($directors, new \App\Notifications\NewCutiSubmitted($cuti));
+            }
+
+            // notify delegated users (pelimpahan tugas)
+            if (!empty($cuti->dilimpahkan_ke) && is_array($cuti->dilimpahkan_ke)) {
+                $delegated = \App\Models\User::whereIn('id', $cuti->dilimpahkan_ke)->get();
+                if ($delegated->isNotEmpty()) {
+                    \Illuminate\Support\Facades\Notification::send($delegated, new \App\Notifications\TaskDelegated($cuti));
+                }
+            }
+
+            return response()->json(['ok' => true, 'cuti' => $cuti], 201);
+        } catch (\Throwable $e) {
+            // write a dedicated error dump file (easier to read during debugging)
+            try {
+                $dump = '[' . now()->toDateTimeString() . '] Cuti store exception: ' . $e->getMessage() . "\n" . $e->getTraceAsString() . "\nPayload: " . json_encode($data) . "\n\n";
+                file_put_contents(storage_path('logs/cuti_errors.log'), $dump, FILE_APPEND);
+            } catch (\Throwable $_) {
+                // ignore any errors while writing dump
+            }
+
+            \Log::error('Cuti store exception: ' . $e->getMessage() . "\n" . $e->getTraceAsString(), ['payload' => $data]);
+
+            return response()->json(['message' => 'Internal Server Error'], 500);
         }
-
-        return response()->json(['ok' => true, 'cuti' => $cuti], 201);
     }
 
     public function update(Request $request, Cuti $cuti)
@@ -57,6 +92,8 @@ class RequestController extends Controller
             'tanggal_mulai' => 'sometimes|date',
             'tanggal_selesai' => 'sometimes|date|after_or_equal:tanggal_mulai',
             'alasan' => 'sometimes|string|max:1000',
+            'dilimpahkan_ke' => 'nullable|array',
+            'dilimpahkan_ke.*' => 'exists:users,id',
         ]);
 
         \Log::info('Update Cuti - ID: ' . $cuti->id . ', Current jenis: ' . $cuti->jenis . ', New jenis: ' . ($data['jenis'] ?? 'none'));
@@ -69,10 +106,24 @@ class RequestController extends Controller
             $data['durasi_hari'] = (new \DateTime($data['tanggal_selesai']))->diff(new \DateTime($cuti->tanggal_mulai))->days + 1;
         }
 
+        // handle dilimpahkan_ke normalization
+        if (isset($data['dilimpahkan_ke']) && is_array($data['dilimpahkan_ke'])) {
+            $data['dilimpahkan_ke'] = array_values(array_filter($data['dilimpahkan_ke'], fn($id) => intval($id) !== intval($user->id)));
+            if (empty($data['dilimpahkan_ke'])) $data['dilimpahkan_ke'] = null;
+        }
+
         $cuti->fill($data);
         $saved = $cuti->save();
         
         \Log::info('Update Cuti - Saved: ' . ($saved ? 'YES' : 'NO') . ', New jenis: ' . $cuti->jenis);
+
+        // notify newly delegated users (if provided)
+        if (!empty($cuti->dilimpahkan_ke) && is_array($cuti->dilimpahkan_ke)) {
+            $delegated = \App\Models\User::whereIn('id', $cuti->dilimpahkan_ke)->get();
+            if ($delegated->isNotEmpty()) {
+                \Illuminate\Support\Facades\Notification::send($delegated, new \App\Notifications\TaskDelegated($cuti));
+            }
+        }
 
         return response()->json(['ok' => true, 'cuti' => $cuti], 200);
     }

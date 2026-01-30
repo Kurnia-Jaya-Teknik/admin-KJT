@@ -119,11 +119,14 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1.5">Ijin Sakit</p>
-                            <p class="text-lg font-semibold text-gray-800">Ajukan ijin sakit apabila Anda tidak dapat hadir</p>
+                            <p class="text-lg font-semibold text-gray-800">Ajukan ijin sakit apabila Anda tidak dapat
+                                hadir</p>
                             <p class="text-xs text-gray-500 mt-1">Lampirkan surat dokter jika diperlukan</p>
                         </div>
                         <div class="flex gap-3">
-                            <a href="{{ route('karyawan.pengajuan-cuti') }}?jenis=Sakit" class="px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg text-sm">Ajukan Ijin Sakit</a>
+                            <a href="{{ route('karyawan.ijin-sakit') }}"
+                                class="px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg text-sm">Ajukan
+                                Ijin Sakit</a>
                         </div>
                     </div>
                 </div>
@@ -161,8 +164,7 @@
                                             class="px-2.5 py-0.5 bg-green-50/70 text-green-600/80 text-xs font-medium rounded-full shadow-sm flex-shrink-0 ml-2">Disetujui</span>
                                     </div>
                                     <p class="text-xs text-gray-400 flex items-center gap-1">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
