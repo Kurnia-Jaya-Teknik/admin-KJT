@@ -158,4 +158,14 @@
             }
         }
     </script>
+        </form>
+    </x-authentication-card>
 
+    <script>
+        function roleForm() {
+            return {
+                selectedRole: '{{ old('role') }}'
+            }
+        }
+    </script>
+</x-guest-layout>
