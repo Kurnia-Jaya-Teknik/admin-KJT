@@ -73,17 +73,17 @@ class SuratKeteranganController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return response()->json([
-            'ok' => true,
-            'data' => $requests->map(fn($r) => [
-                'id' => $r->id,
-                'nama' => $r->user->name,
-                'alasan' => $r->alasan,
-                'keperluan' => $r->keperluan,
-                'tanggal_diminta' => optional($r->tanggal_diminta)->format('d/m/Y'),
-                'created_at' => $r->created_at->format('d/m/Y H:i'),
-            ]),
-        ]);
+        return response()->json($requests->map(fn($r) => [
+            'id' => $r->id,
+            'user' => [
+                'name' => $r->user->name,
+                'email' => $r->user->email,
+            ],
+            'alasan' => $r->alasan,
+            'keperluan' => $r->keperluan,
+            'tanggal_diminta' => $r->tanggal_diminta?->toDateString(),
+            'created_at' => $r->created_at->toDateString(),
+        ]));
     }
 
     /**
@@ -104,6 +104,83 @@ class SuratKeteranganController extends Controller
             'ok' => true,
             'message' => 'Permintaan berhasil disetujui',
         ]);
+    }
+
+    /**
+     * =============================
+     * GET REQUEST DETAIL
+     * =============================
+     */
+    public function getRequest($id)
+    {
+        $this->ensureAdminHRD();
+
+        $request = SuratKeteranganRequest::with('user')->findOrFail($id);
+
+        return response()->json([
+            'id' => $request->id,
+            'user' => [
+                'name' => $request->user->name,
+                'email' => $request->user->email,
+                'id' => $request->user->id,
+            ],
+            'alasan' => $request->alasan,
+            'keperluan' => $request->keperluan,
+            'tanggal_diminta' => $request->tanggal_diminta?->toDateString(),
+            'status' => $request->status,
+        ]);
+    }
+
+    /**
+     * =============================
+     * CREATE SURAT FROM REQUEST
+     * =============================
+     */
+    public function createSuratFromRequest(Request $request, $requestId)
+    {
+        $this->ensureAdminHRD();
+
+        $req = SuratKeteranganRequest::findOrFail($requestId);
+        $user = $req->user;
+
+        $validated = $request->validate([
+            'nomor_surat' => 'required|string|max:100',
+            'tanggal_surat' => 'required|date',
+            'jabatan' => 'required|string|max:100',
+            'unit_kerja' => 'required|string|max:100',
+            'tanggal_mulai_kerja' => 'required|date',
+            'keterangan' => 'nullable|string|max:1000',
+        ]);
+
+        try {
+            // Create surat keterangan
+            $surat = SuratKeterangan::create([
+                'user_id' => Auth::id(),
+                'surat_keterangan_request_id' => $requestId,
+                'nomor_surat' => $validated['nomor_surat'],
+                'tanggal_surat' => $validated['tanggal_surat'],
+                'jabatan' => $validated['jabatan'],
+                'unit_kerja' => $validated['unit_kerja'],
+                'tanggal_mulai_kerja' => $validated['tanggal_mulai_kerja'],
+                'keterangan' => $validated['keterangan'] ?? null,
+                'status' => 'Selesai',
+            ]);
+
+            // Update request status to Completed
+            $req->update(['status' => 'Completed']);
+
+            return response()->json([
+                'ok' => true,
+                'message' => 'Surat berhasil dibuat',
+                'surat_id' => $surat->id,
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Error creating surat: ' . $e->getMessage());
+            return response()->json([
+                'ok' => false,
+                'message' => 'Gagal membuat surat: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

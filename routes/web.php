@@ -175,6 +175,8 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         // Surat Keterangan Kerja
         Route::get('/surat-keterangan', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'index'])->name('surat-keterangan.index');
         Route::get('/surat-keterangan/requests/pending', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'pendingRequests'])->name('surat-keterangan.requests.pending');
+        Route::get('/surat-keterangan/requests/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'getRequest'])->name('surat-keterangan.requests.get');
+        Route::post('/surat-keterangan/requests/{id}/create-surat', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'createSuratFromRequest'])->name('surat-keterangan.requests.create-surat');
         Route::post('/surat-keterangan/requests/{id}/approve', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'approveRequest'])->name('surat-keterangan.request.approve');
         Route::post('/surat-keterangan/requests/{id}/reject', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'rejectRequest'])->name('surat-keterangan.request.reject');
         Route::get('/surat-keterangan/create', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'create'])->name('surat-keterangan.create');
