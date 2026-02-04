@@ -4,12 +4,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DirekturController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\KopSuratController;
+use App\Http\Controllers\Admin\SuratKeteranganController;
 
 Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('dashboard');
     }
     return redirect()->route('login');
+});
+
+
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/surat-keterangan', [SuratKeteranganController::class, 'index'])
+        ->name('surat-keterangan');
 });
 
 // top-level session api-token alias for JS (uses web auth)
