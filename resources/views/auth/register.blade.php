@@ -29,18 +29,34 @@
             </div>
 
             <!-- Role Selection -->
+            @php
+                $direkturCount = \App\Models\User::where('role', 'direktur')->where('status', 'aktif')->count();
+                $maxDirektur = config('limits.max_direktur', 2);
+                $direkturDisabled = $direkturCount >= $maxDirektur;
+            @endphp
+
             <div class="mt-4">
                 <x-label for="role" value="{{ __('Pilih Role') }}" />
-                <select id="role" name="role" required x-model="selectedRole" @change="if (selectedRole !== 'karyawan') departemenId = ''"
+                <select id="role" name="role" required x-model="selectedRole"
+                    @change="if (selectedRole !== 'karyawan') departemenId = ''"
                     class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 px-4 py-3 text-base">
                     <option value="">-- Pilih Role --</option>
                     <option value="karyawan" @selected(old('role') === 'karyawan')>Karyawan</option>
-                    <option value="direktur" @selected(old('role') === 'direktur')>Direktur</option>
+                    <option value="direktur" @selected(old('role') === 'direktur')
+                        @if ($direkturDisabled) disabled @endif>Direktur @if ($direkturDisabled)
+                            • (Kuota penuh)
+                        @endif
+                    </option>
                     <option value="admin_hrd" @selected(old('role') === 'admin_hrd')>Admin HRD</option>
                 </select>
+                @if ($direkturDisabled)
+                    <p class="mt-2 text-xs text-yellow-700">Kuota direktur sudah penuh
+                        ({{ $direkturCount }}/{{ $maxDirektur }} aktif). Hubungi administrator untuk perubahan.</p>
+                @endif
 
                 <!-- Live preview (name / role / divisi) -->
-                <div class="mt-3 bg-gray-50 p-3 rounded text-sm text-gray-700" x-show="name || selectedRole || departemenId" x-cloak>
+                <div class="mt-3 bg-gray-50 p-3 rounded text-sm text-gray-700"
+                    x-show="name || selectedRole || departemenId" x-cloak>
                     <p class="font-semibold mb-2">Preview Akun</p>
                     <p>Nama: <span x-text="name || '-'" class="font-medium"></span></p>
                     <p>Role: <span x-text="selectedRole || '-'" class="font-medium"></span></p>
@@ -54,28 +70,36 @@
             <div class="mt-4" x-show="selectedRole === 'karyawan'" x-cloak>
                 <x-label for="departemen_id" value="{{ __('Pilih Divisi') }}" />
                 @php
-                    $departemens = \App\Models\Departemen::whereIn('kode', ['mekanik','elektrik','cleaning'])->orderBy('nama')->get();
+                    $departemens = \App\Models\Departemen::whereIn('kode', ['mekanik', 'elektrik', 'cleaning'])
+                        ->orderBy('nama')
+                        ->get();
                     $fallback = collect([
-                        (object)['kode' => 'mekanik', 'nama' => 'Mekanik'],
-                        (object)['kode' => 'elektrik', 'nama' => 'Elektrik'],
-                        (object)['kode' => 'cleaning', 'nama' => 'Cleaning'],
+                        (object) ['kode' => 'mekanik', 'nama' => 'Mekanik'],
+                        (object) ['kode' => 'elektrik', 'nama' => 'Elektrik'],
+                        (object) ['kode' => 'cleaning', 'nama' => 'Cleaning'],
                     ]);
 
                     // build options for JS
                     $deptOptions = $departemens->isNotEmpty()
-                        ? $departemens->map(fn($d) => ['value' => (string) $d->id, 'label' => $d->nama . ' - ' . $d->kode])->values()
-                        : $fallback->map(fn($d) => ['value' => $d->kode, 'label' => $d->nama . ' - ' . $d->kode])->values();
+                        ? $departemens
+                            ->map(fn($d) => ['value' => (string) $d->id, 'label' => $d->nama . ' - ' . $d->kode])
+                            ->values()
+                        : $fallback
+                            ->map(fn($d) => ['value' => $d->kode, 'label' => $d->nama . ' - ' . $d->kode])
+                            ->values();
                 @endphp
                 <select id="departemen_id" name="departemen_id" x-model="departemenId"
                     class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 px-4 py-3 text-base">
                     <option value="">-- Pilih Divisi --</option>
-                    @if($departemens->isNotEmpty())
-                        @foreach($departemens as $d)
-                            <option value="{{ $d->id }}" @selected(old('departemen_id') == $d->id)>{{ $d->nama }} - {{ $d->kode }}</option>
+                    @if ($departemens->isNotEmpty())
+                        @foreach ($departemens as $d)
+                            <option value="{{ $d->id }}" @selected(old('departemen_id') == $d->id)>{{ $d->nama }} -
+                                {{ $d->kode }}</option>
                         @endforeach
                     @else
-                        @foreach($fallback as $d)
-                            <option value="{{ $d->kode }}" @selected(old('departemen_id') == $d->kode)>{{ $d->nama }} - {{ $d->kode }}</option>
+                        @foreach ($fallback as $d)
+                            <option value="{{ $d->kode }}" @selected(old('departemen_id') == $d->kode)>{{ $d->nama }} -
+                                {{ $d->kode }}</option>
                         @endforeach
                     @endif
                 </select>

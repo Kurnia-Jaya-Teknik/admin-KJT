@@ -13,7 +13,25 @@ class RequestController extends Controller
         $user = $request->user();
         $q = Cuti::where('user_id', $user->id)->orderBy('created_at','desc');
         if ($request->has('status')) $q->where('status', $request->status);
-        return response()->json($q->paginate(10));
+        if ($request->has('type')) $q->where('jenis', $request->type);
+        if ($request->has('exclude_type')) $q->where('jenis', '!=', $request->exclude_type);
+        
+        $result = $q->paginate(10);
+        
+        // Enrich dengan data user yang dilimpahkan
+        $result->getCollection()->transform(function ($cuti) {
+            if (!empty($cuti->dilimpahkan_ke) && is_array($cuti->dilimpahkan_ke)) {
+                $users = \App\Models\User::whereIn('id', $cuti->dilimpahkan_ke)
+                    ->select('id', 'name', 'email')
+                    ->get();
+                $cuti->delegated_users = $users;
+            } else {
+                $cuti->delegated_users = [];
+            }
+            return $cuti;
+        });
+        
+        return response()->json($result);
     }
 
     public function store(Request $request)
@@ -22,13 +40,32 @@ class RequestController extends Controller
 
         // Validate first so Laravel returns 422 on validation errors (not caught as 500)
         $data = $request->validate([
-            'jenis' => 'required|in:Cuti Tahunan,Cuti Sakit,Cuti Darurat',
+            'jenis' => 'required|in:Cuti Tahunan,Cuti Sakit,Cuti Darurat,Ijin Sakit',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'alasan' => 'required|string|max:1000',
             'dilimpahkan_ke' => 'nullable|array',
             'dilimpahkan_ke.*' => 'exists:users,id',
+            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf|max:10240',
         ]);
+        
+        // Validasi tidak bisa melimpahkan ke diri sendiri
+        if (!empty($data['dilimpahkan_ke']) && is_array($data['dilimpahkan_ke'])) {
+            if (in_array($user->id, $data['dilimpahkan_ke'])) {
+                return response()->json(['message' => 'Tidak dapat melimpahkan tugas ke diri sendiri.'], 422);
+            }
+        }
+
+        // handle file upload for 'bukti' (surat dokter)
+        if ($request->hasFile('bukti')) {
+            try {
+                $path = $request->file('bukti')->store('cuti-bukti', 'public');
+                $data['bukti'] = $path;
+            } catch (\Throwable $e) {
+                \Log::error('Failed to store bukti file: ' . $e->getMessage());
+                return response()->json(['message' => 'Gagal menyimpan lampiran.'], 500);
+            }
+        }
 
         try {
             \Log::info('Cuti store payload', $data);
@@ -88,13 +125,36 @@ class RequestController extends Controller
         }
 
         $data = $request->validate([
-            'jenis' => 'sometimes|in:Cuti Tahunan,Cuti Sakit,Cuti Darurat',
+            'jenis' => 'sometimes|in:Cuti Tahunan,Cuti Sakit,Cuti Darurat,Ijin Sakit',
             'tanggal_mulai' => 'sometimes|date',
             'tanggal_selesai' => 'sometimes|date|after_or_equal:tanggal_mulai',
             'alasan' => 'sometimes|string|max:1000',
             'dilimpahkan_ke' => 'nullable|array',
             'dilimpahkan_ke.*' => 'exists:users,id',
+            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf|max:10240',
         ]);
+        
+        // Validasi tidak bisa melimpahkan ke diri sendiri
+        if (isset($data['dilimpahkan_ke']) && is_array($data['dilimpahkan_ke'])) {
+            if (in_array($user->id, $data['dilimpahkan_ke'])) {
+                return response()->json(['message' => 'Tidak dapat melimpahkan tugas ke diri sendiri.'], 422);
+            }
+        }
+
+        // handle bukti upload on update
+        if ($request->hasFile('bukti')) {
+            try {
+                $path = $request->file('bukti')->store('cuti-bukti', 'public');
+                // delete old file if exists
+                if (!empty($cuti->bukti) && \Illuminate\Support\Facades\Storage::disk('public')->exists($cuti->bukti)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($cuti->bukti);
+                }
+                $data['bukti'] = $path;
+            } catch (\Throwable $e) {
+                \Log::error('Failed to store bukti file on update: ' . $e->getMessage());
+                return response()->json(['message' => 'Gagal menyimpan lampiran.'], 500);
+            }
+        }
 
         \Log::info('Update Cuti - ID: ' . $cuti->id . ', Current jenis: ' . $cuti->jenis . ', New jenis: ' . ($data['jenis'] ?? 'none'));
 

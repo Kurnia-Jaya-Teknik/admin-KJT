@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bukti Upload & Preview Test Guide</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f5f5f5; }
+        .section { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #d32f2f; }
+        h2 { color: #1976d2; margin-top: 0; }
+        .step { margin: 15px 0; padding: 15px; background: #e3f2fd; border-left: 4px solid #1976d2; }
+        .step-num { font-weight: bold; color: #1976d2; }
+        .success { background: #e8f5e9; border-left-color: #4caf50; }
+        .warning { background: #fff3e0; border-left-color: #ff9800; }
+        code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+        button { background: #d32f2f; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #b71c1c; }
+        .form-group { margin: 15px 0; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input[type="file"], input[type="date"], textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        textarea { resize: vertical; min-height: 80px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Sistem Upload & Preview Bukti Ijin Sakit - Testing Guide</h1>
+    
+    <div class="section">
+        <h2>📋 Status Backend</h2>
+        <div class="step success">
+            <p><span class="step-num">✓</span> Database migration executed (bukti column added to cuti table)</p>
+        </div>
+        <div class="step success">
+            <p><span class="step-num">✓</span> File storage configured and symlink verified</p>
+        </div>
+        <div class="step success">
+            <p><span class="step-num">✓</span> API endpoints ready for upload and preview</p>
+        </div>
+        <div class="step success">
+            <p><span class="step-num">✓</span> UI buttons and preview modal fixed and ready</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🚀 End-to-End Test Flow</h2>
+        <p><strong>Follow these steps to test the complete bukti upload and preview feature:</strong></p>
+
+        <div class="step">
+            <p><span class="step-num">1. Login sebagai Karyawan</span></p>
+            <p>Buka: <code>http://localhost/login</code></p>
+            <p>Login dengan akun karyawan (bukan direktur)</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">2. Buka Form Ijin Sakit</span></p>
+            <p>Klik menu <code>Ijin Sakit</code> di sidebar</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">3. Isi Form dengan Data</span></p>
+            <form style="background: white; padding: 15px; border: 1px solid #ddd; border-radius: 4px; margin: 10px 0;">
+                <div class="form-group">
+                    <label>Tanggal Mulai:</label>
+                    <input type="date" id="tanggal_mulai">
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Selesai:</label>
+                    <input type="date" id="tanggal_selesai">
+                </div>
+                <div class="form-group">
+                    <label>Alasan:</label>
+                    <textarea>Contoh: Sakit demam</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Upload Surat Dokter (Wajib):</label>
+                    <input type="file" accept="image/*,.pdf">
+                    <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                        ⚠️ File harus berupa: JPG, PNG, GIF, BMP, TIFF, atau PDF
+                        <br>⚠️ Maksimal ukuran: 10 MB
+                    </p>
+                </div>
+            </form>
+            <p><strong>Catatan:</strong> Gunakan file benar-benar ada di komputer Anda (bisa screenshot dokumen kesehatan)</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">4. Submit Form</span></p>
+            <p>Klik tombol <strong>"Ajukan Ijin Sakit"</strong></p>
+            <p><strong>Periksa:</strong></p>
+            <ul>
+                <li>✓ Muncul notifikasi "Pengajuan ijin sakit berhasil dikirim"</li>
+                <li>✓ File terupload tanpa error di Network tab browser (F12)</li>
+                <li>✓ Form kosong (reset)</li>
+                <li>✓ Pengajuan muncul di riwayat dengan status "Menunggu"</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">5. Login sebagai Direktur</span></p>
+            <p>Logout dan login dengan akun direktur</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">6. Buka Halaman Persetujuan</span></p>
+            <p>Klik menu <code>Persetujuan Cuti & Lembur</code> di sidebar direktur</p>
+            <p><strong>Periksa:</strong></p>
+            <ul>
+                <li>✓ Pengajuan ijin sakit Anda muncul di daftar dengan status "Menunggu"</li>
+                <li>✓ Ada tombol biru <strong>"Lihat Surat"</strong></li>
+                <li>✓ Ada tombol indigo <strong>"Lihat Dokter"</strong> (jika ada bukti)</li>
+                <li>✓ Ada tombol hijau <strong>"Setujui"</strong> dan merah <strong>"Tolak"</strong></li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">7. Klik "Lihat Surat"</span></p>
+            <p>Periksa:</p>
+            <ul>
+                <li>✓ Modal preview terbuka menampilkan surat template</li>
+                <li>✓ Bagian "Surat Dokter" tampil dengan file yang diupload</li>
+                <li>✓ Jika PDF: Muncul link "Buka PDF" dan preview embedded</li>
+                <li>✓ Jika gambar (JPG/PNG): Gambar ditampilkan inline</li>
+                <li>✓ Ada tombol <strong>"Setujui (Lanjut)"</strong> berwarna hijau</li>
+                <li>✓ Ada tombol "Tutup"</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">8. Test Alternatif: Klik "Lihat Dokter"</p>
+            <p>Tombol ini membuka bukti langsung di tab baru</p>
+            <p>Periksa:</p>
+            <ul>
+                <li>✓ File gambar menampilkan di browser</li>
+                <li>✓ File PDF membuka atau download</li>
+                <li>✓ File accessible via <code>/storage/cuti-bukti/[filename]</code></li>
+            </ul>
+        </div>
+
+        <div class="step success">
+            <p><span class="step-num">9. Setujui Pengajuan</span></p>
+            <p>Klik tombol <strong>"Setujui (Lanjut)"</strong> di preview modal</p>
+            <p>Atau tutup preview dan klik <strong>"Setujui"</strong> langsung di tabel</p>
+            <p>Isi catatan (opsional) dan klik <strong>"Konfirmasi"</strong></p>
+            <p>Periksa:</p>
+            <ul>
+                <li>✓ Permintaan diproses</li>
+                <li>✓ Status berubah menjadi "Disetujui"</li>
+                <li>✓ Halaman refresh otomatis</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔍 Debugging Checklist</h2>
+        <p><strong>Jika terjadi error, periksa:</strong></p>
+        
+        <div class="step">
+            <p><span class="step-num">A. Network Errors (F12 → Network Tab)</span></p>
+            <ul>
+                <li>Upload request ke <code>/api/employee/requests</code>
+                    <ul>
+                        <li>Status harus <code>201 Created</code></li>
+                        <li>Response: <code>{"ok": true, "cuti": {...}}</code></li>
+                    </ul>
+                </li>
+                <li>Preview request ke <code>/direktur/api/cuti/[id]/preview</code>
+                    <ul>
+                        <li>Status harus <code>200 OK</code></li>
+                        <li>Response: <code>{"ok": true, "html": "..."}</code></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">B. File Upload Issues</span></p>
+            <ul>
+                <li>✓ Pastikan file format: JPG, PNG, PDF, GIF, BMP, TIFF</li>
+                <li>✓ Pastikan ukuran file &lt; 10 MB</li>
+                <li>✓ Check browser console (F12 → Console) untuk JavaScript errors</li>
+                <li>✓ Check server logs: <code>storage/logs/laravel.log</code></li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">C. File Access Issues</span></p>
+            <ul>
+                <li>✓ Storage symlink exists: <code>public/storage → storage/app/public</code></li>
+                <li>✓ File path di database benar: <code>cuti-bukti/[filename]</code></li>
+                <li>✓ File accessible via URL: <code>http://localhost/storage/cuti-bukti/[filename]</code></li>
+            </ul>
+        </div>
+
+        <div class="step warning">
+            <p><span class="step-num">D. Preview Modal Tidak Tampil</span></p>
+            <ul>
+                <li>Check browser console untuk JavaScript errors</li>
+                <li>Pastikan direktur login dengan role "direktur"</li>
+                <li>Cek: <code>GET /direktur/api/cuti/[id]/preview</code> status 200</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📊 Expected Database Records</h2>
+        <p>Setelah upload berhasil, database harus memiliki:</p>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 4px; overflow-x: auto;">
+cuti table:
+  id           = [auto]
+  user_id      = [your user id]
+  jenis        = 'Ijin Sakit'
+  tanggal_mulai= [your date]
+  tanggal_selesai= [your date]
+  alasan       = 'Your reason'
+  bukti        = 'cuti-bukti/[filename]'  ← Path to uploaded file
+  status       = 'Pending'
+  ...
+
+storage/app/public/cuti-bukti/
+  [filename]   ← Your uploaded file
+        </pre>
+    </div>
+
+    <div class="section" style="background: #e8f5e9; border: 2px solid #4caf50;">
+        <h2>✅ Sukses!</h2>
+        <p>Jika semua langkah di atas berhasil tanpa error, fitur bukti upload dan preview sudah <strong>berfungsi dengan baik</strong>.</p>
+        <p><strong>Report hasil testing Anda!</strong></p>
+    </div>
+
+    <script>
+        // Set default dates to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal_mulai').value = today;
+            
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('tanggal_selesai').value = tomorrow.toISOString().split('T')[0];
+        });
+    </script>
+</body>
+</html>

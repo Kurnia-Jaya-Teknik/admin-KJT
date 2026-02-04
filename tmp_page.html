@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="zBQbghkeCnoVZhGSmwqr31MwXrDNmYyCqAT8fDVm">
+
+        <title>ADMIN | KURNIA JAYA TEKNIK</title>
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Scripts -->
+        <script type="module" src="http://[::1]:5173/@vite/client" data-navigate-track="reload"></script><link rel="stylesheet" href="http://[::1]:5173/resources/css/app.css" data-navigate-track="reload" /><script type="module" src="http://[::1]:5173/resources/js/app.js" data-navigate-track="reload"></script>
+        <!-- Styles -->
+        <!-- Livewire Styles --><style >[wire\:loading][wire\:loading], [wire\:loading\.delay][wire\:loading\.delay], [wire\:loading\.inline-block][wire\:loading\.inline-block], [wire\:loading\.inline][wire\:loading\.inline], [wire\:loading\.block][wire\:loading\.block], [wire\:loading\.flex][wire\:loading\.flex], [wire\:loading\.table][wire\:loading\.table], [wire\:loading\.grid][wire\:loading\.grid], [wire\:loading\.inline-flex][wire\:loading\.inline-flex] {display: none;}[wire\:loading\.delay\.none][wire\:loading\.delay\.none], [wire\:loading\.delay\.shortest][wire\:loading\.delay\.shortest], [wire\:loading\.delay\.shorter][wire\:loading\.delay\.shorter], [wire\:loading\.delay\.short][wire\:loading\.delay\.short], [wire\:loading\.delay\.default][wire\:loading\.delay\.default], [wire\:loading\.delay\.long][wire\:loading\.delay\.long], [wire\:loading\.delay\.longer][wire\:loading\.delay\.longer], [wire\:loading\.delay\.longest][wire\:loading\.delay\.longest] {display: none;}[wire\:offline][wire\:offline] {display: none;}[wire\:dirty]:not(textarea):not(input):not(select) {display: none;}:root {--livewire-progress-bar-color: #2299dd;}[x-cloak] {display: none !important;}[wire\:cloak] {display: none !important;}dialog#livewire-error::backdrop {background-color: rgba(0, 0, 0, .6);}</style>
+    </head>
+    <body>
+        <div class="font-sans text-gray-900 antialiased">
+            <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+    <div>
+        <a href="/">
+    <img src="http://127.0.0.1:8000/img/KJT.png" class="h-16 w-auto"
+        alt="ADMIN | KURNIA JAYA TEKNIK" />
+</a>
+    </div>
+
+    <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Masuk ke Sistem</h2>
+            <p class="text-gray-600 text-sm mt-1">Masukkan kredensial Anda untuk melanjutkan</p>
+        </div>
+
+        
+        
+        <form method="POST" action="http://127.0.0.1:8000/login">
+            <input type="hidden" name="_token" value="zBQbghkeCnoVZhGSmwqr31MwXrDNmYyCqAT8fDVm" autocomplete="off">
+            <div>
+                <label class="block font-medium text-sm text-gray-700" for="email">
+    Email
+</label>
+                <input  class="border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-md shadow-sm px-4 py-3 text-base block mt-1 w-full" id="email" type="email" name="email" required="required" autofocus="autofocus" autocomplete="username" placeholder="contoh@email.com">
+            </div>
+
+            <div class="mt-4">
+                <label class="block font-medium text-sm text-gray-700" for="password">
+    Password
+</label>
+                <input  class="border-gray-300 focus:border-red-500 focus:ring-red-500 rounded-md shadow-sm px-4 py-3 text-base block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="current-password" placeholder="••••••••">
+            </div>
+
+            <div class="block mt-4">
+                <label for="remember_me" class="flex items-center">
+                    <input type="checkbox" class="rounded border-gray-300 text-red-600 shadow-sm focus:ring-red-500" id="remember_me" name="remember">
+                    <span class="ms-2 text-sm text-gray-600">Ingat saya</span>
+                </label>
+            </div>
+
+            <div class="flex items-center justify-between mt-6">
+                                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="http://127.0.0.1:8000/forgot-password">
+                        Lupa password?
+                    </a>
+                
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 transition ease-in-out duration-150 ms-4">
+    Masuk
+</button>
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <p class="text-center text-sm text-gray-600">
+                    Belum punya akun? 
+                    <a href="http://127.0.0.1:8000/register" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                        Daftar di sini
+                    </a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+        </div>
+
+        <!-- Livewire Scripts -->
+<script src="/livewire/livewire.js?id=0f6341c0"   data-csrf="zBQbghkeCnoVZhGSmwqr31MwXrDNmYyCqAT8fDVm" data-update-uri="/livewire/update" data-navigate-once="true"></script>
+    </body>
+</html>

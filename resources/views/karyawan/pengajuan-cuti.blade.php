@@ -253,13 +253,14 @@
     @push('scripts')
         <script>
             (function() {
-                const API_BASE_RAW = "{{ rtrim(request()->getSchemeAndHttpHost() . request()->getBaseUrl(), '/') }}";
-                const API_BASE = (API_BASE_RAW && API_BASE_RAW.indexOf('{{') === -1) ? API_BASE_RAW : (window.location
-                    .origin + window.location.pathname.replace(/\/[^\/]*$/, ''));
-                console.debug('[cuti] API_BASE', API_BASE);
+                const API_BASE_RAW = {!! json_encode(rtrim(request()->getSchemeAndHttpHost() . request()->getBaseUrl(), '/')) !!};
+                const API_BASE = (API_BASE_RAW && API_BASE_RAW.indexOf(String.fromCharCode(123, 123)) === -1) ?
+                    API_BASE_RAW : (window.location.origin + window.location.pathname.substring(0, window.location.pathname
+                        .lastIndexOf(String.fromCharCode(47))));
+                console.debug("[cuti] API_BASE", API_BASE);
 
                 function apiPath(path) {
-                    if (path.startsWith('/api/') || path.startsWith('/session/')) return window.location.origin + path;
+                    if (path.startsWith("/api/") || path.startsWith("/session/")) return window.location.origin + path;
                     return API_BASE + path;
                 }
 
@@ -430,10 +431,12 @@
                     if (!container) return;
                     container.innerHTML = '<div class="px-6 py-4 text-xs text-gray-400">Memuat...</div>';
                     try {
-                        const res = await fetch(apiPath('/api/employee/requests') + '?page=' + (page || 1), {
-                            credentials: 'same-origin',
-                            headers: getAuthHeaders()
-                        });
+                        // Filter hanya cuti (bukan Ijin Sakit)
+                        const res = await fetch(apiPath('/api/employee/requests') + '?page=' + (page || 1) +
+                            '&exclude_type=Ijin%20Sakit', {
+                                credentials: 'same-origin',
+                                headers: getAuthHeaders()
+                            });
                         if (!res.ok) throw new Error('Gagal memuat riwayat');
                         const json = await res.json();
                         const items = json.data || json;
@@ -482,6 +485,14 @@
                             const diajukan = i.created_at ? new Date(i.created_at).toLocaleDateString('id-ID') :
                                 '-';
 
+                            // Build delegated users list
+                            let delegatedHtml = '';
+                            if (i.delegated_users && i.delegated_users.length > 0) {
+                                const names = i.delegated_users.map(u => u.name).join(', ');
+                                delegatedHtml =
+                                    `<p class="text-xs text-gray-500 mb-2">📋 Dilimpahkan ke: <span class="font-medium text-gray-700">${names}</span></p>`;
+                            }
+
                             const html = `
                     <div id="${itemId}" class="px-6 py-4 hover:bg-gradient-to-r ${hoverClass} hover:to-transparent transition-all duration-300 group">
                         <div class="flex items-start gap-3 mb-2">
@@ -500,11 +511,13 @@
                                 </div>
                                 <p class="text-xs text-gray-400 mb-2">Diajukan: ${diajukan}</p>
                                 <p class="text-sm text-gray-600 mb-2 truncate">${i.alasan || '-'}</p>
+                                ${delegatedHtml}
+                                ${i.bukti ? `<p class="text-sm mb-2"><a href="${window.location.origin + '/storage/' + encodeURIComponent(i.bukti)}" target="_blank" class="text-sm text-indigo-600 underline">Lihat Lampiran (Surat Dokter)</a></p>` : ''}
                                 <div class="flex gap-3">
                                     ${status === 'Pending' ? `
-                                                                                                                <button data-action="edit-cuti" data-id="${i.id}" data-jenis="${i.jenis || ''}" data-tanggal-mulai="${i.tanggal_mulai || ''}" data-tanggal-selesai="${tanggalSelesai}" data-alasan="${i.alasan || ''}" data-telp="${i.telp || ''}" class="text-xs text-indigo-600 hover:underline font-medium">Ubah</button>
-                                                                                                                <button data-action="delete-cuti" data-id="${i.id}" class="text-xs text-red-600 hover:underline font-medium">Hapus</button>
-                                                                                                            ` : ''}
+                                                                                                                                        <button data-action="edit-cuti" data-id="${i.id}" data-jenis="${i.jenis || ''}" data-tanggal-mulai="${i.tanggal_mulai || ''}" data-tanggal-selesai="${tanggalSelesai}" data-alasan="${i.alasan || ''}" data-telp="${i.telp || ''}" class="text-xs text-indigo-600 hover:underline font-medium">Ubah</button>
+                                                                                                                                        <button data-action="delete-cuti" data-id="${i.id}" class="text-xs text-red-600 hover:underline font-medium">Hapus</button>
+                                                                                                                                    ` : ''}
                                     <button data-action="view-detail" data-id="${i.id}" class="text-xs text-red-500/80 hover:text-red-600/80 font-medium transition-colors">Lihat Detail →</button>
                                 </div>
                             </div>
@@ -742,6 +755,7 @@
                                 }),
                             ) !!};
 
+                            window.currentUserId = {{ Auth::id() }}; // ID user yang sedang login
                             window.pelimpahanSelectedIds = window.pelimpahanSelectedIds || new Set();
 
                             // expose helper to resolve name globally
@@ -775,6 +789,10 @@
                                 const q = (searchInput ? searchInput.value.toLowerCase().trim() : '');
                                 const listSource = (window.pelimpahanEmployeesList || []);
                                 const matches = listSource.filter(emp => {
+                                    // Tidak bisa melimpahkan ke diri sendiri
+                                    const empId = String(emp.id);
+                                    const currentId = String(window.currentUserId || '');
+                                    if (empId === currentId) return false;
                                     if ((window.pelimpahanSelectedIds || new Set()).has(String(emp.id)))
                                         return false;
                                     if (deptId && String(emp.departemen_id) !== String(deptId))
@@ -787,6 +805,11 @@
                             }
 
                             function addSelected(emp) {
+                                // Validasi tidak bisa melimpahkan ke diri sendiri
+                                if (String(emp.id) === String(window.currentUserId || "")) {
+                                    showAlert("error", "Tidak dapat melimpahkan tugas ke diri sendiri.");
+                                    return;
+                                }
                                 if ((window.pelimpahanSelectedIds || new Set()).has(String(emp.id))) return;
                                 window.pelimpahanSelectedIds.add(String(emp.id));
                                 // chip
@@ -901,8 +924,10 @@
                                     const filter = (filterSelect && filterSelect.value || '').toLowerCase();
                                     let list = (window.pelimpahanEmployeesList || []).filter(u => {
                                         if (!u) return false;
+                                        // Tidak bisa melimpahkan ke diri sendiri
+                                        if (String(u.id) === String(window.currentUserId || '')) return false;
                                         if (filter && (u.departemen || '').toLowerCase() !== filter)
-                                        return false;
+                                            return false;
                                         if (!q) return true;
                                         return (u.name || '').toLowerCase().indexOf(q) !== -1 || (u.email || '')
                                             .toLowerCase().indexOf(q) !== -1;
@@ -927,6 +952,11 @@
 
                             window.editAddSelected = function(id) {
                                 id = String(id);
+                                // Validasi tidak bisa melimpahkan ke diri sendiri
+                                if (id === String(window.currentUserId || "")) {
+                                    showAlert("error", "Tidak dapat melimpahkan tugas ke diri sendiri.");
+                                    return;
+                                }
                                 window.editPelimpahanSelectedIds = window.editPelimpahanSelectedIds || new Set();
                                 if (window.editPelimpahanSelectedIds.has(id)) return;
                                 const u = (window.pelimpahanEmployeesList || []).find(x => String(x.id) === String(
@@ -954,7 +984,7 @@
                                     '"]');
                                 if (chip) chip.remove();
                                 const hi = hiddenInputs && hiddenInputs.querySelector('input[data-id="' + id +
-                                '"]');
+                                    '"]');
                                 if (hi) hi.remove();
                                 updateSuggestions();
                             };
@@ -1055,11 +1085,12 @@
                                         const eDate = new Date(tSelesai);
                                         if (!isNaN(s) && !isNaN(eDate) && eDate >= s) {
                                             durasi = (Math.round((eDate - s) / (1000 * 60 * 60 * 24)) + 1) +
-                                            ' hari';
+                                                ' hari';
                                         }
                                     }
                                 } catch (err) {
-                                    /* ignore */ }
+                                    /* ignore */
+                                }
 
                                 document.getElementById('detailPengaju').textContent = name;
                                 document.getElementById('detailJenis').textContent = jenis;
@@ -1074,18 +1105,31 @@
                                 const pelEl = document.getElementById('detailPelimpahan');
                                 if (pelEl) {
                                     pelEl.innerHTML = '';
-                                    const arr = payload.dilimpahkan_ke || [];
-                                    if (Array.isArray(arr) && arr.length) {
-                                        arr.forEach(id => {
-                                            const u = (window.pelimpahanEmployeesList || []).find(x =>
-                                                String(x.id) === String(id));
+                                    // Use delegated_users from API if available
+                                    if (payload.delegated_users && Array.isArray(payload.delegated_users) && payload
+                                        .delegated_users.length > 0) {
+                                        payload.delegated_users.forEach(user => {
                                             const li = document.createElement('li');
-                                            li.textContent = u ? (u.name + ' — ' + (u.departemen || '')) :
-                                                String(id);
+                                            li.textContent = user.name + (user.email ? ' (' + user.email +
+                                                ')' : '');
                                             pelEl.appendChild(li);
                                         });
                                     } else {
-                                        pelEl.innerHTML = '<li>-</li>';
+                                        // Fallback to old method
+                                        const arr = payload.dilimpahkan_ke || [];
+                                        if (Array.isArray(arr) && arr.length) {
+                                            arr.forEach(id => {
+                                                const u = (window.pelimpahanEmployeesList || []).find(x =>
+                                                    String(x.id) === String(id));
+                                                const li = document.createElement('li');
+                                                li.textContent = u ? (u.name + ' — ' + (u.departemen ||
+                                                        '')) :
+                                                    String(id);
+                                                pelEl.appendChild(li);
+                                            });
+                                        } else {
+                                            pelEl.innerHTML = '<li>-</li>';
+                                        }
                                     }
                                 }
 
@@ -1133,7 +1177,7 @@
                                 // initialize edit pelimpahan selections if available
                                 try {
                                     window.editPelimpahanSelectedIds = window.editPelimpahanSelectedIds ||
-                                new Set();
+                                        new Set();
                                     // clear any previous selections in edit UI
                                     const editChipsContainer = document.getElementById('edit_pelimpahan_chips');
                                     const editHiddenInputs = document.getElementById(
@@ -1145,7 +1189,10 @@
                                     if (Array.isArray(arr)) {
                                         arr.forEach(id => {
                                             try {
-                                                editAddSelected(id);
+                                                // Jangan load diri sendiri dari data lama
+                                                if (String(id) !== String(window.currentUserId || '')) {
+                                                    editAddSelected(id);
+                                                }
                                             } catch (e) {}
                                         });
                                     }

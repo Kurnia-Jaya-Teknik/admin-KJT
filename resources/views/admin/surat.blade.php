@@ -244,7 +244,7 @@
                         }
                         if (section.content) {
                             const escaped = window.escapeHtml ? window.escapeHtml(section.content) : section
-                            .content;
+                                .content;
                             preview += `<p>${escaped.replace(/\n/g, '<br>')}</p>`;
                         }
                     });
@@ -265,20 +265,20 @@
                     <div class="mt-8">
                         <p>Hormat kami,</p>
                         ${tempatTanda ? `<div class="mt-2">
-                                <p class="text-xs">${window.escapeHtml ? window.escapeHtml(tempatTanda) : tempatTanda}, _______________</p>
-                            </div>` : ''}
+                                    <p class="text-xs">${window.escapeHtml ? window.escapeHtml(tempatTanda) : tempatTanda}, _______________</p>
+                                </div>` : ''}
                         <div class="mt-8 ${signatures.length === 1 ? 'flex justify-end' : 'grid grid-cols-' + (signatures.length > 2 ? '3' : '2') + ' gap-6'}">
                             ${signatures.map(sig => `
-                                    <div class="${signatures.length === 1 ? 'text-right w-32' : 'text-center'}">
-                                        <div class="mb-2">
-                                            <p class="border-t-2 border-gray-800" style="min-width:120px;"></p>
+                                        <div class="${signatures.length === 1 ? 'text-right w-32' : 'text-center'}">
+                                            <div class="mb-2">
+                                                <p class="border-t-2 border-gray-800" style="min-width:120px;"></p>
+                                            </div>
+                                            <div class="mt-8">
+                                                <p class="font-semibold text-xs">${window.escapeHtml ? window.escapeHtml(sig.name) : sig.name}</p>
+                                                ${sig.position ? `<p class="text-xs text-gray-600">${window.escapeHtml ? window.escapeHtml(sig.position) : sig.position}</p>` : ''}
+                                            </div>
                                         </div>
-                                        <div class="mt-8">
-                                            <p class="font-semibold text-xs">${window.escapeHtml ? window.escapeHtml(sig.name) : sig.name}</p>
-                                            ${sig.position ? `<p class="text-xs text-gray-600">${window.escapeHtml ? window.escapeHtml(sig.position) : sig.position}</p>` : ''}
-                                        </div>
-                                    </div>
-                                `).join('')}
+                                    `).join('')}
                         </div>
                     </div>
                 </div>`;
@@ -1723,7 +1723,7 @@
                 details: collectJenisData(),
                 signatures: getSignaturesData(), // Add multiple signatures
                 tempat_tanda_tangan: document.getElementById('tempatTandaTangan')?.value ||
-                '', // Add signature location
+                    '', // Add signature location
                 greeting_text: document.getElementById('greetingText')?.value ||
                     'Demikian surat ini kami buat untuk dapat dipergunakan sebagaimana mestinya.', // Add greeting text
             };
@@ -3046,9 +3046,17 @@
                             const perihal = s.perihal || '-';
                             const tanggal = new Date(s.created_at).toLocaleDateString();
                             const karyawan = s.user_name || s.user_id || '';
+
+                            // Link ke pengajuan cuti jika ada
+                            let cutiLink = '';
+                            if (s.referensi_type && s.referensi_type.includes('Cuti') && s.referensi_id) {
+                                cutiLink =
+                                    `<a href="/admin/cuti" class="ml-2 text-blue-600 hover:text-blue-800 text-xs" title="Lihat Pengajuan Cuti #${s.referensi_id}">📋 Cuti #${s.referensi_id}</a>`;
+                            }
+
                             tr.innerHTML = `
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-mono font-medium text-gray-900">${escapeHtml(nomor)}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${escapeHtml(perihal)}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${escapeHtml(perihal)}${cutiLink}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${escapeHtml(karyawan)}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${escapeHtml(tanggal)}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
@@ -3540,7 +3548,7 @@
         function attachPreviewListeners() {
             const inputs = document.querySelectorAll(
                 '#nomorSurat, #tanggalSurat, #karyawanSurat, #jabatanSurat, #departemenSurat, #tujuanSurat, #jenisSurat, #kopSuratSelect, #isiSurat, [data-section-title], [data-section-content], [data-field-label], [data-field-value]'
-                );
+            );
             inputs.forEach(input => {
                 input.removeEventListener('input', updateFormPreview);
                 input.removeEventListener('change', updateFormPreview);
@@ -3618,7 +3626,7 @@
             const label = document.getElementById('informasiNewFieldLabel')?.value?.trim() || '';
             const key = document.getElementById('informasiNewFieldKey')?.value?.trim() || '';
             const options = document.getElementById('informasiNewFieldOptions')?.value?.trim()?.split(',').map(o => o
-            .trim()).filter(o => o) || [];
+                .trim()).filter(o => o) || [];
             const required = document.getElementById('informasiNewFieldRequired')?.checked || false;
 
             if (!label || !key) {
