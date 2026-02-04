@@ -26,22 +26,22 @@
                     <h3 class="text-sm font-semibold text-gray-800">Ajukan Lembur Baru</h3>
                 </div>
                 <div class="p-6">
-                    <form class="space-y-5">
+                    <form id="lemburForm" class="space-y-5">
                         <!-- Tanggal Lembur -->
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-2.5">Tanggal Lembur</label>
-                            <input type="date" class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400/40 focus:border-slate-300/60 transition-all duration-300 text-sm text-gray-700">
+                            <input id="lemburTanggal" type="date" class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400/40 focus:border-slate-300/60 transition-all duration-300 text-sm text-gray-700">
                         </div>
 
                         <!-- Jam Mulai & Selesai -->
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-medium text-gray-700 mb-2.5">Jam Mulai</label>
-                                <input type="time" class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400/40 focus:border-slate-300/60 transition-all duration-300 text-sm text-gray-700">
+                                <input id="lemburMulai" type="time" class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400/40 focus:border-slate-300/60 transition-all duration-300 text-sm text-gray-700">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-gray-700 mb-2.5">Jam Selesai</label>
-                                <input type="time" class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400/40 focus:border-slate-300/60 transition-all duration-300 text-sm text-gray-700">
+                                <input id="lemburSelesai" type="time" class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400/40 focus:border-slate-300/60 transition-all duration-300 text-sm text-gray-700">
                             </div>
                         </div>
 
@@ -57,7 +57,7 @@
                         <!-- Keterangan Pekerjaan -->
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-2.5">Keterangan Pekerjaan</label>
-                            <textarea rows="4" placeholder="Jelaskan pekerjaan apa yang akan dilakukan selama lembur..." class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400/40 focus:border-slate-300/60 transition-all duration-300 text-sm resize-none text-gray-700 placeholder-gray-400"></textarea>
+                            <textarea id="lemburKeterangan" rows="4" placeholder="Jelaskan pekerjaan apa yang akan dilakukan selama lembur..." class="w-full px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400/40 focus:border-slate-300/60 transition-all duration-300 text-sm resize-none text-gray-700 placeholder-gray-400"></textarea>
                         </div>
 
                         <!-- Info -->
@@ -76,7 +76,7 @@
 
                         <!-- Button -->
                         <div class="flex gap-3 pt-2">
-                            <button type="submit" class="flex-1 px-4 py-2.5 bg-gradient-to-r from-slate-500 to-slate-400 text-white font-medium rounded-xl hover:from-slate-600 hover:to-slate-500 shadow-sm hover:shadow-md transition-all duration-300 text-sm">
+                            <button id="submitLembur" type="submit" class="flex-1 px-4 py-2.5 bg-gradient-to-r from-slate-500 to-slate-400 text-white font-medium rounded-xl hover:from-slate-600 hover:to-slate-500 shadow-sm hover:shadow-md transition-all duration-300 text-sm">
                                 Ajukan Lembur
                             </button>
                             <button type="reset" class="flex-1 px-4 py-2.5 bg-white/80 border border-gray-200/60 text-gray-600 font-medium rounded-xl hover:bg-gray-50/80 hover:border-gray-300/60 transition-all duration-300 text-sm">
@@ -128,8 +128,8 @@
             <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-slate-50/20 via-red-50/20 to-red-50/15">
                 <h3 class="text-sm font-semibold text-gray-800">Riwayat Pengajuan Lembur</h3>
             </div>
-            <div class="divide-y divide-gray-100/50">
-                <!-- Item 1 - Approved -->
+            <div id="lemburHistory" class="divide-y divide-gray-100/50">
+                <!-- History will be rendered here by JS -->
                 <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-transparent transition-all duration-300 group">
                     <div class="flex items-start gap-3 mb-2">
                         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-50/60 to-green-50/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
@@ -223,4 +223,124 @@
         </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            (function() {
+                const API_BASE_RAW = {!! json_encode(rtrim(request()->getSchemeAndHttpHost() . request()->getBaseUrl(), '/')) !!};
+                const API_BASE = (API_BASE_RAW && API_BASE_RAW.indexOf(String.fromCharCode(123, 123)) === -1) ?
+                    API_BASE_RAW : (window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf(String.fromCharCode(47))));
+
+                function apiPath(path) {
+                    if (path.startsWith("/api/") || path.startsWith("/session/")) return window.location.origin + path;
+                    return API_BASE + path;
+                }
+
+                function getAuthHeaders() {
+                    const token = window.localStorage ? window.localStorage.getItem('api_token') : null;
+                    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+                    if (token) headers['Authorization'] = 'Bearer ' + token;
+                    const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                    if (csrf) headers['X-CSRF-TOKEN'] = csrf;
+                    return headers;
+                }
+
+                function showToast(type, msg) {
+                    console.debug('[lembur] toast', type, msg);
+                    alert((type==='success'?'✅ ':'❌ ') + msg);
+                }
+
+                async function fetchHistory() {
+                    try {
+                        const res = await fetch('/karyawan/api/lembur', { headers: getAuthHeaders(), credentials: 'same-origin' });
+                        if (!res.ok) {
+                            console.error('Failed to fetch history', res.status);
+                            return;
+                        }
+                        const json = await res.json();
+                        const container = document.getElementById('lemburHistory');
+                        if (!container) return;
+                        container.innerHTML = '';
+                        json.data.forEach(item => {
+                            const statusBadge = item.status === 'Pending' ? '<span class="px-2.5 py-0.5 bg-red-50/70 text-red-600/80 text-xs font-medium rounded-full">Menunggu</span>' : (item.status === 'Disetujui' ? '<span class="px-2.5 py-0.5 bg-green-50/70 text-green-600/80 text-xs font-medium rounded-full">Disetujui</span>' : '<span class="px-2.5 py-0.5 bg-red-50/70 text-red-600/80 text-xs font-medium rounded-full">Ditolak</span>');
+                            const el = document.createElement('div');
+                            el.className = 'px-6 py-4 hover:bg-gradient-to-r hover:from-red-50/30 hover:to-transparent transition-all duration-300 group';
+                            el.innerHTML = `
+                                <div class="flex items-start gap-3 mb-2">
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-50/60 to-red-50/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-5 h-5 text-red-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-start justify-between mb-1.5">
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-800">Lembur • ${item.durasi_jam} jam</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">${item.tanggal} • ${item.jam_mulai} - ${item.jam_selesai}</p>
+                                            </div>
+                                            ${statusBadge}
+                                        </div>
+                                        <p class="text-xs text-gray-400 mb-2">Pekerjaan: ${item.keterangan || '-'}</p>
+                                    </div>
+                                </div>
+                            `;
+                            container.appendChild(el);
+                        });
+                    } catch (err) {
+                        console.error('fetchHistory error', err);
+                    }
+                }
+
+                document.getElementById('lemburForm').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const tanggal = document.getElementById('lemburTanggal').value;
+                    const jamMulai = document.getElementById('lemburMulai').value;
+                    const jamSelesai = document.getElementById('lemburSelesai').value;
+                    const keterangan = document.getElementById('lemburKeterangan').value;
+
+                    if (!tanggal || !jamMulai || !jamSelesai) {
+                        showToast('error', 'Tanggal, jam mulai dan jam selesai harus diisi');
+                        return;
+                    }
+
+                    // compute duration
+                    const s = new Date('1970-01-01T' + jamMulai + ':00Z');
+                    const eTime = new Date('1970-01-01T' + jamSelesai + ':00Z');
+                    let diff = (eTime - s) / 3600000;
+                    diff = Math.round(diff * 100) / 100;
+                    if (diff <= 0) {
+                        showToast('error', 'Jam selesai harus lebih besar dari jam mulai');
+                        return;
+                    }
+                    if (diff > 3) {
+                        showToast('error', 'Durasi lembur maksimal 3 jam per hari');
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch('/karyawan/api/lembur', {
+                            method: 'POST',
+                            headers: getAuthHeaders(),
+                            credentials: 'same-origin',
+                            body: JSON.stringify({ tanggal, jam_mulai: jamMulai, jam_selesai: jamSelesai, keterangan })
+                        });
+
+                        const json = await res.json();
+                        if (res.status === 201 && json.ok) {
+                            showToast('success', 'Pengajuan lembur berhasil dikirim');
+                            // reload history
+                            fetchHistory();
+                            // reset form
+                            document.getElementById('lemburForm').reset();
+                        } else {
+                            showToast('error', json.message || 'Gagal mengajukan lembur');
+                        }
+                    } catch (err) {
+                        console.error('submit lembur error', err);
+                        showToast('error', 'Terjadi kesalahan saat mengajukan lembur');
+                    }
+                });
+
+                // initial load
+                fetchHistory();
+            })();
+        </script>
+    @endpush
 </x-app-layout>

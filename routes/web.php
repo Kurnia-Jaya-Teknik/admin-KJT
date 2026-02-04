@@ -89,6 +89,12 @@ Route::middleware([
             return view('karyawan.pengajuan-lembur');
         })->name('pengajuan-lembur');
 
+        // Employee Lembur API (basic CRUD)
+        Route::get('/api/lembur', [\App\Http\Controllers\Api\Employee\LemburController::class, 'index'])->name('lembur.index');
+        Route::post('/api/lembur', [\App\Http\Controllers\Api\Employee\LemburController::class, 'store'])->name('lembur.store');
+        Route::put('/api/lembur/{lembur}', [\App\Http\Controllers\Api\Employee\LemburController::class, 'update'])->name('lembur.update');
+        Route::delete('/api/lembur/{lembur}', [\App\Http\Controllers\Api\Employee\LemburController::class, 'destroy'])->name('lembur.destroy');
+
         // provide a session API token for JS to call (web authenticated only)
         Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class, 'token'])->middleware('auth')->name('session.api-token');
 
