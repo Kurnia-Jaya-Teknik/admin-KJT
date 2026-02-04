@@ -65,6 +65,8 @@
                                 <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                                     Keterangan</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                    Pelimpahan</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                                     Status</th>
                                 <th class="px-6 py-4 text-center text-xs font-bold text-white uppercase tracking-wider">
                                     Aksi</th>
@@ -104,18 +106,34 @@
                                     <td class="px-6 py-5 text-sm text-gray-600">{{ $durasi }}</td>
                                     <td class="px-6 py-5 text-sm text-gray-600">
                                         {{ Str::limit($request->alasan ?? ($request->keterangan ?? '-'), 30) }}</td>
+                                    <td class="px-6 py-5 text-sm text-gray-600">
+                                        @if ($isCuti && isset($request->delegated_users) && $request->delegated_users->count() > 0)
+                                            <div class="flex flex-wrap gap-1">
+                                                @foreach ($request->delegated_users as $user)
+                                                    <span
+                                                        class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">{{ $user->name }}</span>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <span class="text-gray-400 text-xs">-</span>
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-5 text-sm"><span
                                             class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ $statusBadge }}">{{ $request->status }}</span>
                                     </td>
                                     <td class="px-6 py-5 text-center">
                                         @if ($request->status === 'Pending')
                                             <div class="flex items-center justify-center gap-2">
-                                                <button data-request-id="{{ $request->id }}"
-                                                    data-request-type="{{ $type }}"
-                                                    data-employee-name="{{ $request->user->name }}"
-                                                    data-jenis="{{ $jenisLabel }}"
-                                                    data-tanggal="{{ $tanggal }}"
-                                                    class="btn-preview px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border text-gray-700 hover:bg-gray-100 shadow-sm hover:shadow-md transition-all duration-200">Preview</button>
+                                                <button
+                                                    onclick="openPreviewModal({{ $request->id }}, '{{ $type }}')"
+                                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border text-blue-700 hover:bg-blue-50 shadow-sm hover:shadow-md transition-all duration-200">Lihat
+                                                    Surat</button>
+                                                @if ($isCuti && $request->jenis === 'Ijin Sakit' && !empty($request->bukti))
+                                                    <button
+                                                        onclick="openImageModal('{{ route('files.bukti', basename($request->bukti)) }}')"
+                                                        class="px-3 py-1.5 text-xs font-semibold rounded-lg border bg-white/80 text-indigo-600 hover:bg-indigo-50">📄
+                                                        Lihat Dokter</button>
+                                                @endif
                                                 <button data-request-id="{{ $request->id }}"
                                                     data-request-type="{{ $type }}"
                                                     data-employee-name="{{ $request->user->name }}"
@@ -142,7 +160,7 @@
                                         pengajuan</td>
                                 </tr>
                             @endforelse
-                            <tr class="hover:bg-red-50 transition-colors duration-150">
+                            {{-- <tr class="hover:bg-red-50 transition-colors duration-150">
                                 <td class="px-6 py-5 text-sm font-medium text-gray-800">Siti Nurhaliza</td>
                                 <td class="px-6 py-5 text-sm"><span
                                         class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-100 text-purple-800">Lembur</span>
@@ -163,63 +181,21 @@
                                             class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
                                     </div>
                                 </td>
-                            </tr>
-                            <tr class="hover:bg-red-50 transition-colors duration-150">
-                                <td class="px-6 py-5 text-sm font-medium text-gray-800">Budi Santoso</td>
-                                <td class="px-6 py-5 text-sm"><span
-                                        class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-100 text-blue-800">Cuti
-                                        Sakit</span></td>
-                                <td class="px-6 py-5 text-sm text-gray-600">6 Jan 2026</td>
-                                <td class="px-6 py-5 text-sm text-gray-600">2 hari</td>
-                                <td class="px-6 py-5 text-sm text-gray-600">Sakit demam</td>
-                                <td class="px-6 py-5 text-sm"><span
-                                        class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800">Menunggu</span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <div class="flex items-center justify-center gap-2">
-                                        <button
-                                            onclick="openApprovalModal('Budi Santoso', 'Cuti Sakit', '6 Jan 2026', 'Approve')"
-                                            class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
-                                        <button
-                                            onclick="openApprovalModal('Budi Santoso', 'Cuti Sakit', '6 Jan 2026', 'Reject')"
-                                            class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-red-50 transition-colors duration-150">
-                                <td class="px-6 py-5 text-sm font-medium text-gray-800">Rina Wijaya</td>
-                                <td class="px-6 py-5 text-sm"><span
-                                        class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-100 text-purple-800">Lembur</span>
-                                </td>
-                                <td class="px-6 py-5 text-sm text-gray-600">8 Jan 2026</td>
-                                <td class="px-6 py-5 text-sm text-gray-600">4 jam</td>
-                                <td class="px-6 py-5 text-sm text-gray-600">Meeting klien</td>
-                                <td class="px-6 py-5 text-sm"><span
-                                        class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800">Menunggu</span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <div class="flex items-center justify-center gap-2">
-                                        <button
-                                            onclick="openApprovalModal('Rina Wijaya', 'Lembur', '8 Jan 2026', 'Approve')"
-                                            class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
-                                        <button
-                                            onclick="openApprovalModal('Rina Wijaya', 'Lembur', '8 Jan 2026', 'Reject')"
-                                            class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
-                                    </div>
-                                </td>
-                            </tr>
+                            </tr> --}}
+
                         </tbody>
                     </table>
                 </div>
                 <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50">
-                    <p class="text-sm text-gray-600">Menampilkan 5 dari 12 pengajuan</p>
+                    <p class="text-sm text-gray-600">Menampilkan {{ $requests->firstItem() ?? 0 }} -
+                        {{ $requests->lastItem() ?? 0 }} dari {{ $requests->total() }} pengajuan</p>
                     <div class="flex gap-2">
-                        <button
-                            class="px-3 py-1.5 text-sm rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md">←
-                            Sebelumnya</button>
-                        <button
-                            class="px-3 py-1.5 text-sm rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md">Selanjutnya
-                            →</button>
+                        <a href="{{ $requests->previousPageUrl() ?: '#' }}"
+                            class="px-3 py-1.5 text-sm rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md {{ $requests->previousPageUrl() ? '' : 'opacity-50 pointer-events-none' }}">←
+                            Sebelumnya</a>
+                        <a href="{{ $requests->nextPageUrl() ?: '#' }}"
+                            class="px-3 py-1.5 text-sm rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md {{ $requests->nextPageUrl() ? '' : 'opacity-50 pointer-events-none' }}">Selanjutnya
+                            →</a>
                     </div>
                 </div>
             </div>
@@ -292,6 +268,25 @@
                     <button onclick="openApprovalModalFromPreview()"
                         class="px-4 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Setujui
                         (Lanjut)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Modal (untuk lihat dokter) -->
+        <div id="imageModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4"
+            onclick="closeImageModal()">
+            <div class="max-w-5xl w-full" onclick="event.stopPropagation()">
+                <div class="bg-white rounded-lg shadow-2xl overflow-hidden">
+                    <div
+                        class="px-6 py-4 bg-gradient-to-r from-indigo-600 to-indigo-700 flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-white">Surat Dokter</h3>
+                        <button onclick="closeImageModal()"
+                            class="text-white hover:text-gray-200 text-2xl">&times;</button>
+                    </div>
+                    <div class="p-4 bg-gray-100" style="max-height: 80vh; overflow-y: auto;">
+                        <img id="imageModalContent" src="" alt="Surat Dokter"
+                            class="w-full h-auto rounded shadow-lg">
+                    </div>
                 </div>
             </div>
         </div>
@@ -454,31 +449,52 @@
                 try {
                     const modal = document.getElementById('previewModal');
                     const content = document.getElementById('previewContent');
-                    content.innerHTML = '<div class="text-sm text-gray-500">Memuat pratinjau...</div>';
-                    modal.classList.remove('hidden');
-                    const res = await fetch(`/direktur/api/${type}/${requestId}/preview`, {
-                        credentials: 'same-origin'
-                    });
-                    if (!res.ok) {
-                        content.innerHTML = '<div class="text-sm text-red-500">Gagal memuat pratinjau.</div>';
+
+                    if (!modal || !content) {
+                        console.error('Modal elements not found');
                         return;
                     }
+
+                    content.innerHTML = '<div class="text-sm text-gray-500 p-4">Memuat pratinjau...</div>';
+                    modal.classList.remove('hidden');
+
+                    const res = await fetch(`/direktur/api/${type}/${requestId}/preview`, {
+                        credentials: 'same-origin',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (!res.ok) {
+                        content.innerHTML = '<div class="text-sm text-red-500 p-4">Gagal memuat pratinjau (Status: ' + res
+                            .status + ').</div>';
+                        return;
+                    }
+
                     const data = await res.json();
                     if (data && data.ok && data.html) {
-                        content.innerHTML = data.html;
-                        // store current preview context so 'Setujui (Lanjut)' can open approval modal
+                        // Clear first to avoid DOM conflicts
+                        content.innerHTML = '';
+                        // Use setTimeout to ensure DOM is ready
+                        setTimeout(() => {
+                            content.innerHTML = data.html;
+                        }, 10);
+
+                        // Store context
                         window._previewContext = {
                             id: requestId,
                             type
                         };
                     } else {
-                        content.innerHTML = '<div class="text-sm text-red-500">Pratinjau tidak tersedia.</div>';
+                        content.innerHTML = '<div class="text-sm text-red-500 p-4">Pratinjau tidak tersedia.</div>';
                     }
                 } catch (e) {
                     console.error('openPreviewModal error', e);
                     const content = document.getElementById('previewContent');
-                    if (content) content.innerHTML =
-                        '<div class="text-sm text-red-500">Terjadi kesalahan saat memuat pratinjau.</div>';
+                    if (content) {
+                        content.innerHTML = '<div class="text-sm text-red-500 p-4">Terjadi kesalahan: ' + (e.message ||
+                            'Unknown error') + '</div>';
+                    }
                 }
             }
 
@@ -487,22 +503,46 @@
                 if (modal) modal.classList.add('hidden');
             }
 
+            function openImageModal(imageUrl) {
+                const modal = document.getElementById('imageModal');
+                const img = document.getElementById('imageModalContent');
+                if (modal && img) {
+                    img.src = imageUrl;
+                    modal.classList.remove('hidden');
+                }
+            }
+
+            function closeImageModal() {
+                const modal = document.getElementById('imageModal');
+                if (modal) {
+                    modal.classList.add('hidden');
+                    // Clear image src to free memory
+                    const img = document.getElementById('imageModalContent');
+                    if (img) img.src = '';
+                }
+            }
+
             function openApprovalModalFromPreview() {
-                if (!window._previewContext) {
-                    alert('Tidak ada konteks pratinjau');
+                // Get context from preview window
+                if (!window._previewContext || !window._previewContext.id || !window._previewContext.type) {
+                    alert('Context invalid');
                     return;
                 }
-                // find button with matching id and trigger approval modal
-                const btn = document.querySelector(`[data-request-id="${window._previewContext.id}"]`);
+                const {
+                    id,
+                    type
+                } = window._previewContext;
+                closePreviewModal();
+
+                // Find button with this ID and trigger its onclick
+                const btn = document.querySelector(`[data-request-id="${id}"][data-request-type="${type}"]`);
                 if (btn) {
                     const employee = btn.getAttribute('data-employee-name') || '';
                     const jenis = btn.getAttribute('data-jenis') || '';
                     const tanggal = btn.getAttribute('data-tanggal') || '';
-                    closePreviewModal();
-                    openApprovalModal(employee, jenis, tanggal, 'Approve', parseInt(window._previewContext.id), window
-                        ._previewContext.type);
+                    openApprovalModal(employee, jenis, tanggal, 'Approve', parseInt(id), type);
                 } else {
-                    alert('Tidak menemukan data request untuk membuka modal persetujuan');
+                    alert('Tidak menemukan pengajuan');
                 }
             }
 
