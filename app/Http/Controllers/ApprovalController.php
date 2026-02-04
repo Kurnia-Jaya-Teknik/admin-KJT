@@ -43,24 +43,32 @@ class ApprovalController extends Controller
             // Create Surat otomatis untuk Admin agar dapat mengirimkan ke karyawan
             $surat = null;
             try {
+                // Generate nomor surat otomatis
+                $tahun = now()->year;
+                $bulan = now()->month;
+                $lastSurat = \App\Models\Surat::whereYear('created_at', $tahun)
+                    ->whereMonth('created_at', $bulan)
+                    ->orderBy('id', 'desc')
+                    ->first();
+                $urutan = $lastSurat ? ((int) substr($lastSurat->nomor_surat, 0, 3)) + 1 : 1;
+                $nomorSurat = sprintf('%03d/SKT-CUTI/%s/%d', $urutan, strtoupper(now()->format('M')), $tahun);
+                
                 $surat = \App\Models\Surat::create([
                     'user_id' => $model->user_id,
-                    'jenis' => 'Surat Keterangan',
-                    'nomor_surat' => 'AUTO-'.uniqid(),
-                    'perihal' => 'Persetujuan Cuti - ' . ($model->user->name ?? ''),
+                    'jenis' => 'Surat Keterangan Cuti',
+                    'nomor_surat' => $nomorSurat,
+                    'perihal' => 'Persetujuan ' . $model->jenis . ' - ' . ($model->user->name ?? ''),
                     'isi_surat' => view('surat.templates.cuti', ['cuti' => $model])->render(),
                     'tanggal_surat' => now()->toDateString(),
                     'status' => 'Disetujui',
                     'dibuat_oleh' => auth()->id(),
+                    'disetujui_oleh' => auth()->id(),
+                    'tanggal_persetujuan' => now(),
                     'referensi_type' => get_class($model),
                     'referensi_id' => $model->id,
                 ]);
 
-                // Notify all admin_hrd users
-                $admins = \App\Models\User::where('role', 'admin_hrd')->get();
-                if ($admins->count()) {
-                    \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\SuratButuhPengiriman($surat));
-                }
+                // Surat otomatis dibuat, tidak perlu notifikasi ke admin atau karyawan
             } catch (\Throwable $e) {
                 // Do not block approval if surat creation fails; log for later
                 \Log::error('Gagal buat surat otomatis setelah approve cuti: ' . $e->getMessage());
@@ -145,7 +153,61 @@ class ApprovalController extends Controller
 
         if ($type === 'cuti') {
             $model = Cuti::with('user')->findOrFail($id);
+            
+            // Load delegated users
+            if (!empty($model->dilimpahkan_ke) && is_array($model->dilimpahkan_ke)) {
+                $model->delegated_users = \App\Models\User::whereIn('id', $model->dilimpahkan_ke)
+                    ->select('id', 'name', 'email')
+                    ->get();
+            } else {
+                $model->delegated_users = collect();
+            }
+            
             $html = view('surat.templates.cuti', ['cuti' => $model])->render();
+            
+            // Append pelimpahan tugas info if exists
+            if ($model->delegated_users->count() > 0) {
+                $pelimpahanHtml = '<div class="mt-6 p-4 border border-blue-300 rounded-lg bg-blue-50">';
+                $pelimpahanHtml .= '<h4 class="text-base font-semibold mb-3 text-blue-800">👥 Pelimpahan Tugas</h4>';
+                $pelimpahanHtml .= '<p class="text-sm text-gray-700 mb-2">Tugas dilimpahkan kepada:</p>';
+                $pelimpahanHtml .= '<ul class="list-disc list-inside space-y-1">';
+                foreach ($model->delegated_users as $user) {
+                    $pelimpahanHtml .= '<li class="text-sm text-gray-800"><strong>' . htmlspecialchars($user->name) . '</strong>';
+                    if ($user->email) {
+                        $pelimpahanHtml .= ' <span class="text-gray-500">(' . htmlspecialchars($user->email) . ')</span>';
+                    }
+                    $pelimpahanHtml .= '</li>';
+                }
+                $pelimpahanHtml .= '</ul></div>';
+                $html .= $pelimpahanHtml;
+            }
+
+            // If this is an Ijin Sakit with an uploaded bukti, append a bukti preview/link
+            if (isset($model->jenis) && $model->jenis === 'Ijin Sakit' && !empty($model->bukti)) {
+                try {
+                    $disk = \Illuminate\Support\Facades\Storage::disk('public');
+                    if ($disk->exists($model->bukti)) {
+                        $filename = basename($model->bukti);
+                        $url = route('files.bukti', $filename);
+                        $ext = pathinfo($model->bukti, PATHINFO_EXTENSION);
+                        $buktiHtml = '<div class="mt-6 p-4 border border-gray-300 rounded-lg bg-gray-50">';
+                        $buktiHtml .= '<h4 class="text-base font-semibold mb-3 text-gray-800">📎 Lampiran Surat Dokter</h4>';
+                        if (in_array(strtolower($ext), ['jpg','jpeg','png','gif','bmp','tiff'])) {
+                            $buktiHtml .= '<div class="bg-white p-2 rounded border"><img src="' . htmlspecialchars($url) . '" alt="Surat Dokter" class="max-w-full h-auto rounded" style="max-height: 500px; margin: 0 auto; display: block;" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'block\';" />';
+                            $buktiHtml .= '<div style="display:none;" class="text-red-600 text-sm p-4">Gagal memuat gambar. <a href="' . htmlspecialchars($url) . '" target="_blank" class="underline">Buka di tab baru</a></div></div>';
+                        } elseif (strtolower($ext) === 'pdf') {
+                            $buktiHtml .= '<div class="mb-2"><a href="' . htmlspecialchars($url) . '" target="_blank" class="inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">📄 Buka PDF Surat Dokter</a></div>';
+                        } else {
+                            $buktiHtml .= '<div><a href="' . htmlspecialchars($url) . '" target="_blank" class="inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">📥 Unduh Lampiran</a></div>';
+                        }
+                        $buktiHtml .= '</div>';
+                        $html .= $buktiHtml;
+                    }
+                } catch (\Throwable $e) {
+                    \Log::error('Preview bukti failed: ' . $e->getMessage());
+                }
+            }
+
             return response()->json(['ok' => true, 'html' => $html]);
         }
 

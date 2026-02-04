@@ -20,6 +20,7 @@ class Cuti extends Model
         'durasi_hari',
         'alasan',
         'dilimpahkan_ke',
+        'bukti',
         'status',
         'keterangan_persetujuan',
         'disetujui_oleh',

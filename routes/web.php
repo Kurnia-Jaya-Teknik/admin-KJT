@@ -13,7 +13,15 @@ Route::get('/', function () {
 });
 
 // top-level session api-token alias for JS (uses web auth)
-Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class, 'token'])->middleware('auth')->name('session.api-token.global');
+
+// Serve storage files - use different prefix to avoid Apache conflict
+Route::get('/files/bukti/{filename}', function ($filename) {
+    $fullPath = storage_path('app/public/cuti-bukti/' . $filename);
+    if (!file_exists($fullPath) || !is_file($fullPath)) {
+        abort(404);
+    }
+    return response()->file($fullPath);
+})->name('files.bukti');
 
 Route::middleware([
     'auth:sanctum',
@@ -32,8 +40,14 @@ Route::middleware([
     // Direktur Routes
     Route::prefix('direktur')->name('direktur.')->group(function () {
         Route::get('/persetujuan-cuti-lembur', [DirekturController::class, 'persetujuanCutiLembur'])->name('persetujuan-cuti-lembur');
+        Route::get('/persetujuan-lembur', [DirekturController::class, 'persetujuanLembur'])->name('persetujuan-lembur');
         Route::get('/persetujuan-surat', [DirekturController::class, 'persetujuanSurat'])->name('persetujuan-surat');
         Route::get('/ringkasan-karyawan', [DirekturController::class, 'ringkasanKaryawan'])->name('ringkasan-karyawan');
+        Route::get('/ringkasan-karyawan/kelola', [DirekturController::class, 'kelolaKaryawan'])->name('ringkasan-karyawan.kelola');
+        Route::post('/ringkasan-karyawan/{id}/update', [DirekturController::class, 'updateUser'])->name('ringkasan-karyawan.update');
+        Route::post('/ringkasan-karyawan/{id}/reset-password', [DirekturController::class, 'resetPassword'])->name('ringkasan-karyawan.reset-password');
+        Route::post('/ringkasan-karyawan/{id}/toggle-status', [DirekturController::class, 'toggleStatus'])->name('ringkasan-karyawan.toggle-status');
+        Route::delete('/ringkasan-karyawan/{id}/delete', [DirekturController::class, 'deleteUser'])->name('ringkasan-karyawan.delete');
         Route::get('/laporan', [DirekturController::class, 'laporan'])->name('laporan');
         // Dedicated cuti report page
         Route::get('/laporan/cuti', [DirekturController::class, 'laporanCuti'])->name('laporan.cuti');
@@ -123,9 +137,8 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         Route::post('/karyawan/{id}/return-from-leave', [\App\Http\Controllers\Admin\KaryawanController::class, 'returnFromLeave'])->name('karyawan.return-from-leave');
         Route::get('/karyawan-stats', [\App\Http\Controllers\Admin\KaryawanController::class, 'getStats'])->name('karyawan.stats');
         
-        Route::get('/cuti', function () {
-            return view('admin.cuti');
-        })->name('cuti');
+        Route::get('/cuti', [\App\Http\Controllers\Admin\CutiController::class, 'index'])->name('cuti');
+        Route::get('/cuti/list', [\App\Http\Controllers\Admin\CutiController::class, 'list'])->name('cuti.list');
         Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratController::class, 'storeCutiSurat'])->name('cuti.buat-surat');
         
         Route::get('/magang', [\App\Http\Controllers\Admin\MagangController::class, 'index'])->name('magang');

@@ -15,7 +15,8 @@
 
     <!-- Main Content -->
     <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
-        <div class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gradient-to-br from-red-50/60 via-slate-50/20 to-gray-50/5 min-h-full">
+        <div
+            class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gradient-to-br from-red-50/60 via-slate-50/20 to-gray-50/5 min-h-full">
             <div class="mb-6">
                 <h1 class="text-2xl font-semibold text-gray-800 mb-1.5">Ijin Sakit</h1>
                 <p class="text-sm text-gray-500">Ajukan ijin sakit. Lampirkan <strong>surat dokter</strong> (wajib).</p>
@@ -110,14 +111,18 @@
                         <div class="grid grid-cols-12 gap-4 items-center mb-4">
                             <div class="col-span-4">
                                 <label class="text-sm font-medium text-gray-700">Lampiran (surat dokter)</label>
-                                <p class="text-xs text-gray-400 mt-1">Upload surat dokter (PDF atau gambar). File wajib dilampirkan dan maksimal 10MB.</p>
+                                <p class="text-xs text-gray-400 mt-1">Upload surat dokter (PDF atau gambar). File wajib
+                                    dilampirkan dan maksimal 10MB.</p>
                             </div>
                             <div class="col-span-8">
                                 <div class="flex items-center gap-3">
-                                    <label for="bukti" id="buktiLabel" class="px-3 py-2 bg-white border border-gray-300 rounded text-sm cursor-pointer hover:bg-gray-50">Pilih file surat dokter…</label>
+                                    <label for="bukti" id="buktiLabel"
+                                        class="px-3 py-2 bg-white border border-gray-300 rounded text-sm cursor-pointer hover:bg-gray-50">Pilih
+                                        file surat dokter…</label>
                                     <span id="buktiName" class="text-sm text-gray-600">Belum ada file dipilih</span>
                                 </div>
-                                <input type="file" id="bukti" name="bukti" accept="image/*,.pdf" required class="sr-only" />
+                                <input type="file" id="bukti" name="bukti" accept="image/*,.pdf" required
+                                    class="sr-only" />
                             </div>
                         </div>
 
@@ -152,12 +157,15 @@
             </div>
 
             <!-- Riwayat Pengajuan Cuti (reuse same riwayat listing) -->
-            <div class="mt-8 bg-white/80 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 overflow-hidden hover:shadow-md transition-all duration-300">
-                <div class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/40 via-slate-50/20 to-slate-50/15">
+            <div
+                class="mt-8 bg-white/80 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 overflow-hidden hover:shadow-md transition-all duration-300">
+                <div
+                    class="px-6 py-3.5 border-b border-gray-100/30 bg-gradient-to-r from-red-50/40 via-slate-50/20 to-slate-50/15">
                     <h3 class="text-sm font-semibold text-gray-800">Riwayat Pengajuan Ijin Sakit</h3>
                 </div>
                 <div id="riwayatList" class="divide-y divide-gray-100/50"></div>
-                <div id="riwayatPagination" class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50"></div>
+                <div id="riwayatPagination"
+                    class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50"></div>
             </div>
         </div>
     </div>
@@ -166,7 +174,8 @@
         <script>
             (function() {
                 const API_BASE_RAW = "{{ rtrim(request()->getSchemeAndHttpHost() . request()->getBaseUrl(), '/') }}";
-                const API_BASE = (API_BASE_RAW && API_BASE_RAW.indexOf('{{') === -1) ? API_BASE_RAW : (window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, ''));
+                const API_BASE = (API_BASE_RAW && API_BASE_RAW.indexOf('{{') === -1) ? API_BASE_RAW : (window.location
+                    .origin + window.location.pathname.replace(/\/[^\/]*$/, ''));
 
                 function apiPath(path) {
                     if (path.startsWith('/api/') || path.startsWith('/session/')) return window.location.origin + path;
@@ -196,7 +205,7 @@
                         // simple validation
                         const maxBytes = 10 * 1024 * 1024; // 10MB
                         const ext = (file.name.split('.').pop() || '').toLowerCase();
-                        const allowed = ['jpg','jpeg','png','gif','bmp','tiff','pdf'];
+                        const allowed = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'pdf'];
                         if (file.size > maxBytes) {
                             buktiName.textContent = '❌ File terlalu besar (max 10MB)';
                             this.value = '';
@@ -215,8 +224,10 @@
 
                 function showToast(type, message) {
                     const div = document.createElement('div');
-                    div.className = 'max-w-sm w-full bg-white shadow-lg rounded-xl p-4 border flex items-start gap-3 animate-in fade-in';
-                    div.innerHTML = `<div class="w-3 h-3 mt-1 rounded-full ${type==='success'?'bg-emerald-500':'bg-red-500'}"></div><div><p class="font-medium text-sm text-gray-800">${message}</p></div>`;
+                    div.className =
+                        'max-w-sm w-full bg-white shadow-lg rounded-xl p-4 border flex items-start gap-3 animate-in fade-in';
+                    div.innerHTML =
+                        `<div class="w-3 h-3 mt-1 rounded-full ${type==='success'?'bg-emerald-500':'bg-red-500'}"></div><div><p class="font-medium text-sm text-gray-800">${message}</p></div>`;
                     const toastContainer = document.getElementById('ijinToast');
                     toastContainer.appendChild(div);
                     toastContainer.classList.remove('hidden');
@@ -247,13 +258,17 @@
                     let token = window.localStorage ? window.localStorage.getItem('api_token') : null;
                     if (token) return token;
                     try {
-                        const res = await fetch(apiPath('/session/api-token'), { credentials: 'same-origin' });
+                        const res = await fetch(apiPath('/session/api-token'), {
+                            credentials: 'same-origin'
+                        });
                         if (res.ok) {
                             const json = await res.json();
                             if (json.token && window.localStorage) window.localStorage.setItem('api_token', json.token);
                             return json.token;
                         }
-                    } catch (e) { console.debug('no session token', e); }
+                    } catch (e) {
+                        console.debug('no session token', e);
+                    }
                     return null;
                 }
 
@@ -261,11 +276,11 @@
                     const btn = document.getElementById('submitIjin');
                     if (!btn) return;
                     if (s) {
-                        btn.setAttribute('disabled','disabled');
-                        btn.classList.add('opacity-60','cursor-not-allowed');
+                        btn.setAttribute('disabled', 'disabled');
+                        btn.classList.add('opacity-60', 'cursor-not-allowed');
                     } else {
                         btn.removeAttribute('disabled');
-                        btn.classList.remove('opacity-60','cursor-not-allowed');
+                        btn.classList.remove('opacity-60', 'cursor-not-allowed');
                     }
                 }
 
@@ -294,10 +309,15 @@
                         // render items
                         container.innerHTML = requests.map(i => {
                             const itemId = 'riwayat-item-' + (i.id || Math.random().toString(36).slice(2, 9));
-                            const statusColor = i.status === 'disetujui' ? 'green' : i.status === 'menunggu' ? 'yellow' : 'red';
-                            const statusLabel = i.status === 'disetujui' ? 'Disetujui' : i.status === 'menunggu' ? 'Menunggu' : 'Ditolak';
-                            const tanggalMulai = i.tanggal_mulai ? new Date(i.tanggal_mulai).toLocaleDateString('id-ID') : '-';
-                            const tanggalSelesai = i.tanggal_selesai ? new Date(i.tanggal_selesai).toLocaleDateString('id-ID') : '-';
+                            const st = (i.status || '').toString().toLowerCase();
+                            const isPending = (st === 'pending' || st === 'menunggu');
+                            const statusColor = st === 'disetujui' ? 'green' : isPending ? 'yellow' : 'red';
+                            const statusLabel = st === 'disetujui' ? 'Disetujui' : isPending ? 'Menunggu' :
+                                'Ditolak';
+                            const tanggalMulai = i.tanggal_mulai ? new Date(i.tanggal_mulai).toLocaleDateString(
+                                'id-ID') : '-';
+                            const tanggalSelesai = i.tanggal_selesai ? new Date(i.tanggal_selesai)
+                                .toLocaleDateString('id-ID') : '-';
 
                             return `<div id="${itemId}" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 p-5 hover:shadow-md transition-all duration-300 group">
                                 <div class="flex items-start gap-3">
@@ -325,10 +345,13 @@
                         if (pagination && pagination.last_page > 1) {
                             const buttons = [];
                             for (let p = 1; p <= pagination.last_page; p++) {
-                                buttons.push(`<button class="px-3 py-2 rounded-xl ${p === page ? 'bg-gradient-to-r from-red-500 to-green-400 text-white shadow-sm' : 'border border-gray-200/60 text-gray-600 hover:bg-white/80'} transition-all duration-300 text-sm" data-page="${p}">${p}</button>`);
+                                buttons.push(
+                                    `<button class="px-3 py-2 rounded-xl ${p === page ? 'bg-gradient-to-r from-red-500 to-green-400 text-white shadow-sm' : 'border border-gray-200/60 text-gray-600 hover:bg-white/80'} transition-all duration-300 text-sm" data-page="${p}">${p}</button>`
+                                    );
                             }
                             paginationEl.innerHTML = buttons.join('');
-                            document.querySelectorAll('#riwayatPagination button').forEach(b => b.addEventListener('click', () => fetchRiwayat(parseInt(b.getAttribute('data-page')))));
+                            document.querySelectorAll('#riwayatPagination button').forEach(b => b.addEventListener(
+                                'click', () => fetchRiwayat(parseInt(b.getAttribute('data-page')))));
                         } else {
                             paginationEl.innerHTML = '';
                         }
@@ -346,10 +369,12 @@
                 // form submit handler
                 const form = document.getElementById('ijinForm');
                 if (form) {
-                    document.getElementById('tanggal_mulai')?.addEventListener('change', function(){ /* noop */ });
-                    document.getElementById('tanggal_selesai')?.addEventListener('change', function(){ /* noop */ });
+                    document.getElementById('tanggal_mulai')?.addEventListener('change', function() {
+                        /* noop */ });
+                    document.getElementById('tanggal_selesai')?.addEventListener('change', function() {
+                        /* noop */ });
 
-                    form.addEventListener('submit', async function(e){
+                    form.addEventListener('submit', async function(e) {
                         e.preventDefault();
 
                         const tanggal_mulai = document.getElementById('tanggal_mulai')?.value;
@@ -359,15 +384,30 @@
                         const buktiEl = document.getElementById('bukti');
 
                         if (!tanggal_mulai || !tanggal_selesai) {
-                            const err = document.getElementById('tanggal-error'); if (err) { err.textContent = 'Isi tanggal mulai dan tanggal selesai'; err.classList.remove('hidden'); }
+                            const err = document.getElementById('tanggal-error');
+                            if (err) {
+                                err.textContent = 'Isi tanggal mulai dan tanggal selesai';
+                                err.classList.remove('hidden');
+                            }
                             return;
-                        } else { const err = document.getElementById('tanggal-error'); if (err) err.classList.add('hidden'); }
+                        } else {
+                            const err = document.getElementById('tanggal-error');
+                            if (err) err.classList.add('hidden');
+                        }
 
                         // require bukti (surat dokter)
                         if (!buktiEl || !buktiEl.files || !buktiEl.files[0]) {
-                            const msgEl = document.getElementById('ijinAlert'); if (msgEl) { msgEl.textContent = 'Lampirkan surat dokter (file wajib).'; msgEl.classList.remove('hidden'); msgEl.classList.add('bg-red-50','border','border-red-200','text-red-700'); }
+                            const msgEl = document.getElementById('ijinAlert');
+                            if (msgEl) {
+                                msgEl.textContent = 'Lampirkan surat dokter (file wajib).';
+                                msgEl.classList.remove('hidden');
+                                msgEl.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-700');
+                            }
                             return;
-                        } else { const msgEl = document.getElementById('ijinAlert'); if (msgEl) msgEl.classList.add('hidden'); }
+                        } else {
+                            const msgEl = document.getElementById('ijinAlert');
+                            if (msgEl) msgEl.classList.add('hidden');
+                        }
 
                         // build FormData
                         const formData = new FormData();
@@ -381,7 +421,9 @@
                         // send via multipart form
                         try {
                             setSubmitting(true);
-                            await fetch('/sanctum/csrf-cookie', { credentials: 'same-origin' });
+                            await fetch('/sanctum/csrf-cookie', {
+                                credentials: 'same-origin'
+                            });
                             await ensureApiToken();
                             const headers = getAuthHeaders();
                             // do not set Content-Type header so browser sets multipart boundary
@@ -393,23 +435,43 @@
                             });
 
                             if (!res.ok) {
-                                const text = await res.text().catch(()=>null);
+                                const text = await res.text().catch(() => null);
                                 let errMsg = 'Terjadi kesalahan';
-                                try { const obj = text ? JSON.parse(text) : null; errMsg = (obj && (obj.message || obj.error)) ? (obj.message || obj.error) : (text || errMsg);} catch (e) { errMsg = text || errMsg; }
-                                const msgEl = document.getElementById('ijinAlert'); if (msgEl) { msgEl.textContent = errMsg; msgEl.classList.remove('hidden'); msgEl.classList.add('bg-red-50','border','border-red-200','text-red-700'); }
+                                try {
+                                    const obj = text ? JSON.parse(text) : null;
+                                    errMsg = (obj && (obj.message || obj.error)) ? (obj.message || obj.error) :
+                                        (text || errMsg);
+                                } catch (e) {
+                                    errMsg = text || errMsg;
+                                }
+                                const msgEl = document.getElementById('ijinAlert');
+                                if (msgEl) {
+                                    msgEl.textContent = errMsg;
+                                    msgEl.classList.remove('hidden');
+                                    msgEl.classList.add('bg-red-50', 'border', 'border-red-200',
+                                    'text-red-700');
+                                }
                                 return;
                             }
 
-                            showToast('success','Pengajuan ijin sakit berhasil dikirim.');
+                            showToast('success', 'Pengajuan ijin sakit berhasil dikirim.');
                             form.reset();
                             // reset filename label
-                            const buktiName = document.getElementById('buktiName'); if (buktiName) buktiName.textContent = 'Belum ada file dipilih';
+                            const buktiName = document.getElementById('buktiName');
+                            if (buktiName) buktiName.textContent = 'Belum ada file dipilih';
                             // refresh riwayat
                             await fetchRiwayat();
                         } catch (err) {
                             console.error('submit ijin error', err);
-                            const msgEl = document.getElementById('ijinAlert'); if (msgEl) { msgEl.textContent = 'Terjadi kesalahan sistem.'; msgEl.classList.remove('hidden'); msgEl.classList.add('bg-red-50','border','border-red-200','text-red-700'); }
-                        } finally { setSubmitting(false); }
+                            const msgEl = document.getElementById('ijinAlert');
+                            if (msgEl) {
+                                msgEl.textContent = 'Terjadi kesalahan sistem.';
+                                msgEl.classList.remove('hidden');
+                                msgEl.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-700');
+                            }
+                        } finally {
+                            setSubmitting(false);
+                        }
                     });
                 }
 

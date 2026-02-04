@@ -32,6 +32,7 @@ class User extends Authenticatable
         'role',
         'departemen_id',
         'status_kontrak',
+        'status_kepegawaian',
         'sisa_cuti',
         'nik',
         'jabatan',

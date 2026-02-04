@@ -165,6 +165,22 @@ class DashboardController extends Controller
             return ['nama' => $d->nama, 'present' => $present, 'total' => $total, 'pct' => $total ? round(($present/$total)*100,1) : 0];
         })->toArray();
 
+        // Lembur per departemen (bulan ini)
+        $lemburPerDepartemen = \App\Models\Departemen::orderBy('nama')->get()->map(function($d){
+            $totalJam = Lembur::whereYear('tanggal', now()->year)
+                ->whereMonth('tanggal', now()->month)
+                ->whereHas('user', function($q) use ($d){ 
+                    $q->where('departemen_id', $d->id); 
+                })
+                ->sum('durasi_jam');
+            return ['nama' => $d->nama, 'jam' => $totalJam];
+        });
+        $maxLemburHours = max(1, $lemburPerDepartemen->max('jam'));
+        $totalLemburHours = $lemburPerDepartemen->sum('jam');
+
+        // Kehadiran hari ini
+        $kehadiranToday = Absensi::whereDate('tanggal', today())->where('status','Hadir')->count();
+
         return [
             'totalKaryawan' => $totalKaryawan,
             'persentaseKehadiran' => $persentaseKehadiran,
@@ -191,6 +207,11 @@ class DashboardController extends Controller
             'statusPending' => $statusPending,
             'statusRejected' => $statusRejected,
             'statusTotal' => $statusTotal,
+            // lembur per departemen
+            'lemburPerDepartemen' => $lemburPerDepartemen->toArray(),
+            'maxLemburHours' => $maxLemburHours,
+            'totalLemburHours' => $totalLemburHours,
+            'kehadiranToday' => $kehadiranToday,
         ];
     }
 
