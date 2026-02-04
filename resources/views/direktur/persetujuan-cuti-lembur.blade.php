@@ -115,6 +115,12 @@
                                                     data-employee-name="{{ $request->user->name }}"
                                                     data-jenis="{{ $jenisLabel }}"
                                                     data-tanggal="{{ $tanggal }}"
+                                                    class="btn-preview px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border text-gray-700 hover:bg-gray-100 shadow-sm hover:shadow-md transition-all duration-200">Preview</button>
+                                                <button data-request-id="{{ $request->id }}"
+                                                    data-request-type="{{ $type }}"
+                                                    data-employee-name="{{ $request->user->name }}"
+                                                    data-jenis="{{ $jenisLabel }}"
+                                                    data-tanggal="{{ $tanggal }}"
                                                     onclick="openApprovalModal('{{ $request->user->name }}', '{{ $jenisLabel }}', '{{ $tanggal }}', 'Approve', {{ $request->id }}, '{{ $type }}')"
                                                     class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
                                                 <button data-request-id="{{ $request->id }}"
@@ -221,6 +227,7 @@
 
         <!-- Approval Modal - Clean & Cohesive Red-Grey -->
         <div id="approvalModal" class="fixed inset-0 bg-black/30 hidden z-50 flex items-center justify-center p-4">
+
             <div
                 class="bg-white rounded-2xl shadow-xl border border-gray-200 max-w-md w-full animate-in fade-in zoom-in-95 duration-300">
                 <!-- Header -->
@@ -265,6 +272,26 @@
                         class="flex-1 px-4 py-2.5 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 shadow-md hover:shadow-lg transition-all duration-200">
                         Konfirmasi
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Modal (moved out so it can display independently of approvalModal) -->
+        <div id="previewModal" class="fixed inset-0 bg-black/30 hidden z-50 flex items-center justify-center p-4">
+            <div
+                class="bg-white rounded-2xl shadow-xl border border-gray-200 max-w-3xl w-full animate-in fade-in zoom-in-95 duration-300 overflow-auto max-h-[80vh]">
+                <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-red-600 to-red-700">
+                    <h3 class="text-lg font-bold text-white">Pratinjau Surat</h3>
+                </div>
+                <div class="p-6" id="previewContent">
+                    <div class="text-sm text-gray-500">Memuat pratinjau...</div>
+                </div>
+                <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50">
+                    <button onclick="closePreviewModal()"
+                        class="px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100">Tutup</button>
+                    <button onclick="openApprovalModalFromPreview()"
+                        class="px-4 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Setujui
+                        (Lanjut)</button>
                 </div>
             </div>
         </div>
@@ -385,10 +412,15 @@
                 }
             }
 
-            // Close modal when clicking outside
+            // Close modals when clicking outside
             document.getElementById('approvalModal')?.addEventListener('click', (e) => {
                 if (e.target.id === 'approvalModal') {
                     closeApprovalModal();
+                }
+            });
+            document.getElementById('previewModal')?.addEventListener('click', (e) => {
+                if (e.target.id === 'previewModal') {
+                    closePreviewModal();
                 }
             });
             // Auto-open modal when directed from notification link: ?type=cuti&id=123
@@ -416,5 +448,80 @@
                     console.debug('auto-open modal failed', e);
                 }
             })();
+
+            // Preview modal functions for direktur
+            async function openPreviewModal(requestId, type) {
+                try {
+                    const modal = document.getElementById('previewModal');
+                    const content = document.getElementById('previewContent');
+                    content.innerHTML = '<div class="text-sm text-gray-500">Memuat pratinjau...</div>';
+                    modal.classList.remove('hidden');
+                    const res = await fetch(`/direktur/api/${type}/${requestId}/preview`, {
+                        credentials: 'same-origin'
+                    });
+                    if (!res.ok) {
+                        content.innerHTML = '<div class="text-sm text-red-500">Gagal memuat pratinjau.</div>';
+                        return;
+                    }
+                    const data = await res.json();
+                    if (data && data.ok && data.html) {
+                        content.innerHTML = data.html;
+                        // store current preview context so 'Setujui (Lanjut)' can open approval modal
+                        window._previewContext = {
+                            id: requestId,
+                            type
+                        };
+                    } else {
+                        content.innerHTML = '<div class="text-sm text-red-500">Pratinjau tidak tersedia.</div>';
+                    }
+                } catch (e) {
+                    console.error('openPreviewModal error', e);
+                    const content = document.getElementById('previewContent');
+                    if (content) content.innerHTML =
+                        '<div class="text-sm text-red-500">Terjadi kesalahan saat memuat pratinjau.</div>';
+                }
+            }
+
+            function closePreviewModal() {
+                const modal = document.getElementById('previewModal');
+                if (modal) modal.classList.add('hidden');
+            }
+
+            function openApprovalModalFromPreview() {
+                if (!window._previewContext) {
+                    alert('Tidak ada konteks pratinjau');
+                    return;
+                }
+                // find button with matching id and trigger approval modal
+                const btn = document.querySelector(`[data-request-id="${window._previewContext.id}"]`);
+                if (btn) {
+                    const employee = btn.getAttribute('data-employee-name') || '';
+                    const jenis = btn.getAttribute('data-jenis') || '';
+                    const tanggal = btn.getAttribute('data-tanggal') || '';
+                    closePreviewModal();
+                    openApprovalModal(employee, jenis, tanggal, 'Approve', parseInt(window._previewContext.id), window
+                        ._previewContext.type);
+                } else {
+                    alert('Tidak menemukan data request untuk membuka modal persetujuan');
+                }
+            }
+
+            // Delegated click handler for Preview buttons
+            document.addEventListener('click', function(e) {
+                try {
+                    // ensure we have an Element to call closest on (handle text node clicks)
+                    const targetEl = (e.target && e.target.nodeType === 3) ? e.target.parentElement : e.target;
+                    const btn = targetEl && targetEl.closest ? targetEl.closest('.btn-preview') : null;
+                    if (btn) {
+                        const id = btn.getAttribute('data-request-id');
+                        const type = btn.getAttribute('data-request-type');
+                        if (id && type) {
+                            openPreviewModal(id, type);
+                        }
+                    }
+                } catch (err) {
+                    console.error('preview click handler', err);
+                }
+            });
         </script>
 </x-app-layout>

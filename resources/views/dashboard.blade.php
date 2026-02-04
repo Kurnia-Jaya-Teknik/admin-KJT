@@ -197,29 +197,14 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
                                 </div>
-                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">Aktif</span>
+                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">+12%</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $totalKaryawan }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ number_format($totalKaryawan) }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
                         </div>
                     </div>
 
-                    <!-- Card 2: Hadir Hari Ini -->
-                    <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-green-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div class="absolute inset-0 bg-gradient-to-br from-green-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-100/60 to-green-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-green-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">{{ $persentaseHadirHariIni }}%</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $hadirHariIni }}</h3>
-                            <p class="text-sm text-gray-600 font-medium">Hadir Hari Ini</p>
-                        </div>
-                    </div>
+                    <!-- Kehadiran card removed per user request -->
 
                     <!-- Card 3: Cuti Pending -->
                     <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-amber-100/60 transition-all duration-300 hover:-translate-y-1">
@@ -284,7 +269,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">Approved</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $totalApproved }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $pengajuanDisetujui }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Pengajuan Disetujui</p>
                         </div>
                     </div>
@@ -301,7 +286,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">Siap</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $suratDisetujui }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $suratDiterbitkan }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Surat Siap Dikirim</p>
                         </div>
                     </div>
@@ -316,10 +301,10 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </div>
-                                <span class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Ditolak</span>
+                                <span class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Revisi</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $totalRejected }}</h3>
-                            <p class="text-sm text-gray-600 font-medium">Pengajuan Ditolak</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $revisiCount }}</h3>
+                            <p class="text-sm text-gray-600 font-medium">Pengajuan Perlu Revisi</p>
                         </div>
                     </div>
                 @else
@@ -406,13 +391,28 @@
                         <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
                             <div class="absolute inset-0 bg-gradient-to-br from-rose-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="relative">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Pengajuan per Bulan (6 Bulan Terakhir)</h3>
-                                <div class="flex items-end justify-between h-56 gap-3 mb-6 px-2 relative border-b-2 border-gray-200/50 pb-4">
-                                    <!-- Agustus -->
-                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
-                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
-                                            <span>80</span>
-                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Pengajuan per Bulan (6 Bulan
+                                    Terakhir)</h3>
+                                <div
+                                    class="flex items-end justify-between h-56 gap-3 mb-6 px-2 relative border-b-2 border-gray-200/50 pb-4">
+                                    @foreach ($pengajuanPerBulan as $entry)
+                                        @php
+                                            $height = $maxPengajuan
+                                                ? floor(($entry['count'] / $maxPengajuan) * 110)
+                                                : 20;
+                                        @endphp
+                                        <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
+                                            <div
+                                                class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
+                                                <span>{{ $entry['count'] }}</span>
+                                                <div
+                                                    class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600">
+                                                </div>
+                                            </div>
+                                            <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer"
+                                                style="height: {{ $height }}px;"></div>
+                                            <span
+                                                class="text-xs text-gray-600 font-medium">{{ $entry['label'] }}</span>
                                         </div>
                                         <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 80px;"></div>
                                         <span class="text-xs text-gray-600 font-medium">Agu</span>
@@ -606,42 +606,12 @@
                 @elseif(Auth::user()->role === 'admin_hrd')
                     <!-- Charts Section - Admin HRD -->
                     <div class="lg:col-span-2 space-y-6">
-                        <!-- Kehadiran per Divisi - Soft Gradient Vertical Bar Chart -->
-                        <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
-                            <div class="absolute inset-0 bg-gradient-to-br from-blue-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <!-- Kehadiran per Divisi removed per user request -->
+                        <div
+                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
                             <div class="relative">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-6">Kehadiran per Divisi (Hari Ini)</h3>
-
-                                <!-- Chart Container -->
-                                <div class="flex gap-4 items-end border-l-2 border-b-2 border-gray-200/50 pl-4 pb-4 pt-2"
-                                    style="height: 300px;">
-                                    @php
-                                        $colors = ['slate', 'green', 'amber', 'indigo', 'cyan'];
-                                        $colorIndex = 0;
-                                        $maxHadir = collect($chartKehadiran)->max(fn($item) => $item['total']);
-                                    @endphp
-                                    @foreach($chartKehadiran as $divisi => $data)
-                                        @php
-                                            $heightPercent = ($data['total'] > 0) ? ($data['hadir'] / $data['total']) * 100 : 0;
-                                            $heightPx = max(40, ($heightPercent / 100) * 240); // Scale to 240px max
-                                            $color = $colors[$colorIndex % count($colors)];
-                                            $colorIndex++;
-                                        @endphp
-                                        <!-- {{ $divisi }} -->
-                                        <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                            <div class="w-full bg-gradient-to-t from-{{ $color }}-400/70 to-{{ $color }}-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-{{ $color }}-400/90 group-hover/bar:to-{{ $color }}-300/70 transition-all duration-300" style="height: {{ $heightPx }}px;"></div>
-                                            <div class="text-center">
-                                                <p class="text-xs font-semibold text-gray-700 mb-0.5">{{ Str::limit($divisi, 15) }}</p>
-                                                <p class="text-sm font-bold bg-gradient-to-r from-{{ $color }}-500 to-{{ $color }}-400 bg-clip-text text-transparent">{{ $data['hadir'] }}/{{ $data['total'] }}</p>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                                <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
-                                    <span class="text-sm font-medium text-gray-600">Total Kehadiran Hari Ini</span>
-                                    <span class="text-lg font-bold bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent">{{ $hadirHariIni }}/{{ $totalKaryawan }} ({{ $persentaseHadirHariIni }}%)</span>
-                                </div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Kehadiran dihapus</h3>
+                                <p class="text-sm text-gray-600">Laporan kehadiran telah dipindahkan; gunakan menu <strong>Ijin Sakit</strong> untuk pengajuan ketidakhadiran akibat sakit.</p>
                             </div>
                         </div>
 
@@ -672,10 +642,11 @@
                                         </div>
                                     @endforeach
                                 </div>
+                                </div>
 
                                 <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
                                     <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
-                                    <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">{{ collect($pengajuanPerBulan)->sum() }} pengajuan</span>
+                                    <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">{{ $totalPengajuan6 }} pengajuan</span>
                                 </div>
                             </div>
                         </div>
@@ -694,7 +665,8 @@
                                     <div id="statusTotal"
                                         class="absolute inset-0 m-auto flex flex-col items-center justify-center z-10 pointer-events-none">
                                         <div class="bg-white rounded-full px-3 py-2 shadow-sm text-center">
-                                            <div class="text-lg font-bold text-gray-800 leading-none">89</div>
+                                            <div class="text-lg font-bold text-gray-800 leading-none">
+                                                {{ $statusTotal }}</div>
                                             <div class="text-xs text-gray-500 -mt-0.5">Total</div>
                                         </div>
                                     </div>
@@ -707,7 +679,7 @@
                                             <div class="w-3 h-3 rounded-full bg-green-600"></div>
                                             <span class="text-sm text-gray-700">Disetujui</span>
                                         </div>
-                                        <div id="countApproved" class="text-sm font-bold text-gray-800">{{ $totalApproved }}</div>
+                                        <div id="countApproved" class="text-sm font-bold text-gray-800">{{ $statusApproved }}</div>
                                     </div>
 
                                     <div class="flex items-center justify-between mb-3">
@@ -715,7 +687,7 @@
                                             <div class="w-3 h-3 rounded-full bg-yellow-600"></div>
                                             <span class="text-sm text-gray-700">Menunggu</span>
                                         </div>
-                                        <div id="countPending" class="text-sm font-bold text-gray-800">{{ $totalPendingAll }}</div>
+                                        <div id="countPending" class="text-sm font-bold text-gray-800">{{ $statusPending }}</div>
                                     </div>
 
                                     <div class="flex items-center justify-between">
@@ -723,7 +695,7 @@
                                             <div class="w-3 h-3 rounded-full bg-red-600"></div>
                                             <span class="text-sm text-gray-700">Ditolak</span>
                                         </div>
-                                        <div id="countRejected" class="text-sm font-bold text-gray-800">{{ $totalRejected }}</div>
+                                        <div id="countRejected" class="text-sm font-bold text-gray-800">{{ $statusRejected }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -732,9 +704,9 @@
                             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                             <script>
                                 (function() {
-                                    const approved = {{ $totalApproved }};
-                                    const pending = {{ $totalPendingAll }};
-                                    const rejected = {{ $totalRejected }};
+                                    const approved = {{ $statusApproved ?? 0 }};
+                                    const pending = {{ $statusPending ?? 0 }};
+                                    const rejected = {{ $statusRejected ?? 0 }};
                                     const total = approved + pending + rejected;
                                     // set total display (safe selector fallback)
                                     const totalEl = document.getElementById('statusTotal');
@@ -805,118 +777,17 @@
                 @else
                     <!-- Charts Section - Karyawan (Personal) - Soft Modern Design -->
                     <div class="lg:col-span-2 space-y-5">
-                        <!-- Personal Attendance Chart - Monthly with Dummy Data -->
-                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
-                            <div class="flex items-center justify-between mb-5">
-                                <h3 class="text-base font-semibold text-gray-800">Kehadiran Saya - Januari 2026</h3>
-                                <span class="text-xs font-medium text-pink-600 bg-pink-50 px-2.5 py-1 rounded-full">20 / 22 Hari</span>
+                        <!-- Personal Attendance chart removed per user request -->
+                        {{-- <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-base font-semibold text-gray-800">Ijin Sakit Saya</h3>
+                                <a href="{{ route('karyawan.ijin-sakit') }}"
+                                    class="text-xs font-medium text-red-600 bg-red-50 px-2.5 py-1 rounded-full">Ajukan
+                                    Ijin Sakit</a>
                             </div>
-                            <div class="h-48 flex items-end justify-between gap-1 px-1 overflow-x-auto">
-                                <!-- Data dummy untuk 22 hari kerja -->
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-red-600 rounded-t-lg transition-all duration-300 hover:bg-red-700" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">1</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-red-600 rounded-t-lg transition-all duration-300 hover:bg-red-700" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">2</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-slate-400 rounded-t-lg transition-all duration-300 hover:bg-slate-500" style="height: 5%; min-height: 4px;" title="Tidak Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">3</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-red-600 rounded-t-lg transition-all duration-300 hover:bg-red-700" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">4</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">5</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">6</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">7</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-yellow-400/70 to-yellow-300/50 rounded-t-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400" style="height: 50%;" title="Setengah Hari"></div>
-                                    <span class="text-xs text-gray-600 font-medium">8</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">9</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">10</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">11</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">12</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">13</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">14</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">15</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">16</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">17</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">18</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">19</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">20</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">21</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-1.5 min-w-[20px]">
-                                    <div class="w-full bg-gradient-to-t from-pink-400/80 to-pink-300/60 rounded-t-lg transition-all duration-300 hover:from-pink-500 hover:to-pink-400" style="height: 100%;" title="Hadir"></div>
-                                    <span class="text-xs text-gray-600 font-medium">22</span>
-                                </div>
-                            </div>
-                            <div class="mt-5 grid grid-cols-3 gap-4 pt-4 border-t border-gray-100">
-                                <div class="text-center">
-                                    <p class="text-gray-500 mb-1 text-xs font-medium">Hadir</p>
-                                    <p class="font-semibold text-lg text-red-600">20</p>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-gray-500 mb-1 text-xs font-medium">Tidak Hadir</p>
-                                    <p class="font-semibold text-lg text-slate-600">1</p>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-gray-500 mb-1 text-xs font-medium">Setengah Hari</p>
-                                    <p class="font-semibold text-lg text-yellow-600">1</p>
-                                </div>
-                            </div>
-                        </div>
+                            <p class="text-sm text-gray-600">Grafik kehadiran dihapus. Gunakan tombol di atas untuk
+                                mengajukan ijin sakit atau lihat riwayat pengajuan.</p>
+                        </div> --}}
 
                         <!-- Pengajuan Cuti Chart - 6 Bulan Terakhir -->
                         <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
@@ -1288,8 +1159,10 @@
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
-                                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                             </svg>
                                         </div>
                                         <span class="text-xs font-medium text-gray-600">Surat Terbit</span>
@@ -2289,11 +2162,162 @@
 
                 <!-- Quick Actions & Info -->
                 @if (Auth::user()->role !== 'karyawan')
-                <div class="space-y-6">
-                    <!-- Quick Actions -->
-                    <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 overflow-hidden">
-                        <div class="px-5 py-4 border-b border-gray-100/50 bg-gradient-to-r from-purple-50/30 to-pink-50/30">
-                            <h3 class="text-sm font-semibold text-gray-800">Aksi Cepat</h3>
+                    <div class="space-y-6">
+                        <!-- Quick Actions -->
+                        <div
+                            class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 overflow-hidden">
+                            <div
+                                class="px-5 py-4 border-b border-gray-100/50 bg-gradient-to-r from-purple-50/30 to-pink-50/30">
+                                <h3 class="text-sm font-semibold text-gray-800">Aksi Cepat</h3>
+                            </div>
+                            <div class="divide-y divide-gray-100/50">
+                                <!-- Quick Actions - Direktur -->
+                                @if (Auth::user()->role === 'direktur')
+                                    <a href="{{ route('direktur.persetujuan-cuti-lembur') }}"
+                                        class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-5 h-5 text-gray-700" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-800">Review Pengajuan</p>
+                                                <p class="text-xs text-gray-600">{{ $pendingApprovals ?? 0 }}
+                                                    pengajuan menunggu</p>
+                                            </div>
+                                        </div>
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+
+                                    <a href="{{ route('direktur.laporan') }}"
+                                        class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-5 h-5 text-gray-700" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zm10-3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1v-3a1 1 0 00-1-1h-3z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-800">Laporan Bulanan</p>
+                                                <p class="text-xs text-gray-600">SDM, kehadiran & pengajuan</p>
+                                            </div>
+                                        </div>
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+
+                                    <a href="{{ route('direktur.ringkasan-karyawan') }}"
+                                        class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-5 h-5 text-gray-700" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-800">Ringkasan Karyawan</p>
+                                                <p class="text-xs text-gray-600">Data 156 karyawan</p>
+                                            </div>
+                                        </div>
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                @elseif(Auth::user()->role === 'admin_hrd')
+                                    <!-- Quick Actions - Admin HRD -->
+                                    <a href="{{ route('admin.karyawan') }}"
+                                        class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-5 h-5 text-blue-600" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-800">Kelola Karyawan</p>
+                                                <p class="text-xs text-gray-600">156 karyawan aktif</p>
+                                            </div>
+                                        </div>
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+
+                                    <a href="{{ route('admin.surat') }}"
+                                        class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-5 h-5 text-purple-600" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-800">Kelola Surat</p>
+                                                <p class="text-xs text-gray-600">5 surat menunggu</p>
+                                            </div>
+                                        </div>
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+
+                                    <a href="{{ route('admin.template') }}"
+                                        class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-5 h-5 text-green-600" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-800">Template Surat</p>
+                                                <p class="text-xs text-gray-600">Kelola template</p>
+                                            </div>
+                                        </div>
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                @endif
+                            </div>
                         </div>
                         <div class="divide-y divide-gray-100/50">
                             <!-- Quick Actions - Direktur -->

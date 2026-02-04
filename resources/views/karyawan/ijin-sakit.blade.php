@@ -271,6 +271,78 @@
 
 
 
+                // Fetch riwayat pengajuan ijin sakit
+                async function fetchRiwayat(page = 1) {
+                    const container = document.getElementById('riwayatList');
+                    const paginationEl = document.getElementById('riwayatPagination');
+
+                    if (!container) return;
+
+                    try {
+                        await ensureApiToken();
+                        const headers = getAuthHeaders();
+                        const res = await fetch(apiPath(`/api/employee/requests?page=${page}&type=Ijin%20Sakit`), {
+                            credentials: 'same-origin',
+                            headers
+                        });
+                        if (!res.ok) throw new Error('Gagal memuat riwayat');
+
+                        const data = await res.json();
+                        const requests = data.data || [];
+                        const pagination = data.meta || {};
+
+                        // render items
+                        container.innerHTML = requests.map(i => {
+                            const itemId = 'riwayat-item-' + (i.id || Math.random().toString(36).slice(2, 9));
+                            const statusColor = i.status === 'disetujui' ? 'green' : i.status === 'menunggu' ? 'yellow' : 'red';
+                            const statusLabel = i.status === 'disetujui' ? 'Disetujui' : i.status === 'menunggu' ? 'Menunggu' : 'Ditolak';
+                            const tanggalMulai = i.tanggal_mulai ? new Date(i.tanggal_mulai).toLocaleDateString('id-ID') : '-';
+                            const tanggalSelesai = i.tanggal_selesai ? new Date(i.tanggal_selesai).toLocaleDateString('id-ID') : '-';
+
+                            return `<div id="${itemId}" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 p-5 hover:shadow-md transition-all duration-300 group">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-50/60 to-red-50/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-5 h-5 text-red-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-start justify-between mb-1.5">
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-800">Ijin Sakit</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">${tanggalMulai} - ${tanggalSelesai}</p>
+                                            </div>
+                                            <span class="px-2.5 py-0.5 bg-${statusColor}-50/70 text-${statusColor}-600/80 text-xs font-medium rounded-full shadow-sm flex-shrink-0 ml-2">${statusLabel}</span>
+                                        </div>
+                                        <p class="text-xs text-gray-400 mb-2">Alasan: <strong class="text-gray-600">${i.alasan || '-'}</strong></p>
+                                        <button class="text-xs text-${statusColor}-600/90 hover:text-${statusColor}-700 font-medium transition-colors">Lihat Detail →</button>
+                                    </div>
+                                </div>
+                            </div>`;
+                        }).join('');
+
+                        // render pagination
+                        if (pagination && pagination.last_page > 1) {
+                            const buttons = [];
+                            for (let p = 1; p <= pagination.last_page; p++) {
+                                buttons.push(`<button class="px-3 py-2 rounded-xl ${p === page ? 'bg-gradient-to-r from-red-500 to-green-400 text-white shadow-sm' : 'border border-gray-200/60 text-gray-600 hover:bg-white/80'} transition-all duration-300 text-sm" data-page="${p}">${p}</button>`);
+                            }
+                            paginationEl.innerHTML = buttons.join('');
+                            document.querySelectorAll('#riwayatPagination button').forEach(b => b.addEventListener('click', () => fetchRiwayat(parseInt(b.getAttribute('data-page')))));
+                        } else {
+                            paginationEl.innerHTML = '';
+                        }
+                    } catch (e) {
+                        console.debug('fetchRiwayat error', e);
+                        container.innerHTML = '<div class="px-6 py-4 text-xs text-red-400">Gagal memuat riwayat.</div>';
+                    }
+                }
+
+                // Load riwayat on page load
+                if (document.getElementById('riwayatList')) {
+                    fetchRiwayat();
+                }
+
                 // form submit handler
                 const form = document.getElementById('ijinForm');
                 if (form) {
@@ -332,6 +404,8 @@
                             form.reset();
                             // reset filename label
                             const buktiName = document.getElementById('buktiName'); if (buktiName) buktiName.textContent = 'Belum ada file dipilih';
+                            // refresh riwayat
+                            await fetchRiwayat();
                         } catch (err) {
                             console.error('submit ijin error', err);
                             const msgEl = document.getElementById('ijinAlert'); if (msgEl) { msgEl.textContent = 'Terjadi kesalahan sistem.'; msgEl.classList.remove('hidden'); msgEl.classList.add('bg-red-50','border','border-red-200','text-red-700'); }

@@ -82,7 +82,8 @@
                     <div id="cutiReportPageBody"
                         class="overflow-x-auto bg-white rounded-md p-3 border border-gray-200 min-h-[120px]">
                         <div class="text-sm text-gray-600">Belum ada data. Silakan pilih periode lalu klik
-                            <strong>Lihat</strong>.</div>
+                            <strong>Lihat</strong>.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -181,7 +182,8 @@
                         });
                     }
                 } catch (e) {
-                    /* ignore */ }
+                    /* ignore */
+                }
 
                 if (month || year || periodBy) {
                     setTimeout(() => window.openCutiReport(), 120);
@@ -233,10 +235,12 @@
                     alert('Tidak ada data untuk diexport.');
                     return;
                 }
-                const headers = ['No', 'Nama', 'Divisi', 'Jenis', 'Tanggal Mulai', 'Tanggal Selesai', 'Durasi (hari)', 'Pelimpahan',
+                const headers = ['No', 'Nama', 'Divisi', 'Jenis', 'Tanggal Mulai', 'Tanggal Selesai', 'Durasi (hari)',
+                    'Pelimpahan',
                     'Telp', 'Alasan', 'Tanggal Persetujuan', 'Disetujui Oleh'
                 ];
-                const rows = data.map((r, idx) => [idx + 1, r.user?.name || '', r.user?.departemen || '', r.jenis || '', r.tanggal_mulai || '', r
+                const rows = data.map((r, idx) => [idx + 1, r.user?.name || '', r.user?.departemen || '', r.jenis || '', r
+                    .tanggal_mulai || '', r
                     .tanggal_selesai || '', r.durasi_hari || '', (r.dilimpahkan_ke || []).map(x => x.name).join('; '), r
                     .telp || '', (r.alasan || '').replace(/\n/g, ' '), r.tanggal_persetujuan || '', r.disetujui_oleh
                     ?.name || ''
@@ -287,7 +291,8 @@
                 }
                 let html =
                     '<div class="overflow-x-auto"><table class="min-w-full text-sm border-collapse" style="border:1px solid #e5e7eb; table-layout:fixed">';
-                html += '<colgroup><col style="width:40px"><col style="width:140px"><col style="width:120px"><col style="width:140px"><col style="width:160px"><col style="width:70px"><col style="width:140px"><col style="width:120px"><col></colgroup>';
+                html +=
+                    '<colgroup><col style="width:40px"><col style="width:140px"><col style="width:120px"><col style="width:140px"><col style="width:160px"><col style="width:70px"><col style="width:140px"><col style="width:120px"><col></colgroup>';
                 html +=
                     '<thead><tr class="bg-gray-100 text-xs text-gray-700"><th class="px-3 py-2 border">No</th><th class="px-3 py-2 border">Nama</th><th class="px-3 py-2 border">Divisi</th><th class="px-3 py-2 border">Jenis</th><th class="px-3 py-2 border">Tanggal</th><th class="px-3 py-2 border">Durasi</th><th class="px-3 py-2 border">Pelimpahan</th><th class="px-3 py-2 border">Telp</th><th class="px-3 py-2 border">Keterangan</th></tr></thead><tbody>';
                 data.forEach((row, idx) => {
@@ -325,13 +330,14 @@
                 } else {
                     html.push(
                         '<table><thead><tr><th>No</th><th>Nama</th><th>Divisi</th><th>Jenis</th><th>Tanggal</th><th>Durasi</th><th>Pelimpahan</th></tr></thead><tbody>'
-                        );
+                    );
                     data.forEach((r, i) => {
                         const pel = (r.dilimpahkan_ke || []).map(x => x.name + (x.departemen ? ' — ' + x.departemen :
                             '')).join(', ');
                         const tanggal = (r.tanggal_mulai || '') + (r.tanggal_selesai ? (' — ' + r.tanggal_selesai) :
-                        '');
-                        html.push('<tr><td>' + (i + 1) + '</td><td>' + (r.user?.name || '') + '</td><td>' + (r.user?.departemen || '') + '</td><td>' + (r.jenis ||
+                            '');
+                        html.push('<tr><td>' + (i + 1) + '</td><td>' + (r.user?.name || '') + '</td><td>' + (r.user
+                                ?.departemen || '') + '</td><td>' + (r.jenis ||
                                 '') + '</td><td>' + tanggal + '</td><td>' + (r.durasi_hari || '') + '</td><td>' +
                             pel + '</td></tr>');
                     });

@@ -28,7 +28,18 @@ class Surat extends Model
         'generated_file_path',
         'generated_file_url',
         'generated_mime',
+        // reference to source request (e.g. Cuti or Lembur)
+        'referensi_type',
+        'referensi_id',
+        // sending metadata
+        'dikirim_oleh',
+        'dikirim_at',
     ];
+
+    public function sentBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'dikirim_oleh');
+    }
 
     protected $casts = [
         'tanggal_surat' => 'date',

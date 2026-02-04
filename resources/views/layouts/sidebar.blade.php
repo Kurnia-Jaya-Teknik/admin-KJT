@@ -72,6 +72,15 @@
                     <span>Pengajuan Magang</span>
                 </a>
 
+                <a href="{{ route('admin.lembur') }}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.lembur') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Pengajuan Lembur</span>
+                </a>
+
                 <a href="{{ route('admin.surat') }}"
                     class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.surat') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -209,8 +218,8 @@
                     <span>Dashboard</span>
                 </a>
 
-                <a href="{{ route('karyawan.absensi') }}"
-                    class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('karyawan.absensi') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
+                <a href="{{ route('karyawan.ijin-sakit') }}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('karyawan.ijin-sakit') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />

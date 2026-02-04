@@ -35,8 +35,11 @@ Route::middleware([
         Route::get('/persetujuan-surat', [DirekturController::class, 'persetujuanSurat'])->name('persetujuan-surat');
         Route::get('/ringkasan-karyawan', [DirekturController::class, 'ringkasanKaryawan'])->name('ringkasan-karyawan');
         Route::get('/laporan', [DirekturController::class, 'laporan'])->name('laporan');
-        Route::get('/laporan/cuti', function() { return view('direktur.laporan-cuti'); })->name('laporan.cuti');
-        Route::get('/laporan/cuti/pdf', function() { return view('direktur.laporan-cuti'); })->name('laporan.cuti.pdf');
+        // Dedicated cuti report page
+        Route::get('/laporan/cuti', [DirekturController::class, 'laporanCuti'])->name('laporan.cuti');
+        Route::get('/laporan/cuti/pdf', [DirekturController::class, 'laporanCutiPdf'])->name('laporan.cuti.pdf');
+        Route::get('/laporan/absensi', [DirekturController::class, 'laporanAbsensi'])->name('laporan.absensi');
+        Route::get('/laporan/lembur', [DirekturController::class, 'laporanLembur'])->name('laporan.lembur');
         Route::get('/riwayat-persetujuan', [DirekturController::class, 'riwayatPersetujuan'])->name('riwayat-persetujuan');
         
         // Magang surat request dari direktur
@@ -45,6 +48,8 @@ Route::middleware([
         // Director approval endpoints (AJAX calls from view) - type harus di URL untuk match method signature
         Route::post('/api/{type}/{id}/approve', [\App\Http\Controllers\ApprovalController::class, 'approve'])->name('approve');
         Route::post('/api/{type}/{id}/reject', [\App\Http\Controllers\ApprovalController::class, 'reject'])->name('reject');
+        // Preview pengajuan (render surat template preview for direktur before approving)
+        Route::get('/api/{type}/{id}/preview', [\App\Http\Controllers\ApprovalController::class, 'preview'])->name('preview');
     });
 
     // Karyawan Routes
@@ -54,8 +59,17 @@ Route::middleware([
         })->name('absensi');
         
         Route::get('/pengajuan-cuti', function () {
-            return view('karyawan.pengajuan-cuti');
+            $employees = \App\Models\User::with('departemen')->where('role', 'karyawan')->where('id', '!=', auth()->id())->orderBy('name')->get();
+            $departemens = \App\Models\Departemen::whereIn('kode', ['mekanik','elektrik','cleaning'])->orderBy('nama')->get();
+            return view('karyawan.pengajuan-cuti', compact('employees', 'departemens'));
         })->name('pengajuan-cuti');
+
+        // Dedicated Ijin Sakit page (separate from Pengajuan Cuti)
+        Route::get('/ijin-sakit', function () {
+            $employees = \App\Models\User::with('departemen')->where('role', 'karyawan')->where('id', '!=', auth()->id())->orderBy('name')->get();
+            $departemens = \App\Models\Departemen::whereIn('kode', ['mekanik','elektrik','cleaning'])->orderBy('nama')->get();
+            return view('karyawan.ijin-sakit', compact('employees', 'departemens'));
+        })->name('ijin-sakit');
         
         Route::get('/pengajuan-lembur', function () {
             return view('karyawan.pengajuan-lembur');
@@ -139,10 +153,17 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
             return view('admin.surat');
         })->name('surat');
 
+        // Admin surat detail (AJAX helper + detail view)
+        Route::get('/surat/{id}', [\App\Http\Controllers\Admin\SuratController::class, 'show']);
+
         // Admin Surat actions (approve/reject/delete)
         Route::post('/surat/{id}/approve', [\App\Http\Controllers\Admin\SuratController::class, 'approve'])->name('surat.approve');
         Route::post('/surat/{id}/reject', [\App\Http\Controllers\Admin\SuratController::class, 'reject'])->name('surat.reject');
         Route::delete('/surat/{id}', [\App\Http\Controllers\Admin\SuratController::class, 'destroy'])->name('surat.destroy');
+
+        // Send surat (after director approved and admin review)
+        Route::get('/surat/pending/list', [\App\Http\Controllers\Admin\SuratController::class, 'pendingList']);
+        Route::post('/surat/{id}/kirim', [\App\Http\Controllers\Admin\SuratController::class, 'kirim'])->name('surat.kirim');
 
         // Create surat
         Route::post('/surat', [\App\Http\Controllers\Admin\SuratController::class, 'store'])->name('surat.store');
@@ -189,4 +210,22 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
             return view('admin.profil');
         })->name('profil');
     });
+});
+
+// Temporary route to reset OPcache and clear caches (restricted to local requests)
+Route::get('/_opcache_reset', function () {
+    // allow only local/in-development access
+    if (!app()->environment('local') && request()->ip() !== '127.0.0.1' && request()->ip() !== '::1') {
+        abort(403);
+    }
+
+    if (function_exists('opcache_reset')) {
+        opcache_reset();
+    }
+
+    // clear Laravel caches
+    \Artisan::call('view:clear');
+    \Artisan::call('optimize:clear');
+
+    return response('OPcache reset and caches cleared', 200);
 });

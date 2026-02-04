@@ -19,6 +19,7 @@ class Cuti extends Model
         'tanggal_selesai',
         'durasi_hari',
         'alasan',
+        'dilimpahkan_ke',
         'status',
         'keterangan_persetujuan',
         'disetujui_oleh',
@@ -29,6 +30,7 @@ class Cuti extends Model
         'tanggal_mulai' => 'date',
         'tanggal_selesai' => 'date',
         'tanggal_persetujuan' => 'datetime',
+        'dilimpahkan_ke' => 'array',
     ];
 
     public function user(): BelongsTo
