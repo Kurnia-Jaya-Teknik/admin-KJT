@@ -435,7 +435,12 @@
                 } else {
                     const text = await response.text();
                     console.error('Non-JSON response (text):', text);
+<<<<<<< HEAD
                     alert('❌ Server returned non-JSON response (status ' + response.status + ').\nCheck console (Network & Console) for details.');
+=======
+                    alert('❌ Server returned non-JSON response (status ' + response.status +
+                        ').\nCheck console (Network & Console) for details.');
+>>>>>>> kelola-karyawan-merge
                     return;
                 }
 
@@ -462,18 +467,34 @@
                         const roleEl = row.querySelector('td:nth-child(3)');
                         if (roleEl) {
                             if (updatedUser.role === 'admin_hrd') {
+<<<<<<< HEAD
                                 roleEl.innerHTML = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Admin HRD</span>';
                             } else if (updatedUser.role === 'magang') {
                                 roleEl.innerHTML = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Magang</span>';
                             } else {
                                 roleEl.innerHTML = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Karyawan</span>';
+=======
+                                roleEl.innerHTML =
+                                    '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Admin HRD</span>';
+                            } else if (updatedUser.role === 'magang') {
+                                roleEl.innerHTML =
+                                    '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Magang</span>';
+                            } else {
+                                roleEl.innerHTML =
+                                    '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Karyawan</span>';
+>>>>>>> kelola-karyawan-merge
                             }
                         }
 
                         // divisi
                         const divisiEl = row.querySelector('td:nth-child(4)');
                         if (divisiEl) {
+<<<<<<< HEAD
                             divisiEl.textContent = (updatedUser.departemen && updatedUser.departemen.nama) ? updatedUser.departemen.nama : 'Belum ada divisi';
+=======
+                            divisiEl.textContent = (updatedUser.departemen && updatedUser.departemen.nama) ?
+                                updatedUser.departemen.nama : 'Belum ada divisi';
+>>>>>>> kelola-karyawan-merge
                         }
 
                         // status kepegawaian
@@ -481,6 +502,7 @@
                         if (statusEl) {
                             if (updatedUser.role === 'karyawan') {
                                 if (updatedUser.status_kepegawaian === 'PKWTT') {
+<<<<<<< HEAD
                                     statusEl.innerHTML = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">PKWTT</span>';
                                 } else if (updatedUser.status_kepegawaian === 'PKWT') {
                                     statusEl.innerHTML = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-800">PKWT</span>';
@@ -489,6 +511,20 @@
                                 }
                             } else {
                                 statusEl.innerHTML = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 italic">-</span>';
+=======
+                                    statusEl.innerHTML =
+                                        '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">PKWTT</span>';
+                                } else if (updatedUser.status_kepegawaian === 'PKWT') {
+                                    statusEl.innerHTML =
+                                        '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-800">PKWT</span>';
+                                } else {
+                                    statusEl.innerHTML =
+                                        '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 italic">-</span>';
+                                }
+                            } else {
+                                statusEl.innerHTML =
+                                    '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 italic">-</span>';
+>>>>>>> kelola-karyawan-merge
                             }
                         }
 
@@ -497,9 +533,17 @@
                             const statusCell = document.getElementById('status-' + updatedUser.id);
                             if (statusCell) {
                                 if (updatedUser.status === 'aktif') {
+<<<<<<< HEAD
                                     statusCell.innerHTML = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">✓ Aktif</span>';
                                 } else {
                                     statusCell.innerHTML = '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">✗ Nonaktif</span>';
+=======
+                                    statusCell.innerHTML =
+                                        '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">✓ Aktif</span>';
+                                } else {
+                                    statusCell.innerHTML =
+                                        '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">✗ Nonaktif</span>';
+>>>>>>> kelola-karyawan-merge
                                 }
                             }
                         }
@@ -592,7 +636,11 @@
         async function deleteUser(userId, userName) {
             if (!confirm('⚠️ PERINGATAN!\n\nHapus akun: ' + userName +
                     '?\n\nData yang akan dihapus:\n- Akun user\n- History pengajuan\n- Data terkait lainnya\n\nAksi ini TIDAK DAPAT dibatalkan!'
+<<<<<<< HEAD
                     )) {
+=======
+                )) {
+>>>>>>> kelola-karyawan-merge
                 return;
             }
 

@@ -101,4 +101,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Surat::class);
     }
+
+    public function suratKeterangan()
+    {
+        return $this->hasMany(SuratKeterangan::class);
+    }
 }

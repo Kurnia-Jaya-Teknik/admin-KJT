@@ -11,9 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('magangs', function (Blueprint $table) {
-            $table->enum('status', ['Pending', 'Surat Dibuat'])->default('Pending')->change();
-        });
+        // Skip - keep consistent status enum
     }
 
     /**
@@ -21,8 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('magangs', function (Blueprint $table) {
-            $table->enum('status', ['Pending', 'Disetujui', 'Ditolak'])->default('Pending')->change();
-        });
+        // Skip - keep consistent status enum
     }
 };

@@ -33,40 +33,28 @@
             background: white;
         }
         /* Header dengan Logo dan Kop Surat */
-        .header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            padding-bottom: 0;
+         /* ================= HEADER ================= */
+        .header-table {
+            border-bottom: 2px solid #000;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
         }
+        .header-text {
+            font-size: 9.5pt;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+
         .logo {
-            width: 60px;
-            height: auto;
-            margin-right: 12px;
-            flex-shrink: 0;
+            width: 675px;
+            display: block;
+            margin: 0 auto 4px auto;
         }
-        .company-info {
-            text-align: center;
-            width: 100%;
-        }
-        .company-info h1 {
-            font-size: 13px;
+
+        .company-name {
             font-weight: bold;
-            margin: 0;
-            line-height: 1.2;
-        }
-        .company-info p {
-            font-size: 10px;
-            margin: 2px 0 0 0;
-            color: #000;
-        }
-        .title {
-            text-align: center;
-            font-size: 13px;
-            font-weight: bold;
-            margin: 12px 0 14px 0;
+            font-size: 11pt;
         }
         /* Isi Surat */
         .letter-content {
@@ -187,13 +175,25 @@
 <body>
     <div class="page">
         <!-- Header dengan Logo dan Kop Surat -->
-        <div class="header">
-            <img src="{{ $logoPath }}" alt="Logo" class="logo">
-            <div class="company-info">
-                <h1>CV. KURNIA JAYA TEKNIK</h1>
-                <p>Mechanical, Electrical And Automation System</p>
-            </div>
-        </div>
+        <table class="header-table">
+            <tr>
+                <td colspan="2" align="center">
+                    <img src="{{ $logoPath }}" class="logo">
+                </td>
+            </tr>
+            <tr>
+                <td  width="65%" class="header-text" align="left">
+                    Dsn. Kemuning RT/RW 10/04 Ds. Gambirikuning, Kraton<br>
+                    Pasuruan – Jawa Timur, 67151<br>
+                </td>
+                <td width="35%" class="header-text" align="right">    
+                    <div style="text-align:left; display:inline-block;">
+                        Phone : 0343-5618810 <br>
+                        Email : kurniajayatek@gmail.com <br>
+                    </div>
+                </td>
+            </tr>
+        </table>
 
         <!-- Judul Surat -->
         <div class="title">FORMULIR CUTI</div>

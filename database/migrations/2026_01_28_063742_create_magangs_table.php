@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('tanggal_selesai');
             $table->integer('durasi_hari');
             $table->text('keperluan')->nullable();
-            $table->enum('status', ['Pending', 'Disetujui', 'Ditolak'])->default('Pending');
+            $table->enum('status', ['Permintaan Surat', 'Surat Selesai', 'Disetujui', 'Ditolak'])->default('Permintaan Surat');
             $table->string('phone')->nullable();
             $table->timestamps();
             

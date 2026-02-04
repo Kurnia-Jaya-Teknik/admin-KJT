@@ -57,13 +57,6 @@ class DashboardController extends Controller
 
         // Surat diterbitkan
         $suratDiterbitkan = Surat::where('status', 'Diterbitkan')->count();
-        $suratPending = Surat::where('status', 'Pending')->count();
-
-        // Overall status counts (for charts)
-        $statusApproved = Cuti::where('status','Disetujui')->count() + Lembur::where('status','Disetujui')->count() + Surat::where('status','Disetujui')->count();
-        $statusPending = Cuti::where('status','Pending')->count() + Lembur::where('status','Pending')->count() + Surat::where('status','Pending')->count();
-        $statusRejected = Cuti::where('status','Ditolak')->count() + Lembur::where('status','Ditolak')->count() + Surat::where('status','Ditolak')->count();
-        $statusTotal = $statusApproved + $statusPending + $statusRejected;
 
         // Status karyawan
         $statusKaryawan = User::where('role', 'karyawan')
@@ -165,53 +158,14 @@ class DashboardController extends Controller
             return ['nama' => $d->nama, 'present' => $present, 'total' => $total, 'pct' => $total ? round(($present/$total)*100,1) : 0];
         })->toArray();
 
-        // Lembur per departemen (bulan ini)
-        $lemburPerDepartemen = \App\Models\Departemen::orderBy('nama')->get()->map(function($d){
-            $totalJam = Lembur::whereYear('tanggal', now()->year)
-                ->whereMonth('tanggal', now()->month)
-                ->whereHas('user', function($q) use ($d){ 
-                    $q->where('departemen_id', $d->id); 
-                })
-                ->sum('durasi_jam');
-            return ['nama' => $d->nama, 'jam' => $totalJam];
-        });
-        $maxLemburHours = max(1, $lemburPerDepartemen->max('jam'));
-        $totalLemburHours = $lemburPerDepartemen->sum('jam');
-
-        // Kehadiran hari ini
-        $kehadiranToday = Absensi::whereDate('tanggal', today())->where('status','Hadir')->count();
-
         return [
             'totalKaryawan' => $totalKaryawan,
             'persentaseKehadiran' => $persentaseKehadiran,
             'pendingApprovals' => $pendingApprovals,
             'suratDiterbitkan' => $suratDiterbitkan,
-            'suratPending' => $suratPending,
             'statusKaryawan' => $statusKaryawan,
             'jenisSurat' => $jenisSurat,
             'pengajuanMenunggu' => $pengajuanMenunggu,
-            'cutiPending' => $cutiPending,
-            'lemburPending' => $lemburPending,
-            'hadirHariIni' => $hadirHariIni,
-            'persetujuanSelesai' => $persetujuanSelesai,
-            'suratDikirim' => $suratDikirim,
-            'suratDikirimBulan' => $suratDikirimBulan,
-            'tindakanDiperlukan' => $tindakanDiperlukan,
-            'pengajuanPerBulan' => $pengajuanPerBulan->toArray(),
-            'totalPengajuan6' => $totalPengajuan6,
-            'maxPengajuan' => $maxPengajuan,
-            'departemenStats' => $departemenStats,
-            'ditolakBulan' => $ditolakBulan,
-            // overall status for charts
-            'statusApproved' => $statusApproved,
-            'statusPending' => $statusPending,
-            'statusRejected' => $statusRejected,
-            'statusTotal' => $statusTotal,
-            // lembur per departemen
-            'lemburPerDepartemen' => $lemburPerDepartemen->toArray(),
-            'maxLemburHours' => $maxLemburHours,
-            'totalLemburHours' => $totalLemburHours,
-            'kehadiranToday' => $kehadiranToday,
         ];
     }
 
@@ -253,9 +207,6 @@ class DashboardController extends Controller
         $suratDisetujui = Surat::where('status', 'Disetujui')->count();
         $suratDiterbitkan = Surat::where('status', 'Diterbitkan')->count();
         $suratDitolak = Surat::where('status', 'Ditolak')->count();
-
-        // Revisi / Ditolak
-        $revisiCount = Cuti::where('status', 'Ditolak')->count() + Lembur::where('status', 'Ditolak')->count();
 
         // Surat menunggu (untuk card)
         $suratMenunggu = Surat::whereIn('status', ['Draft', 'Menunggu Persetujuan'])
@@ -379,44 +330,11 @@ class DashboardController extends Controller
         // Derive used for display convenience
         $cutiUsed = max(0, $cutiEntitlement - $cutiRemaining);
 
-        // Lembur this month for user (count)
-        $lemburBulanIni = \App\Models\Lembur::where('user_id', $user->id)
-            ->whereYear('created_at', now()->year)
-            ->whereMonth('created_at', now()->month)
-            ->count();
-
-        // Last request status (cuti or lembur)
-        $lastCuti = Cuti::where('user_id', $user->id)->latest()->first();
-        $lastLembur = Lembur::where('user_id', $user->id)->latest()->first();
-        $last = null;
-        if ($lastCuti && $lastLembur) {
-            $last = $lastCuti->created_at > $lastLembur->created_at ? $lastCuti : $lastLembur;
-        } else {
-            $last = $lastCuti ?: $lastLembur;
-        }
-        $lastRequestStatus = $last ? ($last->status ?? '') : 'Tidak Ada';
-
-        // Attendance days for current month up to today
-        $daysInMonth = now()->daysInMonth;
-        $attendanceDays = [];
-        $presentDaysThisMonth = 0;
-        for ($d = 1; $d <= now()->day; $d++) {
-            $date = now()->copy()->startOfMonth()->addDays($d - 1)->toDateString();
-            $present = \App\Models\Absensi::where('user_id', $user->id)->whereDate('tanggal', $date)->where('status', 'Hadir')->exists();
-            if ($present) $presentDaysThisMonth++;
-            $attendanceDays[] = ['day' => $d, 'present' => $present];
-        }
-
         return [
             'statusAbsensi' => $statusAbsensi,
             'sisaCuti' => $cutiRemaining,
             // use actual approved cuti sum for display
             'cutiDipakai' => $cutiDipakai,
-            'lemburBulanIni' => $lemburBulanIni,
-            'lastRequestStatus' => $lastRequestStatus,
-            'attendanceDays' => $attendanceDays,
-            'presentDaysThisMonth' => $presentDaysThisMonth,
-            'daysInMonth' => $daysInMonth,
             'cutiApprovedCount' => $cutiApprovedCount,
             'cutiPendingCount' => $cutiPendingCount,
             'cutiRejectedCount' => $cutiRejectedCount,

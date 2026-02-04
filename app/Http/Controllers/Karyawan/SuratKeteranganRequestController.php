@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Http\Controllers\Karyawan;
+
+use App\Http\Controllers\Controller;
+use App\Models\SuratKeteranganRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class SuratKeteranganRequestController extends Controller
+{
+    /**
+     * =============================
+     * SHOW REQUEST PAGE
+     * =============================
+     */
+    public function index()
+    {
+        $user = Auth::user();
+        
+        // Get user's requests
+        $requests = SuratKeteranganRequest::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('karyawan.surat-keterangan-request', compact('requests'));
+    }
+
+    /**
+     * =============================
+     * SUBMIT REQUEST
+     * =============================
+     */
+    public function store(Request $request)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'alasan' => 'required|string|max:100',
+            'keperluan' => 'required|string|max:500',
+            'tanggal_diminta' => 'required|date|after:today',
+        ], [
+            'alasan.required' => 'Alasan permintaan harus diisi',
+            'keperluan.required' => 'Keperluan surat harus diisi',
+            'tanggal_diminta.required' => 'Tanggal yang diminta harus diisi',
+            'tanggal_diminta.after' => 'Tanggal harus lebih dari hari ini',
+        ]);
+
+        try {
+            $suratRequest = SuratKeteranganRequest::create([
+                'user_id' => $user->id,
+                'alasan' => $validated['alasan'],
+                'keperluan' => $validated['keperluan'],
+                'tanggal_diminta' => $validated['tanggal_diminta'],
+                'status' => 'Pending',
+            ]);
+
+            return response()->json([
+                'ok' => true,
+                'message' => 'Permintaan surat keterangan berhasil dikirim ke admin',
+                'id' => $suratRequest->id,
+            ]);
+
+        } catch (\Throwable $e) {
+            \Log::error('Error Request Surat Keterangan: ' . $e->getMessage());
+
+            return response()->json([
+                'ok' => false,
+                'message' => 'Gagal mengirim permintaan surat keterangan',
+            ], 500);
+        }
+    }
+
+    /**
+     * =============================
+     * CANCEL REQUEST
+     * =============================
+     */
+    public function cancel($id)
+    {
+        $user = Auth::user();
+        
+        $request = SuratKeteranganRequest::findOrFail($id);
+
+        // Only user who submitted can cancel
+        if ($request->user_id !== $user->id) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Anda tidak memiliki akses',
+            ], 403);
+        }
+
+        // Only pending requests can be canceled
+        if ($request->status !== 'Pending') {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Hanya permintaan yang pending yang bisa dibatalkan',
+            ], 403);
+        }
+
+        $request->delete();
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Permintaan berhasil dibatalkan',
+        ]);
+    }
+}
+

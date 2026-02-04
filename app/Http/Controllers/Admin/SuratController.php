@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Surat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 
 class SuratController extends Controller
 {
@@ -230,99 +233,51 @@ class SuratController extends Controller
     }
 
     public function storeCutiSurat(Request $request, $cutiId)
-    {
-        $this->ensureAdminHRD();
-        
-        $cuti = \App\Models\Cuti::findOrFail($cutiId);
-        
-        // Validate cuti status
-        $validation = $this->validateCutiForSurat($cuti);
-        if ($validation !== true) {
-            return response()->json(['ok' => false, 'message' => $validation], 400);
-        }
-        
-        try {
-            // Generate surat - method terpisah agar teman bisa override
-            $result = $this->generateSuratFromCuti($cuti);
-            
-            return response()->json([
-                'ok' => true, 
-                'url' => $result['url'] ?? null,
-                'surat' => $result['surat'] ?? null
-            ]);
-            
-        } catch (\Throwable $e) {
-            \Log::error('PDF Error: ' . $e->getMessage());
-            return response()->json(['ok' => false, 'message' => $e->getMessage()], 500);
-        }
+{
+    $this->ensureAdminHRD();
+
+    $cuti = \App\Models\Cuti::findOrFail($cutiId);
+
+    if ($cuti->status !== 'Disetujui') {
+        return response()->json(['ok' => false, 'message' => 'Pengajuan cuti belum disetujui'], 400);
     }
 
-    /**
-     * Validate if cuti is ready for surat generation
-     * Teman bisa override method ini untuk validasi custom
-     */
-    protected function validateCutiForSurat($cuti)
-    {
-        if ($cuti->status !== 'Disetujui') {
-            return 'Pengajuan cuti belum disetujui';
-        }
-        
-        // Check if surat already exists
-        $existingSurat = Surat::where('referensi_type', 'App\\Models\\Cuti')
-            ->where('referensi_id', $cuti->id)
-            ->first();
-        
-        if ($existingSurat) {
-            return 'Surat sudah dibuat sebelumnya';
-        }
-        
-        $karyawan = $cuti->user;
-        if (!$karyawan) {
-            return 'Data karyawan tidak ditemukan';
-        }
-        
-        return true;
+    $karyawan = $cuti->user;
+
+    // ✅ PATH LOGO WAJIB FILE://
+    $logoPath = 'file://' . public_path('img/image.png');
+
+    $html = view('surat.cuti', [
+        'karyawan' => $karyawan,
+        'cuti' => $cuti,
+        'logoPath' => $logoPath,
+    ])->render();
+
+    // ✅ OPTIONS DOMPDF (WAJIB)
+    $options = new Options();
+    $options->set('isRemoteEnabled', true);
+    $options->set('isHtml5ParserEnabled', true);
+
+    $dompdf = new Dompdf($options);
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+
+    $fileName = 'Surat_Cuti_'.$karyawan->name.'_'.time().'.pdf';
+    $path = storage_path('app/public/generated/'.$fileName);
+
+    if (!file_exists(dirname($path))) {
+        mkdir(dirname($path), 0755, true);
     }
 
-    /**
-     * Generate surat from approved cuti
-     * 
-     * ============================================================
-     * IMPORTANT: Method ini bisa di-override oleh teman
-     * Jika teman sudah membuat custom logic, tinggal override method ini
-     * tanpa mengubah storeCutiSurat() di atas
-     * ============================================================
-     */
-    protected function generateSuratFromCuti($cuti)
-    {
-        $karyawan = $cuti->user;
-        
-        // Default implementation - Generate PDF
-        $logoPath = public_path('img/image.png');
-        
-        $html = view('surat.cuti', [
-            'karyawan' => $karyawan,
-            'cuti' => $cuti,
-            'logoPath' => $logoPath,
-        ])->render();
-        
-        $dompdf = new \Dompdf\Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        
-        $fileName = 'Surat_Cuti_'.$karyawan->name.'_'.time().'.pdf';
-        $path = storage_path('app/public/generated/'.$fileName);
-        if (!file_exists(dirname($path))) mkdir(dirname($path), 0755, true);
-        file_put_contents($path, $dompdf->output());
-        
-        $url = asset('storage/generated/'.$fileName);
-        
-        return [
-            'url' => $url,
-            'file_path' => 'generated/'.$fileName
-        ];
+    file_put_contents($path, $dompdf->output());
+
+    return response()->json([
+        'ok' => true,
+        'url' => asset('storage/generated/'.$fileName)
+    ]);
     }
+
 
     /**
      * Create a surat (letter) from an approved lembur (overtime) request
@@ -403,7 +358,7 @@ class SuratController extends Controller
     public function pendingList()
     {
         $this->ensureAdminHRD();
-        $list = Surat::where('status', 'Disetujui')->with('user')->orderBy('created_at', 'desc')->get(['id','nomor_surat','perihal','user_id','generated_file_url','created_at','referensi_type','referensi_id']);
+        $list = Surat::where('status', 'Disetujui')->with('user')->orderBy('created_at', 'desc')->get(['id','nomor_surat','perihal','user_id','generated_file_url','created_at']);
         // map to include user name for convenience
         $mapped = $list->map(function($s) {
             return [
@@ -414,8 +369,6 @@ class SuratController extends Controller
                 'user_name' => $s->user->name ?? null,
                 'generated_file_url' => $s->generated_file_url,
                 'created_at' => $s->created_at,
-                'referensi_type' => $s->referensi_type,
-                'referensi_id' => $s->referensi_id,
             ];
         });
         return response()->json(['ok' => true, 'list' => $mapped]);

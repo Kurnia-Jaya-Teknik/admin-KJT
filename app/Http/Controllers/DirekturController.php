@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cuti;
 use App\Models\Lembur;
+use App\Models\Magang;
 use Illuminate\Http\Request;
 
 class DirekturController extends Controller
@@ -478,4 +479,44 @@ class DirekturController extends Controller
     {
         return view('direktur.riwayat-persetujuan');
     }
+
+    /**
+     * =============================
+     * REQUEST SURAT MAGANG (DIREKTUR)
+     * =============================
+     * 
+     * Alur:
+     * 1. Direktur lihat data magang
+     * 2. Direktur klik "Request Surat"
+     * 3. Form modal: input nomor surat + tanggal surat
+     * 4. Admin menerima notif dan bisa preview surat
+     */
+    public function requestMagangSurat(Request $request, $magangId)
+    {
+        $magang = Magang::findOrFail($magangId);
+
+        $validated = $request->validate([
+            'nomor_surat_diminta' => 'required|string|max:100',
+            'tanggal_surat_diminta' => 'required|date',
+        ], [
+            'nomor_surat_diminta.required' => 'Nomor surat harus diisi',
+            'tanggal_surat_diminta.required' => 'Tanggal surat harus diisi',
+        ]);
+
+        // Update status ke "Permintaan Surat" dan simpan nomor + tanggal
+        $magang->update([
+            'status' => 'Permintaan Surat',
+            'nomor_surat_diminta' => $validated['nomor_surat_diminta'],
+            'tanggal_surat_diminta' => $validated['tanggal_surat_diminta'],
+        ]);
+
+        // TODO: Kirim notifikasi ke admin HRD
+        // Notification::send($adminHRD, new MagangSuratRequested($magang));
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Permintaan surat berhasil dikirim ke Admin HRD',
+        ]);
+    }
 }
+

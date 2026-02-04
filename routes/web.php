@@ -56,6 +56,9 @@ Route::middleware([
         Route::get('/laporan/lembur', [DirekturController::class, 'laporanLembur'])->name('laporan.lembur');
         Route::get('/riwayat-persetujuan', [DirekturController::class, 'riwayatPersetujuan'])->name('riwayat-persetujuan');
         
+        // Magang surat request dari direktur
+        Route::post('/magang/{id}/request-surat', [DirekturController::class, 'requestMagangSurat'])->name('magang.request-surat');
+        
         // Director approval endpoints (AJAX calls from view) - type harus di URL untuk match method signature
         Route::post('/api/{type}/{id}/approve', [\App\Http\Controllers\ApprovalController::class, 'approve'])->name('approve');
         Route::post('/api/{type}/{id}/reject', [\App\Http\Controllers\ApprovalController::class, 'reject'])->name('reject');
@@ -103,6 +106,11 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         Route::get('/surat', function () {
             return view('karyawan.surat');
         })->name('surat');
+
+        // Surat Keterangan Request Routes
+        Route::get('/surat-keterangan-request', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'index'])->name('surat-keterangan.request.index');
+        Route::post('/surat-keterangan-request', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'store'])->name('surat-keterangan.request.store');
+        Route::post('/surat-keterangan-request/{id}/cancel', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'cancel'])->name('surat-keterangan.request.cancel');
         
         Route::get('/riwayat', function () {
             return view('karyawan.riwayat');
@@ -144,8 +152,11 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         Route::get('/magang', [\App\Http\Controllers\Admin\MagangController::class, 'index'])->name('magang');
         Route::get('/magang/{id}/detail', [\App\Http\Controllers\Admin\MagangController::class, 'detail'])->name('magang.detail');
         Route::post('/magang/{id}/buat-surat', [\App\Http\Controllers\Admin\MagangController::class, 'storeMagangSurat'])->name('magang.buat-surat');
+        Route::get('/magang/{id}/get-surat', [\App\Http\Controllers\Admin\MagangController::class, 'getExistingSurat'])->name('magang.get-surat');
         Route::get('/magang/{id}/preview-surat', [\App\Http\Controllers\Admin\MagangController::class, 'previewMagangSurat'])->name('magang.preview-surat');
         Route::post('/magang/{id}/mark-created', [\App\Http\Controllers\Admin\MagangController::class, 'markSuratCreated'])->name('magang.mark-created');
+        Route::post('/magang/{id}/approve', [\App\Http\Controllers\Admin\MagangController::class, 'approveMagang'])->name('magang.approve');
+        Route::post('/magang/{id}/reject', [\App\Http\Controllers\Admin\MagangController::class, 'rejectMagang'])->name('magang.reject');
         
         // Lembur routes disabled for now
         // Route::get('/lembur', function () {
@@ -173,6 +184,17 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         Route::post('/surat', [\App\Http\Controllers\Admin\SuratController::class, 'store'])->name('surat.store');
         // Preview / generate PDF from form data (returns generated PDF URL)
         Route::post('/surat/preview-pdf', [\App\Http\Controllers\Admin\SuratController::class, 'generatePdf'])->name('surat.preview-pdf');
+        
+        // Surat Keterangan Kerja
+        Route::get('/surat-keterangan', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'index'])->name('surat-keterangan.index');
+        Route::get('/surat-keterangan/requests/pending', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'pendingRequests'])->name('surat-keterangan.requests.pending');
+        Route::post('/surat-keterangan/requests/{id}/approve', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'approveRequest'])->name('surat-keterangan.request.approve');
+        Route::post('/surat-keterangan/requests/{id}/reject', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'rejectRequest'])->name('surat-keterangan.request.reject');
+        Route::get('/surat-keterangan/create', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'create'])->name('surat-keterangan.create');
+        Route::post('/surat-keterangan', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'store'])->name('surat-keterangan.store');
+        Route::get('/surat-keterangan/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'show'])->name('surat-keterangan.show');
+        Route::delete('/surat-keterangan/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'destroy'])->name('surat-keterangan.destroy');
+        Route::get('/surat-keterangan/{id}/preview', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'preview'])->name('surat-keterangan.preview');
         
         Route::get('/template', function () {
             return view('admin.template');
