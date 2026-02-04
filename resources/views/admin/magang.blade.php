@@ -180,6 +180,65 @@
         </div>
     </div>
 
+    <!-- Form Buat Surat Modal (Input Nomor & Tanggal) -->
+    <div id="magangCreateSuratModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full animate-in fade-in zoom-in duration-300">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-rose-50/80 to-slate-50/60 backdrop-blur-md border-b border-gray-100/40 px-8 py-6 flex items-start justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Buat Surat Magang</h2>
+                    <p class="text-sm text-gray-500 mt-1">Input nomor surat dan tanggal</p>
+                </div>
+                <button onclick="closeMagangCreateSuratModal()" class="p-2 hover:bg-white/50 rounded-2xl transition-colors flex-shrink-0">
+                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Form Content -->
+            <div class="px-8 py-8 space-y-6">
+                <!-- Nomor Surat -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-2">Nomor Surat</label>
+                    <input type="text" id="magangNomorSurat" placeholder="Contoh: 001/HRD/2026" class="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition-all" />
+                </div>
+
+                <!-- Tanggal Surat -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-2">Tanggal Surat</label>
+                    <input type="date" id="magangTanggalSurat" class="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition-all" />
+                </div>
+
+                <!-- NIM/NIS Mahasiswa -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-2">NIM/NIS Mahasiswa</label>
+                    <input type="text" id="magangNimNis" placeholder="Contoh: 2023001 atau NIS123456" class="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition-all" />
+                </div>
+
+                <!-- Info dari Direktur (Read-only) -->
+                <div class="bg-amber-50/50 border border-amber-100/40 rounded-2xl p-4">
+                    <p class="text-xs font-medium text-amber-700 uppercase tracking-wide mb-2">Permintaan dari Direktur</p>
+                    <p class="text-sm text-amber-900"><span class="font-semibold">No Surat:</span> <span id="magangNoSuratDiminta">-</span></p>
+                    <p class="text-sm text-amber-900"><span class="font-semibold">Tanggal:</span> <span id="magangTanggalDiminta">-</span></p>
+                </div>
+            </div>
+
+            <!-- Modal Actions -->
+            <div class="border-t border-gray-100/40 bg-gradient-to-r from-gray-50/50 to-slate-50/30 px-8 py-6 flex gap-4 justify-end flex-wrap">
+                <button onclick="closeMagangCreateSuratModal()" class="px-8 py-3 border border-gray-200/60 rounded-2xl text-gray-600 font-medium hover:bg-gray-50/70 transition-all duration-300">
+                    Batal
+                </button>
+                <button onclick="submitMagangCreateSurat()" class="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-rose-500 to-rose-400 text-white font-semibold rounded-2xl hover:from-rose-600 hover:to-rose-500 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Buat & Preview
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- PDF Preview Modal -->
     <div id="magangPdfModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl h-[90vh] flex flex-col animate-in fade-in zoom-in duration-300">
@@ -244,14 +303,15 @@ function showMagangDetailModal(magangId) {
                             <h3 class="text-xl font-bold text-gray-900">${d.nama_peserta}</h3>
                             <p class="text-sm text-gray-600 mt-0.5">${d.jurusan}</p>
                             <p class="text-sm text-gray-500 mt-1">${d.sekolah_asal}</p>
+                            <p class="text-xs text-gray-500 mt-2">NIM/NIS: ${d.nim_nis || '-'}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Status Badge -->
                 <div class="flex items-center gap-2 p-3 bg-rose-50/40 border border-rose-100/30 rounded-2xl w-fit">
-                    <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
-                    <span class="font-medium text-rose-700/80">Status: <span>Permintaan Surat</span></span>
+                    <div class="w-3 h-3 rounded-full ${d.status === 'Permintaan Surat' ? 'bg-amber-500/80' : 'bg-green-500/80'}"></div>
+                    <span class="font-medium ${d.status === 'Permintaan Surat' ? 'text-amber-700/80' : 'text-green-700/80'}">${d.status}</span>
                 </div>
 
                 <!-- Details Grid -->
@@ -286,7 +346,7 @@ function showMagangDetailModal(magangId) {
             let actionsHtml = '';
             if (d.status === 'Permintaan Surat') {
                 actionsHtml = `
-                    <button onclick="createMagangSurat(${magangId})" class="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-rose-500 to-rose-400 text-white font-semibold rounded-2xl hover:from-rose-600 hover:to-rose-500 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    <button type="button" onclick="showMagangCreateSuratForm(${d.id}, '${d.nomor_surat_diminta || ''}', '${d.tanggal_surat_diminta || ''}')" class="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-rose-500 to-rose-400 text-white font-semibold rounded-2xl hover:from-rose-600 hover:to-rose-500 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
@@ -296,7 +356,7 @@ function showMagangDetailModal(magangId) {
                 `;
             } else {
                 actionsHtml = `
-                    <button onclick="openPdfPreview()" class="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-rose-500 to-rose-400 text-white font-semibold rounded-2xl hover:from-rose-600 hover:to-rose-500 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    <button type="button" onclick="openPdfPreview()" class="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-rose-500 to-rose-400 text-white font-semibold rounded-2xl hover:from-rose-600 hover:to-rose-500 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
                             <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
@@ -306,7 +366,7 @@ function showMagangDetailModal(magangId) {
                 `;
             }
             actionsHtml += `
-                <button onclick="closeMagangDetailModal()" class="px-8 py-3 border border-gray-200/60 rounded-2xl text-gray-600 font-medium hover:bg-gray-50/70 transition-all duration-300">
+                <button type="button" onclick="closeMagangDetailModal()" class="px-8 py-3 border border-gray-200/60 rounded-2xl text-gray-600 font-medium hover:bg-gray-50/70 transition-all duration-300">
                     Tutup
                 </button>
             `;
@@ -321,6 +381,67 @@ function showMagangDetailModal(magangId) {
 
 function closeMagangDetailModal() {
     document.getElementById('magangDetailModal').classList.add('hidden');
+}
+
+/**
+ * =============================
+ * Form Buat Surat (Admin Input)
+ * =============================
+ */
+function showMagangCreateSuratForm(magangId, noSuratDiminta, tanggalDiminta) {
+    try {
+        console.log('showMagangCreateSuratForm called with:', {magangId, noSuratDiminta, tanggalDiminta});
+        
+        document.getElementById('magangCreateSuratModal').classList.remove('hidden');
+        
+        // Tampilkan data dari direktur
+        document.getElementById('magangNoSuratDiminta').textContent = noSuratDiminta || '-';
+        document.getElementById('magangTanggalDiminta').textContent = tanggalDiminta || '-';
+        
+        // Pre-fill form dengan data direktur (bisa diubah admin)
+        document.getElementById('magangNomorSurat').value = noSuratDiminta || '';
+        document.getElementById('magangTanggalSurat').value = tanggalDiminta || '';
+        
+        currentMagangId = magangId;
+        closeMagangDetailModal();
+        
+        console.log('Form opened successfully');
+    } catch (error) {
+        console.error('Error in showMagangCreateSuratForm:', error);
+        alert('Terjadi error saat membuka form: ' + error.message);
+    }
+}
+
+function closeMagangCreateSuratModal() {
+    document.getElementById('magangCreateSuratModal').classList.add('hidden');
+}
+
+function submitMagangCreateSurat() {
+    try {
+        const nomorSurat = document.getElementById('magangNomorSurat').value.trim();
+        const tanggalSurat = document.getElementById('magangTanggalSurat').value.trim();
+        const nimNis = document.getElementById('magangNimNis').value.trim();
+        
+        if (!nomorSurat) {
+            alert('Nomor surat harus diisi');
+            return;
+        }
+        if (!tanggalSurat) {
+            alert('Tanggal surat harus diisi');
+            return;
+        }
+        if (!nimNis) {
+            alert('NIM/NIS harus diisi');
+            return;
+        }
+        
+        // Close form dan buat surat
+        closeMagangCreateSuratModal();
+        createMagangSurat(currentMagangId, nomorSurat, tanggalSurat, nimNis);
+    } catch (error) {
+        console.error('Error in submitMagangCreateSurat:', error);
+        alert('Terjadi error: ' + error.message);
+    }
 }
 
 function approveMagang(magangId) {
@@ -351,47 +472,82 @@ function rejectMagang(magangId) {
         });
 }
 
-function createMagangSurat(magangId) {
+function createMagangSurat(magangId, nomorSurat, tanggalSurat, nimNis) {
     // Show loading state and open modal
     document.getElementById('magangPdfModal').classList.remove('hidden');
     const frame = document.getElementById('magangPdfFrame');
-    frame.srcdoc = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui"><div style="text-align:center"><div style="width:40px;height:40px;border:4px solid #f0f0f0;border-top:4px solid #ec4899;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px"></div><p style="color:#666;font-size:14px">Membuat surat magang...</p></div><style>@keyframes spin{to{transform:rotate(360deg)}}</style></div>';
+    frame.src = 'about:blank';
+    frame.style.backgroundColor = '#f5f5f5';
     
-    // Close detail modal but keep pdf modal open
-    closeMagangDetailModal();
-    
-    fetch(`/admin/magang/${magangId}/buat-surat`, { method: 'POST', headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content } })
+    // Send both ID and surat data
+    fetch(`/admin/magang/${magangId}/buat-surat`, { 
+        method: 'POST', 
+        headers: { 
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            nomor_surat_dibuat: nomorSurat,
+            tanggal_surat_dibuat: tanggalSurat,
+            nim_nis: nimNis,
+        })
+    })
         .then(r => r.json())
         .then(res => {
+            console.log('Response dari server:', res);
             if (!res.ok) {
                 alert('Error: ' + res.message);
-                closeMagangPdfModal();
+                document.getElementById('magangPdfModal').classList.add('hidden');
                 return;
             }
             
-            // Open preview in new tab/full page
-            window.open(res.previewUrl, '_blank');
+            // Decode base64 ke binary
+            const binaryString = atob(res.pdfBase64);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            
+            // Buat blob dari binary
+            const blob = new Blob([bytes], { type: 'application/pdf' });
+            const blobUrl = URL.createObjectURL(blob);
+            
+            console.log('PDF Blob URL created:', blobUrl);
+            console.log('PDF Blob size:', blob.size, 'bytes');
+            
+            // Set download button href
             document.getElementById('magangDownloadBtn').href = res.url;
             
-            // Close modal after 1 second
-            setTimeout(() => closeMagangPdfModal(), 1000);
+            // Ensure iframe is ready before setting src
+            const iframe = document.getElementById('magangPdfFrame');
+            
+            // Clear dan reset iframe
+            iframe.src = '';
+            
+            // Small delay to ensure iframe is properly reset
+            setTimeout(() => {
+                iframe.src = blobUrl;
+                iframe.style.backgroundColor = 'white';
+            }, 100);
         })
         .catch(e => {
             alert('Error: ' + e.message);
-            closeMagangPdfModal();
+            document.getElementById('magangPdfModal').classList.add('hidden');
         });
 }
 
 function openPdfPreview() {
     if (!currentMagangId) return;
     
-    // Show loading state
+    // Show modal with blank iframe
     document.getElementById('magangPdfModal').classList.remove('hidden');
     const frame = document.getElementById('magangPdfFrame');
-    frame.srcdoc = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui"><div style="text-align:center"><div style="width:40px;height:40px;border:4px solid #f0f0f0;border-top:4px solid #ec4899;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px"></div><p style="color:#666;font-size:14px">Memuat surat...</p></div><style>@keyframes spin{to{transform:rotate(360deg)}}</style></div>';
+    frame.src = 'about:blank';
+    frame.style.backgroundColor = '#f5f5f5';
     closeMagangDetailModal();
     
-    fetch(`/admin/magang/${currentMagangId}/buat-surat`, { method: 'POST', headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content } })
+    // Use GET endpoint for existing surat (not POST for creating)
+    fetch(`/admin/magang/${currentMagangId}/get-surat`)
         .then(r => r.json())
         .then(res => {
             if (!res.ok) {
@@ -399,12 +555,32 @@ function openPdfPreview() {
                 return;
             }
             
-            // Open preview in new tab/full page
-            window.open(res.previewUrl, '_blank');
+            // Decode base64 ke binary
+            const binaryString = atob(res.pdfBase64);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            
+            // Buat blob dari binary
+            const blob = new Blob([bytes], { type: 'application/pdf' });
+            const blobUrl = URL.createObjectURL(blob);
+            
+            // Set download button href
             document.getElementById('magangDownloadBtn').href = res.url;
             
-            // Close modal after 1 second
-            setTimeout(() => closeMagangPdfModal(), 1000);
+            // Ensure iframe is ready before setting src
+            const iframe = document.getElementById('magangPdfFrame');
+            
+            // Clear dan reset iframe
+            iframe.src = '';
+            
+            // Small delay to ensure iframe is properly reset
+            setTimeout(() => {
+                iframe.src = blobUrl;
+                iframe.style.backgroundColor = 'white';
+            }, 100);
+            document.getElementById('magangDownloadBtn').href = res.url;
         })
         .catch(e => alert('Error: ' + e.message));
 }

@@ -65,17 +65,9 @@
                     <span>Pengajuan Cuti</span>
                 </a>
 
-<<<<<<< HEAD
                 <a href="{{ route('admin.magang') }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.magang') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C6.248 6.253 2 10.5 2 15.5S6.248 24.747 12 24.747s10-4.244 10-9.247S17.752 6.253 12 6.253z"/>
-=======
-                <a href="{{ route('admin.lembur') }}"
-                    class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.lembur') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
->>>>>>> be45502a68aaea75f128437d3615770d27f22d61
                     </svg>
                     <span>Pengajuan Magang</span>
                 </a>
@@ -87,6 +79,15 @@
                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     <span>Manajemen Surat</span>
+                </a>
+
+                <a href="{{ route('admin.surat-keterangan.index') }}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.surat-keterangan*') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Surat Keterangan Kerja</span>
                 </a>
 
                 <a href="{{ route('admin.template') }}"

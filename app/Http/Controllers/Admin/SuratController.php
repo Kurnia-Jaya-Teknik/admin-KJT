@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Surat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 
 class SuratController extends Controller
 {
@@ -230,47 +233,51 @@ class SuratController extends Controller
     }
 
     public function storeCutiSurat(Request $request, $cutiId)
-    {
-        $this->ensureAdminHRD();
-        
-        $cuti = \App\Models\Cuti::findOrFail($cutiId);
-        
-        if ($cuti->status !== 'Disetujui') {
-            return response()->json(['ok' => false, 'message' => 'Pengajuan cuti belum disetujui'], 400);
-        }
-        
-        $karyawan = $cuti->user;
-        if (!$karyawan) {
-            return response()->json(['ok' => false, 'message' => 'Data karyawan tidak ditemukan'], 404);
-        }
-        
-        try {
-            $logoPath = public_path('img/image.png');
-            
-            $html = view('surat.cuti', [
-                'karyawan' => $karyawan,
-                'cuti' => $cuti,
-                'logoPath' => $logoPath,
-            ])->render();
-            
-            $dompdf = new \Dompdf\Dompdf();
-            $dompdf->loadHtml($html);
-            $dompdf->setPaper('A4', 'portrait');
-            $dompdf->render();
-            
-            $fileName = 'Surat_Cuti_'.$karyawan->name.'_'.time().'.pdf';
-            $path = storage_path('app/public/generated/'.$fileName);
-            if (!file_exists(dirname($path))) mkdir(dirname($path), 0755, true);
-            file_put_contents($path, $dompdf->output());
-            
-            $url = asset('storage/generated/'.$fileName);
-            return response()->json(['ok' => true, 'url' => $url]);
-            
-        } catch (\Throwable $e) {
-            \Log::error('PDF Error: ' . $e->getMessage());
-            return response()->json(['ok' => false, 'message' => $e->getMessage()], 500);
-        }
+{
+    $this->ensureAdminHRD();
+
+    $cuti = \App\Models\Cuti::findOrFail($cutiId);
+
+    if ($cuti->status !== 'Disetujui') {
+        return response()->json(['ok' => false, 'message' => 'Pengajuan cuti belum disetujui'], 400);
     }
+
+    $karyawan = $cuti->user;
+
+    // ✅ PATH LOGO WAJIB FILE://
+    $logoPath = 'file://' . public_path('img/image.png');
+
+    $html = view('surat.cuti', [
+        'karyawan' => $karyawan,
+        'cuti' => $cuti,
+        'logoPath' => $logoPath,
+    ])->render();
+
+    // ✅ OPTIONS DOMPDF (WAJIB)
+    $options = new Options();
+    $options->set('isRemoteEnabled', true);
+    $options->set('isHtml5ParserEnabled', true);
+
+    $dompdf = new Dompdf($options);
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+
+    $fileName = 'Surat_Cuti_'.$karyawan->name.'_'.time().'.pdf';
+    $path = storage_path('app/public/generated/'.$fileName);
+
+    if (!file_exists(dirname($path))) {
+        mkdir(dirname($path), 0755, true);
+    }
+
+    file_put_contents($path, $dompdf->output());
+
+    return response()->json([
+        'ok' => true,
+        'url' => asset('storage/generated/'.$fileName)
+    ]);
+    }
+
 
     /**
      * Create a surat (letter) from an approved lembur (overtime) request
