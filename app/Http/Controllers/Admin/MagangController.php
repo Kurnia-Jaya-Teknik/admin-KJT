@@ -27,8 +27,10 @@ class MagangController extends Controller
     {
         $this->ensureAdminHRD();
 
-        // Admin fokus ke permintaan surat
-        $magangList = Magang::orderBy('created_at', 'desc')->paginate(10);
+        // Sort: Permintaan Surat first, then Surat Selesai, then others
+        $magangList = Magang::orderByRaw("FIELD(status, 'Permintaan Surat', 'Surat Selesai', 'Disetujui', 'Ditolak')")
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
         return view('admin.magang', compact('magangList'));
     }
@@ -113,10 +115,10 @@ class MagangController extends Controller
 
         try {
             /**
-             * Ambil SEMUA peserta dari sekolah yang sama
+             * Ambil SEMUA peserta dari SURAT REQUEST YANG SAMA
              * yang sedang PERMINTAAN SURAT
              */
-            $magangList = Magang::where('sekolah_asal', $magang->sekolah_asal)
+            $magangList = Magang::where('surat_magang_request_id', $magang->surat_magang_request_id)
                 ->where('status', 'Permintaan Surat')
                 ->orderBy('created_at', 'asc')
                 ->get();
@@ -251,7 +253,7 @@ class MagangController extends Controller
 
         $magang = Magang::findOrFail($id);
 
-        // Jika surat belum selesai, return error
+        // Jika surat belum selesai dibuat, return error
         if ($magang->status !== 'Surat Selesai') {
             return response()->json([
                 'ok' => false,
@@ -287,4 +289,39 @@ class MagangController extends Controller
             'fileName' => basename($magang->file_surat),
         ]);
     }
-}
+
+    /**
+     * =============================
+     * APPROVE MAGANG
+     * =============================
+     */
+    public function approveMagang($id)
+    {
+        $this->ensureAdminHRD();
+
+        $magang = Magang::findOrFail($id);
+        $magang->update(['status' => 'Disetujui']);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Pengajuan magang disetujui'
+        ]);
+    }
+
+    /**
+     * =============================
+     * REJECT MAGANG
+     * =============================
+     */
+    public function rejectMagang($id)
+    {
+        $this->ensureAdminHRD();
+
+        $magang = Magang::findOrFail($id);
+        $magang->update(['status' => 'Ditolak']);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Pengajuan magang ditolak'
+        ]);
+    }}

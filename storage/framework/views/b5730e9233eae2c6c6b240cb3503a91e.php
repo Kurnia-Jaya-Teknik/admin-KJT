@@ -1,14 +1,23 @@
-<x-app-layout>
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
     <!-- Fixed Sidebar -->
     <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
-        @include('layouts.sidebar')
+        <?php echo $__env->make('layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <!-- Scrollable Main Content -->
     <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
         <div class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gray-50/50 min-h-full">
             <!-- Welcome Banner -->
-            @if (Auth::user()->role === 'karyawan')
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Auth::user()->role === 'karyawan'): ?>
                 <div class="relative overflow-hidden bg-gradient-to-r from-slate-400 via-slate-400 to-slate-500 rounded-2xl p-6 mb-6 shadow-lg">
                     <div class="relative flex items-center justify-between">
                         <div class="flex items-center gap-4">
@@ -18,13 +27,13 @@
                                 </svg>
                             </div>
                             <div>
-                                <h1 class="text-xl font-bold mb-1 text-white">Halo, {{ Auth::user()->name }}! 👋</h1>
-                                <p class="text-slate-50 text-sm font-medium">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                                <h1 class="text-xl font-bold mb-1 text-white">Halo, <?php echo e(Auth::user()->name); ?>! 👋</h1>
+                                <p class="text-slate-50 text-sm font-medium"><?php echo e(now()->locale('id')->isoFormat('dddd, D MMMM Y')); ?></p>
                             </div>
                         </div>
                     </div>
                 </div>
-            @else
+            <?php else: ?>
                 <div class="relative overflow-hidden bg-gradient-to-r from-red-500/85 via-red-600/80 to-slate-600/75 rounded-3xl p-8 mb-8 shadow-lg border border-red-200/30">
                     <div class="relative flex items-center justify-between">
                         <div class="flex items-center gap-4">
@@ -34,8 +43,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h1 class="text-2xl font-bold mb-2 text-white">Selamat Datang, {{ Auth::user()->name }}! 👋</h1>
-                                <p class="text-red-50/90 text-sm">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                                <h1 class="text-2xl font-bold mb-2 text-white">Selamat Datang, <?php echo e(Auth::user()->name); ?>! 👋</h1>
+                                <p class="text-red-50/90 text-sm"><?php echo e(now()->locale('id')->isoFormat('dddd, D MMMM Y')); ?></p>
                             </div>
                         </div>
                         <div class="hidden md:block">
@@ -45,11 +54,11 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                @if (Auth::user()->role === 'direktur')
+                <?php if(Auth::user()->role === 'direktur'): ?>
                     <!-- Direktur Stats Card 1: Total Karyawan -->
                     <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-slate-100/60 transition-all duration-300 hover:-translate-y-1">
                         <div class="absolute inset-0 bg-gradient-to-br from-slate-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -185,7 +194,7 @@
                             <p class="text-sm text-gray-600 font-medium">Memerlukan Tindakan Segera</p>
                         </div>
                     </div>
-     @elseif(Auth::user()->role === 'admin_hrd')
+     <?php elseif(Auth::user()->role === 'admin_hrd'): ?>
                     <!-- Admin HRD Stats - 8 Cards Grid -->
                     <!-- Card 1: Total Karyawan -->
                     <div class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-slate-100/60 transition-all duration-300 hover:-translate-y-1">
@@ -199,7 +208,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">+12%</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ number_format($totalKaryawan) }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e(number_format($totalKaryawan)); ?></h3>
                             <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
                         </div>
                     </div>
@@ -218,7 +227,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">Menunggu</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $cutiPending }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($cutiPending); ?></h3>
                             <p class="text-sm text-gray-600 font-medium">Pengajuan Cuti Pending</p>
                         </div>
                     </div>
@@ -235,7 +244,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-orange-600/80 bg-orange-50/70 px-2.5 py-1.5 rounded-full border border-orange-200/30 shadow-sm">Pending</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $lemburPending }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($lemburPending); ?></h3>
                             <p class="text-sm text-gray-600 font-medium">Pengajuan Lembur Pending</p>
                         </div>
                     </div>
@@ -252,7 +261,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">Proses</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $suratPending }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($suratPending); ?></h3>
                             <p class="text-sm text-gray-600 font-medium">Surat dalam Proses</p>
                         </div>
                     </div>
@@ -269,7 +278,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">Approved</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $pengajuanDisetujui }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($pengajuanDisetujui); ?></h3>
                             <p class="text-sm text-gray-600 font-medium">Pengajuan Disetujui</p>
                         </div>
                     </div>
@@ -286,7 +295,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">Siap</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $suratDiterbitkan }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($suratDiterbitkan); ?></h3>
                             <p class="text-sm text-gray-600 font-medium">Surat Siap Dikirim</p>
                         </div>
                     </div>
@@ -303,11 +312,11 @@
                                 </div>
                                 <span class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Revisi</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $revisiCount }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($revisiCount); ?></h3>
                             <p class="text-sm text-gray-600 font-medium">Pengajuan Perlu Revisi</p>
                         </div>
                     </div>
-                @else
+                <?php else: ?>
                     <!-- Karyawan Stats - Personal (Soft Modern Design) -->
                     <div
                         class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
@@ -379,12 +388,12 @@
                         <h3 class="text-xl font-semibold text-gray-800 mb-1">Disetujui</h3>
                         <p class="text-sm text-gray-500 font-medium">Status Pengajuan Terakhir</p>
                     </div>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
             <!-- Content Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                @if (Auth::user()->role === 'direktur')
+                <?php if(Auth::user()->role === 'direktur'): ?>
                     <!-- Charts Section - Direktur (2 kolom) -->
                     <div class="lg:col-span-2 space-y-6">
                         <!-- Pengajuan Bulan Ini Chart - Normal Bar Chart with Tooltip -->
@@ -395,26 +404,26 @@
                                     Terakhir)</h3>
                                 <div
                                     class="flex items-end justify-between h-56 gap-3 mb-6 px-2 relative border-b-2 border-gray-200/50 pb-4">
-                                    @foreach ($pengajuanPerBulan as $entry)
-                                        @php
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $pengajuanPerBulan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $entry): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <?php
                                             $height = $maxPengajuan
                                                 ? floor(($entry['count'] / $maxPengajuan) * 110)
                                                 : 20;
-                                        @endphp
+                                        ?>
                                         <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
                                             <div
                                                 class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
-                                                <span>{{ $entry['count'] }}</span>
+                                                <span><?php echo e($entry['count']); ?></span>
                                                 <div
                                                     class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600">
                                                 </div>
                                             </div>
                                             <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer"
-                                                style="height: {{ $height }}px;"></div>
+                                                style="height: <?php echo e($height); ?>px;"></div>
                                             <span
-                                                class="text-xs text-gray-600 font-medium">{{ $entry['label'] }}</span>
+                                                class="text-xs text-gray-600 font-medium"><?php echo e($entry['label']); ?></span>
                                         </div>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 80px;"></div>
                                     <span class="text-xs text-gray-600 font-medium">Agu</span>
                                     </div>
@@ -604,7 +613,7 @@
                             </div>
                         </div>
                     </div>
-                @elseif(Auth::user()->role === 'admin_hrd')
+                <?php elseif(Auth::user()->role === 'admin_hrd'): ?>
                     <!-- Charts Section - Admin HRD -->
                     <div class="lg:col-span-2 space-y-6">
                         <!-- Pengajuan Masuk - Soft Gradient Chart -->
@@ -615,28 +624,28 @@
 
                                 <!-- Chart Container -->
                                 <div class="flex gap-3 items-end border-b-2 border-gray-200/50 pb-4" style="height: 240px;">
-                                    @php
+                                    <?php
                                         $maxPengajuan = collect($pengajuanPerBulan)->max() ?: 1;
                                         $bulanColors = ['indigo', 'indigo', 'indigo', 'purple', 'purple', 'purple'];
                                         $bulanIndex = 0;
-                                    @endphp
-                                    @foreach($pengajuanPerBulan as $bulan => $count)
-                                        @php
+                                    ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $pengajuanPerBulan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bulan => $count): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <?php
                                             $heightPercent = ($count / $maxPengajuan) * 100;
                                             $heightPx = max(40, $heightPercent / 100 * 240);
                                             $color = $bulanColors[$bulanIndex % count($bulanColors)];
                                             $bulanIndex++;
-                                        @endphp
+                                        ?>
                                         <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                            <div class="w-full bg-gradient-to-t from-{{ $color }}-400/70 to-{{ $color }}-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-{{ $color }}-400/90 group-hover/bar:to-{{ $color }}-300/70 transition-all duration-300" style="height: {{ $heightPx }}px;" title="{{ $count }} pengajuan"></div>
-                                            <span class="text-xs text-gray-700 font-medium mt-1.5">{{ $bulan }}</span>
+                                            <div class="w-full bg-gradient-to-t from-<?php echo e($color); ?>-400/70 to-<?php echo e($color); ?>-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-<?php echo e($color); ?>-400/90 group-hover/bar:to-<?php echo e($color); ?>-300/70 transition-all duration-300" style="height: <?php echo e($heightPx); ?>px;" title="<?php echo e($count); ?> pengajuan"></div>
+                                            <span class="text-xs text-gray-700 font-medium mt-1.5"><?php echo e($bulan); ?></span>
                                         </div>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
 
                                 <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
                                     <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
-                                    <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">{{ $totalPengajuan6 }} pengajuan</span>
+                                    <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent"><?php echo e($totalPengajuan6); ?> pengajuan</span>
                                 </div>
                             </div>
                         </div>
@@ -652,18 +661,18 @@
                                             <div class="w-2 h-2 rounded-full bg-amber-500"></div>
                                             <span class="text-xs text-gray-600">Cuti Pending</span>
                                         </div>
-                                        <span class="font-bold text-amber-600">{{ $cutiPending }}</span>
+                                        <span class="font-bold text-amber-600"><?php echo e($cutiPending); ?></span>
                                     </div>
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-2">
                                             <div class="w-2 h-2 rounded-full bg-orange-500"></div>
                                             <span class="text-xs text-gray-600">Lembur Pending</span>
                                         </div>
-                                        <span class="font-bold text-orange-600">{{ $lemburPending }}</span>
+                                        <span class="font-bold text-orange-600"><?php echo e($lemburPending); ?></span>
                                     </div>
                                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
                                         <span class="text-xs font-semibold text-gray-700">Total Pending</span>
-                                        <span class="font-bold text-lg text-gray-800">{{ $cutiPending + $lemburPending }}</span>
+                                        <span class="font-bold text-lg text-gray-800"><?php echo e($cutiPending + $lemburPending); ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -672,7 +681,7 @@
                             <div class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6">
                                 <h4 class="text-sm font-semibold text-gray-800 mb-4">Disetujui Bulan Ini</h4>
                                 <div class="text-center py-6">
-                                    <div class="text-3xl font-bold text-green-600">{{ $pengajuanDisetujui }}</div>
+                                    <div class="text-3xl font-bold text-green-600"><?php echo e($pengajuanDisetujui); ?></div>
                                     <p class="text-xs text-gray-500 mt-2">Pengajuan disetujui</p>
                                 </div>
                             </div>
@@ -693,7 +702,7 @@
                                         class="absolute inset-0 m-auto flex flex-col items-center justify-center z-10 pointer-events-none">
                                         <div class="bg-white rounded-full px-3 py-2 shadow-sm text-center">
                                             <div class="text-lg font-bold text-gray-800 leading-none">
-                                                {{ $statusTotal }}</div>
+                                                <?php echo e($statusTotal); ?></div>
                                             <div class="text-xs text-gray-500 -mt-0.5">Total</div>
                                         </div>
                                     </div>
@@ -706,7 +715,7 @@
                                             <div class="w-3 h-3 rounded-full bg-green-600"></div>
                                             <span class="text-sm text-gray-700">Disetujui</span>
                                         </div>
-                                        <div id="countApproved" class="text-sm font-bold text-gray-800">{{ $statusApproved }}</div>
+                                        <div id="countApproved" class="text-sm font-bold text-gray-800"><?php echo e($statusApproved); ?></div>
                                     </div>
 
                                     <div class="flex items-center justify-between mb-3">
@@ -714,7 +723,7 @@
                                             <div class="w-3 h-3 rounded-full bg-yellow-600"></div>
                                             <span class="text-sm text-gray-700">Menunggu</span>
                                         </div>
-                                        <div id="countPending" class="text-sm font-bold text-gray-800">{{ $statusPending }}</div>
+                                        <div id="countPending" class="text-sm font-bold text-gray-800"><?php echo e($statusPending); ?></div>
                                     </div>
 
                                     <div class="flex items-center justify-between">
@@ -722,7 +731,7 @@
                                             <div class="w-3 h-3 rounded-full bg-red-600"></div>
                                             <span class="text-sm text-gray-700">Ditolak</span>
                                         </div>
-                                        <div id="countRejected" class="text-sm font-bold text-gray-800">{{ $statusRejected }}</div>
+                                        <div id="countRejected" class="text-sm font-bold text-gray-800"><?php echo e($statusRejected); ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -731,9 +740,9 @@
                             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                             <script>
                                 (function() {
-                                    const approved = {{ $statusApproved ?? 0 }};
-                                    const pending = {{ $statusPending ?? 0 }};
-                                    const rejected = {{ $statusRejected ?? 0 }};
+                                    const approved = <?php echo e($statusApproved ?? 0); ?>;
+                                    const pending = <?php echo e($statusPending ?? 0); ?>;
+                                    const rejected = <?php echo e($statusRejected ?? 0); ?>;
                                     const total = approved + pending + rejected;
                                     // set total display (safe selector fallback)
                                     const totalEl = document.getElementById('statusTotal');
@@ -784,37 +793,28 @@
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <span class="text-sm text-gray-600">Menunggu Proses</span>
-                                    <span class="font-bold text-lg text-yellow-600">{{ $suratPending }}</span>
+                                    <span class="font-bold text-lg text-yellow-600"><?php echo e($suratPending); ?></span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <span class="text-sm text-gray-600">Disetujui</span>
-                                    <span class="font-bold text-lg text-blue-600">{{ $suratDisetujui }}</span>
+                                    <span class="font-bold text-lg text-blue-600"><?php echo e($suratDisetujui); ?></span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <span class="text-sm text-gray-600">Diterbitkan</span>
-                                    <span class="font-bold text-lg text-purple-600">{{ $suratDiterbitkan }}</span>
+                                    <span class="font-bold text-lg text-purple-600"><?php echo e($suratDiterbitkan); ?></span>
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <span class="text-sm text-gray-600">Ditolak</span>
-                                    <span class="font-bold text-lg text-red-600">{{ $suratDitolak }}</span>
+                                    <span class="font-bold text-lg text-red-600"><?php echo e($suratDitolak); ?></span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @else
+                <?php else: ?>
                     <!-- Charts Section - Karyawan (Personal) - Soft Modern Design -->
                     <div class="lg:col-span-2 space-y-5">
                         <!-- Personal Attendance chart removed per user request -->
-                        {{-- <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-base font-semibold text-gray-800">Ijin Sakit Saya</h3>
-                                <a href="{{ route('karyawan.ijin-sakit') }}"
-                                    class="text-xs font-medium text-red-600 bg-red-50 px-2.5 py-1 rounded-full">Ajukan
-                                    Ijin Sakit</a>
-                            </div>
-                            <p class="text-sm text-gray-600">Grafik kehadiran dihapus. Gunakan tombol di atas untuk
-                                mengajukan ijin sakit atau lihat riwayat pengajuan.</p>
-                        </div> --}}
+                        
 
                         <!-- Pengajuan Cuti Chart - 6 Bulan Terakhir -->
                         <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
@@ -1104,13 +1104,13 @@
                         <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
                             <h3 class="text-sm font-semibold text-gray-800 mb-4">Aksi Cepat</h3>
                             <div class="space-y-3">
-                                <a href="{{ route('karyawan.pengajuan-cuti') }}" class="block w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                <a href="<?php echo e(route('karyawan.pengajuan-cuti')); ?>" class="block w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
                                     Ajukan Cuti
                                 </a>
-                                <a href="{{ route('karyawan.pengajuan-lembur') }}" class="block w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                <a href="<?php echo e(route('karyawan.pengajuan-lembur')); ?>" class="block w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
                                     Ajukan Lembur
                                 </a>
-                                <a href="{{ route('karyawan.surat') }}" class="block w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                <a href="<?php echo e(route('karyawan.surat')); ?>" class="block w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
                                     Surat Saya
                                 </a>
                             </div>
@@ -1141,7 +1141,7 @@
                                     <span class="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">Review</span>
                                 </div>
                             </div>
-                            <a href="{{ route('karyawan.riwayat') }}" class="mt-3 block text-center text-xs font-medium text-slate-600 hover:text-slate-700">
+                            <a href="<?php echo e(route('karyawan.riwayat')); ?>" class="mt-3 block text-center text-xs font-medium text-slate-600 hover:text-slate-700">
                                 Lihat Semua →
                             </a>
                         </div>
@@ -1219,11 +1219,11 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
          
     <!-- Pending Requests - Direktur (Card Format) -->
-            @if (Auth::user()->role === 'direktur')
+            <?php if(Auth::user()->role === 'direktur'): ?>
                 <div class="grid grid-cols-2 gap-6 mb-6">
                     <!-- Pengajuan Cuti - Card List Format -->
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -1318,7 +1318,7 @@
                             </div>
                         </div>
                         <div class="px-6 py-3 bg-gray-50 border-t border-gray-100 text-center">
-                            <a href="{{ route('direktur.persetujuan-cuti-lembur') }}"
+                            <a href="<?php echo e(route('direktur.persetujuan-cuti-lembur')); ?>"
                                 class="text-sm font-semibold text-green-600 hover:text-green-700">Lihat Semua →</a>
                         </div>
                     </div>
@@ -1416,38 +1416,39 @@
                             </div>
                         </div>
                         <div class="px-6 py-3 bg-gray-50 border-t border-gray-100 text-center">
-                            <a href="{{ route('direktur.persetujuan-cuti-lembur') }}"
+                            <a href="<?php echo e(route('direktur.persetujuan-cuti-lembur')); ?>"
                                 class="text-sm font-semibold text-purple-600 hover:text-purple-700">Lihat Semua →</a>
                         </div>
                     </div>
                 </div>
-            @elseif(Auth::user()->role === 'admin_hrd')
+            <?php elseif(Auth::user()->role === 'admin_hrd'): ?>
                 <!-- Pending Requests - Admin HRD -->
                 <div class="grid grid-cols-2 gap-6 mb-6">
                     <!-- Surat Menunggu Proses -->
                     <div id="surat-card" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-purple-50">
                             <h3 class="text-lg font-bold text-gray-800">Surat Menunggu Proses (<span
-                                    id="surat-count">{{ $suratMenunggu->count() }}</span>)</h3>
+                                    id="surat-count"><?php echo e($suratMenunggu->count()); ?></span>)</h3>
                         </div>
                         <div id="surat-list" class="divide-gray-100 max-h-80 overflow-y-auto">
-                            @forelse($suratMenunggu as $surat)
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $suratMenunggu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <div class="px-6 py-4 hover:bg-gray-50 transition-colors"
-                                    data-id="{{ $surat->id }}">
+                                    data-id="<?php echo e($surat->id); ?>">
                                     <div class="flex items-start gap-4">
                                         <div
                                             class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 font-semibold text-blue-600">
-                                            {{ strtoupper(substr($surat->user->name, 0, 2)) }}</div>
+                                            <?php echo e(strtoupper(substr($surat->user->name, 0, 2))); ?></div>
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center justify-between mb-1">
-                                                <p class="text-sm font-semibold text-gray-800">{{ $surat->user->name }}
+                                                <p class="text-sm font-semibold text-gray-800"><?php echo e($surat->user->name); ?>
+
                                                 </p>
                                                 <span
-                                                    class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800 status-label">{{ $surat->status }}</span>
+                                                    class="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800 status-label"><?php echo e($surat->status); ?></span>
                                             </div>
-                                            <p class="text-xs text-gray-500 mb-1">{{ $surat->jenis ?? 'Surat' }}</p>
+                                            <p class="text-xs text-gray-500 mb-1"><?php echo e($surat->jenis ?? 'Surat'); ?></p>
                                             <p class="text-xs font-medium text-gray-700">Diajukan
-                                                {{ $surat->created_at->format('d M Y') }}</p>
+                                                <?php echo e($surat->created_at->format('d M Y')); ?></p>
 
                                             <div class="mt-3 flex items-center gap-2 flex-wrap">
                                                 <button data-action="view"
@@ -1465,12 +1466,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            @empty
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <div class="px-6 py-4 text-sm text-gray-500">Tidak ada surat menunggu.</div>
-                            @endforelse
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                         <div class="px-6 py-3 bg-gray-50 border-t border-gray-100 text-center">
-                            <a href="{{ route('admin.surat') }}"
+                            <a href="<?php echo e(route('admin.surat')); ?>"
                                 class="text-sm font-semibold text-purple-600 hover:text-purple-700">Kelola Surat →</a>
                         </div>
                     </div>
@@ -1674,20 +1675,20 @@
                             </div>
                         </div>
                         <div class="px-6 py-3 bg-gray-50 border-t border-gray-100 text-center">
-                            <a href="{{ route('admin.karyawan') }}"
+                            <a href="<?php echo e(route('admin.karyawan')); ?>"
                                 class="text-sm font-semibold text-blue-600 hover:text-blue-700">Kelola Karyawan →</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Modals untuk Surat Detail -->
-                @foreach($suratMenunggu as $surat)
-                    <div id="surat-modal-{{ $surat->id }}" class="js-modal hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $suratMenunggu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div id="surat-modal-<?php echo e($surat->id); ?>" class="js-modal hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                         <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                             <!-- Modal Header -->
                             <div class="sticky top-0 px-6 py-5 bg-gradient-to-r from-purple-50 to-purple-50 border-b border-gray-200 flex items-center justify-between">
                                 <h2 class="text-lg font-bold text-gray-800">Detail Surat</h2>
-                                <button onclick="document.getElementById('surat-modal-{{ $surat->id }}').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                                <button onclick="document.getElementById('surat-modal-<?php echo e($surat->id); ?>').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
@@ -1706,25 +1707,25 @@
                                         </div>
                                         <div>
                                             <p class="text-xs text-gray-500">Pengajuan Oleh</p>
-                                            <p class="text-sm font-semibold text-gray-800">{{ $surat->user->name }}</p>
+                                            <p class="text-sm font-semibold text-gray-800"><?php echo e($surat->user->name); ?></p>
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 gap-4">
                                         <div>
                                             <p class="text-xs text-gray-500">Jenis Surat</p>
-                                            <p class="text-sm font-semibold text-gray-800">{{ $surat->jenis }}</p>
+                                            <p class="text-sm font-semibold text-gray-800"><?php echo e($surat->jenis); ?></p>
                                         </div>
                                         <div>
                                             <p class="text-xs text-gray-500">Nomor Surat</p>
-                                            <p class="text-sm font-semibold text-gray-800">{{ $surat->nomor_surat }}</p>
+                                            <p class="text-sm font-semibold text-gray-800"><?php echo e($surat->nomor_surat); ?></p>
                                         </div>
                                         <div>
                                             <p class="text-xs text-gray-500">Status</p>
-                                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full {{ $surat->status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800' }}">{{ $surat->status }}</span>
+                                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full <?php echo e($surat->status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'); ?>"><?php echo e($surat->status); ?></span>
                                         </div>
                                         <div>
                                             <p class="text-xs text-gray-500">Tanggal Pengajuan</p>
-                                            <p class="text-sm font-semibold text-gray-800">{{ $surat->created_at->format('d M Y') }}</p>
+                                            <p class="text-sm font-semibold text-gray-800"><?php echo e($surat->created_at->format('d M Y')); ?></p>
                                         </div>
                                     </div>
                                 </div>
@@ -1735,38 +1736,38 @@
                                     <div class="bg-gray-50 rounded-lg p-4 space-y-3">
                                         <div>
                                             <p class="text-xs text-gray-500 mb-1">Perihal</p>
-                                            <p class="text-sm text-gray-800">{{ $surat->perihal }}</p>
+                                            <p class="text-sm text-gray-800"><?php echo e($surat->perihal); ?></p>
                                         </div>
                                         <div>
                                             <p class="text-xs text-gray-500 mb-1">Isi Surat</p>
-                                            <p class="text-sm text-gray-800 whitespace-pre-wrap">{{ $surat->isi_surat }}</p>
+                                            <p class="text-sm text-gray-800 whitespace-pre-wrap"><?php echo e($surat->isi_surat); ?></p>
                                         </div>
                                         <div>
                                             <p class="text-xs text-gray-500 mb-1">Keterangan Tambahan</p>
-                                            <p class="text-sm text-gray-800">{{ $surat->keterangan ?? '-' }}</p>
+                                            <p class="text-sm text-gray-800"><?php echo e($surat->keterangan ?? '-'); ?></p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Action Buttons -->
                                 <div class="flex items-center gap-3 pt-4 border-t">
-                                    <button onclick="approveAction({{ $surat->id }})" class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors">
+                                    <button onclick="approveAction(<?php echo e($surat->id); ?>)" class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors">
                                         Setujui
                                     </button>
-                                    <button onclick="rejectAction({{ $surat->id }})" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
+                                    <button onclick="rejectAction(<?php echo e($surat->id); ?>)" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
                                         Tolak
                                     </button>
-                                    <button onclick="deleteAction({{ $surat->id }})" class="flex-1 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors">
+                                    <button onclick="deleteAction(<?php echo e($surat->id); ?>)" class="flex-1 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors">
                                         Hapus
                                     </button>
-                                    <button onclick="document.getElementById('surat-modal-{{ $surat->id }}').classList.add('hidden')" class="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-lg transition-colors">
+                                    <button onclick="document.getElementById('surat-modal-<?php echo e($surat->id); ?>').classList.add('hidden')" class="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-lg transition-colors">
                                         Tutup
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 <!-- Helper Functions untuk Modal Actions -->
                 <script>
@@ -1843,7 +1844,7 @@
                         }).catch((err) => alert('Error: ' + err.message));
                     }
                 </script>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <!-- Content Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -1856,7 +1857,7 @@
                         </div>
                     </div>
                     <div class="divide-y divide-gray-100/50">
-                        @if (Auth::user()->role === 'direktur')
+                        <?php if(Auth::user()->role === 'direktur'): ?>
                             <!-- Direktur Activities - Approval & Request Focus -->
                             <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-transparent transition-all duration-300 group">
                                 <div class="flex items-start gap-4">
@@ -1968,7 +1969,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @elseif(Auth::user()->role === 'admin_hrd')
+                        <?php elseif(Auth::user()->role === 'admin_hrd'): ?>
                             <!-- Admin HRD Activities -->
                             <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-transparent transition-all duration-300 group">
                                 <div class="flex items-start gap-4">
@@ -2076,7 +2077,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @else
+                        <?php else: ?>
                             <!-- Karyawan Activities - Soft Modern Design -->
                             <div class="px-6 py-5 hover:bg-gradient-to-r hover:from-pink-50/30 hover:to-transparent transition-all duration-300 group">
                                 <div class="flex items-start gap-4">
@@ -2183,12 +2184,12 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
 
                 <!-- Quick Actions & Info -->
-                @if (Auth::user()->role !== 'karyawan')
+                <?php if(Auth::user()->role !== 'karyawan'): ?>
                     <div class="space-y-6">
                         <!-- Quick Actions -->
                         <div
@@ -2199,8 +2200,8 @@
                             </div>
                             <div class="divide-y divide-gray-100/50">
                                 <!-- Quick Actions - Direktur -->
-                                @if (Auth::user()->role === 'direktur')
-                                    <a href="{{ route('direktur.persetujuan-cuti-lembur') }}"
+                                <?php if(Auth::user()->role === 'direktur'): ?>
+                                    <a href="<?php echo e(route('direktur.persetujuan-cuti-lembur')); ?>"
                                         class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                         <div class="flex items-center gap-3">
                                             <div
@@ -2214,7 +2215,8 @@
                                             </div>
                                             <div>
                                                 <p class="text-sm font-medium text-gray-800">Review Pengajuan</p>
-                                                <p class="text-xs text-gray-600">{{ $pendingApprovals ?? 0 }}
+                                                <p class="text-xs text-gray-600"><?php echo e($pendingApprovals ?? 0); ?>
+
                                                     pengajuan menunggu</p>
                                             </div>
                                         </div>
@@ -2225,7 +2227,7 @@
                                         </svg>
                                     </a>
 
-                                    <a href="{{ route('direktur.laporan') }}"
+                                    <a href="<?php echo e(route('direktur.laporan')); ?>"
                                         class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                         <div class="flex items-center gap-3">
                                             <div
@@ -2248,7 +2250,7 @@
                                         </svg>
                                     </a>
 
-                                    <a href="{{ route('direktur.ringkasan-karyawan') }}"
+                                    <a href="<?php echo e(route('direktur.ringkasan-karyawan')); ?>"
                                         class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                         <div class="flex items-center gap-3">
                                             <div
@@ -2270,9 +2272,9 @@
                                                 d="M9 5l7 7-7 7" />
                                         </svg>
                                     </a>
-                                @elseif(Auth::user()->role === 'admin_hrd')
+                                <?php elseif(Auth::user()->role === 'admin_hrd'): ?>
                                     <!-- Quick Actions - Admin HRD -->
-                                    <a href="{{ route('admin.karyawan') }}"
+                                    <a href="<?php echo e(route('admin.karyawan')); ?>"
                                         class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                         <div class="flex items-center gap-3">
                                             <div
@@ -2295,7 +2297,7 @@
                                         </svg>
                                     </a>
 
-                                    <a href="{{ route('admin.surat') }}"
+                                    <a href="<?php echo e(route('admin.surat')); ?>"
                                         class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                         <div class="flex items-center gap-3">
                                             <div
@@ -2319,7 +2321,7 @@
                                         </svg>
                                     </a>
 
-                                    <a href="{{ route('admin.template') }}"
+                                    <a href="<?php echo e(route('admin.template')); ?>"
                                         class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                         <div class="flex items-center gap-3">
                                             <div
@@ -2343,13 +2345,13 @@
                                                 d="M9 5l7 7-7 7" />
                                         </svg>
                                     </a>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                         </div>
                         <div class="divide-y divide-gray-100/50">
                             <!-- Quick Actions - Direktur -->
-                            @if (Auth::user()->role === 'direktur')
-                                <a href="{{ route('direktur.persetujuan-cuti-lembur') }}"
+                            <?php if(Auth::user()->role === 'direktur'): ?>
+                                <a href="<?php echo e(route('direktur.persetujuan-cuti-lembur')); ?>"
                                     class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                     <div class="flex items-center gap-3">
                                         <div
@@ -2373,7 +2375,7 @@
                                         </svg>
                                 </a>
 
-                                <a href="{{ route('direktur.laporan') }}"
+                                <a href="<?php echo e(route('direktur.laporan')); ?>"
                                     class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                     <div class="flex items-center gap-3">
                                         <div
@@ -2396,7 +2398,7 @@
                                     </svg>
                                 </a>
 
-                                <a href="{{ route('direktur.ringkasan-karyawan') }}"
+                                <a href="<?php echo e(route('direktur.ringkasan-karyawan')); ?>"
                                     class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                     <div class="flex items-center gap-3">
                                         <div
@@ -2418,9 +2420,9 @@
                                             d="M9 5l7 7-7 7" />
                                     </svg>
                                 </a>
-                            @elseif(Auth::user()->role === 'admin_hrd')
+                            <?php elseif(Auth::user()->role === 'admin_hrd'): ?>
                                 <!-- Quick Actions - Admin HRD -->
-                                <a href="{{ route('admin.karyawan') }}"
+                                <a href="<?php echo e(route('admin.karyawan')); ?>"
                                     class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                     <div class="flex items-center gap-3">
                                         <div
@@ -2443,7 +2445,7 @@
                                         </svg>
                                 </a>
 
-                                <a href="{{ route('admin.surat') }}"
+                                <a href="<?php echo e(route('admin.surat')); ?>"
                                     class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                     <div class="flex items-center gap-3">
                                         <div
@@ -2467,7 +2469,7 @@
                                     </svg>
                                 </a>
 
-                                <a href="{{ route('admin.template') }}"
+                                <a href="<?php echo e(route('admin.template')); ?>"
                                     class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors group">
                                     <div class="flex items-center gap-3">
                                         <div
@@ -2491,7 +2493,7 @@
                                             d="M9 5l7 7-7 7" />
                                     </svg>
                                 </a>
-                            @endif
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </div>
 
@@ -2523,7 +2525,7 @@
                         </div>
                     </div>
                 </div>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
         </div>
@@ -2539,4 +2541,14 @@
             </svg>
         </button>
     </div>
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/dashboard.blade.php ENDPATH**/ ?>

@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('magangs', function (Blueprint $table) {
-            $table->enum('status', ['Pending', 'Disetujui', 'Ditolak', 'Approved', 'Rejected'])->change();
-        });
+        // Keep the status enum with all possible values
+        // No need to modify since the table already has the needed values
     }
 
     /**
@@ -21,8 +20,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('magangs', function (Blueprint $table) {
-            $table->enum('status', ['Pending', 'Disetujui', 'Ditolak'])->change();
-        });
+        // No-op since we didn't modify the table
     }
 };

@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('magangs', function (Blueprint $table) {
-            $table->string('file_surat')->nullable()->after('tanggal_surat_dibuat')->comment('Path ke file PDF surat yang sudah dibuat');
+            if (!Schema::hasColumn('magangs', 'file_surat')) {
+                $table->string('file_surat')->nullable()->comment('Path ke file PDF surat yang sudah dibuat');
+            }
         });
     }
 

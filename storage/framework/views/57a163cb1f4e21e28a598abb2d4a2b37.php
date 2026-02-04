@@ -1,13 +1,22 @@
-<x-app-layout>
-    <x-slot name="header">
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Pengajuan Magang
         </h2>
-    </x-slot>
+     <?php $__env->endSlot(); ?>
 
     <!-- Fixed Sidebar -->
     <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
-        @include('layouts.sidebar')
+        <?php echo $__env->make('layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <!-- Scrollable Main Content -->
@@ -34,7 +43,7 @@
                                 </svg>
                             </div>
                             <p class="text-sm font-medium text-gray-600 mb-1">Total Pengajuan</p>
-                            <p class="text-3xl font-bold text-gray-900">{{ $magangList->total() }}</p>
+                            <p class="text-3xl font-bold text-gray-900"><?php echo e($magangList->total()); ?></p>
                         </div>
                     </div>
 
@@ -48,7 +57,7 @@
                                 </svg>
                             </div>
                             <p class="text-sm font-medium text-gray-600 mb-1">Permintaan Surat</p>
-                            <p class="text-3xl font-bold text-rose-600/80">{{ $magangList->where('status', 'Permintaan Surat')->count() }}</p>
+                            <p class="text-3xl font-bold text-rose-600/80"><?php echo e($magangList->where('status', 'Permintaan Surat')->count()); ?></p>
                         </div>
                     </div>
 
@@ -62,7 +71,7 @@
                                 </svg>
                             </div>
                             <p class="text-sm font-medium text-gray-600 mb-1">Surat Selesai</p>
-                            <p class="text-3xl font-bold text-green-600/80">{{ $magangList->where('status', 'Surat Selesai')->count() }}</p>
+                            <p class="text-3xl font-bold text-green-600/80"><?php echo e($magangList->where('status', 'Surat Selesai')->count()); ?></p>
                         </div>
                     </div>
                 </div>
@@ -70,7 +79,7 @@
 
             <!-- Magang List Section -->
             <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
-                @if($magangList->count() > 0)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($magangList->count() > 0): ?>
                     <div class="overflow-x-auto">
                         <table class="w-full">
                             <thead>
@@ -83,55 +92,57 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                @foreach($magangList as $magang)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $magangList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $magang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr class="hover:bg-slate-50/40 transition-colors duration-200 group">
                                         <td class="px-8 py-6">
                                             <div class="flex items-center gap-4">
                                                 <div class="w-12 h-12 rounded-full bg-gradient-to-br from-slate-300 to-slate-400 flex items-center justify-center text-white font-bold text-lg shadow-md">
-                                                    {{ substr($magang->nama_peserta, 0, 1) }}
+                                                    <?php echo e(substr($magang->nama_peserta, 0, 1)); ?>
+
                                                 </div>
                                                 <div>
-                                                    <p class="font-semibold text-gray-900 text-sm">{{ $magang->nama_peserta }}</p>
-                                                    <p class="text-xs text-gray-500 mt-1">{{ $magang->jurusan }}</p>
+                                                    <p class="font-semibold text-gray-900 text-sm"><?php echo e($magang->nama_peserta); ?></p>
+                                                    <p class="text-xs text-gray-500 mt-1"><?php echo e($magang->jurusan); ?></p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="px-8 py-6">
-                                            <p class="text-sm text-gray-700 font-medium">{{ $magang->sekolah_asal }}</p>
+                                            <p class="text-sm text-gray-700 font-medium"><?php echo e($magang->sekolah_asal); ?></p>
                                         </td>
                                         <td class="px-8 py-6">
                                             <span class="inline-flex items-center gap-2 text-sm text-slate-700 font-medium bg-slate-50 px-4 py-2 rounded-lg border border-slate-100">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                                 </svg>
-                                                {{ $magang->durasi_hari }} hari
+                                                <?php echo e($magang->durasi_hari); ?> hari
                                             </span>
                                         </td>
                                         <td class="px-8 py-6">
-                                            @if($magang->status === 'Permintaan Surat')
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($magang->status === 'Permintaan Surat'): ?>
                                                 <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-rose-100/60 to-rose-50/40 text-rose-600/80 border border-rose-200/30 shadow-sm">📬 Permintaan Surat</span>
-                                            @else
+                                            <?php else: ?>
                                                 <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-green-100/60 to-green-50/40 text-green-600/80 border border-green-200/30 shadow-sm">✓ Surat Selesai</span>
-                                            @endif
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </td>
                                         <td class="px-8 py-6 text-center">
-                                            <button onclick="showMagangDetailModal({{ $magang->id }})" class="px-4 py-2 bg-gradient-to-r from-rose-500/80 to-rose-400/70 text-white font-medium rounded-2xl hover:from-rose-500 hover:to-rose-400 shadow-sm hover:shadow-md transition-all duration-300 text-sm whitespace-nowrap group-hover:scale-105">
+                                            <button onclick="showMagangDetailModal(<?php echo e($magang->id); ?>)" class="px-4 py-2 bg-gradient-to-r from-rose-500/80 to-rose-400/70 text-white font-medium rounded-2xl hover:from-rose-500 hover:to-rose-400 shadow-sm hover:shadow-md transition-all duration-300 text-sm whitespace-nowrap group-hover:scale-105">
                                                 Lihat Detail
                                             </button>
                                         </td>
                                     </tr>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Pagination -->
-                    @if($magangList->hasPages())
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($magangList->hasPages()): ?>
                         <div class="bg-gradient-to-r from-gray-50 to-gray-50 border-t border-gray-100 px-8 py-6">
-                            {{ $magangList->links() }}
+                            <?php echo e($magangList->links()); ?>
+
                         </div>
-                    @endif
-                @else
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php else: ?>
                     <div class="text-center py-16">
                         <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 mb-6">
                             <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,7 +152,7 @@
                         <p class="text-gray-500 text-lg font-medium">Belum ada pengajuan magang</p>
                         <p class="text-gray-400 text-sm mt-2">Pengajuan akan muncul di sini ketika ada yang mengajukan</p>
                     </div>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
     </div>
@@ -272,7 +283,16 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
 
 <script>
 let currentMagangId = null;
@@ -606,3 +626,4 @@ function closeMagangPdfModal() {
     document.getElementById('magangPdfModal').classList.add('hidden');
 }
 </script>
+<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/admin/magang.blade.php ENDPATH**/ ?>

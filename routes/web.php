@@ -142,6 +142,8 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         Route::get('/magang/{id}/get-surat', [\App\Http\Controllers\Admin\MagangController::class, 'getExistingSurat'])->name('magang.get-surat');
         Route::get('/magang/{id}/preview-surat', [\App\Http\Controllers\Admin\MagangController::class, 'previewMagangSurat'])->name('magang.preview-surat');
         Route::post('/magang/{id}/mark-created', [\App\Http\Controllers\Admin\MagangController::class, 'markSuratCreated'])->name('magang.mark-created');
+        Route::post('/magang/{id}/approve', [\App\Http\Controllers\Admin\MagangController::class, 'approveMagang'])->name('magang.approve');
+        Route::post('/magang/{id}/reject', [\App\Http\Controllers\Admin\MagangController::class, 'rejectMagang'])->name('magang.reject');
         
         // Lembur routes disabled for now
         // Route::get('/lembur', function () {
