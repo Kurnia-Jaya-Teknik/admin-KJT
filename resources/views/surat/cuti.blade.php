@@ -233,12 +233,12 @@
 
             <div class="info-line">
                 <span class="info-label">Mulai Tanggal</span>
-                <span class="info-value info-value-short">{{ $cuti->tanggal_mulai ? \Carbon\Carbon::parse($cuti->tanggal_mulai)->locale('id')->translatedFormat('d F Y') : '' }}</span>
+                <span class="info-value info-value-short">{{ $cuti->tanggal_mulai ? $cuti->tanggal_mulai->format('d/m/Y') : '' }}</span>
             </div>
 
             <div class="info-line">
                 <span class="info-label">Sampai Tanggal</span>
-                <span class="info-value info-value-short">{{ $cuti->tanggal_selesai ? \Carbon\Carbon::parse($cuti->tanggal_selesai)->locale('id')->translatedFormat('d F Y') : '' }}</span>
+                <span class="info-value info-value-short">{{ $cuti->tanggal_selesai ? $cuti->tanggal_selesai->format('d/m/Y') : '' }}</span>
                 <span style="margin-left: 6px; font-size: 12px;">Total Hari:</span>
                 <span class="info-value info-value-medium">{{ $cuti->durasi_hari ?? '' }} hari</span>
             </div>
@@ -272,7 +272,7 @@
         <!-- Signature Section -->
         <div class="signature-section">
             <div class="date-line">
-                Pasuruan, {{ now()->locale('id')->translatedFormat('d F Y') }}
+                Pasuruan, {{ now()->format('d/m/Y') }}
             </div>
 
             <div class="signature-wrapper">
