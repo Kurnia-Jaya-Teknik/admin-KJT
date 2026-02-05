@@ -118,13 +118,13 @@
                                     <td class="px-8 py-6 text-sm text-gray-600">{{ optional($surat->tanggal_surat)->format('d/m/Y') }}</td>
                                     <td class="px-8 py-6 text-center">
                                         <div class="flex gap-2 justify-center flex-wrap">
-                                            <a href="{{ asset('storage/' . $surat->file_surat) }}" target="_blank" class="px-4 py-2 bg-blue-100/60 text-blue-700 font-medium rounded-xl hover:bg-blue-100 transition-colors text-sm">
+                                            <button onclick="previewSurat({{ $surat->id }}, '{{ $surat->user->name }}')" class="px-4 py-2 bg-blue-100/60 text-blue-700 font-medium rounded-xl hover:bg-blue-100 transition-colors text-sm">
                                                 <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                     <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
                                                     <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
                                                 </svg>
                                                 Lihat
-                                            </a>
+                                            </button>
                                             <button onclick="deleteSurat({{ $surat->id }})" class="px-4 py-2 bg-red-100/60 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors text-sm">
                                                 <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
@@ -275,6 +275,39 @@
                     </svg>
                     Buat Surat
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Surat Modal -->
+    <div id="previewSuratModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="sticky top-0 bg-gradient-to-r from-blue-50/80 to-slate-50/60 backdrop-blur-md border-b border-gray-100/40 px-8 py-6 flex items-start justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Preview Surat Keterangan</h2>
+                    <p class="text-sm text-gray-500 mt-1" id="previewSuratTitle"></p>
+                </div>
+                <button onclick="closePreviewModal()" class="p-2 hover:bg-white/50 rounded-2xl transition-colors">
+                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto bg-gray-50">
+                <iframe id="previewSuratFrame" class="w-full h-full" style="min-height: 600px;" frameborder="0"></iframe>
+            </div>
+            
+            <div class="border-t border-gray-100/40 bg-gradient-to-r from-gray-50/50 to-slate-50/30 px-8 py-6 flex gap-4 justify-end flex-wrap">
+                <button onclick="closePreviewModal()" class="px-8 py-3 border border-gray-200/60 rounded-2xl text-gray-600 font-medium hover:bg-gray-50/70 transition-all">
+                    Tutup
+                </button>
+                <a id="downloadSuratBtn" href="#" target="_blank" class="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-green-500 to-green-400 text-white font-semibold rounded-2xl hover:from-green-600 hover:to-green-500 shadow-md hover:shadow-lg transition-all transform hover:scale-105">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                    Download
+                </a>
             </div>
         </div>
     </div>
@@ -520,8 +553,6 @@ function submitCreateSuratFromRequest() {
         return;
     }
     
-    closeCreateFromRequestModal();
-    
     fetch(`/admin/surat-keterangan/requests/${currentRequestId}/create-surat`, {
         method: 'POST',
         headers: {
@@ -540,9 +571,14 @@ function submitCreateSuratFromRequest() {
     .then(r => r.json())
     .then(data => {
         if (data.ok) {
+            closeCreateFromRequestModal();
             alert('Surat berhasil dibuat!');
+            // Reload tab permintaan (hilangkan item yang sudah selesai)
+            loadPendingRequests();
+            // Switch ke tab dibuat
             switchTab('dibuat');
-            location.reload();
+            // Reload tab dibuat tanpa full reload halaman
+            setTimeout(() => loadSuratDibuat(), 500);
         } else {
             alert('Error: ' + data.message);
         }
@@ -652,11 +688,123 @@ function deleteSurat(id) {
     .then(res => {
         if (res.ok) {
             alert('Surat berhasil dihapus');
-            location.reload();
+            loadSuratDibuat();
         } else {
             alert('Error: ' + res.message);
         }
     })
     .catch(e => alert('Error: ' + e.message));
+}
+
+// Load surat yang sudah dibuat tanpa reload halaman
+function loadSuratDibuat() {
+    fetch('/admin/surat-keterangan/list-dibuat', {
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+        }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (!data.ok) return;
+        
+        const suratList = data.data;
+        const contentDiv = document.getElementById('contentDibuat');
+        
+        if (suratList.length === 0) {
+            contentDiv.innerHTML = `
+                <div class="p-12 text-center">
+                    <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M5 3a2 2 0 012-2h6a2 2 0 012 2v2h4a1 1 0 010 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V7a1 1 0 010-2h4V3z"/>
+                    </svg>
+                    <p class="text-gray-500">Belum ada surat yang dibuat</p>
+                </div>
+            `;
+            return;
+        }
+        
+        let html = `
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-transparent">
+                            <th class="px-8 py-5 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Karyawan</th>
+                            <th class="px-8 py-5 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Nomor Surat</th>
+                            <th class="px-8 py-5 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Jabatan</th>
+                            <th class="px-8 py-5 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Tanggal</th>
+                            <th class="px-8 py-5 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+        `;
+        
+        suratList.forEach(surat => {
+            html += `
+                <tr class="hover:bg-gray-50/50 transition-colors">
+                    <td class="px-8 py-6">
+                        <p class="font-semibold text-gray-900">${surat.user.name}</p>
+                        <p class="text-xs text-gray-500 mt-1">${surat.user.email}</p>
+                    </td>
+                    <td class="px-8 py-6 font-mono text-sm text-gray-700">${surat.nomor_surat}</td>
+                    <td class="px-8 py-6 text-sm text-gray-700">${surat.jabatan}</td>
+                    <td class="px-8 py-6 text-sm text-gray-600">${new Date(surat.tanggal_surat).toLocaleDateString('id-ID')}</td>
+                    <td class="px-8 py-6 text-center">
+                        <div class="flex gap-2 justify-center flex-wrap">
+                            <button onclick="previewSurat(${surat.id}, '${surat.user.name}')" class="px-4 py-2 bg-blue-100/60 text-blue-700 font-medium rounded-xl hover:bg-blue-100 transition-colors text-sm">
+                                <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Lihat
+                            </button>
+                            <button onclick="deleteSurat(${surat.id})" class="px-4 py-2 bg-red-100/60 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors text-sm">
+                                <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                </svg>
+                                Hapus
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+        
+        contentDiv.innerHTML = html;
+        contentDiv.classList.remove('hidden');
+    })
+    .catch(e => console.error('Error:', e));
+}
+
+// Preview surat di modal
+function previewSurat(suratId, namaKaryawan) {
+    fetch(`/admin/surat-keterangan/${suratId}/preview`, {
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+        }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (!data.ok) {
+            alert('Error: ' + data.message);
+            return;
+        }
+        
+        document.getElementById('previewSuratTitle').textContent = `Surat Keterangan - ${namaKaryawan}`;
+        document.getElementById('previewSuratFrame').src = 'data:application/pdf;base64,' + data.pdfBase64;
+        document.getElementById('downloadSuratBtn').href = data.downloadUrl;
+        document.getElementById('previewSuratModal').classList.remove('hidden');
+    })
+    .catch(e => alert('Error: ' + e.message));
+}
+
+// Close preview modal
+function closePreviewModal() {
+    document.getElementById('previewSuratModal').classList.add('hidden');
+    document.getElementById('previewSuratFrame').src = '';
 }
 </script>

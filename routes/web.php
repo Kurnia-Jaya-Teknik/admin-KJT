@@ -196,6 +196,7 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         
         // Surat Keterangan Kerja
         Route::get('/surat-keterangan', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'index'])->name('surat-keterangan.index');
+        Route::get('/surat-keterangan/list-dibuat', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'listDibuat'])->name('surat-keterangan.list-dibuat');
         Route::get('/surat-keterangan/requests/pending', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'pendingRequests'])->name('surat-keterangan.requests.pending');
         Route::get('/surat-keterangan/requests/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'getRequest'])->name('surat-keterangan.requests.get');
         Route::post('/surat-keterangan/requests/{id}/create-surat', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'createSuratFromRequest'])->name('surat-keterangan.requests.create-surat');

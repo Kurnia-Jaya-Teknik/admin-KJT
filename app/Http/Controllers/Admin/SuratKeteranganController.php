@@ -340,14 +340,50 @@ class SuratKeteranganController extends Controller
         $surat = SuratKeterangan::findOrFail($id);
 
         if (!$surat->file_surat || !file_exists(storage_path('app/public/' . $surat->file_surat))) {
-            abort(404, 'File surat tidak ditemukan');
+            return response()->json([
+                'ok' => false,
+                'message' => 'File surat tidak ditemukan',
+            ], 404);
         }
 
         $path = storage_path('app/public/' . $surat->file_surat);
+        $pdfBase64 = base64_encode(file_get_contents($path));
+        $downloadUrl = asset('storage/' . $surat->file_surat);
 
-        return response()->file($path, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . basename($path) . '"',
+        return response()->json([
+            'ok' => true,
+            'pdfBase64' => $pdfBase64,
+            'downloadUrl' => $downloadUrl,
+        ]);
+    }
+
+    /**
+     * =============================
+     * LIST SURAT YANG DIBUAT (API)
+     * =============================
+     */
+    public function listDibuat()
+    {
+        $this->ensureAdminHRD();
+
+        $suratList = SuratKeterangan::with('user')
+            ->orderBy('tanggal_surat', 'desc')
+            ->get()
+            ->map(fn($s) => [
+                'id' => $s->id,
+                'user' => [
+                    'name' => $s->user->name,
+                    'email' => $s->user->email,
+                ],
+                'nomor_surat' => $s->nomor_surat,
+                'jabatan' => $s->jabatan,
+                'tanggal_surat' => $s->tanggal_surat?->toDateString(),
+                'file_surat' => $s->file_surat,
+            ]);
+
+        return response()->json([
+            'ok' => true,
+            'data' => $suratList,
         ]);
     }
 }
