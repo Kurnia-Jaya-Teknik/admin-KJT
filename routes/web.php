@@ -158,6 +158,7 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratController::class, 'storeCutiSurat'])->name('cuti.buat-surat');
         
         Route::get('/magang', [\App\Http\Controllers\Admin\MagangController::class, 'index'])->name('magang');
+        Route::get('/magang-stats', [\App\Http\Controllers\Admin\MagangController::class, 'getStats'])->name('magang.stats');
         Route::get('/magang/{id}/detail', [\App\Http\Controllers\Admin\MagangController::class, 'detail'])->name('magang.detail');
         Route::post('/magang/{id}/buat-surat', [\App\Http\Controllers\Admin\MagangController::class, 'storeMagangSurat'])->name('magang.buat-surat');
         Route::get('/magang/{id}/get-surat', [\App\Http\Controllers\Admin\MagangController::class, 'getExistingSurat'])->name('magang.get-surat');

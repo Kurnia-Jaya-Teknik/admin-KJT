@@ -125,7 +125,7 @@ Dengan hormat,<br><br>
 
 <p class="text-justify">
 Sehubungan dengan surat dari {{ $magangList[0]->sekolah_asal }} Nomor
-<strong>{{ $magangList[0]->nomor_permohonan ?? '-' }}</strong>
+<strong>{{ $nomor_surat ?? '-' }}</strong>
 tanggal
 <strong>{{ \Carbon\Carbon::parse($magangList[0]->tanggal_mulai)->locale('id')->translatedFormat('d F Y') }}</strong>
 perihal <em>Permohonan Izin Pelaksanaan Magang</em>, dengan ini kami menyampaikan

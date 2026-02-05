@@ -7,6 +7,7 @@ use App\Models\Magang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
 
 class MagangController extends Controller
@@ -27,8 +28,9 @@ class MagangController extends Controller
     {
         $this->ensureAdminHRD();
 
-        // Sort: Permintaan Surat first, then Surat Selesai, then others
+        // Sort: Permintaan Surat first, then Surat Selesai (newest first), then others
         $magangList = Magang::orderByRaw("FIELD(status, 'Permintaan Surat', 'Surat Selesai', 'Disetujui', 'Ditolak')")
+            ->orderBy(DB::raw("CASE WHEN status = 'Surat Selesai' THEN 0 ELSE 1 END"))
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -46,6 +48,21 @@ class MagangController extends Controller
 
         $magang = Magang::findOrFail($id);
 
+        // Ambil semua peserta dari satu surat request yang sama
+        $pesertaList = Magang::where('surat_magang_request_id', $magang->surat_magang_request_id)
+            ->where('status', 'Permintaan Surat')
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        $pesertaData = $pesertaList->map(function($p) {
+            return [
+                'id' => $p->id,
+                'nama_peserta' => $p->nama_peserta,
+                'nim_nis' => $p->nim_nis,
+                'jurusan' => $p->jurusan,
+            ];
+        })->toArray();
+
         return response()->json([
             'ok' => true,
             'data' => [
@@ -62,6 +79,8 @@ class MagangController extends Controller
                 'status' => $magang->status,
                 'nomor_surat_diminta' => $magang->nomor_surat_diminta,
                 'tanggal_surat_diminta' => optional($magang->tanggal_surat_diminta)->format('d/m/Y'),
+                'surat_magang_request_id' => $magang->surat_magang_request_id,
+                'peserta_list' => $pesertaData,
             ]
         ]);
     }
@@ -99,18 +118,19 @@ class MagangController extends Controller
         $validated = $request->validate([
             'nomor_surat_dibuat' => 'required|string|max:100',
             'tanggal_surat_dibuat' => 'required|date',
-            'nim_nis' => 'required|string|max:50',
+            'peserta_nim_nis' => 'required|array|min:1',
+            'peserta_nim_nis.*' => 'required|string|max:50',
         ], [
             'nomor_surat_dibuat.required' => 'Nomor surat harus diisi',
             'tanggal_surat_dibuat.required' => 'Tanggal surat harus diisi',
-            'nim_nis.required' => 'NIM/NIS harus diisi',
+            'peserta_nim_nis.required' => 'NIM/NIS peserta harus diisi',
+            'peserta_nim_nis.*.required' => 'Semua NIM/NIS peserta harus diisi',
         ]);
 
-        // Simpan nomor, tanggal, dan NIM/NIS yang diinput admin
+        // Simpan nomor dan tanggal surat
         $magang->update([
             'nomor_surat_dibuat' => $validated['nomor_surat_dibuat'],
             'tanggal_surat_dibuat' => $validated['tanggal_surat_dibuat'],
-            'nim_nis' => $validated['nim_nis'],
         ]);
 
         try {
@@ -122,6 +142,17 @@ class MagangController extends Controller
                 ->where('status', 'Permintaan Surat')
                 ->orderBy('created_at', 'asc')
                 ->get();
+
+            /**
+             * Update NIM/NIS untuk setiap peserta dari input form
+             */
+            foreach ($magangList as $item) {
+                // Cek apakah peserta ini ada di input form
+                if (isset($validated['peserta_nim_nis'][$item->id])) {
+                    $item->nim_nis = $validated['peserta_nim_nis'][$item->id];
+                    $item->save();
+                }
+            }
 
             if ($magangList->isEmpty()) {
                 return response()->json([
@@ -310,18 +341,24 @@ class MagangController extends Controller
 
     /**
      * =============================
-     * REJECT MAGANG
+     * GET STATS (AJAX)
      * =============================
      */
-    public function rejectMagang($id)
+    public function getStats()
     {
         $this->ensureAdminHRD();
 
-        $magang = Magang::findOrFail($id);
-        $magang->update(['status' => 'Ditolak']);
+        $total = Magang::count();
+        $permintaan_surat = Magang::where('status', 'Permintaan Surat')->count();
+        $surat_selesai = Magang::where('status', 'Surat Selesai')->count();
 
         return response()->json([
             'ok' => true,
-            'message' => 'Pengajuan magang ditolak'
+            'data' => [
+                'total' => $total,
+                'permintaan_surat' => $permintaan_surat,
+                'surat_selesai' => $surat_selesai,
+            ]
         ]);
-    }}
+    }
+}

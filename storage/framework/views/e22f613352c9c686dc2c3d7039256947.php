@@ -128,7 +128,7 @@ Dengan hormat,<br><br>
 
 <p class="text-justify">
 Sehubungan dengan surat dari <?php echo e($magangList[0]->sekolah_asal); ?> Nomor
-<strong><?php echo e($magangList[0]->nomor_permohonan ?? '-'); ?></strong>
+<strong><?php echo e($nomor_surat ?? '-'); ?></strong>
 tanggal
 <strong><?php echo e(\Carbon\Carbon::parse($magangList[0]->tanggal_mulai)->locale('id')->translatedFormat('d F Y')); ?></strong>
 perihal <em>Permohonan Izin Pelaksanaan Magang</em>, dengan ini kami menyampaikan
