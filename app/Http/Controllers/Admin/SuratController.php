@@ -244,6 +244,12 @@ class SuratController extends Controller
 
         $karyawan = $cuti->user;
 
+        // Get delegated users from dilimpahkan_ke array
+        $delegatedUsers = collect();
+        if (!empty($cuti->dilimpahkan_ke) && is_array($cuti->dilimpahkan_ke)) {
+            $delegatedUsers = \App\Models\User::whereIn('id', $cuti->dilimpahkan_ke)->get();
+        }
+
         // ✅ PATH LOGO WAJIB FILE://
         $logoPath = 'file://' . public_path('img/image.png');
 
@@ -251,6 +257,7 @@ class SuratController extends Controller
             'karyawan' => $karyawan,
             'cuti' => $cuti,
             'logoPath' => $logoPath,
+            'delegatedUsers' => $delegatedUsers,
         ])->render();
 
         // ✅ OPTIONS DOMPDF (WAJIB)

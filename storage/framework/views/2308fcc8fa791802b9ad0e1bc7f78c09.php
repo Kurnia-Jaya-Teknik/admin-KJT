@@ -205,23 +205,10 @@
                                             <?php echo e(\Carbon\Carbon::parse($cuti->created_at)->format('d M Y')); ?></p>
                                     </div>
                                     <div>
-                                        <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">
-                                            Status Surat</p>
-                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($cuti->surat): ?>
-                                            <a href="/admin/surat"
-                                                class="font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
-                                                📄 <?php echo e($cuti->surat->status); ?>
-
-                                                <span class="text-xs text-gray-500">#<?php echo e($cuti->surat->id); ?></span>
-                                            </a>
-                                        <?php elseif($cuti->status == 'Disetujui'): ?>
-                                            <button onclick="buatSuratCuti(<?php echo e($cuti->id); ?>)"
-                                                class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg text-xs font-semibold hover:from-blue-600 hover:to-blue-700 shadow-sm hover:shadow-md transition-all">
-                                                📄 Buat Surat
-                                            </button>
-                                        <?php else: ?>
-                                            <p class="font-semibold text-gray-400">-</p>
-                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                        <button onclick="showDetailCuti(<?php echo e($cuti->id); ?>)"
+                                            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg text-xs font-semibold hover:from-indigo-600 hover:to-indigo-700 shadow-sm hover:shadow-md transition-all">
+                                            📋 Lihat Detail
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="pl-4 border-l-2 border-gray-200/50 mb-3">
@@ -344,9 +331,20 @@
 
                 <!-- Action Buttons -->
                 <!-- NOTE: Approval/Rejection hanya untuk Direktur, Admin hanya bisa lihat dan buat surat jika disetujui -->
-                <div id="actionButtons" class="flex gap-3 pt-4 border-t border-gray-100/40">
+                <div id="actionButtons" class="flex gap-3 pt-4 border-t border-gray-100/40 flex-wrap">
+                    <!-- Button 'Lihat Surat' muncul jika surat sudah dibuat -->
+                    <button id="lihatSuratBtn" 
+                        class="hidden flex-1 px-4 py-3 bg-gradient-to-r from-green-500/80 to-green-400/70 text-white font-medium rounded-2xl hover:from-green-500 hover:to-green-400 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        Lihat Surat
+                    </button>
                     <!-- Button 'Buat Surat' hanya muncul jika sudah disetujui direktur -->
-                    <button id="buatSuratBtn" onclick="buatSurat()"
+                    <button id="buatSuratBtn" onclick="openBuatSuratModal()"
                         class="hidden flex-1 px-4 py-3 bg-gradient-to-r from-blue-500/80 to-blue-400/70 text-white font-medium rounded-2xl hover:from-blue-500 hover:to-blue-400 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -385,6 +383,39 @@
                         class="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-500/80 to-blue-400/70 text-white font-medium rounded-2xl hover:from-blue-500 hover:to-blue-400 shadow-sm transition-all">Ya,
                         Buat Surat</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Surat Cuti Modal -->
+    <div id="previewSuratCutiModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="sticky top-0 bg-gradient-to-r from-blue-50/80 to-slate-50/60 backdrop-blur-md border-b border-gray-100/40 px-8 py-6 flex items-start justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Preview Surat Cuti</h2>
+                    <p class="text-sm text-gray-500 mt-1" id="previewCutiTitle"></p>
+                </div>
+                <button onclick="closePreviewCutiModal()" class="p-2 hover:bg-white/50 rounded-2xl transition-colors">
+                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto bg-gray-50">
+                <iframe id="previewCutiFrame" class="w-full h-full" style="min-height: 600px;" frameborder="0"></iframe>
+            </div>
+            
+            <div class="border-t border-gray-100/40 bg-gradient-to-r from-gray-50/50 to-slate-50/30 px-8 py-6 flex gap-4 justify-end flex-wrap">
+                <button onclick="closePreviewCutiModal()" class="px-8 py-3 border border-gray-200/60 rounded-2xl text-gray-600 font-medium hover:bg-gray-50/70 transition-all">
+                    Tutup
+                </button>
+                <a id="downloadCutiBtn" href="#" target="_blank" class="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-green-500 to-green-400 text-white font-semibold rounded-2xl hover:from-green-600 hover:to-green-500 shadow-md hover:shadow-lg transition-all transform hover:scale-105">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3-7a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm0 4a1 1 0 011-1h4a1 1 0 110 2H7a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    Download
+                </a>
             </div>
         </div>
     </div>
@@ -523,6 +554,174 @@
             }
 
             timelineContainer.innerHTML = timelineHTML;
+        }
+
+        // Show detail modal dengan data cuti
+        async function showDetailCuti(cutiId) {
+            try {
+                const response = await fetch(`/admin/cuti/${cutiId}`);
+                const data = await response.json();
+
+                if (!data || !data.cuti) {
+                    showNotification('Gagal memuat data cuti', 'error');
+                    return;
+                }
+
+                const cuti = data.cuti;
+                const modal = document.getElementById('detailModal');
+
+                // Set employee info
+                document.getElementById('employeeName').textContent = cuti.user?.name || '-';
+                document.getElementById('employeeIdDept').textContent = 
+                    `${cuti.user?.nip || 'N/A'} • ${cuti.user?.departemen?.nama || 'N/A'}`;
+                document.getElementById('employeeEmail').textContent = cuti.user?.email || '-';
+
+                // Set status badge
+                const statusBadge = document.getElementById('statusBadge');
+                const statusText = document.getElementById('statusText');
+                let statusColor = 'bg-amber-50/40 border-amber-100/30';
+                let statusDotColor = 'bg-amber-500/80';
+                let statusLabel = 'Menunggu Persetujuan';
+
+                if (cuti.status === 'Disetujui') {
+                    statusColor = 'bg-green-50/40 border-green-100/30';
+                    statusDotColor = 'bg-green-500/80';
+                    statusLabel = 'Disetujui Direktur';
+                } else if (cuti.status === 'Ditolak') {
+                    statusColor = 'bg-red-50/40 border-red-100/30';
+                    statusDotColor = 'bg-red-500/80';
+                    statusLabel = 'Ditolak';
+                }
+
+                statusBadge.className = `flex items-center gap-2 p-3 rounded-2xl w-fit ${statusColor}`;
+                statusBadge.querySelector('.w-3').className = `w-3 h-3 rounded-full ${statusDotColor} animate-pulse`;
+                statusText.textContent = statusLabel;
+
+                // Set cuti details
+                document.querySelector('[data-detail="jenis"]').textContent = cuti.jenis || '-';
+                document.querySelector('[data-detail="durasi"]').textContent = (cuti.durasi_hari || cuti.durasi || 0) + ' hari';
+                document.querySelector('[data-detail="tanggal-mulai"]').textContent = 
+                    new Date(cuti.tanggal_mulai).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+                document.querySelector('[data-detail="tanggal-selesai"]').textContent = 
+                    new Date(cuti.tanggal_selesai).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+
+                // Set alasan
+                document.getElementById('alasanText').textContent = cuti.alasan || '-';
+
+                // Set timeline
+                const timelineContainer = document.getElementById('timelineContainer');
+                let timelineHTML = '';
+
+                if (cuti.status === 'Disetujui') {
+                    timelineHTML += `
+                        <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-green-50/40 to-slate-50/30 rounded-2xl border border-green-100/30">
+                            <div class="w-2 h-2 rounded-full bg-green-500/80 mt-2 flex-shrink-0"></div>
+                            <div class="flex-1 text-sm">
+                                <p class="font-medium text-gray-900">Disetujui oleh Direktur</p>
+                                <p class="text-gray-600">${cuti.tanggal_persetujuan ? new Date(cuti.tanggal_persetujuan).toLocaleDateString('id-ID') : 'N/A'}</p>
+                            </div>
+                        </div>
+                    `;
+                } else if (cuti.status === 'Ditolak') {
+                    timelineHTML += `
+                        <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-red-50/40 to-slate-50/30 rounded-2xl border border-red-100/30">
+                            <div class="w-2 h-2 rounded-full bg-red-500/80 mt-2 flex-shrink-0"></div>
+                            <div class="flex-1 text-sm">
+                                <p class="font-medium text-gray-900">Ditolak oleh Direktur</p>
+                                <p class="text-gray-600">${cuti.keterangan_persetujuan || 'Tidak ada keterangan'}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    timelineHTML += `
+                        <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-gray-50/40 to-slate-50/30 rounded-2xl border border-gray-100/30">
+                            <div class="w-2 h-2 rounded-full bg-gray-400/50 mt-2 flex-shrink-0"></div>
+                            <div class="flex-1 text-sm">
+                                <p class="font-medium text-gray-900">Menunggu Persetujuan Direktur</p>
+                                <p class="text-gray-600">Belum diproses</p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                timelineContainer.innerHTML = timelineHTML;
+
+                // Set button visibility
+                const buatSuratBtn = document.getElementById('buatSuratBtn');
+                const lihatSuratBtn = document.getElementById('lihatSuratBtn');
+                
+                if (cuti.file_surat) {
+                    // Ada surat - tampilkan tombol lihat surat
+                    buatSuratBtn.classList.add('hidden');
+                    if (lihatSuratBtn) {
+                        lihatSuratBtn.classList.remove('hidden');
+                        lihatSuratBtn.onclick = () => previewCutiFromModal(cuti.id, cuti.user?.name || 'N/A');
+                    }
+                } else if (cuti.status === 'Disetujui') {
+                    // Disetujui tapi belum ada surat - tampilkan tombol buat surat
+                    buatSuratBtn.classList.remove('hidden');
+                    if (lihatSuratBtn) lihatSuratBtn.classList.add('hidden');
+                    buatSuratBtn.onclick = () => openBuatSuratModal(cuti.id, cuti.user?.name || 'N/A');
+                } else {
+                    // Pending atau ditolak - sembunyikan semua button (cuma tutup)
+                    buatSuratBtn.classList.add('hidden');
+                    if (lihatSuratBtn) lihatSuratBtn.classList.add('hidden');
+                }
+
+                // Store cutiId in modal for later use
+                modal.dataset.cutiId = cutiId;
+
+                // Show modal
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Terjadi kesalahan saat memuat data cuti', 'error');
+            }
+        }
+
+        // Preview surat cuti dari modal
+        async function previewCutiFromModal(cutiId, namaKaryawan) {
+            // Jika dipanggil dari button di modal tanpa parameter, ambil dari modal
+            if (!cutiId) {
+                const modal = document.getElementById('detailModal');
+                cutiId = modal.dataset.cutiId;
+                namaKaryawan = document.getElementById('employeeName').textContent;
+            }
+
+            try {
+                const response = await fetch(`/admin/cuti/${cutiId}/preview`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.pdfBase64) {
+                    document.getElementById('previewCutiFrame').src = 
+                        'data:application/pdf;base64,' + data.pdfBase64;
+                    document.getElementById('downloadCutiBtn').href = data.downloadUrl;
+                    document.getElementById('previewCutiTitle').textContent = 
+                        `Surat Cuti - ${namaKaryawan}`;
+                    document.getElementById('previewSuratCutiModal').classList.remove('hidden');
+                } else {
+                    showNotification('✗ Gagal memuat surat', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('✗ Terjadi kesalahan saat memuat surat', 'error');
+            }
+        }
+
+        // Buka modal buat surat
+        function openBuatSuratModal(cutiId, namaKaryawan) {
+            const modal = document.getElementById('detailModal');
+            modal.dataset.cutiId = cutiId;
+            document.getElementById('buatSuratEmployeeName').textContent = namaKaryawan;
+            document.getElementById('buatSuratModal').classList.remove('hidden');
         }
 
         function closeDetailModal() {
@@ -727,6 +926,46 @@
             }
         }
 
+        // Preview surat cuti
+        async function previewCuti(cutiId, namaKaryawan) {
+            try {
+                const response = await fetch(`/admin/cuti/${cutiId}/preview`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.pdfBase64) {
+                    // Set PDF in iframe
+                    document.getElementById('previewCutiFrame').src = 
+                        'data:application/pdf;base64,' + data.pdfBase64;
+                    
+                    // Set download button
+                    document.getElementById('downloadCutiBtn').href = data.downloadUrl;
+                    
+                    // Set title
+                    document.getElementById('previewCutiTitle').textContent = 
+                        `Surat Cuti - ${namaKaryawan}`;
+                    
+                    // Show modal
+                    document.getElementById('previewSuratCutiModal').classList.remove('hidden');
+                } else {
+                    showNotification('✗ Gagal memuat surat', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('✗ Terjadi kesalahan saat memuat surat', 'error');
+            }
+        }
+
+        function closePreviewCutiModal() {
+            document.getElementById('previewSuratCutiModal').classList.add('hidden');
+            document.getElementById('previewCutiFrame').src = '';
+        }
+
         // Close modal when clicking outside
         document.getElementById('detailModal')?.addEventListener('click', function(e) {
             if (e.target === this) closeDetailModal();
@@ -734,6 +973,25 @@
 
         document.getElementById('buatSuratModal')?.addEventListener('click', function(e) {
             if (e.target === this) closeBuatSuratModal();
+        });
+
+        document.getElementById('previewSuratCutiModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closePreviewCutiModal();
+        });
+
+        // Event delegation untuk preview buttons di list
+        document.addEventListener('click', function(e) {
+            const previewBtn = e.target.closest('.btn-preview-cuti');
+            if (previewBtn) {
+                const cutiId = previewBtn.dataset.cutiId;
+                const namaKaryawan = previewBtn.dataset.namaKaryawan;
+                previewCuti(cutiId, namaKaryawan);
+            }
+        });
+
+        // Add click handler untuk lihat surat button di modal
+        document.getElementById('lihatSuratBtn')?.addEventListener('click', function() {
+            previewCutiFromModal();
         });
     </script>
  <?php echo $__env->renderComponent(); ?>

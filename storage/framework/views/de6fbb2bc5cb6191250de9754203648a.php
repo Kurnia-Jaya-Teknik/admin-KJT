@@ -178,7 +178,7 @@
         <table class="header-table">
             <tr>
                 <td colspan="2" align="center">
-                    <img src="{{ $logoPath }}" class="logo">
+                    <img src="<?php echo e($logoPath); ?>" class="logo">
                 </td>
             </tr>
             <tr>
@@ -205,27 +205,27 @@
             <!-- Data Identitas -->
             <div class="info-line">
                 <span class="info-label">Nama</span>
-                <span class="info-value">{{ $karyawan->name ?? '' }}</span>
+                <span class="info-value"><?php echo e($karyawan->name ?? ''); ?></span>
             </div>
 
             <div class="info-line">
                 <span class="info-label">Jabatan/Devisi</span>
-                <span class="info-value">{{ $karyawan->departemen->nama ?? $karyawan->jabatan ?? '' }}</span>
+                <span class="info-value"><?php echo e($karyawan->departemen->nama ?? $karyawan->jabatan ?? ''); ?></span>
             </div>
 
             <div class="info-line">
                 <span class="info-label">Tanggal Masuk ke Perusahaan</span>
-                <span class="info-value">{{ $karyawan->tanggal_bergabung ? $karyawan->tanggal_bergabung->format('d/m/Y') : '' }}</span>
+                <span class="info-value"><?php echo e($karyawan->tanggal_bergabung ? $karyawan->tanggal_bergabung->format('d/m/Y') : ''); ?></span>
             </div>
 
             <div class="options">
                 <span>Mengajukan cuti : </span>
                 <span>
-                    @if($cuti->jenis === 'Cuti Tahunan')
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($cuti->jenis === 'Cuti Tahunan'): ?>
                         &nbsp; ✓ a. Tahunan &nbsp; &nbsp; &nbsp; b. Lainnya _________________ 
-                    @else
-                        &nbsp; a. Tahunan &nbsp; &nbsp; &nbsp; ✓ b. {{ $cuti->jenis }} _________________ 
-                    @endif
+                    <?php else: ?>
+                        &nbsp; a. Tahunan &nbsp; &nbsp; &nbsp; ✓ b. <?php echo e($cuti->jenis); ?> _________________ 
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </span>
             </div>
 
@@ -233,37 +233,37 @@
 
             <div class="info-line">
                 <span class="info-label">Mulai Tanggal</span>
-                <span class="info-value info-value-short">{{ $cuti->tanggal_mulai ? \Carbon\Carbon::parse($cuti->tanggal_mulai)->locale('id')->translatedFormat('d F Y') : '' }}</span>
+                <span class="info-value info-value-short"><?php echo e($cuti->tanggal_mulai ? $cuti->tanggal_mulai->locale('id')->translatedFormat('d F Y') : ''); ?></span>
             </div>
 
             <div class="info-line">
                 <span class="info-label">Sampai Tanggal</span>
-                <span class="info-value info-value-short">{{ $cuti->tanggal_selesai ? \Carbon\Carbon::parse($cuti->tanggal_selesai)->locale('id')->translatedFormat('d F Y') : '' }}</span>
+                <span class="info-value info-value-short"><?php echo e($cuti->tanggal_selesai ? $cuti->tanggal_selesai->locale('id')->translatedFormat('d F Y') : ''); ?></span>
                 <span style="margin-left: 6px; font-size: 12px;">Total Hari:</span>
-                <span class="info-value info-value-medium">{{ $cuti->durasi_hari ?? '' }} hari</span>
+                <span class="info-value info-value-medium"><?php echo e($cuti->durasi_hari ?? ''); ?> hari</span>
             </div>
 
             <div class="info-line">
                 <span class="info-label">Keperluan</span>
-                <span class="info-value">{{ $cuti->alasan ?? '' }}</span>
+                <span class="info-value"><?php echo e($cuti->alasan ?? ''); ?></span>
             </div>
 
             <div class="info-line">
                 <span class="info-label">Pelimpahan Tugas Kepada</span>
                 <span class="info-value">
-                    @if($delegatedUsers && $delegatedUsers->count() > 0)
-                        @foreach($delegatedUsers as $key => $user)
-                            {{ $user->name }}@if(!$loop->last), @endif
-                        @endforeach
-                    @else
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($delegatedUsers && $delegatedUsers->count() > 0): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $delegatedUsers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php echo e($user->name); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$loop->last): ?>, <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    <?php else: ?>
                         -
-                    @endif
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </span>
             </div>
 
             <div class="info-line">
                 <span class="info-label">Telp. Yang bisa dihubungi</span>
-                <span class="info-value">{{ $karyawan->phone ?? '' }}</span>
+                <span class="info-value"><?php echo e($karyawan->phone ?? ''); ?></span>
             </div>
 
             <p style="margin-top: 10px; margin-bottom: 14px; font-size: 12px;">Demikian permohonan cuti ini saya sampaikan.</p>
@@ -272,7 +272,8 @@
         <!-- Signature Section -->
         <div class="signature-section">
             <div class="date-line">
-                Pasuruan, {{ now()->locale('id')->translatedFormat('d F Y') }}
+                Pasuruan, <?php echo e(now()->locale('id')->translatedFormat('d F Y')); ?>
+
             </div>
 
             <div class="signature-wrapper">
@@ -305,3 +306,4 @@
     </div>
 </body>
 </html>
+<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/surat/cuti.blade.php ENDPATH**/ ?>

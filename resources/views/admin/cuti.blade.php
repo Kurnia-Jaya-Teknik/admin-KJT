@@ -194,23 +194,10 @@
                                             {{ \Carbon\Carbon::parse($cuti->created_at)->format('d M Y') }}</p>
                                     </div>
                                     <div>
-                                        <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">
-                                            Status Surat</p>
-                                        @if ($cuti->file_surat)
-                                            <button onclick="previewCuti({{ $cuti->id }}, '{{ $cuti->user->name ?? 'N/A' }}')"
-                                                class="btn-preview-cuti inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg text-xs font-semibold hover:from-green-600 hover:to-green-700 shadow-sm hover:shadow-md transition-all"
-                                                data-cuti-id="{{ $cuti->id }}"
-                                                data-nama-karyawan="{{ $cuti->user->name ?? 'N/A' }}">
-                                                👁️ Lihat Surat
-                                            </button>
-                                        @elseif($cuti->status == 'Disetujui')
-                                            <button onclick="buatSuratCuti({{ $cuti->id }})"
-                                                class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg text-xs font-semibold hover:from-blue-600 hover:to-blue-700 shadow-sm hover:shadow-md transition-all">
-                                                📄 Buat Surat
-                                            </button>
-                                        @else
-                                            <p class="font-semibold text-gray-400">-</p>
-                                        @endif
+                                        <button onclick="showDetailCuti({{ $cuti->id }})"
+                                            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg text-xs font-semibold hover:from-indigo-600 hover:to-indigo-700 shadow-sm hover:shadow-md transition-all">
+                                            📋 Lihat Detail
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="pl-4 border-l-2 border-gray-200/50 mb-3">
@@ -333,9 +320,20 @@
 
                 <!-- Action Buttons -->
                 <!-- NOTE: Approval/Rejection hanya untuk Direktur, Admin hanya bisa lihat dan buat surat jika disetujui -->
-                <div id="actionButtons" class="flex gap-3 pt-4 border-t border-gray-100/40">
+                <div id="actionButtons" class="flex gap-3 pt-4 border-t border-gray-100/40 flex-wrap">
+                    <!-- Button 'Lihat Surat' muncul jika surat sudah dibuat -->
+                    <button id="lihatSuratBtn" 
+                        class="hidden flex-1 px-4 py-3 bg-gradient-to-r from-green-500/80 to-green-400/70 text-white font-medium rounded-2xl hover:from-green-500 hover:to-green-400 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        Lihat Surat
+                    </button>
                     <!-- Button 'Buat Surat' hanya muncul jika sudah disetujui direktur -->
-                    <button id="buatSuratBtn" onclick="buatSurat()"
+                    <button id="buatSuratBtn" onclick="openBuatSuratModal()"
                         class="hidden flex-1 px-4 py-3 bg-gradient-to-r from-blue-500/80 to-blue-400/70 text-white font-medium rounded-2xl hover:from-blue-500 hover:to-blue-400 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -545,6 +543,174 @@
             }
 
             timelineContainer.innerHTML = timelineHTML;
+        }
+
+        // Show detail modal dengan data cuti
+        async function showDetailCuti(cutiId) {
+            try {
+                const response = await fetch(`/admin/cuti/${cutiId}`);
+                const data = await response.json();
+
+                if (!data || !data.cuti) {
+                    showNotification('Gagal memuat data cuti', 'error');
+                    return;
+                }
+
+                const cuti = data.cuti;
+                const modal = document.getElementById('detailModal');
+
+                // Set employee info
+                document.getElementById('employeeName').textContent = cuti.user?.name || '-';
+                document.getElementById('employeeIdDept').textContent = 
+                    `${cuti.user?.nip || 'N/A'} • ${cuti.user?.departemen?.nama || 'N/A'}`;
+                document.getElementById('employeeEmail').textContent = cuti.user?.email || '-';
+
+                // Set status badge
+                const statusBadge = document.getElementById('statusBadge');
+                const statusText = document.getElementById('statusText');
+                let statusColor = 'bg-amber-50/40 border-amber-100/30';
+                let statusDotColor = 'bg-amber-500/80';
+                let statusLabel = 'Menunggu Persetujuan';
+
+                if (cuti.status === 'Disetujui') {
+                    statusColor = 'bg-green-50/40 border-green-100/30';
+                    statusDotColor = 'bg-green-500/80';
+                    statusLabel = 'Disetujui Direktur';
+                } else if (cuti.status === 'Ditolak') {
+                    statusColor = 'bg-red-50/40 border-red-100/30';
+                    statusDotColor = 'bg-red-500/80';
+                    statusLabel = 'Ditolak';
+                }
+
+                statusBadge.className = `flex items-center gap-2 p-3 rounded-2xl w-fit ${statusColor}`;
+                statusBadge.querySelector('.w-3').className = `w-3 h-3 rounded-full ${statusDotColor} animate-pulse`;
+                statusText.textContent = statusLabel;
+
+                // Set cuti details
+                document.querySelector('[data-detail="jenis"]').textContent = cuti.jenis || '-';
+                document.querySelector('[data-detail="durasi"]').textContent = (cuti.durasi_hari || cuti.durasi || 0) + ' hari';
+                document.querySelector('[data-detail="tanggal-mulai"]').textContent = 
+                    new Date(cuti.tanggal_mulai).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+                document.querySelector('[data-detail="tanggal-selesai"]').textContent = 
+                    new Date(cuti.tanggal_selesai).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+
+                // Set alasan
+                document.getElementById('alasanText').textContent = cuti.alasan || '-';
+
+                // Set timeline
+                const timelineContainer = document.getElementById('timelineContainer');
+                let timelineHTML = '';
+
+                if (cuti.status === 'Disetujui') {
+                    timelineHTML += `
+                        <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-green-50/40 to-slate-50/30 rounded-2xl border border-green-100/30">
+                            <div class="w-2 h-2 rounded-full bg-green-500/80 mt-2 flex-shrink-0"></div>
+                            <div class="flex-1 text-sm">
+                                <p class="font-medium text-gray-900">Disetujui oleh Direktur</p>
+                                <p class="text-gray-600">${cuti.tanggal_persetujuan ? new Date(cuti.tanggal_persetujuan).toLocaleDateString('id-ID') : 'N/A'}</p>
+                            </div>
+                        </div>
+                    `;
+                } else if (cuti.status === 'Ditolak') {
+                    timelineHTML += `
+                        <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-red-50/40 to-slate-50/30 rounded-2xl border border-red-100/30">
+                            <div class="w-2 h-2 rounded-full bg-red-500/80 mt-2 flex-shrink-0"></div>
+                            <div class="flex-1 text-sm">
+                                <p class="font-medium text-gray-900">Ditolak oleh Direktur</p>
+                                <p class="text-gray-600">${cuti.keterangan_persetujuan || 'Tidak ada keterangan'}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    timelineHTML += `
+                        <div class="flex items-start gap-3 p-3 bg-gradient-to-r from-gray-50/40 to-slate-50/30 rounded-2xl border border-gray-100/30">
+                            <div class="w-2 h-2 rounded-full bg-gray-400/50 mt-2 flex-shrink-0"></div>
+                            <div class="flex-1 text-sm">
+                                <p class="font-medium text-gray-900">Menunggu Persetujuan Direktur</p>
+                                <p class="text-gray-600">Belum diproses</p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                timelineContainer.innerHTML = timelineHTML;
+
+                // Set button visibility
+                const buatSuratBtn = document.getElementById('buatSuratBtn');
+                const lihatSuratBtn = document.getElementById('lihatSuratBtn');
+                
+                if (cuti.file_surat) {
+                    // Ada surat - tampilkan tombol lihat surat
+                    buatSuratBtn.classList.add('hidden');
+                    if (lihatSuratBtn) {
+                        lihatSuratBtn.classList.remove('hidden');
+                        lihatSuratBtn.onclick = () => previewCutiFromModal(cuti.id, cuti.user?.name || 'N/A');
+                    }
+                } else if (cuti.status === 'Disetujui') {
+                    // Disetujui tapi belum ada surat - tampilkan tombol buat surat
+                    buatSuratBtn.classList.remove('hidden');
+                    if (lihatSuratBtn) lihatSuratBtn.classList.add('hidden');
+                    buatSuratBtn.onclick = () => openBuatSuratModal(cuti.id, cuti.user?.name || 'N/A');
+                } else {
+                    // Pending atau ditolak - sembunyikan semua button (cuma tutup)
+                    buatSuratBtn.classList.add('hidden');
+                    if (lihatSuratBtn) lihatSuratBtn.classList.add('hidden');
+                }
+
+                // Store cutiId in modal for later use
+                modal.dataset.cutiId = cutiId;
+
+                // Show modal
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Terjadi kesalahan saat memuat data cuti', 'error');
+            }
+        }
+
+        // Preview surat cuti dari modal
+        async function previewCutiFromModal(cutiId, namaKaryawan) {
+            // Jika dipanggil dari button di modal tanpa parameter, ambil dari modal
+            if (!cutiId) {
+                const modal = document.getElementById('detailModal');
+                cutiId = modal.dataset.cutiId;
+                namaKaryawan = document.getElementById('employeeName').textContent;
+            }
+
+            try {
+                const response = await fetch(`/admin/cuti/${cutiId}/preview`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.pdfBase64) {
+                    document.getElementById('previewCutiFrame').src = 
+                        'data:application/pdf;base64,' + data.pdfBase64;
+                    document.getElementById('downloadCutiBtn').href = data.downloadUrl;
+                    document.getElementById('previewCutiTitle').textContent = 
+                        `Surat Cuti - ${namaKaryawan}`;
+                    document.getElementById('previewSuratCutiModal').classList.remove('hidden');
+                } else {
+                    showNotification('✗ Gagal memuat surat', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('✗ Terjadi kesalahan saat memuat surat', 'error');
+            }
+        }
+
+        // Buka modal buat surat
+        function openBuatSuratModal(cutiId, namaKaryawan) {
+            const modal = document.getElementById('detailModal');
+            modal.dataset.cutiId = cutiId;
+            document.getElementById('buatSuratEmployeeName').textContent = namaKaryawan;
+            document.getElementById('buatSuratModal').classList.remove('hidden');
         }
 
         function closeDetailModal() {
@@ -810,6 +976,11 @@
                 const namaKaryawan = previewBtn.dataset.namaKaryawan;
                 previewCuti(cutiId, namaKaryawan);
             }
+        });
+
+        // Add click handler untuk lihat surat button di modal
+        document.getElementById('lihatSuratBtn')?.addEventListener('click', function() {
+            previewCutiFromModal();
         });
     </script>
 </x-app-layout>

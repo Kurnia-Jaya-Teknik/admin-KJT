@@ -111,4 +111,21 @@ class CutiController extends Controller
             'downloadUrl' => $downloadUrl,
             'filename' => basename($filePath)
         ]);
-    }}
+    }
+
+    public function show($id)
+    {
+        $this->ensureAdminHRD();
+
+        $cuti = Cuti::with(['user', 'user.departemen'])->find($id);
+        
+        if (!$cuti) {
+            return response()->json(['ok' => false, 'message' => 'Cuti tidak ditemukan'], 404);
+        }
+
+        return response()->json([
+            'ok' => true,
+            'cuti' => $cuti
+        ]);
+    }
+}
