@@ -25,6 +25,7 @@ class Cuti extends Model
         'keterangan_persetujuan',
         'disetujui_oleh',
         'tanggal_persetujuan',
+        'file_surat',
     ];
 
     protected $casts = [

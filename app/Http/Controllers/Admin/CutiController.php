@@ -77,4 +77,38 @@ class CutiController extends Controller
         
         return response()->json(['ok' => true, 'list' => $cutiList]);
     }
-}
+
+    public function preview($id)
+    {
+        $this->ensureAdminHRD();
+
+        $cuti = Cuti::find($id);
+        if (!$cuti) {
+            return response()->json(['ok' => false, 'message' => 'Cuti tidak ditemukan'], 404);
+        }
+
+        // Check if surat file exists
+        if (!$cuti->file_surat) {
+            return response()->json(['ok' => false, 'message' => 'File surat tidak ditemukan'], 404);
+        }
+
+        $filePath = storage_path('app/public/' . $cuti->file_surat);
+        
+        if (!file_exists($filePath)) {
+            return response()->json(['ok' => false, 'message' => 'File surat tidak ditemukan'], 404);
+        }
+
+        // Read file and encode to base64
+        $pdfContent = file_get_contents($filePath);
+        $pdfBase64 = base64_encode($pdfContent);
+
+        // Get download URL
+        $downloadUrl = url('storage/' . $cuti->file_surat);
+
+        return response()->json([
+            'ok' => true,
+            'pdfBase64' => $pdfBase64,
+            'downloadUrl' => $downloadUrl,
+            'filename' => basename($filePath)
+        ]);
+    }}

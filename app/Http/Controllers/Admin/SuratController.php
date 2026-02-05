@@ -233,49 +233,55 @@ class SuratController extends Controller
     }
 
     public function storeCutiSurat(Request $request, $cutiId)
-{
-    $this->ensureAdminHRD();
+    {
+        $this->ensureAdminHRD();
 
-    $cuti = \App\Models\Cuti::findOrFail($cutiId);
+        $cuti = \App\Models\Cuti::findOrFail($cutiId);
 
-    if ($cuti->status !== 'Disetujui') {
-        return response()->json(['ok' => false, 'message' => 'Pengajuan cuti belum disetujui'], 400);
-    }
+        if ($cuti->status !== 'Disetujui') {
+            return response()->json(['ok' => false, 'message' => 'Pengajuan cuti belum disetujui'], 400);
+        }
 
-    $karyawan = $cuti->user;
+        $karyawan = $cuti->user;
 
-    // ✅ PATH LOGO WAJIB FILE://
-    $logoPath = 'file://' . public_path('img/image.png');
+        // ✅ PATH LOGO WAJIB FILE://
+        $logoPath = 'file://' . public_path('img/image.png');
 
-    $html = view('surat.cuti', [
-        'karyawan' => $karyawan,
-        'cuti' => $cuti,
-        'logoPath' => $logoPath,
-    ])->render();
+        $html = view('surat.cuti', [
+            'karyawan' => $karyawan,
+            'cuti' => $cuti,
+            'logoPath' => $logoPath,
+        ])->render();
 
-    // ✅ OPTIONS DOMPDF (WAJIB)
-    $options = new Options();
-    $options->set('isRemoteEnabled', true);
-    $options->set('isHtml5ParserEnabled', true);
+        // ✅ OPTIONS DOMPDF (WAJIB)
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+        $options->set('isHtml5ParserEnabled', true);
 
-    $dompdf = new Dompdf($options);
-    $dompdf->loadHtml($html);
-    $dompdf->setPaper('A4', 'portrait');
-    $dompdf->render();
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
 
-    $fileName = 'Surat_Cuti_'.$karyawan->name.'_'.time().'.pdf';
-    $path = storage_path('app/public/generated/'.$fileName);
+        $fileName = 'Surat_Cuti_'.$karyawan->name.'_'.time().'.pdf';
+        $folderPath = 'cuti';
+        $path = storage_path('app/public/'.$folderPath.'/'.$fileName);
 
-    if (!file_exists(dirname($path))) {
-        mkdir(dirname($path), 0755, true);
-    }
+        if (!file_exists(dirname($path))) {
+            mkdir(dirname($path), 0755, true);
+        }
 
-    file_put_contents($path, $dompdf->output());
+        file_put_contents($path, $dompdf->output());
 
-    return response()->json([
-        'ok' => true,
-        'url' => asset('storage/generated/'.$fileName)
-    ]);
+        // Save file path to cuti table
+        $cuti->update([
+            'file_surat' => $folderPath.'/'.$fileName
+        ]);
+
+        return response()->json([
+            'ok' => true,
+            'url' => asset('storage/'.$folderPath.'/'.$fileName)
+        ]);
     }
 
 
