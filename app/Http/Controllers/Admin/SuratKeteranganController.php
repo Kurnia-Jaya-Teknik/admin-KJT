@@ -153,7 +153,36 @@ class SuratKeteranganController extends Controller
         ]);
 
         try {
-            // Create surat keterangan
+            // Generate PDF
+            $html = view('surat.keterangan-kerja', [
+                'karyawan' => $user,
+                'surat' => array_merge($validated, [
+                    'tanggal_selesai_kerja' => null,
+                    'user_id' => $user->id,
+                ]),
+                'logoPath' => public_path('img/image.png'),
+            ])->render();
+
+            $dompdf = new Dompdf([
+                'chroot' => public_path(),
+                'isHtml5ParserEnabled' => true,
+            ]);
+
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Simpan file
+            $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $user->name) . '_' . time() . '.pdf';
+            $path = storage_path('app/public/keterangan/' . $fileName);
+
+            if (!file_exists(dirname($path))) {
+                mkdir(dirname($path), 0755, true);
+            }
+
+            file_put_contents($path, $dompdf->output());
+
+            // Create surat keterangan dengan file_surat
             $surat = SuratKeterangan::create([
                 'user_id' => Auth::id(),
                 'surat_keterangan_request_id' => $requestId,
@@ -163,6 +192,7 @@ class SuratKeteranganController extends Controller
                 'unit_kerja' => $validated['unit_kerja'],
                 'tanggal_mulai_kerja' => $validated['tanggal_mulai_kerja'],
                 'keterangan' => $validated['keterangan'] ?? null,
+                'file_surat' => 'keterangan/' . $fileName,
                 'status' => 'Selesai',
             ]);
 
