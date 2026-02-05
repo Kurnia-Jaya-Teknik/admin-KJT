@@ -184,7 +184,7 @@ class SuratKeteranganController extends Controller
 
             // Create surat keterangan dengan file_surat
             $surat = SuratKeterangan::create([
-                'user_id' => Auth::id(),
+                'user_id' => $user->id,  // ID karyawan yang membuat permintaan
                 'surat_keterangan_request_id' => $requestId,
                 'nomor_surat' => $validated['nomor_surat'],
                 'tanggal_surat' => $validated['tanggal_surat'],
