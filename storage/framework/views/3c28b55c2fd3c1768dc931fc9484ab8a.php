@@ -1,13 +1,22 @@
-<x-app-layout>
-    <x-slot name="header">
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Surat Keterangan Kerja
         </h2>
-    </x-slot>
+     <?php $__env->endSlot(); ?>
 
     <!-- Fixed Sidebar -->
     <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
-        @include('layouts.sidebar')
+        <?php echo $__env->make('layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <!-- Main Content -->
@@ -54,7 +63,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600">Surat Dibuat</p>
-                                <p class="text-2xl font-bold text-gray-900">{{ $suratList->total() }}</p>
+                                <p class="text-2xl font-bold text-gray-900"><?php echo e($suratList->total()); ?></p>
                             </div>
                         </div>
                     </div>
@@ -94,7 +103,7 @@
 
             <!-- TAB 2: Surat yang Dibuat -->
             <div id="contentDibuat" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hidden">
-                @if($suratList->count() > 0)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($suratList->count() > 0): ?>
                     <div class="overflow-x-auto">
                         <table class="w-full">
                             <thead>
@@ -107,25 +116,25 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                @foreach($suratList as $surat)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $suratList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr class="hover:bg-gray-50/50 transition-colors">
                                     <td class="px-8 py-6">
-                                        <p class="font-semibold text-gray-900">{{ $surat->user->name }}</p>
-                                        <p class="text-xs text-gray-500 mt-1">{{ $surat->user->email }}</p>
+                                        <p class="font-semibold text-gray-900"><?php echo e($surat->user->name); ?></p>
+                                        <p class="text-xs text-gray-500 mt-1"><?php echo e($surat->user->email); ?></p>
                                     </td>
-                                    <td class="px-8 py-6 font-mono text-sm text-gray-700">{{ $surat->nomor_surat }}</td>
-                                    <td class="px-8 py-6 text-sm text-gray-700">{{ $surat->jabatan }}</td>
-                                    <td class="px-8 py-6 text-sm text-gray-600">{{ optional($surat->tanggal_surat)->format('d/m/Y') }}</td>
+                                    <td class="px-8 py-6 font-mono text-sm text-gray-700"><?php echo e($surat->nomor_surat); ?></td>
+                                    <td class="px-8 py-6 text-sm text-gray-700"><?php echo e($surat->jabatan); ?></td>
+                                    <td class="px-8 py-6 text-sm text-gray-600"><?php echo e(optional($surat->tanggal_surat)->format('d/m/Y')); ?></td>
                                     <td class="px-8 py-6 text-center">
                                         <div class="flex gap-2 justify-center flex-wrap">
-                                            <button onclick="previewSurat({{ $surat->id }}, '{{ $surat->user->name }}')" class="px-4 py-2 bg-blue-100/60 text-blue-700 font-medium rounded-xl hover:bg-blue-100 transition-colors text-sm">
+                                            <button onclick="previewSurat(<?php echo e($surat->id); ?>, '<?php echo e($surat->user->name); ?>')" class="px-4 py-2 bg-blue-100/60 text-blue-700 font-medium rounded-xl hover:bg-blue-100 transition-colors text-sm">
                                                 <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                     <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
                                                     <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
                                                 </svg>
                                                 Lihat
                                             </button>
-                                            <button onclick="deleteSurat({{ $surat->id }})" class="px-4 py-2 bg-red-100/60 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors text-sm">
+                                            <button onclick="deleteSurat(<?php echo e($surat->id); ?>)" class="px-4 py-2 bg-red-100/60 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors text-sm">
                                                 <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
                                                 </svg>
@@ -134,16 +143,17 @@
                                         </div>
                                     </td>
                                 </tr>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Pagination -->
                     <div class="px-8 py-6 border-t border-gray-100">
-                        {{ $suratList->links() }}
+                        <?php echo e($suratList->links()); ?>
+
                     </div>
-                @else
+                <?php else: ?>
                     <div class="p-12 text-center">
                         <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M5 3a2 2 0 012-2h6a2 2 0 012 2v2h4a1 1 0 010 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V7a1 1 0 010-2h4V3z"/>
@@ -153,7 +163,7 @@
                             Buat Surat Pertama
                         </button>
                     </div>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
     </div>
@@ -176,16 +186,16 @@
 
             <!-- Modal Content -->
             <form id="suratForm" class="p-8 space-y-6">
-                @csrf
+                <?php echo csrf_field(); ?>
                 
                 <!-- Pilih Karyawan -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-900 mb-2">Pilih Karyawan</label>
                     <select id="userId" name="user_id" class="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" required>
                         <option value="">-- Pilih Karyawan --</option>
-                        @foreach($karyawanList as $karyawan)
-                            <option value="{{ $karyawan->id }}">{{ $karyawan->name }} - {{ $karyawan->departemen_id ? 'Dept.' : 'Umum' }}</option>
-                        @endforeach
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $karyawanList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $karyawan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($karyawan->id); ?>"><?php echo e($karyawan->name); ?> - <?php echo e($karyawan->departemen_id ? 'Dept.' : 'Umum'); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </select>
                 </div>
 
@@ -373,7 +383,16 @@
         </div>
     </div>
 
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
 
 <script>
 let currentTab = 'permintaan';
@@ -808,3 +827,4 @@ function closePreviewModal() {
     document.getElementById('previewSuratFrame').src = '';
 }
 </script>
+<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/admin/surat-keterangan.blade.php ENDPATH**/ ?>

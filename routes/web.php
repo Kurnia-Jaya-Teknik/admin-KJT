@@ -4,12 +4,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DirekturController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\KopSuratController;
+use App\Http\Controllers\Admin\SuratKeteranganController;
 
 Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('dashboard');
     }
     return redirect()->route('login');
+});
+
+
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/surat-keterangan', [SuratKeteranganController::class, 'index'])
+        ->name('surat-keterangan');
 });
 
 // top-level session api-token alias for JS (uses web auth)
@@ -156,6 +164,7 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratController::class, 'storeCutiSurat'])->name('cuti.buat-surat');
         
         Route::get('/magang', [\App\Http\Controllers\Admin\MagangController::class, 'index'])->name('magang');
+        Route::get('/magang-stats', [\App\Http\Controllers\Admin\MagangController::class, 'getStats'])->name('magang.stats');
         Route::get('/magang/{id}/detail', [\App\Http\Controllers\Admin\MagangController::class, 'detail'])->name('magang.detail');
         Route::post('/magang/{id}/buat-surat', [\App\Http\Controllers\Admin\MagangController::class, 'storeMagangSurat'])->name('magang.buat-surat');
         Route::get('/magang/{id}/get-surat', [\App\Http\Controllers\Admin\MagangController::class, 'getExistingSurat'])->name('magang.get-surat');
@@ -193,6 +202,7 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         
         // Surat Keterangan Kerja
         Route::get('/surat-keterangan', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'index'])->name('surat-keterangan.index');
+        Route::get('/surat-keterangan/list-dibuat', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'listDibuat'])->name('surat-keterangan.list-dibuat');
         Route::get('/surat-keterangan/requests/pending', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'pendingRequests'])->name('surat-keterangan.requests.pending');
         Route::get('/surat-keterangan/requests/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'getRequest'])->name('surat-keterangan.requests.get');
         Route::post('/surat-keterangan/requests/{id}/create-surat', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'createSuratFromRequest'])->name('surat-keterangan.requests.create-surat');

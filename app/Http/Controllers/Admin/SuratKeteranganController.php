@@ -153,9 +153,38 @@ class SuratKeteranganController extends Controller
         ]);
 
         try {
-            // Create surat keterangan
+            // Generate PDF
+            $html = view('surat.keterangan-kerja', [
+                'karyawan' => $user,
+                'surat' => array_merge($validated, [
+                    'tanggal_selesai_kerja' => null,
+                    'user_id' => $user->id,
+                ]),
+                'logoPath' => public_path('img/image.png'),
+            ])->render();
+
+            $dompdf = new Dompdf([
+                'chroot' => public_path(),
+                'isHtml5ParserEnabled' => true,
+            ]);
+
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Simpan file
+            $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $user->name) . '_' . time() . '.pdf';
+            $path = storage_path('app/public/keterangan/' . $fileName);
+
+            if (!file_exists(dirname($path))) {
+                mkdir(dirname($path), 0755, true);
+            }
+
+            file_put_contents($path, $dompdf->output());
+
+            // Create surat keterangan dengan file_surat
             $surat = SuratKeterangan::create([
-                'user_id' => Auth::id(),
+                'user_id' => $user->id,  // ID karyawan yang membuat permintaan
                 'surat_keterangan_request_id' => $requestId,
                 'nomor_surat' => $validated['nomor_surat'],
                 'tanggal_surat' => $validated['tanggal_surat'],
@@ -163,6 +192,7 @@ class SuratKeteranganController extends Controller
                 'unit_kerja' => $validated['unit_kerja'],
                 'tanggal_mulai_kerja' => $validated['tanggal_mulai_kerja'],
                 'keterangan' => $validated['keterangan'] ?? null,
+                'file_surat' => 'keterangan/' . $fileName,
                 'status' => 'Selesai',
             ]);
 
@@ -340,14 +370,50 @@ class SuratKeteranganController extends Controller
         $surat = SuratKeterangan::findOrFail($id);
 
         if (!$surat->file_surat || !file_exists(storage_path('app/public/' . $surat->file_surat))) {
-            abort(404, 'File surat tidak ditemukan');
+            return response()->json([
+                'ok' => false,
+                'message' => 'File surat tidak ditemukan',
+            ], 404);
         }
 
         $path = storage_path('app/public/' . $surat->file_surat);
+        $pdfBase64 = base64_encode(file_get_contents($path));
+        $downloadUrl = asset('storage/' . $surat->file_surat);
 
-        return response()->file($path, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . basename($path) . '"',
+        return response()->json([
+            'ok' => true,
+            'pdfBase64' => $pdfBase64,
+            'downloadUrl' => $downloadUrl,
+        ]);
+    }
+
+    /**
+     * =============================
+     * LIST SURAT YANG DIBUAT (API)
+     * =============================
+     */
+    public function listDibuat()
+    {
+        $this->ensureAdminHRD();
+
+        $suratList = SuratKeterangan::with('user')
+            ->orderBy('tanggal_surat', 'desc')
+            ->get()
+            ->map(fn($s) => [
+                'id' => $s->id,
+                'user' => [
+                    'name' => $s->user->name,
+                    'email' => $s->user->email,
+                ],
+                'nomor_surat' => $s->nomor_surat,
+                'jabatan' => $s->jabatan,
+                'tanggal_surat' => $s->tanggal_surat?->toDateString(),
+                'file_surat' => $s->file_surat,
+            ]);
+
+        return response()->json([
+            'ok' => true,
+            'data' => $suratList,
         ]);
     }
 }

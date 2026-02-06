@@ -73,7 +73,7 @@ table {
 <table class="header-table">
 <tr>
     <td colspan="2" align="center">
-        <img src="{{ $logoPath }}" class="logo">
+        <img src="<?php echo e($logoPath); ?>" class="logo">
     </td>
 </tr>
 <tr>
@@ -94,25 +94,28 @@ table {
 <table class="meta-table">
 <tr>
     <td width="55%">
-        Nomor&nbsp;&nbsp;&nbsp;: {{ $nomor_surat ?? '-' }}<br>
+        Nomor&nbsp;&nbsp;&nbsp;: <?php echo e($nomor_surat ?? '-'); ?><br>
         Lamp.&nbsp;&nbsp;&nbsp;&nbsp;: -<br>
         Perihal&nbsp;&nbsp;: Balasan Permohonan Izin Magang
     </td>
     <td width="45%" align="right">
         <div style="text-align:left; display:inline-block;">
             Pasuruan,
-            @if(!empty($tanggal_surat))
-                {{ \Carbon\Carbon::parse($tanggal_surat)->locale('id')->translatedFormat('d F Y') }}
-            @else
-                {{ now()->locale('id')->translatedFormat('d F Y') }}
-            @endif
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($tanggal_surat)): ?>
+                <?php echo e(\Carbon\Carbon::parse($tanggal_surat)->locale('id')->translatedFormat('d F Y')); ?>
+
+            <?php else: ?>
+                <?php echo e(now()->locale('id')->translatedFormat('d F Y')); ?>
+
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             <br><br>
 
             Kepada.<br>
-            Yth. {{ $magangList[0]->jabatan_tujuan ?? 'Wakil Direktur I' }}<br>
-            {{ $magangList[0]->sekolah_asal }}<br>
-            {{ $magangList[0]->jurusan }}<br>
-            di {{ $magangList[0]->kota ?? 'Malang' }}
+            Yth. <?php echo e($magangList[0]->jabatan_tujuan ?? 'Wakil Direktur I'); ?><br>
+            <?php echo e($magangList[0]->sekolah_asal); ?><br>
+            <?php echo e($magangList[0]->jurusan); ?><br>
+            di <?php echo e($magangList[0]->kota ?? 'Malang'); ?>
+
         </div>
     </td>
 </tr>
@@ -124,14 +127,15 @@ table {
 Dengan hormat,<br><br>
 
 <p class="text-justify">
-Sehubungan dengan surat dari {{ $magangList[0]->sekolah_asal }} Nomor
-<strong>{{ $nomor_surat ?? '-' }}</strong>
+Sehubungan dengan surat dari <?php echo e($magangList[0]->sekolah_asal); ?> Nomor
+<strong><?php echo e($nomor_surat ?? '-'); ?></strong>
 tanggal
-<strong>{{ \Carbon\Carbon::parse($magangList[0]->tanggal_mulai)->locale('id')->translatedFormat('d F Y') }}</strong>
+<strong><?php echo e(\Carbon\Carbon::parse($magangList[0]->tanggal_mulai)->locale('id')->translatedFormat('d F Y')); ?></strong>
 perihal <em>Permohonan Izin Pelaksanaan Magang</em>, dengan ini kami menyampaikan
 bahwa <strong>CV. Kurnia Jaya Teknik menerima dan menyetujui</strong> permohonan
-pelaksanaan magang mahasiswa Jurusan {{ $magangList[0]->jurusan }}
-{{ $magangList[0]->sekolah_asal }}. Adapun mahasiswa yang akan melaksanakan
+pelaksanaan magang mahasiswa Jurusan <?php echo e($magangList[0]->jurusan); ?>
+
+<?php echo e($magangList[0]->sekolah_asal); ?>. Adapun mahasiswa yang akan melaksanakan
 kegiatan magang adalah sebagai berikut:
 </p>
 
@@ -146,14 +150,14 @@ kegiatan magang adalah sebagai berikut:
 </tr>
 </thead>
 <tbody>
-@foreach($magangList as $i => $mhs)
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $magangList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $mhs): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 <tr>
-    <td align="center">{{ $i + 1 }}.</td>
-    <td>{{ $mhs->nama_peserta }}</td>
-    <td align="center">{{ $mhs->nim_nis ?? '-' }}</td>
-    <td>{{ $mhs->jurusan }}</td>
+    <td align="center"><?php echo e($i + 1); ?>.</td>
+    <td><?php echo e($mhs->nama_peserta); ?></td>
+    <td align="center"><?php echo e($mhs->nim_nis ?? '-'); ?></td>
+    <td><?php echo e($mhs->jurusan); ?></td>
 </tr>
-@endforeach
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </tbody>
 </table>
 
@@ -161,8 +165,8 @@ kegiatan magang adalah sebagai berikut:
 
 <p class="text-justify">
 Pelaksanaan magang akan dilaksanakan sesuai dengan waktu yang telah ditentukan,
-yaitu mulai <strong>{{ \Carbon\Carbon::parse($magangList[0]->tanggal_mulai)->locale('id')->translatedFormat('d F Y') }}</strong>
-sampai dengan <strong>{{ \Carbon\Carbon::parse($magangList[0]->tanggal_selesai)->locale('id')->translatedFormat('d F Y') }}</strong>,
+yaitu mulai <strong><?php echo e(\Carbon\Carbon::parse($magangList[0]->tanggal_mulai)->locale('id')->translatedFormat('d F Y')); ?></strong>
+sampai dengan <strong><?php echo e(\Carbon\Carbon::parse($magangList[0]->tanggal_selesai)->locale('id')->translatedFormat('d F Y')); ?></strong>,
 dengan ketentuan mahasiswa mematuhi peraturan dan tata tertib yang berlaku di
 perusahaan kami.
 </p>
@@ -177,11 +181,13 @@ kami ucapkan terima kasih.
 <!-- ===== TANDA TANGAN ===== -->
 <div style="width:40%; float:right; text-align:left;">
     Pasuruan,
-    @if(!empty($tanggal_surat))
-        {{ \Carbon\Carbon::parse($tanggal_surat)->locale('id')->translatedFormat('d F Y') }}
-    @else
-        {{ now()->locale('id')->translatedFormat('d F Y') }}
-    @endif
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($tanggal_surat)): ?>
+        <?php echo e(\Carbon\Carbon::parse($tanggal_surat)->locale('id')->translatedFormat('d F Y')); ?>
+
+    <?php else: ?>
+        <?php echo e(now()->locale('id')->translatedFormat('d F Y')); ?>
+
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     <br>
     CV. Kurnia Jaya Teknik<br>
     Direktur,<br><br><br>
@@ -191,3 +197,4 @@ kami ucapkan terima kasih.
 
 </body>
 </html>
+<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/surat/magang.blade.php ENDPATH**/ ?>
