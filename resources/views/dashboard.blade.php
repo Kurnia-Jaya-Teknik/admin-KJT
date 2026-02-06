@@ -62,7 +62,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-slate-600/80 bg-slate-50/70 px-2.5 py-1.5 rounded-full border border-slate-200/30 shadow-sm">👥 Aktif</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">156</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $totalKaryawan }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">⏳ Pending</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">8</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ \App\Models\Cuti::where('status', 'Pending')->count() }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Cuti Menunggu Persetujuan</p>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-orange-600/80 bg-orange-50/70 px-2.5 py-1.5 rounded-full border border-orange-200/30 shadow-sm">⏳ Pending</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">5</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ \App\Models\Lembur::where('status', 'Pending')->count() }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Lembur Menunggu Persetujuan</p>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">📋 Proses</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">3</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ \App\Models\Surat::whereIn('status', ['Draft', 'Menunggu Persetujuan'])->count() }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Surat Menunggu Proses</p>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">✅ Selesai</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">47</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $persetujuanSelesai }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Persetujuan Selesai Bulan Ini</p>
                         </div>
                     </div>
@@ -145,9 +145,9 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
-                                <span class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">📊 92%</span>
+                                <span class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">📊 {{ $totalKaryawan > 0 ? round(($hadirHariIni/$totalKaryawan)*100) : 0 }}%</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">143</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $hadirHariIni }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Hadir Hari Ini</p>
                         </div>
                     </div>
@@ -164,7 +164,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">📤 Terkirim</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">12</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $suratDikirimBulan ?? 0 }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Surat Sudah Dikirim</p>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
                                 </div>
                                 <span class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">⚠️ Penting</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">16</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $pendingApprovals }}</h3>
                             <p class="text-sm text-gray-600 font-medium">Memerlukan Tindakan Segera</p>
                         </div>
                     </div>
@@ -384,7 +384,7 @@
 
             <!-- Content Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                @if (Auth::user()->role === 'direktur')
+                @if (Auth::user()->role === 'direktur' && isset($pengajuanPerBulan))
                     <!-- Charts Section - Direktur (2 kolom) -->
                     <div class="lg:col-span-2 space-y-6">
                         <!-- Pengajuan Bulan Ini Chart - Normal Bar Chart with Tooltip -->
@@ -415,59 +415,11 @@
                                                 class="text-xs text-gray-600 font-medium">{{ $entry['label'] }}</span>
                                         </div>
                                     @endforeach
-                                    <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 80px;"></div>
-                                    <span class="text-xs text-gray-600 font-medium">Agu</span>
-                                    </div>
-                                    <!-- September -->
-                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
-                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
-                                            <span>95</span>
-                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
-                                        </div>
-                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 95px;"></div>
-                                        <span class="text-xs text-gray-600 font-medium">Sep</span>
-                                    </div>
-                                    <!-- Oktober -->
-                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
-                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
-                                            <span>70</span>
-                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
-                                        </div>
-                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 70px;"></div>
-                                        <span class="text-xs text-gray-600 font-medium">Okt</span>
-                                    </div>
-                                    <!-- November -->
-                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
-                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
-                                            <span>110</span>
-                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
-                                        </div>
-                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 110px;"></div>
-                                        <span class="text-xs text-gray-600 font-medium">Nov</span>
-                                    </div>
-                                    <!-- Desember -->
-                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
-                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
-                                            <span>105</span>
-                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
-                                        </div>
-                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 105px;"></div>
-                                        <span class="text-xs text-gray-600 font-medium">Des</span>
-                                    </div>
-                                    <!-- Januari -->
-                                    <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
-                                        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
-                                            <span>95</span>
-                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600"></div>
-                                        </div>
-                                        <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer" style="height: 75px;"></div>
-                                        <span class="text-xs text-gray-600 font-medium">Jan</span>
-                                    </div>
                                 </div>
                                 <div class="pt-4">
                                     <div class="flex items-center justify-between">
                                         <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
-                                        <span class="text-lg font-bold bg-gradient-to-r from-rose-500 to-rose-400 bg-clip-text text-transparent">550 pengajuan</span>
+                                        <span class="text-lg font-bold bg-gradient-to-r from-rose-500 to-rose-400 bg-clip-text text-transparent">{{ $totalPengajuan6 }} pengajuan</span>
                                     </div>
                                 </div>
                             </div>
@@ -478,38 +430,37 @@
                             <div class="absolute inset-0 bg-gradient-to-br from-orange-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="relative">
                                 <h3 class="text-lg font-semibold text-gray-800 mb-6">Lembur per Divisi (Bulan Ini)</h3>
+                                @php
+                                    $colors = [
+                                        ['from' => 'orange-500', 'to' => 'orange-400', 'bar-from' => 'orange-400/80', 'bar-to' => 'orange-300/60'],
+                                        ['from' => 'blue-500', 'to' => 'blue-400', 'bar-from' => 'blue-400/80', 'bar-to' => 'blue-300/60'],
+                                        ['from' => 'emerald-500', 'to' => 'emerald-400', 'bar-from' => 'emerald-400/80', 'bar-to' => 'emerald-300/60'],
+                                        ['from' => 'purple-500', 'to' => 'purple-400', 'bar-from' => 'purple-400/80', 'bar-to' => 'purple-300/60'],
+                                        ['from' => 'pink-500', 'to' => 'pink-400', 'bar-from' => 'pink-400/80', 'bar-to' => 'pink-300/60'],
+                                    ];
+                                @endphp
                                 <div class="space-y-5">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2.5">
-                                            <span class="text-sm font-medium text-gray-700">IT & Teknologi</span>
-                                            <span class="text-sm font-bold bg-gradient-to-r from-orange-500 to-orange-400 bg-clip-text text-transparent">42 jam</span>
+                                    @forelse($lemburPerDepartemen as $index => $dept)
+                                        @php
+                                            $color = $colors[$index % count($colors)];
+                                            $widthPercent = $maxLemburJam > 0 ? round(($dept['total_jam'] / $maxLemburJam) * 100) : 0;
+                                        @endphp
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2.5">
+                                                <span class="text-sm font-medium text-gray-700">{{ $dept['nama'] }}</span>
+                                                <span class="text-sm font-bold bg-gradient-to-r from-{{ $color['from'] }} to-{{ $color['to'] }} bg-clip-text text-transparent">{{ $dept['total_jam'] }} jam</span>
+                                            </div>
+                                            <div class="w-full bg-gradient-to-r from-gray-200/40 to-gray-100/30 rounded-full h-3 shadow-sm overflow-hidden">
+                                                <div class="bg-gradient-to-r from-{{ $color['bar-from'] }} to-{{ $color['bar-to'] }} h-3 rounded-full shadow-md transition-all duration-300 hover:shadow-lg" style="width: {{ $widthPercent }}%"></div>
+                                            </div>
                                         </div>
-                                        <div class="w-full bg-gradient-to-r from-gray-200/40 to-gray-100/30 rounded-full h-3 shadow-sm overflow-hidden">
-                                            <div class="bg-gradient-to-r from-orange-400/80 to-orange-300/60 h-3 rounded-full shadow-md transition-all duration-300 hover:shadow-lg" style="width: 60%"></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2.5">
-                                            <span class="text-sm font-medium text-gray-700">Finance</span>
-                                            <span class="text-sm font-bold bg-gradient-to-r from-blue-500 to-blue-400 bg-clip-text text-transparent">35 jam</span>
-                                        </div>
-                                        <div class="w-full bg-gradient-to-r from-gray-200/40 to-gray-100/30 rounded-full h-3 shadow-sm overflow-hidden">
-                                            <div class="bg-gradient-to-r from-blue-400/80 to-blue-300/60 h-3 rounded-full shadow-md transition-all duration-300 hover:shadow-lg" style="width: 50%"></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2.5">
-                                            <span class="text-sm font-medium text-gray-700">Operations</span>
-                                            <span class="text-sm font-bold bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent">31 jam</span>
-                                        </div>
-                                        <div class="w-full bg-gradient-to-r from-gray-200/40 to-gray-100/30 rounded-full h-3 shadow-sm overflow-hidden">
-                                            <div class="bg-gradient-to-r from-emerald-400/80 to-emerald-300/60 h-3 rounded-full shadow-md transition-all duration-300 hover:shadow-lg" style="width: 44%"></div>
-                                        </div>
-                                    </div>
+                                    @empty
+                                        <p class="text-sm text-gray-500 text-center py-4">Belum ada data lembur bulan ini</p>
+                                    @endforelse
                                 </div>
                                 <div class="mt-5 pt-4 border-t border-gray-100/30 flex items-center justify-between">
                                     <span class="text-sm font-medium text-gray-600">Total Lembur</span>
-                                    <span class="text-lg font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">150 jam</span>
+                                    <span class="text-lg font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">{{ $totalLemburBulanIni }} jam</span>
                                 </div>
                             </div>
                         </div>
@@ -522,26 +473,36 @@
                             <div class="absolute inset-0 bg-gradient-to-br from-green-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="relative">
                                 <h3 class="text-lg font-semibold text-gray-800 mb-6">Status Pengajuan</h3>
+                                @php
+                                    $total = $statusApproved + $statusPending + $statusRejected;
+                                    $circumference = 2 * 3.14159 * 55;
+                                    $approvedDash = $total > 0 ? ($statusApproved / $total) * $circumference : 0;
+                                    $pendingDash = $total > 0 ? ($statusPending / $total) * $circumference : 0;
+                                    $rejectedDash = $total > 0 ? ($statusRejected / $total) * $circumference : 0;
+                                    $approvedPct = $total > 0 ? round(($statusApproved / $total) * 100) : 0;
+                                    $pendingPct = $total > 0 ? round(($statusPending / $total) * 100) : 0;
+                                    $rejectedPct = $total > 0 ? round(($statusRejected / $total) * 100) : 0;
+                                @endphp
                                 <div class="flex items-center justify-center mb-6">
                                     <div class="relative w-48 h-48">
                                         <svg class="w-full h-full drop-shadow-sm" viewBox="0 0 140 140"
                                             style="transform: rotate(-90deg)">
-                                            <!-- Approved (soft green) - 60/140 = 43% = 154.8° -->
+                                            <!-- Approved -->
                                             <circle cx="70" cy="70" r="55" fill="none" stroke="#10b981"
-                                                stroke-width="22" stroke-dasharray="119.3 340.6"
+                                                stroke-width="22" stroke-dasharray="{{ $approvedDash }} {{ $circumference }}"
                                                 stroke-linecap="round" opacity="0.8" />
-                                            <!-- Pending (soft amber) - 70/140 = 50% = 180° -->
+                                            <!-- Pending -->
                                             <circle cx="70" cy="70" r="55" fill="none" stroke="#f59e0b"
-                                                stroke-width="22" stroke-dasharray="136 340.6" stroke-dashoffset="-119.3"
+                                                stroke-width="22" stroke-dasharray="{{ $pendingDash }} {{ $circumference }}" stroke-dashoffset="-{{ $approvedDash }}"
                                                 stroke-linecap="round" opacity="0.8" />
-                                            <!-- Rejected (soft red) - 10/140 = 7% = 25.2° -->
+                                            <!-- Rejected -->
                                             <circle cx="70" cy="70" r="55" fill="none" stroke="#ef4444"
-                                                stroke-width="22" stroke-dasharray="24.4 340.6"
-                                                stroke-dashoffset="-255.3" stroke-linecap="round" opacity="0.8" />
+                                                stroke-width="22" stroke-dasharray="{{ $rejectedDash }} {{ $circumference }}"
+                                                stroke-dashoffset="-{{ $approvedDash + $pendingDash }}" stroke-linecap="round" opacity="0.8" />
                                         </svg>
                                         <div class="absolute inset-0 flex items-center justify-center">
                                             <div class="text-center">
-                                                <div class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">140</div>
+                                                <div class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">{{ $total }}</div>
                                                 <div class="text-xs text-gray-500">Total</div>
                                             </div>
                                         </div>
@@ -553,21 +514,21 @@
                                             <div class="w-4 h-4 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex-shrink-0 shadow-sm"></div>
                                             <span class="text-gray-600">Disetujui</span>
                                         </div>
-                                        <span class="font-bold text-gray-800">60 (43%)</span>
+                                        <span class="font-bold text-gray-800">{{ $statusApproved }} ({{ $approvedPct }}%)</span>
                                     </div>
                                     <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-amber-50/40 hover:to-transparent transition-colors duration-300">
                                         <div class="flex items-center gap-3">
                                             <div class="w-4 h-4 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 flex-shrink-0 shadow-sm"></div>
                                             <span class="text-gray-600">Menunggu</span>
                                         </div>
-                                        <span class="font-bold text-gray-800">70 (50%)</span>
+                                        <span class="font-bold text-gray-800">{{ $statusPending }} ({{ $pendingPct }}%)</span>
                                     </div>
                                     <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-red-50/40 hover:to-transparent transition-colors duration-300">
                                         <div class="flex items-center gap-3">
                                             <div class="w-4 h-4 rounded-full bg-gradient-to-br from-red-400 to-red-500 flex-shrink-0 shadow-sm"></div>
                                             <span class="text-gray-600">Ditolak</span>
                                         </div>
-                                        <span class="font-bold text-gray-800">10 (7%)</span>
+                                        <span class="font-bold text-gray-800">{{ $statusRejected }} ({{ $rejectedPct }}%)</span>
                                     </div>
                                 </div>
                             </div>
@@ -581,30 +542,30 @@
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm text-gray-600 font-bold">Pengajuan Pending</span>
                                     </div>
-                                    <span class="font-bold text-lg text-yellow-600">13</span>
+                                    <span class="font-bold text-lg text-yellow-600">{{ $pendingApprovals }}</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm text-gray-600 font-bold">Disetujui (Bulan Ini)</span>
                                     </div>
-                                    <span class="font-bold text-lg text-green-600">60</span>
+                                    <span class="font-bold text-lg text-green-600">{{ $persetujuanSelesai ?? 0 }}</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm text-gray-600 font-bold">Ditolak (Bulan Ini)</span>
                                     </div>
-                                    <span class="font-bold text-lg text-red-600">10</span>
+                                    <span class="font-bold text-lg text-red-600">{{ $ditolakBulan ?? 0 }}</span>
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm text-gray-600 font-bold">Kehadiran Hari Ini</span>
                                     </div>
-                                    <span class="font-bold text-lg text-slate-600">145/156</span>
+                                    <span class="font-bold text-lg text-slate-600">{{ $hadirHariIni }}/{{ $totalKaryawan }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @elseif(Auth::user()->role === 'admin_hrd')
+                @elseif(Auth::user()->role === 'admin_hrd' && isset($pengajuanPerBulan))
                     <!-- Charts Section - Admin HRD -->
                     <div class="lg:col-span-2 space-y-6">
                         <!-- Pengajuan Masuk - Soft Gradient Chart -->
@@ -616,20 +577,19 @@
                                 <!-- Chart Container -->
                                 <div class="flex gap-3 items-end border-b-2 border-gray-200/50 pb-4" style="height: 240px;">
                                     @php
-                                        $maxPengajuan = collect($pengajuanPerBulan)->max() ?: 1;
                                         $bulanColors = ['indigo', 'indigo', 'indigo', 'purple', 'purple', 'purple'];
                                         $bulanIndex = 0;
                                     @endphp
-                                    @foreach($pengajuanPerBulan as $bulan => $count)
+                                    @foreach($pengajuanPerBulan as $entry)
                                         @php
-                                            $heightPercent = ($count / $maxPengajuan) * 100;
+                                            $heightPercent = ($entry['count'] / $maxPengajuan) * 100;
                                             $heightPx = max(40, $heightPercent / 100 * 240);
                                             $color = $bulanColors[$bulanIndex % count($bulanColors)];
                                             $bulanIndex++;
                                         @endphp
                                         <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                            <div class="w-full bg-gradient-to-t from-{{ $color }}-400/70 to-{{ $color }}-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-{{ $color }}-400/90 group-hover/bar:to-{{ $color }}-300/70 transition-all duration-300" style="height: {{ $heightPx }}px;" title="{{ $count }} pengajuan"></div>
-                                            <span class="text-xs text-gray-700 font-medium mt-1.5">{{ $bulan }}</span>
+                                            <div class="w-full bg-gradient-to-t from-{{ $color }}-400/70 to-{{ $color }}-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-{{ $color }}-400/90 group-hover/bar:to-{{ $color }}-300/70 transition-all duration-300" style="height: {{ $heightPx }}px;" title="{{ $entry['count'] }} pengajuan"></div>
+                                            <span class="text-xs text-gray-700 font-medium mt-1.5">{{ $entry['label'] }}</span>
                                         </div>
                                     @endforeach
                                 </div>
