@@ -105,5 +105,48 @@ class SuratKeteranganRequestController extends Controller
             'message' => 'Permintaan berhasil dibatalkan',
         ]);
     }
+
+    /**
+     * =============================
+     * SHOW SURAT KETERANGAN PAGE
+     * =============================
+     */
+    public function suratKeteranganIndex()
+    {
+        return view('karyawan.surat-keterangan');
+    }
+
+    /**
+     * =============================
+     * GET SURAT KETERANGAN RECEIVED (API)
+     * =============================
+     */
+    public function getSuratReceived()
+    {
+        $user = Auth::user();
+
+        // Get surat keterangan yang sudah dikirim ke user ini
+        $suratList = \App\Models\SuratKeterangan::where('user_id', $user->id)
+            ->where('is_sent', true)
+            ->orderBy('sent_at', 'desc')
+            ->get()
+            ->map(fn($s) => [
+                'id' => $s->id,
+                'nomor_surat' => $s->nomor_surat,
+                'jabatan' => $s->jabatan,
+                'unit_kerja' => $s->unit_kerja,
+                'tanggal_surat' => $s->tanggal_surat?->format('d/m/Y'),
+                'sent_at' => $s->sent_at?->format('d/m/Y H:i'),
+                'file_surat' => $s->file_surat,
+                'file_url' => $s->file_surat ? asset('storage/' . $s->file_surat) : null,
+                'download_url' => $s->file_surat ? asset('storage/' . $s->file_surat) : null,
+                'keterangan' => $s->keterangan,
+            ]);
+
+        return response()->json([
+            'ok' => true,
+            'data' => $suratList,
+        ]);
+    }
 }
 

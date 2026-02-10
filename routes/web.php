@@ -123,6 +123,8 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
 
         // Surat Keterangan Request Routes
         Route::get('/surat-keterangan-request', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'index'])->name('surat-keterangan.request.index');
+        Route::get('/surat-keterangan', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'suratKeteranganIndex'])->name('surat-keterangan.index');
+        Route::get('/surat-keterangan-received', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'getSuratReceived'])->name('surat-keterangan.received');
         Route::post('/surat-keterangan-request', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'store'])->name('surat-keterangan.request.store');
         Route::post('/surat-keterangan-request/{id}/cancel', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'cancel'])->name('surat-keterangan.request.cancel');
         
@@ -209,8 +211,9 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         Route::post('/surat-keterangan/requests/{id}/approve', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'approveRequest'])->name('surat-keterangan.request.approve');
         Route::post('/surat-keterangan/requests/{id}/reject', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'rejectRequest'])->name('surat-keterangan.request.reject');
         Route::get('/surat-keterangan/create', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'create'])->name('surat-keterangan.create');
-        Route::post('/surat-keterangan', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'store'])->name('surat-keterangan.store');
+        Route::post('/surat-keterangan/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'store'])->name('surat-keterangan.store');
         Route::get('/surat-keterangan/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'show'])->name('surat-keterangan.show');
+        Route::post('/surat-keterangan/{id}/send', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'send'])->name('surat-keterangan.send');
         Route::delete('/surat-keterangan/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'destroy'])->name('surat-keterangan.destroy');
         Route::get('/surat-keterangan/{id}/preview', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'preview'])->name('surat-keterangan.preview');
         

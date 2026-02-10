@@ -103,6 +103,7 @@
                                     <th class="px-8 py-5 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Nomor Surat</th>
                                     <th class="px-8 py-5 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Jabatan</th>
                                     <th class="px-8 py-5 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Tanggal</th>
+                                    <th class="px-8 py-5 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">Status Pengiriman</th>
                                     <th class="px-8 py-5 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">Aksi</th>
                                 </tr>
                             </thead>
@@ -117,6 +118,22 @@
                                     <td class="px-8 py-6 text-sm text-gray-700">{{ $surat->jabatan }}</td>
                                     <td class="px-8 py-6 text-sm text-gray-600">{{ optional($surat->tanggal_surat)->format('d/m/Y') }}</td>
                                     <td class="px-8 py-6 text-center">
+                                        @if($surat->is_sent)
+                                            <div class="inline-flex items-center gap-2">
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100/70 text-green-700 font-semibold rounded-full text-xs">
+                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                                    Terkirim
+                                                </span>
+                                                <span class="text-xs text-gray-500">{{ $surat->sent_at?->format('d/m/Y H:i') }}</span>
+                                            </div>
+                                        @else
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-100/70 text-amber-700 font-semibold rounded-full text-xs">
+                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"/></svg>
+                                                Belum Dikirim
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-8 py-6 text-center">
                                         <div class="flex gap-2 justify-center flex-wrap">
                                             <button onclick="previewSurat({{ $surat->id }}, '{{ $surat->user->name }}')" class="px-4 py-2 bg-blue-100/60 text-blue-700 font-medium rounded-xl hover:bg-blue-100 transition-colors text-sm">
                                                 <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -125,6 +142,15 @@
                                                 </svg>
                                                 Lihat
                                             </button>
+                                            @if(!$surat->is_sent)
+                                            <button onclick="sendSurat({{ $surat->id }}, '{{ $surat->user->name }}')" class="px-4 py-2 bg-green-100/60 text-green-700 font-medium rounded-xl hover:bg-green-100 transition-colors text-sm">
+                                                <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5z"/>
+                                                    <path d="M2 5l8 6 8-6"/>
+                                                </svg>
+                                                Kirim
+                                            </button>
+                                            @endif
                                             <button onclick="deleteSurat({{ $surat->id }})" class="px-4 py-2 bg-red-100/60 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors text-sm">
                                                 <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
@@ -688,6 +714,28 @@ function deleteSurat(id) {
     .then(res => {
         if (res.ok) {
             alert('Surat berhasil dihapus');
+            loadSuratDibuat();
+        } else {
+            alert('Error: ' + res.message);
+        }
+    })
+    .catch(e => alert('Error: ' + e.message));
+}
+
+function sendSurat(id, namaKaryawan) {
+    if (!confirm('Kirim surat keterangan ke ' + namaKaryawan + '?\n\nSurat akan dikirim via email dan tersedia di portal employee.')) return;
+
+    fetch(`/admin/surat-keterangan/${id}/send`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(r => r.json())
+    .then(res => {
+        if (res.ok) {
+            alert('✓ ' + res.message);
             loadSuratDibuat();
         } else {
             alert('Error: ' + res.message);

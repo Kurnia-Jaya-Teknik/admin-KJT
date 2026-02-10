@@ -256,18 +256,48 @@
                     @endif
                 </a>
 
-                <a href="{{ route('karyawan.surat') }}"
-                    class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('karyawan.surat') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <span>Surat Saya</span>
-                    @if (Auth::user()->surat_pending > 0)
-                        <span
-                            class="ml-auto inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800">{{ Auth::user()->surat_pending }}</span>
-                    @endif
-                </a>
+                <!-- Surat Dropdown -->
+                <div class="relative">
+                    <button type="button" onclick="toggleSuratMenu()"
+                        class="w-full flex items-center justify-between space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('karyawan.surat*') || request()->is('karyawan/surat-keterangan*') ? 'bg-gradient-to-r from-red-50 to-slate-50 text-red-700 font-medium' : 'text-gray-600 hover:bg-red-50 hover:text-red-700' }}">
+                        <span class="flex items-center space-x-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span>Surat Saya</span>
+                        </span>
+                        <svg id="suratMenuIcon" class="w-4 h-4 text-gray-400 transform transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <div id="suratMenu" class="mt-2 ml-2 mr-2 space-y-1 hidden">
+                        <!-- Surat Saya -->
+                        <a href="{{ route('karyawan.surat') }}"
+                            class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-red-50 text-sm {{ request()->routeIs('karyawan.surat') ? 'text-red-700 font-semibold bg-red-100' : 'text-gray-700 hover:text-red-700' }}">
+                            <span>Surat Saya</span>
+                            @if (Auth::user()->surat_pending > 0)
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800">{{ Auth::user()->surat_pending }}</span>
+                            @endif
+                        </a>
+
+                        <!-- Permintaan Surat Keterangan -->
+                        <a href="{{ route('karyawan.surat-keterangan.request.index') }}"
+                            class="block px-3 py-2.5 rounded-lg hover:bg-red-50 text-sm {{ request()->routeIs('karyawan.surat-keterangan.request.*') ? 'text-red-700 font-semibold bg-red-100' : 'text-gray-700 hover:text-red-700' }}">
+                            Permintaan Surat Keterangan
+                        </a>
+
+                        <!-- Surat Keterangan Diterima -->
+                        <a href="/karyawan/surat-keterangan"
+                            class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-red-50 text-sm {{ request()->is('karyawan/surat-keterangan') && !request()->is('karyawan/surat-keterangan-*') ? 'text-red-700 font-semibold bg-red-100' : 'text-gray-700 hover:text-red-700' }}">
+                            <span>📬 Surat Keterangan Diterima</span>
+                            <span id="suratBadgeDropdown" style="display: none;" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-red-500 text-white animate-pulse">0</span>
+                        </a>
+                    </div>
+                </div>
 
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mt-8 mb-3">Lainnya</p>
 
@@ -302,6 +332,38 @@
             el.classList.toggle('hidden');
             if (icon) icon.classList.toggle('rotate-180');
         }
+
+        // Toggle Surat dropdown menu
+        function toggleSuratMenu() {
+            const el = document.getElementById('suratMenu');
+            const icon = document.getElementById('suratMenuIcon');
+            if (!el) return;
+            el.classList.toggle('hidden');
+            if (icon) icon.classList.toggle('rotate-180');
+        }
+
+        // Update sidebar badge untuk surat keterangan diterima (karyawan only)
+        @if(Auth::user()->role === 'karyawan')
+        function updateSidebarSuratBadge() {
+            const badge = document.getElementById('suratBadgeDropdown');
+            if (!badge) return;
+
+            fetch('/karyawan/surat-keterangan-received')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.ok && data.data.length > 0) {
+                        badge.textContent = data.data.length;
+                        badge.style.display = 'inline-flex';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                })
+                .catch(() => badge.style.display = 'none');
+        }
+
+        // Update badge on page load
+        document.addEventListener('DOMContentLoaded', updateSidebarSuratBadge);
+        @endif
 
         function submitSidebarLaporanCuti(e) {
             e.preventDefault();

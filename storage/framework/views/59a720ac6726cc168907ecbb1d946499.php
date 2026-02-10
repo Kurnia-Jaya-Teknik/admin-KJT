@@ -1,13 +1,22 @@
-<x-app-layout>
-    <x-slot name="header">
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Permintaan Surat Keterangan Kerja
         </h2>
-    </x-slot>
+     <?php $__env->endSlot(); ?>
 
     <!-- Fixed Sidebar -->
     <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
-        @include('layouts.sidebar')
+        <?php echo $__env->make('layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <!-- Scrollable Main Content -->
@@ -33,20 +42,20 @@
                     <div class="grid grid-cols-3 gap-4 mb-8">
                         <div class="bg-amber-50 border border-amber-100 rounded-lg p-4">
                             <p class="text-sm text-amber-700 font-medium">Pending</p>
-                            <p class="text-2xl font-bold text-amber-900">{{ $requests->where('status', 'Pending')->count() }}</p>
+                            <p class="text-2xl font-bold text-amber-900"><?php echo e($requests->where('status', 'Pending')->count()); ?></p>
                         </div>
                         <div class="bg-green-50 border border-green-100 rounded-lg p-4">
                             <p class="text-sm text-green-700 font-medium">Approved</p>
-                            <p class="text-2xl font-bold text-green-900">{{ $requests->where('status', 'Approved')->count() }}</p>
+                            <p class="text-2xl font-bold text-green-900"><?php echo e($requests->where('status', 'Approved')->count()); ?></p>
                         </div>
                         <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
                             <p class="text-sm text-blue-700 font-medium">Completed</p>
-                            <p class="text-2xl font-bold text-blue-900">{{ $requests->where('status', 'Completed')->count() }}</p>
+                            <p class="text-2xl font-bold text-blue-900"><?php echo e($requests->where('status', 'Completed')->count()); ?></p>
                         </div>
                     </div>
 
                     <!-- Table -->
-                    @if($requests->count() > 0)
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($requests->count() > 0): ?>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
@@ -59,42 +68,42 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach($requests as $req)
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $req): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $req->alasan }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-700">{{ Str::limit($req->keperluan, 50) }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $req->tanggal_diminta->format('d/m/Y') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo e($req->alasan); ?></td>
+                                        <td class="px-6 py-4 text-sm text-gray-700"><?php echo e(Str::limit($req->keperluan, 50)); ?></td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?php echo e($req->tanggal_diminta->format('d/m/Y')); ?></td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            @if($req->status === 'Pending')
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($req->status === 'Pending'): ?>
                                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-800">Menunggu</span>
-                                            @elseif($req->status === 'Approved')
+                                            <?php elseif($req->status === 'Approved'): ?>
                                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Disetujui</span>
-                                            @elseif($req->status === 'Completed')
+                                            <?php elseif($req->status === 'Completed'): ?>
                                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Selesai</span>
-                                            @else
+                                            <?php else: ?>
                                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Ditolak</span>
-                                            @endif
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                            @if($req->status === 'Pending')
-                                                <button onclick="cancelRequest({{ $req->id }})" class="text-red-600 hover:text-red-900 font-medium">Batalkan</button>
-                                            @else
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($req->status === 'Pending'): ?>
+                                                <button onclick="cancelRequest(<?php echo e($req->id); ?>)" class="text-red-600 hover:text-red-900 font-medium">Batalkan</button>
+                                            <?php else: ?>
                                                 <span class="text-gray-400">-</span>
-                                            @endif
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
-                    @else
+                    <?php else: ?>
                         <div class="text-center py-12">
                             <p class="text-gray-500 mb-4">Belum ada permintaan surat keterangan</p>
                             <button onclick="showRequestModal()" class="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-sm hover:shadow-md">
                                 Buat Permintaan Pertama
                             </button>
                         </div>
-                    @endif
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
         </div>
@@ -118,7 +127,7 @@
 
             <!-- Form -->
             <form id="requestForm" class="p-6 space-y-4">
-                @csrf
+                <?php echo csrf_field(); ?>
 
                 <!-- Alasan -->
                 <div>
@@ -173,7 +182,7 @@
 
             const formData = new FormData(this);
 
-            fetch('{{ route("karyawan.surat-keterangan.request.store") }}', {
+            fetch('<?php echo e(route("karyawan.surat-keterangan.request.store")); ?>', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -222,4 +231,14 @@
         </div>
     </div>
     </div>
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php /**PATH C:\xampp\htdocs\Admin-KJT\resources\views/karyawan/surat-keterangan-request.blade.php ENDPATH**/ ?>

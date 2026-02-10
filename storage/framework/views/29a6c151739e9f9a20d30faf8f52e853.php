@@ -171,4 +171,4 @@ body {
 
 </body>
 </html>
-<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/surat/keterangan-kerja.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\Admin-KJT\resources\views/surat/keterangan-kerja.blade.php ENDPATH**/ ?>

@@ -8,7 +8,7 @@ use App\Models\SuratKeteranganRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Dompdf\Dompdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SuratKeteranganController extends Controller
 {
@@ -163,24 +163,23 @@ class SuratKeteranganController extends Controller
                 'logoPath' => public_path('img/image.png'),
             ])->render();
 
-            $dompdf = new Dompdf([
-                'chroot' => public_path(),
-                'isHtml5ParserEnabled' => true,
-            ]);
+            // Generate PDF using Laravel DomPDF
+            $pdf = Pdf::loadHTML($html)
+                ->setPaper('A4', 'portrait')
+                ->setOptions([
+                    'chroot' => public_path(),
+                    'isHtml5ParserEnabled' => true,
+                ]);
 
-            $dompdf->loadHtml($html);
-            $dompdf->setPaper('A4', 'portrait');
-            $dompdf->render();
-
-            // Simpan file
-            $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $user->name) . '_' . time() . '.pdf';
+            // Update file
+            $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $surat->user->name) . '_' . time() . '.pdf';
             $path = storage_path('app/public/keterangan/' . $fileName);
 
             if (!file_exists(dirname($path))) {
                 mkdir(dirname($path), 0755, true);
             }
 
-            file_put_contents($path, $dompdf->output());
+            $pdf->save($path);
 
             // Create surat keterangan dengan file_surat
             $surat = SuratKeterangan::create([
@@ -263,14 +262,13 @@ class SuratKeteranganController extends Controller
                 'logoPath' => public_path('img/image.png'),
             ])->render();
 
-            $dompdf = new Dompdf([
-                'chroot' => public_path(),
-                'isHtml5ParserEnabled' => true,
-            ]);
-
-            $dompdf->loadHtml($html);
-            $dompdf->setPaper('A4', 'portrait');
-            $dompdf->render();
+            // Generate PDF using Laravel DomPDF
+            $pdf = Pdf::loadHTML($html)
+                ->setPaper('A4', 'portrait')
+                ->setOptions([
+                    'chroot' => public_path(),
+                    'isHtml5ParserEnabled' => true,
+                ]);
 
             // Simpan file
             $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $user->name) . '_' . time() . '.pdf';
@@ -280,7 +278,7 @@ class SuratKeteranganController extends Controller
                 mkdir(dirname($path), 0755, true);
             }
 
-            file_put_contents($path, $dompdf->output());
+            $pdf->save($path);
 
             // Simpan ke database
             $surat = SuratKeterangan::create([
@@ -389,6 +387,42 @@ class SuratKeteranganController extends Controller
 
     /**
      * =============================
+     * SEND SURAT TO KARYAWAN
+     * =============================
+     */
+    public function send($id)
+    {
+        $this->ensureAdminHRD();
+
+        $surat = SuratKeterangan::findOrFail($id);
+
+        try {
+            // Send notification to karyawan
+            $surat->user->notify(new \App\Notifications\SuratKeteranganSent($surat));
+
+            // Update sent status
+            $surat->update([
+                'is_sent' => true,
+                'sent_at' => now(),
+                'sent_notes' => 'Dikirim oleh ' . Auth::user()->name . ' pada ' . now()->format('d/m/Y H:i:s'),
+            ]);
+
+            return response()->json([
+                'ok' => true,
+                'message' => 'Surat berhasil dikirim ke ' . $surat->user->name,
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Error sending surat keterangan: ' . $e->getMessage());
+
+            return response()->json([
+                'ok' => false,
+                'message' => 'Gagal mengirim surat: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * =============================
      * LIST SURAT YANG DIBUAT (API)
      * =============================
      */
@@ -409,6 +443,8 @@ class SuratKeteranganController extends Controller
                 'jabatan' => $s->jabatan,
                 'tanggal_surat' => $s->tanggal_surat?->toDateString(),
                 'file_surat' => $s->file_surat,
+                'is_sent' => $s->is_sent,
+                'sent_at' => $s->sent_at?->format('d/m/Y H:i'),
             ]);
 
         return response()->json([

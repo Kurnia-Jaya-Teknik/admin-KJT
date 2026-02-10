@@ -26,6 +26,23 @@
             </div>
         </div>
 
+        <!-- Notifikasi Surat Keterangan Diterima -->
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg shadow-sm border-2 border-green-200 p-5 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <span class="text-2xl">📬</span>
+                    Surat Keterangan Diterima
+                </h3>
+                <span id="suratKeteranganBadge" class="hidden px-3 py-1.5 text-sm font-bold text-white bg-red-500 rounded-full">0</span>
+            </div>
+            <div id="suratKeteranganNotif" class="space-y-3">
+                <div class="text-center py-4">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-2"></div>
+                    <p class="text-sm text-gray-500">Loading...</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Notifikasi List -->
         <div class="space-y-3">
             <!-- Notifikasi 1 - Unread, Approved -->
@@ -177,4 +194,82 @@
         </div>
         -->
     </div>
+
+    <script>
+        // Load Surat Keterangan Notifikasi
+        function loadSuratKeteranganNotif() {
+            const container = document.getElementById('suratKeteranganNotif');
+            const badge = document.getElementById('suratKeteranganBadge');
+            
+            fetch('/karyawan/surat-keterangan-received')
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.ok || data.data.length === 0) {
+                        container.innerHTML = `
+                            <div class="bg-white rounded-lg p-6 text-center border border-gray-200">
+                                <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                <p class="text-gray-600 font-medium">Belum ada surat keterangan diterima</p>
+                                <p class="text-sm text-gray-500 mt-1">Surat yang dikirim admin akan muncul di sini</p>
+                            </div>
+                        `;
+                        if (badge) badge.classList.add('hidden');
+                        return;
+                    }
+
+                    // Update badge
+                    if (badge) {
+                        badge.textContent = data.data.length;
+                        badge.classList.remove('hidden');
+                    }
+
+                    // Render notifikasi surat
+                    container.innerHTML = data.data.map(surat => `
+                        <div class="bg-white rounded-lg shadow-sm border border-green-200 p-4 hover:shadow-md transition-all cursor-pointer">
+                            <div class="flex items-start gap-4">
+                                <div class="w-3 h-3 rounded-full bg-green-500 mt-2 flex-shrink-0 animate-pulse"></div>
+                                <div class="flex-1">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <div class="flex-1">
+                                            <p class="font-bold text-gray-800 flex items-center gap-2">
+                                                <span>📄</span>
+                                                Surat Keterangan Diterima
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2 font-medium">Nomor: <span class="text-green-700">${surat.nomor_surat}</span></p>
+                                            <p class="text-sm text-gray-600 mt-1">Jabatan: ${surat.jabatan} - ${surat.unit_kerja}</p>
+                                            <p class="text-sm text-gray-600">Tanggal Surat: ${surat.tanggal_surat}</p>
+                                            ${surat.keterangan ? `<p class="text-sm text-gray-500 mt-1 italic">"${surat.keterangan}"</p>` : ''}
+                                        </div>
+                                        <div class="flex flex-col items-end gap-2 flex-shrink-0 ml-4">
+                                            <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full whitespace-nowrap">✓ Terkirim</span>
+                                            <a href="${surat.file_url}" target="_blank" 
+                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-bold rounded-lg hover:from-green-600 hover:to-green-700 transition-all shadow-sm hover:shadow-md whitespace-nowrap">
+                                                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                                </svg>
+                                                Download
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-2">Diterima: ${surat.sent_at}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                })
+                .catch(e => {
+                    container.innerHTML = `
+                        <div class="bg-white rounded-lg p-4 border border-red-200">
+                            <p class="text-red-600 font-semibold text-sm">❌ Error loading surat keterangan</p>
+                            <p class="text-gray-500 text-xs mt-1">${e.message}</p>
+                        </div>
+                    `;
+                    if (badge) badge.classList.add('hidden');
+                });
+        }
+
+        // Load on page ready
+        document.addEventListener('DOMContentLoaded', loadSuratKeteranganNotif);
+    </script>
 </x-app-layout>
