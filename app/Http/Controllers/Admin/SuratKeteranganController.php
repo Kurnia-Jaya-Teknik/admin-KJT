@@ -171,8 +171,8 @@ class SuratKeteranganController extends Controller
                     'isHtml5ParserEnabled' => true,
                 ]);
 
-            // Update file
-            $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $surat->user->name) . '_' . time() . '.pdf';
+            // Create file name using $user (not $surat which doesn't exist yet)
+            $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $user->name) . '_' . time() . '.pdf';
             $path = storage_path('app/public/keterangan/' . $fileName);
 
             if (!file_exists(dirname($path))) {
@@ -183,7 +183,7 @@ class SuratKeteranganController extends Controller
 
             // Create surat keterangan dengan file_surat
             $surat = SuratKeterangan::create([
-                'user_id' => $user->id,  // ID karyawan yang membuat permintaan
+                'user_id' => $user->id,
                 'surat_keterangan_request_id' => $requestId,
                 'nomor_surat' => $validated['nomor_surat'],
                 'tanggal_surat' => $validated['tanggal_surat'],

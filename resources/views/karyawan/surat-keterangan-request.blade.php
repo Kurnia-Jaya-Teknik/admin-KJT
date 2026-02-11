@@ -120,6 +120,12 @@
             <form id="requestForm" class="p-6 space-y-4">
                 @csrf
 
+                <!-- Error Display -->
+                <div id="errorAlert" class="hidden bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                    <p class="text-sm font-semibold text-red-800 mb-2">❌ Error:</p>
+                    <ul id="errorList" class="text-sm text-red-700 space-y-1 list-disc pl-5"></ul>
+                </div>
+
                 <!-- Alasan -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-900 mb-2">Alasan Permintaan</label>
@@ -131,18 +137,22 @@
                         <option value="Administrasi Umum">Administrasi Umum</option>
                         <option value="Lainnya">Lainnya</option>
                     </select>
+                    <p id="error-alasan" class="text-xs text-red-500 mt-1 hidden"></p>
                 </div>
 
                 <!-- Keperluan -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-900 mb-2">Detail Keperluan</label>
                     <textarea id="keperluan" name="keperluan" rows="3" placeholder="Jelaskan keperluan Anda..." required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"></textarea>
+                    <p id="error-keperluan" class="text-xs text-red-500 mt-1 hidden"></p>
                 </div>
 
                 <!-- Tanggal Diminta -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-900 mb-2">Tanggal Dibutuhkan</label>
-                    <input type="date" id="tanggal_diminta" name="tanggal_diminta" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+                    <input type="date" id="tanggal_diminta" name="tanggal_diminta" required min="{{ date('Y-m-d') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+                    <p class="text-xs text-gray-500 mt-1">Minimal hari ini atau lebih</p>
+                    <p id="error-tanggal_diminta" class="text-xs text-red-500 mt-1 hidden"></p>
                 </div>
 
                 <!-- Actions -->
@@ -171,31 +181,81 @@
         document.getElementById('requestForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const formData = new FormData(this);
+            // Clear previous errors
+            document.getElementById('errorAlert').classList.add('hidden');
+            document.querySelectorAll('[id^="error-"]').forEach(el => el.classList.add('hidden'));
 
-            fetch('{{ route("karyawan.surat-keterangan.request.store") }}', {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+            // Disable submit button to prevent double submission
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Mengirim...';
+
+            fetch('/karyawan/surat-keterangan-request', {
                 method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
                 },
-                body: JSON.stringify({
-                    alasan: formData.get('alasan'),
-                    keperluan: formData.get('keperluan'),
-                    tanggal_diminta: formData.get('tanggal_diminta'),
-                })
+                body: new FormData(this)
             })
-            .then(r => r.json())
+            .then(r => {
+                if (!r.ok) {
+                    return r.json().then(data => {
+                        throw { status: r.status, data: data };
+                    });
+                }
+                return r.json();
+            })
             .then(res => {
                 if (res.ok) {
-                    alert('Permintaan berhasil dikirim ke admin');
+                    alert('✅ Permintaan berhasil dikirim ke admin!');
                     closeRequestModal();
-                    location.reload();
+                    setTimeout(() => location.reload(), 500);
                 } else {
-                    alert('Error: ' + res.message);
+                    // Show error alert
+                    const errorAlert = document.getElementById('errorAlert');
+                    const errorList = document.getElementById('errorList');
+                    
+                    errorAlert.classList.remove('hidden');
+                    errorList.innerHTML = '';
+                    
+                    if (res.errors) {
+                        // Display field-specific errors
+                        for (const [field, messages] of Object.entries(res.errors)) {
+                            messages.forEach(msg => {
+                                const li = document.createElement('li');
+                                li.textContent = msg;
+                                errorList.appendChild(li);
+                                
+                                // Show error under field
+                                const errorEl = document.getElementById(`error-${field}`);
+                                if (errorEl) {
+                                    errorEl.textContent = messages[0];
+                                    errorEl.classList.remove('hidden');
+                                }
+                            });
+                        }
+                    } else {
+                        const li = document.createElement('li');
+                        li.textContent = res.message || 'Terjadi kesalahan';
+                        errorList.appendChild(li);
+                    }
                 }
             })
-            .catch(e => alert('Error: ' + e.message));
+            .catch(e => {
+                console.error('Error:', e);
+                const errorAlert = document.getElementById('errorAlert');
+                const errorList = document.getElementById('errorList');
+                
+                errorAlert.classList.remove('hidden');
+                errorList.innerHTML = '<li>' + (e.data?.message || e.message || 'Gagal mengirim permintaan') + '</li>';
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Kirim Permintaan';
+            });
         });
 
         function cancelRequest(id) {
