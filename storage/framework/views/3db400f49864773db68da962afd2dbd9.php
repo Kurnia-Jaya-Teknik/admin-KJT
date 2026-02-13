@@ -1292,33 +1292,29 @@
                     <!-- Right Column - Karyawan (Personal) - Soft Modern Design -->
                     <div class="space-y-5">
                         <!-- Surat Keterangan Diterima - PRIORITAS TERATAS -->
-                        <div
-                            class="bg-gradient-to-br from-green-50 to-emerald-50 backdrop-blur-sm rounded-xl shadow-md border-2 border-green-200 p-5 ring-2 ring-green-100">
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 backdrop-blur-sm rounded-xl shadow-md border-2 border-green-200 p-5 ring-2 ring-green-100">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
                                     <span class="text-lg">📬</span>
                                     Surat Keterangan Diterima
                                 </h3>
-                                <span id="suratBadge"
-                                    class="hidden px-2.5 py-1 text-xs font-bold text-white bg-red-500 rounded-full animate-pulse shadow-lg">0</span>
+                                <span id="suratBadge" class="hidden px-2.5 py-1 text-xs font-bold text-white bg-red-500 rounded-full animate-pulse shadow-lg">0</span>
                             </div>
                             <div id="suratDiterimaContainer" class="space-y-3">
                                 <div class="flex items-center justify-center py-6">
                                     <div class="text-center">
-                                        <div
-                                            class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-2">
-                                        </div>
+                                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-2"></div>
                                         <p class="text-xs text-gray-500">Loading...</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-4 flex gap-2 items-center">
+                            <div class="mt-4 flex gap-2">
                                 <a href="<?php echo e(route('karyawan.surat-keterangan.request.index')); ?>"
-                                    class="flex-1 text-center text-xs font-semibold text-gray-700 hover:text-gray-800 py-2.5 border-2 border-gray-300 rounded-lg hover:bg-white transition-all">
+                                    class="flex-1 text-center text-xs font-semibold text-gray-700 hover:text-gray-800 py-2 border-2 border-gray-300 rounded-lg hover:bg-white transition-all">
                                     📋 Ajukan Permintaan
                                 </a>
                                 <a href="/karyawan/surat-keterangan"
-                                    class="flex-1 text-center text-xs font-bold text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all">
+                                    class="flex-1 text-center text-xs font-bold text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 py-2 rounded-lg shadow-md hover:shadow-lg transition-all">
                                     Lihat Semua →
                                 </a>
                             </div>
@@ -1999,8 +1995,7 @@
                                 <button
                                     onclick="document.getElementById('surat-modal-<?php echo e($surat->id); ?>').classList.add('hidden')"
                                     class="text-gray-400 hover:text-gray-600">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M6 18L18 6M6 6l12 12" />
                                     </svg>
@@ -2176,30 +2171,29 @@
 
                     // Load Surat Keterangan Diterima untuk Karyawan
                     <?php if(Auth::user()->role === 'karyawan'): ?>
-                        function loadSuratDiterima() {
-                            const container = document.getElementById('suratDiterimaContainer');
-                            const badge = document.getElementById('suratBadge');
-                            if (!container) return;
+                    function loadSuratDiterima() {
+                        const container = document.getElementById('suratDiterimaContainer');
+                        const badge = document.getElementById('suratBadge');
+                        if (!container) return;
 
-                            fetch('/karyawan/surat-keterangan-received')
-                                .then(r => r.json())
-                                .then(data => {
-                                    if (!data.ok || data.data.length === 0) {
-                                        container.innerHTML =
-                                            '<p class="text-xs text-gray-500 text-center py-2">Belum ada surat keterangan diterima</p>';
-                                        if (badge) badge.classList.add('hidden');
-                                        return;
-                                    }
+                        fetch('/karyawan/surat-keterangan-received')
+                            .then(r => r.json())
+                            .then(data => {
+                                if (!data.ok || data.data.length === 0) {
+                                    container.innerHTML = '<p class="text-xs text-gray-500 text-center py-2">Belum ada surat keterangan diterima</p>';
+                                    if (badge) badge.classList.add('hidden');
+                                    return;
+                                }
 
-                                    // Update badge dengan jumlah surat
-                                    if (badge && data.data.length > 0) {
-                                        badge.textContent = data.data.length;
-                                        badge.classList.remove('hidden');
-                                    }
+                                // Update badge dengan jumlah surat
+                                if (badge && data.data.length > 0) {
+                                    badge.textContent = data.data.length;
+                                    badge.classList.remove('hidden');
+                                }
 
-                                    // Tampilkan max 3 surat terbaru di dashboard
-                                    const displayData = data.data.slice(0, 3);
-                                    container.innerHTML = displayData.map(surat => `
+                                // Tampilkan max 3 surat terbaru di dashboard
+                                const displayData = data.data.slice(0, 3);
+                                container.innerHTML = displayData.map(surat => `
                                     <div class="p-3 bg-gradient-to-r from-green-50 to-transparent border border-green-100 rounded-lg hover:shadow-sm transition-all">
                                         <div class="flex items-start justify-between gap-2 mb-2">
                                             <div class="flex-1 min-w-0">
@@ -2214,21 +2208,20 @@
                                         </div>
                                     </div>
                                 `).join('');
+                                
+                                // Tambah info jika ada lebih banyak surat
+                                if (data.data.length > 3) {
+                                    container.innerHTML += `<p class="text-xs text-center text-gray-500 pt-2">+ ${data.data.length - 3} surat lainnya</p>`;
+                                }
+                            })
+                            .catch(e => {
+                                container.innerHTML = '<p class="text-xs text-red-500">Error loading surat</p>';
+                                if (badge) badge.classList.add('hidden');
+                            });
+                    }
 
-                                    // Tambah info jika ada lebih banyak surat
-                                    if (data.data.length > 3) {
-                                        container.innerHTML +=
-                                            `<p class="text-xs text-center text-gray-500 pt-2">+ ${data.data.length - 3} surat lainnya</p>`;
-                                    }
-                                })
-                                .catch(e => {
-                                    container.innerHTML = '<p class="text-xs text-red-500">Error loading surat</p>';
-                                    if (badge) badge.classList.add('hidden');
-                                });
-                        }
-
-                        // Load on page load
-                        document.addEventListener('DOMContentLoaded', loadSuratDiterima);
+                    // Load on page load
+                    document.addEventListener('DOMContentLoaded', loadSuratDiterima);
                     <?php endif; ?>
                 </script>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -3028,4 +3021,4 @@
 <?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
 <?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
 <?php endif; ?>
-<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/dashboard.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\Admin-KJT\resources\views/dashboard.blade.php ENDPATH**/ ?>

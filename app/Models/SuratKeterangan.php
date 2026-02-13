@@ -18,12 +18,17 @@ class SuratKeterangan extends Model
         'keterangan',
         'file_surat',
         'status',
+        'is_sent',
+        'sent_at',
+        'sent_notes',
     ];
 
     protected $casts = [
         'tanggal_surat' => 'date',
         'tanggal_mulai_kerja' => 'date',
         'tanggal_selesai_kerja' => 'date',
+        'sent_at' => 'datetime',
+        'is_sent' => 'boolean',
     ];
 
     public function user()

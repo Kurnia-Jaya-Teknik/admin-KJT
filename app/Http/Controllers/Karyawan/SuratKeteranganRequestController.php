@@ -35,18 +35,21 @@ class SuratKeteranganRequestController extends Controller
     {
         $user = Auth::user();
 
-        $validated = $request->validate([
-            'alasan' => 'required|string|max:100',
-            'keperluan' => 'required|string|max:500',
-            'tanggal_diminta' => 'required|date|after:today',
-        ], [
-            'alasan.required' => 'Alasan permintaan harus diisi',
-            'keperluan.required' => 'Keperluan surat harus diisi',
-            'tanggal_diminta.required' => 'Tanggal yang diminta harus diisi',
-            'tanggal_diminta.after' => 'Tanggal harus lebih dari hari ini',
-        ]);
-
         try {
+            $validated = $request->validate([
+                'alasan' => 'required|string|max:100',
+                'keperluan' => 'required|string|max:500',
+                'tanggal_diminta' => 'required|date_format:Y-m-d|after_or_equal:' . date('Y-m-d'),
+            ], [
+                'alasan.required' => 'Alasan permintaan harus diisi',
+                'alasan.max' => 'Alasan maksimal 100 karakter',
+                'keperluan.required' => 'Keperluan surat harus diisi',
+                'keperluan.max' => 'Keperluan maksimal 500 karakter',
+                'tanggal_diminta.required' => 'Tanggal yang diminta harus diisi',
+                'tanggal_diminta.date_format' => 'Format tanggal harus YYYY-MM-DD',
+                'tanggal_diminta.after_or_equal' => 'Tanggal harus hari ini atau lebih dari hari ini',
+            ]);
+
             $suratRequest = SuratKeteranganRequest::create([
                 'user_id' => $user->id,
                 'alasan' => $validated['alasan'],
@@ -61,12 +64,20 @@ class SuratKeteranganRequestController extends Controller
                 'id' => $suratRequest->id,
             ]);
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::warning('Validation failed for surat request', ['errors' => $e->errors()]);
+            
+            return response()->json([
+                'ok' => false,
+                'message' => 'Validasi gagal. Periksa kembali data Anda.',
+                'errors' => $e->errors(),
+            ], 422);
         } catch (\Throwable $e) {
-            \Log::error('Error Request Surat Keterangan: ' . $e->getMessage());
+            \Log::error('Error Request Surat Keterangan: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'ok' => false,
-                'message' => 'Gagal mengirim permintaan surat keterangan',
+                'message' => 'Gagal mengirim permintaan surat keterangan: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -103,6 +114,70 @@ class SuratKeteranganRequestController extends Controller
         return response()->json([
             'ok' => true,
             'message' => 'Permintaan berhasil dibatalkan',
+        ]);
+    }
+
+    /**
+     * =============================
+     * SHOW SURAT KETERANGAN PAGE
+     * =============================
+     */
+    public function suratKeteranganIndex()
+    {
+        return view('karyawan.surat-keterangan');
+    }
+
+    /**
+     * =============================
+     * GET SURAT KETERANGAN RECEIVED (API)
+     * =============================
+     */
+    public function getSuratReceived()
+    {
+        $user = Auth::user();
+
+        // Get surat keterangan yang sudah dibuat untuk user ini (baik terkirim maupun pending)
+        $suratList = \App\Models\SuratKeterangan::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(fn($s) => [
+                'id' => $s->id,
+                'nomor_surat' => $s->nomor_surat,
+                'jabatan' => $s->jabatan,
+                'unit_kerja' => $s->unit_kerja,
+                'tanggal_surat' => $s->tanggal_surat?->format('d/m/Y'),
+                'is_sent' => $s->is_sent,
+                'sent_at' => $s->sent_at?->format('d/m/Y H:i') ?? 'Menunggu pengiriman',
+                'file_surat' => $s->file_surat,
+                'file_url' => $s->file_surat ? asset('storage/' . $s->file_surat) : null,
+                'download_url' => $s->file_surat ? asset('storage/' . $s->file_surat) : null,
+                'keterangan' => $s->keterangan,
+            ]);
+
+        return response()->json([
+            'ok' => true,
+            'data' => $suratList,
+        ]);
+    }
+
+    /**
+     * =============================
+     * MARK SURAT KETERANGAN NOTIFICATIONS AS READ (API)
+     * =============================
+     */
+    public function markSuratNotificationsAsRead()
+    {
+        $user = Auth::user();
+
+        // Mark all unread SuratKeteranganSent notifications as read
+        $user->notifications()
+            ->where('type', 'App\Notifications\SuratKeteranganSent')
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Notifikasi telah ditandai sebagai sudah dibaca',
         ]);
     }
 }

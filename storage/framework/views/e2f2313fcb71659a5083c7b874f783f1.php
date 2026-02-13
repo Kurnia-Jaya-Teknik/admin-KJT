@@ -1,13 +1,22 @@
-<x-app-layout>
-    <x-slot name="header">
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Pengajuan Lembur
         </h2>
-    </x-slot>
+     <?php $__env->endSlot(); ?>
 
     <!-- Fixed Sidebar -->
     <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
-        @include('layouts.sidebar')
+        <?php echo $__env->make('layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <!-- Scrollable Main Content -->
@@ -150,114 +159,29 @@
                 <div class="px-6 py-4 border-b border-gray-200/50 bg-gradient-to-r from-red-50 to-red-100/60">
                     <div class="flex items-center justify-between">
                         <h3 class="text-base font-bold text-gray-800">Riwayat Pengajuan Lembur</h3>
-                        {{-- <div class="flex items-center gap-3 text-xs text-gray-500">
-                            <span>Anda: <strong>{{ auth()->user()->name }} (ID:
-                                    {{ auth()->user()->id }})</strong></span>
-                            <button id="createTestLemburBtn"
-                                class="px-2 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Buat Lembur
-                                Test</button>
-                        </div> --}}
+                        
                     </div>
                 </div>
                 <div id="lemburHistory" class="divide-y divide-gray-100/50">
                     <!-- History will be rendered here by JS -->
-                    {{-- <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-transparent transition-all duration-300 group">
-                    <div class="flex items-start gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-50/60 to-green-50/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                            <svg class="w-5 h-5 text-green-500/70" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-start justify-between mb-1.5">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-800">Lembur • 5 jam</p>
-                                    <p class="text-xs text-gray-500 mt-0.5">6 Januari 2026 • 18:00 - 23:00</p>
-                                </div>
-                                <span class="px-2.5 py-0.5 bg-green-50/70 text-green-600/80 text-xs font-medium rounded-full shadow-sm flex-shrink-0 ml-2">Disetujui</span>
-                            </div>
-                            <p class="text-xs text-gray-400 mb-2">Pekerjaan: Menyelesaikan laporan project X</p>
-                            <button class="text-xs text-slate-600/90 hover:text-slate-700 font-medium transition-colors">Lihat Detail →</button>
-                        </div>
-                    </div>
-                </div> --}}
+                    
 
                     <!-- Item 2 - Approved -->
-                    {{-- <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-transparent transition-all duration-300 group">
-                    <div class="flex items-start gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-50/60 to-green-50/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                            <svg class="w-5 h-5 text-green-500/70" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-start justify-between mb-1.5">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-800">Lembur • 3 jam</p>
-                                    <p class="text-xs text-gray-500 mt-0.5">3 Januari 2026 • 19:00 - 22:00</p>
-                                </div>
-                                <span class="px-2.5 py-0.5 bg-green-50/70 text-green-600/80 text-xs font-medium rounded-full shadow-sm flex-shrink-0 ml-2">Disetujui</span>
-                            </div>
-                            <p class="text-xs text-gray-400 mb-2">Pekerjaan: Database maintenance</p>
-                            <button class="text-xs text-slate-600/90 hover:text-slate-700 font-medium transition-colors">Lihat Detail →</button>
-                        </div>
-                    </div>
-                </div> --}}
+                    
 
                     <!-- Item 3 - Pending -->
-                    {{-- <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-red-50/30 hover:to-transparent transition-all duration-300 group">
-                    <div class="flex items-start gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-50/60 to-red-50/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                            <svg class="w-5 h-5 text-red-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-start justify-between mb-1.5">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-800">Lembur • 4 jam</p>
-                                    <p class="text-xs text-gray-500 mt-0.5">2 Januari 2026 • 17:00 - 21:00</p>
-                                </div>
-                                <span class="px-2.5 py-0.5 bg-red-50/70 text-red-600/80 text-xs font-medium rounded-full shadow-sm flex-shrink-0 ml-2">Menunggu</span>
-                            </div>
-                            <p class="text-xs text-gray-400 mb-2">Pekerjaan: Backup data server</p>
-                            <div class="flex gap-3">
-                                <button class="text-xs text-slate-600/90 hover:text-slate-700 font-medium transition-colors">Lihat Detail →</button>
-                                <button class="text-xs text-red-500/80 hover:text-red-600/80 font-medium transition-colors">Batalkan</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
+                    
 
                     <!-- Item 4 - Approved -->
-                    {{-- <div class="px-6 py-4 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-transparent transition-all duration-300 group">
-                    <div class="flex items-start gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-50/60 to-green-50/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                            <svg class="w-5 h-5 text-green-500/70" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-start justify-between mb-1.5">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-800">Lembur • 2 jam</p>
-                                    <p class="text-xs text-gray-500 mt-0.5">1 Januari 2026 • 20:00 - 22:00</p>
-                                </div>
-                                <span class="px-2.5 py-0.5 bg-green-50/70 text-green-600/80 text-xs font-medium rounded-full shadow-sm flex-shrink-0 ml-2">Disetujui</span>
-                            </div>
-                            <p class="text-xs text-gray-400 mb-2">Pekerjaan: Meeting preparation dengan client</p>
-                            <button class="text-xs text-slate-600/90 hover:text-slate-700 font-medium transition-colors">Lihat Detail →</button>
-                        </div>
-                    </div>
-                </div> --}}
+                    
                 </div>
             </div>
         </div>
     </div>
-    @push('scripts')
+    <?php $__env->startPush('scripts'); ?>
         <script>
             (function() {
-                const API_BASE_RAW = {!! json_encode(rtrim(request()->getSchemeAndHttpHost() . request()->getBaseUrl(), '/')) !!};
+                const API_BASE_RAW = <?php echo json_encode(rtrim(request()->getSchemeAndHttpHost() . request()->getBaseUrl(), '/')); ?>;
                 const API_BASE = (API_BASE_RAW && API_BASE_RAW.indexOf(String.fromCharCode(123, 123)) === -1) ?
                     API_BASE_RAW : (window.location.origin + window.location.pathname.substring(0, window.location.pathname
                         .lastIndexOf(String.fromCharCode(47))));
@@ -408,7 +332,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                                 </svg>
                                                 <div class="flex-1">
-                                                    <p class="text-xs font-medium text-gray-500 mb-0.5">Pekerjaan yang Ditangani:</p>
+                                                    <p class="text-xs font-medium text-gray-500 mb-0.5">Keterangan Pekerjaan:</p>
                                                     <p class="text-xs text-gray-700 leading-relaxed">${item.keterangan || 'Tidak ada keterangan'}</p>
                                                 </div>
                                             </div>
@@ -505,15 +429,15 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Pekerjaan yang Ditangani -->
+                                <!-- Keterangan -->
                                 <div class="group">
                                     <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
                                         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">
                                             <span class="text-lg">📝</span>
                                         </div>
-                                        Pekerjaan yang Ditangani
+                                        Keterangan Pekerjaan
                                     </label>
-                                    <textarea id="modalKeterangan" rows="4" placeholder="Jelaskan pekerjaan yang ditangani selama lembur..." class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 transition-all duration-300 text-sm resize-none text-gray-700 placeholder-gray-400 shadow-sm leading-relaxed"></textarea>
+                                    <textarea id="modalKeterangan" rows="4" placeholder="Jelaskan pekerjaan yang dilakukan selama lembur..." class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 transition-all duration-300 text-sm resize-none text-gray-700 placeholder-gray-400 shadow-sm leading-relaxed"></textarea>
                                 </div>
                                 
                                 <!-- Status -->
@@ -580,10 +504,8 @@
 
                     // populate
                     document.getElementById('modalTanggal').value = lembur.tanggal ? lembur.tanggal.split('T')[0] : '';
-                    // Pastikan format H:i (tanpa detik)
-                    document.getElementById('modalMulai').value = lembur.jam_mulai ? lembur.jam_mulai.substring(0, 5) : '';
-                    document.getElementById('modalSelesai').value = lembur.jam_selesai ? lembur.jam_selesai.substring(0,
-                        5) : '';
+                    document.getElementById('modalMulai').value = lembur.jam_mulai || '';
+                    document.getElementById('modalSelesai').value = lembur.jam_selesai || '';
                     document.getElementById('modalKeterangan').value = lembur.keterangan || '';
 
                     // Status with badge styling
@@ -930,5 +852,15 @@
                 });
             })();
         </script>
-    @endpush
-</x-app-layout>
+    <?php $__env->stopPush(); ?>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php /**PATH C:\xampp\htdocs\Admin-KJT\resources\views/karyawan/pengajuan-lembur.blade.php ENDPATH**/ ?>

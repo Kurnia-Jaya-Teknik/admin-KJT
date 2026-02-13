@@ -158,6 +158,24 @@ class DashboardController extends Controller
             return ['nama' => $d->nama, 'present' => $present, 'total' => $total, 'pct' => $total ? round(($present/$total)*100,1) : 0];
         })->toArray();
 
+        // Lembur per departemen (bulan ini)
+        $lemburPerDepartemen = \App\Models\Departemen::orderBy('nama')->get()->map(function($d){
+            $totalJam = Lembur::whereMonth('tanggal', now()->month)
+                ->whereYear('tanggal', now()->year)
+                ->whereHas('user', function($q) use ($d){ $q->where('departemen_id',$d->id); })
+                ->sum('durasi_jam');
+            return ['nama' => $d->nama, 'total_jam' => $totalJam];
+        })->filter(function($item){ return $item['total_jam'] > 0; })->values()->toArray();
+        
+        $maxLemburJam = collect($lemburPerDepartemen)->max('total_jam') ?: 1;
+        $totalLemburBulanIni = collect($lemburPerDepartemen)->sum('total_jam');
+
+        // overall status counts for charts
+        $statusApproved = Cuti::where('status','Disetujui')->count() + Lembur::where('status','Disetujui')->count() + Surat::where('status','Disetujui')->count();
+        $statusPending = Cuti::where('status','Pending')->count() + Lembur::where('status','Pending')->count() + Surat::where('status','Pending')->count();
+        $statusRejected = Cuti::where('status','Ditolak')->count() + Lembur::where('status','Ditolak')->count() + Surat::where('status','Ditolak')->count();
+        $statusTotal = $statusApproved + $statusPending + $statusRejected;
+
         return [
             'totalKaryawan' => $totalKaryawan,
             'persentaseKehadiran' => $persentaseKehadiran,
@@ -166,6 +184,20 @@ class DashboardController extends Controller
             'statusKaryawan' => $statusKaryawan,
             'jenisSurat' => $jenisSurat,
             'pengajuanMenunggu' => $pengajuanMenunggu,
+            'pengajuanPerBulan' => $pengajuanPerBulan,
+            'totalPengajuan6' => $totalPengajuan6,
+            'maxPengajuan' => $maxPengajuan,
+            'departemenStats' => $departemenStats,
+            'persetujuanSelesai' => $persetujuanSelesai,
+            'ditolakBulan' => $ditolakBulan,
+            'statusApproved' => $statusApproved,
+            'statusPending' => $statusPending,
+            'statusRejected' => $statusRejected,
+            'statusTotal' => $statusTotal,
+            'lemburPerDepartemen' => $lemburPerDepartemen,
+            'maxLemburJam' => $maxLemburJam,
+            'totalLemburBulanIni' => $totalLemburBulanIni,
+            'hadirHariIni' => $hadirHariIni,
         ];
     }
 
@@ -237,18 +269,19 @@ class DashboardController extends Controller
             ->get();
 
         // Data pengajuan per bulan (6 bulan terakhir) - dynamic
-        $pengajuanPerBulan = [];
+        $pengajuanPerBulan = collect();
         for ($i = 5; $i >= 0; $i--) {
-            $bulan = now()->subMonths($i);
+            $bulan = now()->copy()->subMonths($i);
             $countCuti = Cuti::whereMonth('created_at', $bulan->month)
                 ->whereYear('created_at', $bulan->year)
                 ->count();
             $countLembur = Lembur::whereMonth('created_at', $bulan->month)
                 ->whereYear('created_at', $bulan->year)
                 ->count();
-            $pengajuanPerBulan[$bulan->format('M')] = $countCuti + $countLembur;
+            $pengajuanPerBulan->push(['label' => $bulan->format('M'), 'count' => $countCuti + $countLembur]);
         }
-        $totalPengajuan6 = array_sum($pengajuanPerBulan);
+        $totalPengajuan6 = $pengajuanPerBulan->sum('count');
+        $maxPengajuan = max(1, $pengajuanPerBulan->max('count'));
 
         // overall status counts for charts
         $statusApproved = Cuti::where('status','Disetujui')->count() + Lembur::where('status','Disetujui')->count() + Surat::where('status','Disetujui')->count();
@@ -271,6 +304,7 @@ class DashboardController extends Controller
             'suratMenunggu' => $suratMenunggu,
             'pengajuanPerBulan' => $pengajuanPerBulan,
             'totalPengajuan6' => $totalPengajuan6,
+            'maxPengajuan' => $maxPengajuan,
             'revisiCount' => $revisiCount,
             'statusApproved' => $statusApproved,
             'statusPending' => $statusPending,

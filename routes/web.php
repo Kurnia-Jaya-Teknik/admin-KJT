@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DirekturController;
@@ -48,6 +48,8 @@ Route::middleware([
     // Direktur Routes
     Route::prefix('direktur')->name('direktur.')->group(function () {
         Route::get('/persetujuan-cuti-lembur', [DirekturController::class, 'persetujuanCutiLembur'])->name('persetujuan-cuti-lembur');
+        Route::get('/persetujuan-cuti', [DirekturController::class, 'persetujuanCuti'])->name('persetujuan-cuti');
+        Route::get('/persetujuan-izin-sakit', [DirekturController::class, 'persetujuanIzinSakit'])->name('persetujuan-izin-sakit');
         Route::get('/persetujuan-lembur', [DirekturController::class, 'persetujuanLembur'])->name('persetujuan-lembur');
         Route::get('/persetujuan-surat', [DirekturController::class, 'persetujuanSurat'])->name('persetujuan-surat');
         Route::get('/ringkasan-karyawan', [DirekturController::class, 'ringkasanKaryawan'])->name('ringkasan-karyawan');
@@ -97,6 +99,12 @@ Route::middleware([
             return view('karyawan.pengajuan-lembur');
         })->name('pengajuan-lembur');
 
+        // Employee Lembur API (basic CRUD)
+        Route::get('/api/lembur', [\App\Http\Controllers\Api\Employee\LemburController::class, 'index'])->name('lembur.index');
+        Route::post('/api/lembur', [\App\Http\Controllers\Api\Employee\LemburController::class, 'store'])->name('lembur.store');
+        Route::put('/api/lembur/{lembur}', [\App\Http\Controllers\Api\Employee\LemburController::class, 'update'])->name('lembur.update');
+        Route::delete('/api/lembur/{lembur}', [\App\Http\Controllers\Api\Employee\LemburController::class, 'destroy'])->name('lembur.destroy');
+
         // provide a session API token for JS to call (web authenticated only)
         Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class, 'token'])->middleware('auth')->name('session.api-token');
 
@@ -117,8 +125,11 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
 
         // Surat Keterangan Request Routes
         Route::get('/surat-keterangan-request', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'index'])->name('surat-keterangan.request.index');
+        Route::get('/surat-keterangan', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'suratKeteranganIndex'])->name('surat-keterangan.index');
+        Route::get('/surat-keterangan-received', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'getSuratReceived'])->name('surat-keterangan.received');
         Route::post('/surat-keterangan-request', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'store'])->name('surat-keterangan.request.store');
         Route::post('/surat-keterangan-request/{id}/cancel', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'cancel'])->name('surat-keterangan.request.cancel');
+        Route::post('/surat-keterangan/mark-notifications-read', [\App\Http\Controllers\Karyawan\SuratKeteranganRequestController::class, 'markSuratNotificationsAsRead'])->name('surat-keterangan.mark-notifications-read');
         
         Route::get('/riwayat', function () {
             return view('karyawan.riwayat');
@@ -207,8 +218,11 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         Route::get('/surat-keterangan/create', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'create'])->name('surat-keterangan.create');
         Route::post('/surat-keterangan', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'store'])->name('surat-keterangan.store');
         Route::get('/surat-keterangan/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'show'])->name('surat-keterangan.show');
-        Route::delete('/surat-keterangan/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'destroy'])->name('surat-keterangan.destroy');
         Route::get('/surat-keterangan/{id}/preview', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'preview'])->name('surat-keterangan.preview');
+        Route::put('/surat-keterangan/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'update'])->name('surat-keterangan.update');
+        Route::post('/surat-keterangan/{id}/send', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'send'])->name('surat-keterangan.send');
+        Route::delete('/surat-keterangan/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'destroy'])->name('surat-keterangan.destroy');
+        Route::get('/users/{id}', [\App\Http\Controllers\Admin\SuratKeteranganController::class, 'getUserDetail'])->name('users.detail');
         
         Route::get('/template', function () {
             return view('admin.template');
