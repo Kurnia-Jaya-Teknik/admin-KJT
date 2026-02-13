@@ -100,6 +100,98 @@ class DirekturController extends Controller
         return view('direktur.persetujuan-cuti-lembur', compact('requests'));
     }
 
+    public function persetujuanCuti(Request $request)
+    {
+        // Get filter parameters
+        $status = $request->query('status');
+        $periode = $request->query('periode');
+
+        // Query only Cuti with jenis "Cuti"
+        $cutiQuery = Cuti::with('user')
+            ->where('status', '!=', null)
+            ->where('jenis', 'Cuti');
+
+        // Filter by status
+        if ($status) {
+            $statusMap = [
+                'menunggu' => 'Pending',
+                'disetujui' => 'Disetujui',
+                'ditolak' => 'Ditolak',
+            ];
+            $cutiStatus = $statusMap[strtolower($status)] ?? null;
+            if ($cutiStatus) {
+                $cutiQuery->where('status', $cutiStatus);
+            }
+        }
+
+        // Filter by periode
+        if ($periode) {
+            $cutiQuery->whereYear('tanggal_mulai', explode('-', $periode)[0])
+                ->whereMonth('tanggal_mulai', explode('-', $periode)[1]);
+        }
+
+        // Enrich cuti with delegated users and paginate
+        $requests = $cutiQuery->orderBy('created_at', 'desc')->paginate(10);
+        
+        $requests->getCollection()->each(function ($cuti) {
+            if (!empty($cuti->dilimpahkan_ke) && is_array($cuti->dilimpahkan_ke)) {
+                $cuti->delegated_users = \App\Models\User::whereIn('id', $cuti->dilimpahkan_ke)
+                    ->select('id', 'name', 'email')
+                    ->get();
+            } else {
+                $cuti->delegated_users = collect();
+            }
+        });
+
+        return view('direktur.persetujuan-cuti', compact('requests'));
+    }
+
+    public function persetujuanIzinSakit(Request $request)
+    {
+        // Get filter parameters
+        $status = $request->query('status');
+        $periode = $request->query('periode');
+
+        // Query only Cuti with jenis "Ijin Sakit"
+        $cutiQuery = Cuti::with('user')
+            ->where('status', '!=', null)
+            ->where('jenis', 'Ijin Sakit');
+
+        // Filter by status
+        if ($status) {
+            $statusMap = [
+                'menunggu' => 'Pending',
+                'disetujui' => 'Disetujui',
+                'ditolak' => 'Ditolak',
+            ];
+            $cutiStatus = $statusMap[strtolower($status)] ?? null;
+            if ($cutiStatus) {
+                $cutiQuery->where('status', $cutiStatus);
+            }
+        }
+
+        // Filter by periode
+        if ($periode) {
+            $cutiQuery->whereYear('tanggal_mulai', explode('-', $periode)[0])
+                ->whereMonth('tanggal_mulai', explode('-', $periode)[1]);
+        }
+
+        // Enrich cuti with delegated users and paginate
+        $requests = $cutiQuery->orderBy('created_at', 'desc')->paginate(10);
+        
+        $requests->getCollection()->each(function ($cuti) {
+            if (!empty($cuti->dilimpahkan_ke) && is_array($cuti->dilimpahkan_ke)) {
+                $cuti->delegated_users = \App\Models\User::whereIn('id', $cuti->dilimpahkan_ke)
+                    ->select('id', 'name', 'email')
+                    ->get();
+            } else {
+                $cuti->delegated_users = collect();
+            }
+        });
+
+        return view('direktur.persetujuan-izin-sakit', compact('requests'));
+    }
+
     public function persetujuanSurat()
     {
         return view('direktur.persetujuan-surat');

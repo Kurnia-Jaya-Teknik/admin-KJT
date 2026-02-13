@@ -136,10 +136,9 @@ class SuratKeteranganRequestController extends Controller
     {
         $user = Auth::user();
 
-        // Get surat keterangan yang sudah dikirim ke user ini
+        // Get surat keterangan yang sudah dibuat untuk user ini (baik terkirim maupun pending)
         $suratList = \App\Models\SuratKeterangan::where('user_id', $user->id)
-            ->where('is_sent', true)
-            ->orderBy('sent_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get()
             ->map(fn($s) => [
                 'id' => $s->id,
@@ -147,7 +146,8 @@ class SuratKeteranganRequestController extends Controller
                 'jabatan' => $s->jabatan,
                 'unit_kerja' => $s->unit_kerja,
                 'tanggal_surat' => $s->tanggal_surat?->format('d/m/Y'),
-                'sent_at' => $s->sent_at?->format('d/m/Y H:i'),
+                'is_sent' => $s->is_sent,
+                'sent_at' => $s->sent_at?->format('d/m/Y H:i') ?? 'Menunggu pengiriman',
                 'file_surat' => $s->file_surat,
                 'file_url' => $s->file_surat ? asset('storage/' . $s->file_surat) : null,
                 'download_url' => $s->file_surat ? asset('storage/' . $s->file_surat) : null,
@@ -157,6 +157,27 @@ class SuratKeteranganRequestController extends Controller
         return response()->json([
             'ok' => true,
             'data' => $suratList,
+        ]);
+    }
+
+    /**
+     * =============================
+     * MARK SURAT KETERANGAN NOTIFICATIONS AS READ (API)
+     * =============================
+     */
+    public function markSuratNotificationsAsRead()
+    {
+        $user = Auth::user();
+
+        // Mark all unread SuratKeteranganSent notifications as read
+        $user->notifications()
+            ->where('type', 'App\Notifications\SuratKeteranganSent')
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Notifikasi telah ditandai sebagai sudah dibaca',
         ]);
     }
 }

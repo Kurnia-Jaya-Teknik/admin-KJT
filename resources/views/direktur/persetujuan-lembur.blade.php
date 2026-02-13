@@ -48,7 +48,7 @@
                                 <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                                     Durasi</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
-                                    Keterangan</th>
+                                    Pekerjaan yang Ditangani</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                                     Status</th>
                                 <th class="px-6 py-4 text-center text-xs font-bold text-white uppercase tracking-wider">
@@ -59,7 +59,7 @@
                             @forelse($requests as $r)
                                 @php
                                     $tanggal = $r->tanggal ? \Carbon\Carbon::parse($r->tanggal)->format('d M Y') : '-';
-                                    $durasi = ($r->durasi ?? 0) . ' jam';
+                                    $durasi = ($r->durasi_jam ?? 0) . ' jam';
                                     $statusBadge = match ($r->status) {
                                         'Pending' => 'bg-amber-100 text-amber-800',
                                         'Disetujui' => 'bg-emerald-100 text-emerald-800',
@@ -72,7 +72,12 @@
                                     </td>
                                     <td class="px-6 py-5 text-sm text-gray-600">{{ $tanggal }}</td>
                                     <td class="px-6 py-5 text-sm text-gray-600">{{ $durasi }}</td>
-                                    <td class="px-6 py-5 text-sm text-gray-600">{{ Str::limit($r->alasan ?? '-', 40) }}
+                                    <td class="px-6 py-5 text-sm text-gray-600">
+                                        <button
+                                            onclick="showDetailLembur({{ $r->id }}, '{{ $r->user->name }}', '{{ $tanggal }}', '{{ $r->jam_mulai ?? '' }}', '{{ $r->jam_selesai ?? '' }}', '{{ $durasi }}', `{{ addslashes($r->keterangan ?? 'Tidak ada keterangan') }}`)"
+                                            class="text-left hover:text-red-600 transition-colors">
+                                            {{ Str::limit($r->keterangan ?? '-', 40) }}
+                                        </button>
                                     </td>
                                     <td class="px-6 py-5 text-sm"><span
                                             class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ $statusBadge }}">{{ $r->status }}</span>
@@ -104,7 +109,7 @@
             </div>
         </div>
 
-        <!-- Modal Template (reuse existing modal JS if present) -->
+        <!-- Approval Modal -->
         <div id="approvalModal" class="fixed inset-0 bg-black/30 hidden z-50 flex items-center justify-center p-4">
             <div class="bg-white rounded-2xl shadow-xl border border-gray-200 max-w-md w-full p-6">
                 <h3 id="modalTitle" class="text-lg font-bold mb-3">Konfirmasi</h3>
@@ -116,10 +121,107 @@
                 </div>
             </div>
         </div>
+
+        <!-- Detail Lembur Modal -->
+        <div id="detailLemburModal"
+            class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl border border-gray-200 max-w-2xl w-full overflow-hidden">
+                <div class="px-6 py-5 bg-gradient-to-r from-red-500 to-red-700 border-b border-red-800/20">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Detail Lembur</h3>
+                                <p class="text-xs text-white/80 mt-0.5">Informasi lengkap pengajuan lembur</p>
+                            </div>
+                        </div>
+                        <button onclick="closeDetailLembur()"
+                            class="p-2 hover:bg-white/20 rounded-lg transition-colors">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-8 space-y-6 bg-gradient-to-br from-gray-50/50 to-white max-h-[70vh] overflow-y-auto">
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-2">
+                            <span class="text-lg">👤</span> Nama Karyawan
+                        </label>
+                        <p id="detailNama" class="text-lg font-semibold text-gray-900"></p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-2">
+                                <span class="text-lg">📅</span> Tanggal
+                            </label>
+                            <p id="detailTanggal" class="text-gray-800"></p>
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-2">
+                                <span class="text-lg">⏱️</span> Durasi
+                            </label>
+                            <p id="detailDurasi" class="text-gray-800 font-semibold"></p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-2">
+                                <span class="text-lg">⏰</span> Jam Mulai
+                            </label>
+                            <p id="detailJamMulai" class="text-gray-800"></p>
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-2">
+                                <span class="text-lg">🏁</span> Jam Selesai
+                            </label>
+                            <p id="detailJamSelesai" class="text-gray-800"></p>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
+                            <span class="text-lg">📝</span> Pekerjaan yang Ditangani
+                        </label>
+                        <div class="p-4 bg-gray-50 border-2 border-gray-200 rounded-xl">
+                            <p id="detailKeterangan"
+                                class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">
+                    <button onclick="closeDetailLembur()"
+                        class="px-6 py-2.5 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-colors">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     @push('scripts')
         <script>
+            function showDetailLembur(id, nama, tanggal, jamMulai, jamSelesai, durasi, keterangan) {
+                document.getElementById('detailNama').textContent = nama;
+                document.getElementById('detailTanggal').textContent = tanggal;
+                document.getElementById('detailDurasi').textContent = durasi;
+                document.getElementById('detailJamMulai').textContent = jamMulai || '-';
+                document.getElementById('detailJamSelesai').textContent = jamSelesai || '-';
+                document.getElementById('detailKeterangan').textContent = keterangan;
+                document.getElementById('detailLemburModal').classList.remove('hidden');
+            }
+
+            function closeDetailLembur() {
+                document.getElementById('detailLemburModal').classList.add('hidden');
+            }
+
             function openApprovalModal(name, jenis, tanggal, action, id, type) {
                 const modal = document.getElementById('approvalModal');
                 document.getElementById('modalTitle').textContent = action === 'Approve' ? 'Konfirmasi Persetujuan' :

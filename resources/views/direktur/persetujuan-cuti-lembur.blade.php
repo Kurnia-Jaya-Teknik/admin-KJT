@@ -387,15 +387,27 @@
 
                     const result = await response.json();
 
-                    // show a light toast notification
-                    const toast = document.createElement('div');
-                    toast.className = 'fixed top-6 right-6 z-50 bg-white border rounded-xl p-3 shadow-lg';
-                    toast.innerHTML =
-                        `<p class="text-sm font-medium text-gray-800">${result.message || 'Berhasil diproses'}</p>`;
-                    document.body.appendChild(toast);
-                    setTimeout(() => {
-                        toast.remove();
-                    }, 3500);
+                    // Show notification with better styling
+                    const action = currentApprovalData.action;
+                    const jenis = currentApprovalData.jenis;
+                    const message = action === 'Approve' ?
+                        `✓ ${jenis} telah disetujui!` :
+                        `✓ ${jenis} telah ditolak!`;
+
+                    // Create and show toast with showNotification function if available
+                    if (typeof showNotification === 'function') {
+                        showNotification(message, 'success');
+                    } else {
+                        // Fallback toast
+                        const toast = document.createElement('div');
+                        toast.className = 'fixed top-6 right-6 z-50 bg-white border rounded-xl p-3 shadow-lg';
+                        toast.innerHTML =
+                            `<p class="text-sm font-medium text-gray-800">${result.message || 'Berhasil diproses'}</p>`;
+                        document.body.appendChild(toast);
+                        setTimeout(() => {
+                            toast.remove();
+                        }, 3500);
+                    }
 
                     closeApprovalModal();
 

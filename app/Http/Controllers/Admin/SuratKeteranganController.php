@@ -313,25 +313,125 @@ class SuratKeteranganController extends Controller
     {
         $this->ensureAdminHRD();
 
-        $surat = SuratKeterangan::with('user')->findOrFail($id);
+        $surat = SuratKeterangan::with('user.departemen')->findOrFail($id);
+
+        // Mapping role ke jabatan default jika jabatan kosong
+        $jabatanDefault = [
+            'admin_hrd' => 'HRD Manager',
+            'admin' => 'Administrator',
+            'karyawan' => 'Staff',
+            'karyawan_tetap' => 'Karyawan Tetap',
+            'karyawan_kontrak' => 'Karyawan Kontrak',
+        ];
+
+        $jabatan = $surat->user->jabatan ?: ($jabatanDefault[$surat->user->role] ?? 'Staff');
 
         return response()->json([
             'ok' => true,
-            'data' => [
+            'surat' => [
                 'id' => $surat->id,
                 'nama_karyawan' => $surat->user->name,
                 'nomor_surat' => $surat->nomor_surat,
-                'tanggal_surat' => optional($surat->tanggal_surat)->format('d/m/Y'),
+                'tanggal_surat' => optional($surat->tanggal_surat)->format('Y-m-d'),
                 'jabatan' => $surat->jabatan,
                 'unit_kerja' => $surat->unit_kerja,
-                'tanggal_mulai' => optional($surat->tanggal_mulai_kerja)->format('d/m/Y'),
-                'tanggal_selesai' => optional($surat->tanggal_selesai_kerja)->format('d/m/Y'),
+                'tanggal_mulai_kerja' => optional($surat->tanggal_mulai_kerja)->format('Y-m-d'),
+                'tanggal_selesai_kerja' => optional($surat->tanggal_selesai_kerja)->format('Y-m-d'),
+                'keterangan' => $surat->keterangan ?? '',
                 'status' => $surat->status,
                 'file_url' => $surat->file_surat ? asset('storage/' . $surat->file_surat) : null,
+                'user' => [
+                    'name' => $surat->user->name,
+                    'email' => $surat->user->email,
+                    'jabatan' => $jabatan,
+                    'departemen' => $surat->user->departemen ? $surat->user->departemen->nama : 'CV. Kurnia Jaya Teknik',
+                ]
             ]
         ]);
     }
 
+
+
+    /**
+     * =============================
+     * UPDATE - EDIT SURAT
+     * =============================
+     */
+    public function update(Request $request, $id)
+    {
+        $this->ensureAdminHRD();
+
+        $surat = SuratKeterangan::findOrFail($id);
+
+        // Validasi: tidak bisa edit jika sudah dikirim
+        if ($surat->is_sent) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Surat yang sudah dikirim tidak bisa diedit'
+            ], 400);
+        }
+
+        $validated = $request->validate([
+            'nomor_surat' => 'required|string|max:100',
+            'tanggal_surat' => 'required|date',
+            'jabatan' => 'required|string|max:100',
+            'unit_kerja' => 'required|string|max:100',
+            'tanggal_mulai_kerja' => 'required|date',
+            'tanggal_selesai_kerja' => 'nullable|date',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        // Update data surat
+        $surat->update($validated);
+
+        try {
+            // Regenerate PDF dengan data yang baru
+            $html = view('surat.keterangan-kerja', [
+                'karyawan' => $surat->user,
+                'surat' => $surat->toArray(),
+                'logoPath' => public_path('img/image.png'),
+            ])->render();
+
+            $pdf = Pdf::loadHTML($html)
+                ->setPaper('A4', 'portrait')
+                ->setOptions([
+                    'chroot' => public_path(),
+                    'isHtml5ParserEnabled' => true,
+                ]);
+
+            // Hapus file lama jika ada
+            if ($surat->file_surat && file_exists(storage_path('app/public/' . $surat->file_surat))) {
+                unlink(storage_path('app/public/' . $surat->file_surat));
+            }
+
+            // Simpan file PDF baru
+            $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $surat->user->name) . '_' . time() . '.pdf';
+            $path = storage_path('app/public/keterangan/' . $fileName);
+
+            if (!file_exists(dirname($path))) {
+                mkdir(dirname($path), 0755, true);
+            }
+
+            $pdf->save($path);
+
+            // Update path file surat di database
+            $surat->update([
+                'file_surat' => 'keterangan/' . $fileName,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Gagal regenerate PDF: ' . $e->getMessage()
+            ], 500);
+        }
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Surat keterangan berhasil diperbarui',
+            'surat' => $surat
+        ]);
+    }
     /**
      * =============================
      * DELETE - HAPUS SURAT
@@ -431,7 +531,7 @@ class SuratKeteranganController extends Controller
         $this->ensureAdminHRD();
 
         $suratList = SuratKeterangan::with('user')
-            ->orderBy('tanggal_surat', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get()
             ->map(fn($s) => [
                 'id' => $s->id,
@@ -445,6 +545,7 @@ class SuratKeteranganController extends Controller
                 'file_surat' => $s->file_surat,
                 'is_sent' => $s->is_sent,
                 'sent_at' => $s->sent_at?->format('d/m/Y H:i'),
+                'created_at' => $s->created_at?->format('d/m/Y H:i'),
             ]);
 
         return response()->json([
@@ -452,4 +553,39 @@ class SuratKeteranganController extends Controller
             'data' => $suratList,
         ]);
     }
+
+    /**
+     * =============================
+     * GET USER DETAIL
+     * =============================
+     */
+    public function getUserDetail($id)
+    {
+        $this->ensureAdminHRD();
+
+        $user = User::with('departemen')->findOrFail($id);
+
+        // Mapping role ke jabatan default jika jabatan kosong
+        $jabatanDefault = [
+            'admin_hrd' => 'HRD Manager',
+            'admin' => 'Administrator',
+            'karyawan' => 'Staff',
+            'karyawan_tetap' => 'Karyawan Tetap',
+            'karyawan_kontrak' => 'Karyawan Kontrak',
+        ];
+
+        $jabatan = $user->jabatan ?: ($jabatanDefault[$user->role] ?? 'Staff');
+
+        return response()->json([
+            'ok' => true,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'jabatan' => $jabatan,
+                'departemen' => $user->departemen ? $user->departemen->nama : 'CV. Kurnia Jaya Teknik',
+            ]
+        ]);
+    }
 }
+

@@ -408,7 +408,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                                 </svg>
                                                 <div class="flex-1">
-                                                    <p class="text-xs font-medium text-gray-500 mb-0.5">Keterangan Pekerjaan:</p>
+                                                    <p class="text-xs font-medium text-gray-500 mb-0.5">Pekerjaan yang Ditangani:</p>
                                                     <p class="text-xs text-gray-700 leading-relaxed">${item.keterangan || 'Tidak ada keterangan'}</p>
                                                 </div>
                                             </div>
@@ -505,15 +505,15 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Keterangan -->
+                                <!-- Pekerjaan yang Ditangani -->
                                 <div class="group">
                                     <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
                                         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">
                                             <span class="text-lg">📝</span>
                                         </div>
-                                        Keterangan Pekerjaan
+                                        Pekerjaan yang Ditangani
                                     </label>
-                                    <textarea id="modalKeterangan" rows="4" placeholder="Jelaskan pekerjaan yang dilakukan selama lembur..." class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 transition-all duration-300 text-sm resize-none text-gray-700 placeholder-gray-400 shadow-sm leading-relaxed"></textarea>
+                                    <textarea id="modalKeterangan" rows="4" placeholder="Jelaskan pekerjaan yang ditangani selama lembur..." class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 transition-all duration-300 text-sm resize-none text-gray-700 placeholder-gray-400 shadow-sm leading-relaxed"></textarea>
                                 </div>
                                 
                                 <!-- Status -->
@@ -580,8 +580,10 @@
 
                     // populate
                     document.getElementById('modalTanggal').value = lembur.tanggal ? lembur.tanggal.split('T')[0] : '';
-                    document.getElementById('modalMulai').value = lembur.jam_mulai || '';
-                    document.getElementById('modalSelesai').value = lembur.jam_selesai || '';
+                    // Pastikan format H:i (tanpa detik)
+                    document.getElementById('modalMulai').value = lembur.jam_mulai ? lembur.jam_mulai.substring(0, 5) : '';
+                    document.getElementById('modalSelesai').value = lembur.jam_selesai ? lembur.jam_selesai.substring(0,
+                        5) : '';
                     document.getElementById('modalKeterangan').value = lembur.keterangan || '';
 
                     // Status with badge styling
