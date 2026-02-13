@@ -140,6 +140,9 @@ class SuratKeteranganController extends Controller
     {
         $this->ensureAdminHRD();
 
+        // Increase execution time for PDF generation
+        set_time_limit(120);
+
         $req = SuratKeteranganRequest::findOrFail($requestId);
         $user = $req->user;
 

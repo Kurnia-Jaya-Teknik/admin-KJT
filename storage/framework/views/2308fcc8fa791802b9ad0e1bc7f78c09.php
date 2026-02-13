@@ -1,13 +1,22 @@
-<x-app-layout>
-    <x-slot name="header">
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Monitoring Pengajuan Cuti
         </h2>
-    </x-slot>
+     <?php $__env->endSlot(); ?>
 
     <!-- Fixed Sidebar -->
     <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
-        @include('layouts.sidebar')
+        <?php echo $__env->make('layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <!-- Scrollable Main Content -->
@@ -150,18 +159,18 @@
 
             <!-- List of Submissions -->
             <div class="space-y-4" id="cutiListContainer">
-                @forelse($cutiList as $cuti)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $cutiList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cuti): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <div
-                        class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-200/40 transition-all duration-300 group overflow-hidden relative">
+                        class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-<?php echo e($cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red')); ?>-200/40 transition-all duration-300 group overflow-hidden relative">
                         <div
-                            class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-500/80 to-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-400/30 rounded-l-3xl">
+                            class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-<?php echo e($cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red')); ?>-500/80 to-<?php echo e($cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red')); ?>-400/30 rounded-l-3xl">
                         </div>
                         <div class="flex items-start justify-between">
                             <div class="flex-1 ml-2">
                                 <div class="flex items-center gap-3 mb-4">
                                     <div
-                                        class="w-10 h-10 rounded-2xl bg-gradient-to-br from-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-100/60 to-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                        <svg class="w-5 h-5 text-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-500/70"
+                                        class="w-10 h-10 rounded-2xl bg-gradient-to-br from-<?php echo e($cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red')); ?>-100/60 to-<?php echo e($cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red')); ?>-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-5 h-5 text-<?php echo e($cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red')); ?>-500/70"
                                             fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
@@ -169,20 +178,22 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="text-lg font-semibold text-gray-900">{{ $cuti->user->name ?? 'N/A' }}
+                                        <h3 class="text-lg font-semibold text-gray-900"><?php echo e($cuti->user->name ?? 'N/A'); ?>
+
                                         </h3>
-                                        <p class="text-xs text-gray-500">{{ $cuti->user->departemen->nama ?? 'N/A' }}
+                                        <p class="text-xs text-gray-500"><?php echo e($cuti->user->departemen->nama ?? 'N/A'); ?>
+
                                         </p>
                                     </div>
                                     <span
-                                        class="ml-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-100/60 to-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-50/40 text-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-600/80 border border-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-200/30 shadow-sm">
-                                        @if ($cuti->status == 'Pending')
+                                        class="ml-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-<?php echo e($cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red')); ?>-100/60 to-<?php echo e($cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red')); ?>-50/40 text-<?php echo e($cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red')); ?>-600/80 border border-<?php echo e($cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red')); ?>-200/30 shadow-sm">
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($cuti->status == 'Pending'): ?>
                                             Menunggu
-                                        @elseif($cuti->status == 'Disetujui')
+                                        <?php elseif($cuti->status == 'Disetujui'): ?>
                                             Disetujui
-                                        @else
+                                        <?php else: ?>
                                             Ditolak
-                                        @endif
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </span>
                                 </div>
                                 <div
@@ -190,28 +201,28 @@
                                     <div>
                                         <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">Jenis
                                             Cuti</p>
-                                        <p class="font-semibold text-gray-900">{{ $cuti->jenis }}</p>
+                                        <p class="font-semibold text-gray-900"><?php echo e($cuti->jenis); ?></p>
                                     </div>
                                     <div>
                                         <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">Durasi
                                         </p>
-                                        <p class="font-semibold text-gray-900">{{ $cuti->durasi }} hari</p>
+                                        <p class="font-semibold text-gray-900"><?php echo e($cuti->durasi); ?> hari</p>
                                     </div>
                                     <div>
                                         <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">
                                             Tanggal</p>
                                         <p class="font-semibold text-gray-900">
-                                            {{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M') }} -
-                                            {{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M') }}</p>
+                                            <?php echo e(\Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M')); ?> -
+                                            <?php echo e(\Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M')); ?></p>
                                     </div>
                                     <div>
                                         <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">
                                             Diajukan</p>
                                         <p class="font-semibold text-gray-900">
-                                            {{ \Carbon\Carbon::parse($cuti->created_at)->format('d M Y') }}</p>
+                                            <?php echo e(\Carbon\Carbon::parse($cuti->created_at)->format('d M Y')); ?></p>
                                     </div>
                                     <div>
-                                        <button onclick="showDetailCuti({{ $cuti->id }})"
+                                        <button onclick="showDetailCuti(<?php echo e($cuti->id); ?>)"
                                             class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg text-xs font-semibold hover:from-indigo-600 hover:to-indigo-700 shadow-sm hover:shadow-md transition-all">
                                             Lihat Detail
                                         </button>
@@ -219,29 +230,29 @@
                                 </div>
                                 <div class="pl-4 border-l-2 border-gray-200/50 mb-3">
                                     <p class="text-sm text-gray-600"><span class="font-medium">Alasan:</span>
-                                        {{ $cuti->alasan }}</p>
+                                        <?php echo e($cuti->alasan); ?></p>
                                 </div>
 
-                                @if ($cuti->delegated_users && $cuti->delegated_users->count() > 0)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($cuti->delegated_users && $cuti->delegated_users->count() > 0): ?>
                                     <div class="pl-4 border-l-2 border-blue-200/50 mb-3">
                                         <p class="text-sm text-gray-600 mb-1"><span class="font-medium">👥 Dilimpahkan
                                                 ke:</span></p>
                                         <div class="flex flex-wrap gap-2">
-                                            @foreach ($cuti->delegated_users as $delegated)
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $cuti->delegated_users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $delegated): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <span
-                                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">{{ $delegated->name }}</span>
-                                            @endforeach
+                                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700"><?php echo e($delegated->name); ?></span>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </div>
                                     </div>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                         </div>
                     </div>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <div class="text-center py-12 text-gray-500">
                         <p>Belum ada pengajuan cuti</p>
                     </div>
-                @endforelse
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
             </div>
@@ -252,11 +263,11 @@
 
             <!-- Surat List -->
             <div class="space-y-4">
-                @php
+                <?php
                     $suratsBuat = $cutiList->where('file_surat', '!=', null)->sortByDesc('updated_at');
-                @endphp
+                ?>
 
-                @forelse($suratsBuat as $surat)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $suratsBuat; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 overflow-hidden">
                         <div class="p-6">
                             <div class="flex items-center justify-between mb-4">
@@ -268,8 +279,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="text-lg font-semibold text-gray-900">{{ $surat->user->name ?? 'N/A' }}</h3>
-                                        <p class="text-xs text-gray-500">{{ $surat->user->departemen->nama ?? 'N/A' }}</p>
+                                        <h3 class="text-lg font-semibold text-gray-900"><?php echo e($surat->user->name ?? 'N/A'); ?></h3>
+                                        <p class="text-xs text-gray-500"><?php echo e($surat->user->departemen->nama ?? 'N/A'); ?></p>
                                     </div>
                                 </div>
                                 <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-green-100/60 to-emerald-100/40 text-green-700 border border-green-200/30">
@@ -280,27 +291,28 @@
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4 p-4 bg-gradient-to-br from-green-50/30 to-emerald-50/20 rounded-2xl border border-green-100/20">
                                 <div>
                                     <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">Jenis Cuti</p>
-                                    <p class="font-semibold text-gray-900">{{ $surat->jenis }}</p>
+                                    <p class="font-semibold text-gray-900"><?php echo e($surat->jenis); ?></p>
                                 </div>
                                 <div>
                                     <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">Durasi</p>
-                                    <p class="font-semibold text-gray-900">{{ $surat->durasi_hari ?? $surat->durasi }} hari</p>
+                                    <p class="font-semibold text-gray-900"><?php echo e($surat->durasi_hari ?? $surat->durasi); ?> hari</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">Periode</p>
                                     <p class="font-semibold text-gray-900">
-                                        {{ \Carbon\Carbon::parse($surat->tanggal_mulai)->format('d M') }} -
-                                        {{ \Carbon\Carbon::parse($surat->tanggal_selesai)->format('d M') }}
+                                        <?php echo e(\Carbon\Carbon::parse($surat->tanggal_mulai)->format('d M')); ?> -
+                                        <?php echo e(\Carbon\Carbon::parse($surat->tanggal_selesai)->format('d M')); ?>
+
                                     </p>
                                 </div>
                                 <div>
                                     <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">Dibuat</p>
-                                    <p class="font-semibold text-gray-900">{{ \Carbon\Carbon::parse($surat->updated_at)->format('d M Y') }}</p>
+                                    <p class="font-semibold text-gray-900"><?php echo e(\Carbon\Carbon::parse($surat->updated_at)->format('d M Y')); ?></p>
                                 </div>
                             </div>
 
                             <div class="flex gap-3">
-                                <button onclick="previewCutiFromModal('{{ $surat->id }}', '{{ $surat->user->name }}')"
+                                <button onclick="previewCutiFromModal('<?php echo e($surat->id); ?>', '<?php echo e($surat->user->name); ?>')"
                                     class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-sm hover:shadow-md transition-all">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -308,7 +320,7 @@
                                     </svg>
                                     Lihat Surat
                                 </button>
-                                <a href="{{ url('storage/' . $surat->file_surat) }}" target="_blank"
+                                <a href="<?php echo e(url('storage/' . $surat->file_surat)); ?>" target="_blank"
                                     class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 shadow-sm hover:shadow-md transition-all">
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -318,7 +330,7 @@
                             </div>
                         </div>
                     </div>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <div class="text-center py-16 text-gray-500">
                         <div class="mb-4">
                             <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -328,7 +340,7 @@
                         <p class="text-lg font-medium">Belum ada surat yang dibuat</p>
                         <p class="text-sm text-gray-400 mt-1">Buat surat cuti dari pengajuan yang disetujui</p>
                     </div>
-                @endforelse
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
             </div>
@@ -1113,4 +1125,14 @@
             previewCutiFromModal();
         });
     </script>
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/admin/cuti.blade.php ENDPATH**/ ?>

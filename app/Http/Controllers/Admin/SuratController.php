@@ -236,6 +236,9 @@ class SuratController extends Controller
     {
         $this->ensureAdminHRD();
 
+        // Increase execution time for PDF generation
+        set_time_limit(120);
+
         $cuti = \App\Models\Cuti::findOrFail($cutiId);
 
         if ($cuti->status !== 'Disetujui') {

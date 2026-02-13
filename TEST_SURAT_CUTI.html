@@ -1,0 +1,258 @@
+<!-- 
+MANUAL TEST GUIDE FOR SURAT CUTI SYSTEM
+=======================================
+
+This guide shows how to manually test the surat cuti system without running PHP CLI.
+
+## PREREQUISITE
+Make sure these exist:
+✓ app/Http/Controllers/Admin/SuratCutiController.php
+✓ resources/views/surat/cuti.blade.php
+✓ resources/views/admin/cuti.blade.php
+✓ storage/app/public/cuti/ (directory)
+✓ routes/web.php (with correct routes)
+
+## TEST CASE 1: CREATE SURAT (Happy Path)
+======================================
+
+Step 1: Open browser and navigate to admin cuti list
+  URL: http://localhost/admin-KJT/public/admin/cuti
+  
+Step 2: Find a cuti with status "Disetujui"
+  Look at the list table for green status badge
+  
+Step 3: Click "Lihat Detail" button
+  Expected: Modal pops up with cuti details
+  
+Step 4: In the modal, look for buttons
+  Expected: Should see "Buat Surat" button (blue)
+  If NOT seen: Check cuti status (must be "Disetujui")
+  
+Step 5: Click "Buat Surat" button
+  Expected: Confirmation modal appears
+  
+Step 6: Click "Ya, Buat Surat" button
+  Expected: 
+  - Loading spinner shows
+  - After 5-15 seconds: Success message appears
+  - Button changes from "Buat Surat" to "Lihat Surat"
+  
+Step 7: Verify PDF generated
+  - Click "Lihat Surat" button
+  - Expected: Preview modal opens with PDF displayed
+  - PDF should show:
+    * Logo di header
+    * "SURAT PERMOHONAN CUTI" title
+    * All employee data (nama, departemen, tanggal bergabung)
+    * Cuti jenis with checkboxes
+    * Periode dates
+    * Durasi hari
+    * Alasan/keperluan
+    * Pelimpahan tugas names
+    * No telp
+
+## TEST CASE 2: PREVIEW EXISTING SURAT
+=====================================
+
+Step 1: Find a cuti that already has file_surat
+  (Created in Test Case 1)
+  
+Step 2: Click "Lihat Detail"
+  
+Step 3: See "Lihat Surat" button (should be green)
+  
+Step 4: Click "Lihat Surat"
+  Expected: Preview modal opens immediately with PDF
+  
+Step 5: Click "Download" button
+  Expected: PDF downloads dengan filename Surat_Cuti_[nama]_[timestamp].pdf
+
+## TEST CASE 3: CONDITIONAL BUTTON STATES
+==========================================
+
+Step 1: Open cuti with status "Pending"
+  - Click "Lihat Detail"
+  - Expected: NO "Buat Surat" or "Lihat Surat" buttons
+  - Only "Tutup" button visible
+  
+Step 2: Open cuti with status "Ditolak"
+  - Click "Lihat Detail"
+  - Expected: Same as step 1
+  
+Step 3: Open cuti with status "Disetujui" (without file_surat yet)
+  - Click "Lihat Detail"
+  - Expected: "Buat Surat" button visible (blue)
+  
+Step 4: Open cuti with status "Disetujui" (with file_surat)
+  - Click "Lihat Detail"
+  - Expected: "Lihat Surat" button visible (green)
+
+## TEST CASE 4: ERROR HANDLING
+==============================
+
+Step 1: Try to create surat for Pending cuti
+  - Click "Lihat Detail" for Pending cuti
+  - Expected: "Buat Surat" button NOT visible
+  - (This prevents error by UI logic)
+  
+Step 2: Manually test API error (optional, needs developer tools)
+  Open Browser Console (F12)
+  Run: await fetch('/admin/cuti/999/buat-surat', {method: 'POST'})
+  Expected: 404 error response
+
+## EXPECTED BEHAVIORS SUMMARY
+=============================
+
+✓ Modal opens with employee info card
+✓ Status badge shows with correct color (amber/green/red)
+✓ All 9 data fields visible in detail
+✓ Buttons conditional based on status
+✓ "Buat Surat" only for Disetujui status without file
+✓ "Lihat Surat" only when file_surat exists
+✓ Preview modal has gradient header
+✓ PDF displays in iframe without download artifacts
+✓ Download button works
+✓ All dates in format DD/MM/YYYY
+✓ Delegated users names show in pelimpahan tugas section
+✓ No JavaScript errors in console
+✓ No 500 errors in server logs
+
+## DEBUG TIPS
+=============
+
+If something not working:
+
+1. Check browser console (F12 → Console)
+   - Any JavaScript errors?
+   
+2. Check network tab (F12 → Network)
+   - Are API calls returning 200?
+   - Check response in POST /cuti/{id}/buat-surat
+   
+3. Check server logs
+   - /storage/logs/laravel.log
+   
+4. Check file storage
+   - /storage/app/public/cuti/
+   - Should contain generated PDFs
+   
+5. Check database
+   - cuti table → file_surat column
+   - Should have path after "Buat Surat" success
+
+## ROLLBACK (if needed)
+=======================
+
+If issues found, can rollback:
+1. Delete SuratCutiController.php
+2. Revert routes/web.php changes
+3. Remove cuti/dilimpahkan_ke storage feature
+4. Go back to using SuratController for cuti
+
+But current implementation should work fine!
+
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Surat Cuti System - Test Guide</title>
+    <style>
+        body { font-family: Arial; margin: 20px; background: #f5f5f5; }
+        h1 { color: #2c3e50; }
+        h2 { color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .test-case { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .step { background: #ecf0f1; padding: 10px; margin: 10px 0; border-left: 4px solid #3498db; }
+        .expected { color: #27ae60; font-weight: bold; }
+        .warning { color: #e74c3c; font-weight: bold; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+        ul { line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <h1>Surat Cuti System - Manual Testing Guide</h1>
+    
+    <div class="test-case">
+        <h2>Test Case 1: Create New Surat (Happy Path)</h2>
+        <div class="step"><strong>Step 1:</strong> Navigate to http://localhost/admin-KJT/public/admin/cuti</div>
+        <div class="step"><strong>Step 2:</strong> Find a cuti with status "Disetujui" (green badge)</div>
+        <div class="step"><strong>Step 3:</strong> Click "Lihat Detail" button</div>
+        <div class="step"><strong>Step 4:</strong> In modal, click "Buat Surat" button (blue)</div>
+        <div class="step"><strong>Step 5:</strong> Confirm in dialog: "Ya, Buat Surat"</div>
+        <div class="step"><strong>Expected:</strong> <span class="expected">✓ Success message + "Lihat Surat" button appears</span></div>
+    </div>
+
+    <div class="test-case">
+        <h2>Test Case 2: Preview Existing Surat</h2>
+        <div class="step"><strong>Step 1:</strong> Open cuti that has file_surat (from Test Case 1)</div>
+        <div class="step"><strong>Step 2:</strong> Click "Lihat Detail"</div>
+        <div class="step"><strong>Step 3:</strong> Click "Lihat Surat" button (green)</div>
+        <div class="step"><strong>Expected:</strong> <span class="expected">✓ PDF preview modal opens with document embedded</span></div>
+        <div class="step"><strong>Optional:</strong> Click "Download" to save PDF locally</div>
+    </div>
+
+    <div class="test-case">
+        <h2>Test Case 3: Conditional Button States</h2>
+        <div class="step">
+            <strong>For "Pending" or "Ditolak" status:</strong>
+            <ul>
+                <li>Click "Lihat Detail"</li>
+                <li><span class="expected">✓ Only "Tutup" button visible</span></li>
+                <li><span class="warning">✗ No "Buat Surat" or "Lihat Surat" buttons</span></li>
+            </ul>
+        </div>
+        <div class="step">
+            <strong>For "Disetujui" without file:</strong>
+            <ul>
+                <li>Click "Lihat Detail"</li>
+                <li><span class="expected">✓ "Buat Surat" button visible (blue)</span></li>
+            </ul>
+        </div>
+        <div class="step">
+            <strong>For "Disetujui" with file:</strong>
+            <ul>
+                <li>Click "Lihat Detail"</li>
+                <li><span class="expected">✓ "Lihat Surat" button visible (green)</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-case">
+        <h2>Verification Checklist</h2>
+        <ul>
+            <li>☐ Modal opens with employee info (nama, departemen, tanggal bergabung)</li>
+            <li>☐ Status badge shows with correct color (amber for Pending, green for Disetujui, red for Ditolak)</li>
+            <li>☐ All 9 cuti details visible (jenis, periode, durasi, alasan, pelimpahan tugas, no telp)</li>
+            <li>☐ Buttons conditional based on status and file presence</li>
+            <li>☐ Preview modal has gradient header and sticky close button</li>
+            <li>☐ PDF displays correctly in iframe</li>
+            <li>☐ All dates formatted as DD/MM/YYYY</li>
+            <li>☐ Delegated users names show correctly</li>
+            <li>☐ No JavaScript errors in browser console (F12)</li>
+            <li>☐ No 500 errors in server log</li>
+        </ul>
+    </div>
+
+    <div class="test-case">
+        <h2>Debugging</h2>
+        <h3>If PDF not generating:</h3>
+        <ul>
+            <li>Check /storage/logs/laravel.log for errors</li>
+            <li>Check browser network tab (F12 → Network) for API response</li>
+            <li>Verify set_time_limit(120) in SuratCutiController</li>
+        </ul>
+        <h3>If buttons not showing:</h3>
+        <ul>
+            <li>Verify cuti.status in database</li>
+            <li>Check browser console for JavaScript errors</li>
+            <li>Verify routes updated in routes/web.php</li>
+        </ul>
+        <h3>If file not downloading:</h3>
+        <ul>
+            <li>Check /storage/app/public/cuti/ directory exists</li>
+            <li>Check file permissions are correct</li>
+            <li>Verify Laravel storage symlink exists</li>
+        </ul>
+    </div>
+</body>
+</html>
