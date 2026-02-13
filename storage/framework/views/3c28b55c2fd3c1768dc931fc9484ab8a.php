@@ -1,13 +1,22 @@
-<x-app-layout>
-    <x-slot name="header">
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Surat Keterangan Kerja
         </h2>
-    </x-slot>
+     <?php $__env->endSlot(); ?>
 
     <!-- Fixed Sidebar -->
     <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
-        @include('layouts.sidebar')
+        <?php echo $__env->make('layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <!-- Main Content -->
@@ -58,7 +67,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600">Surat Dibuat</p>
-                                <p class="text-2xl font-bold text-gray-900">{{ $suratList->total() }}</p>
+                                <p class="text-2xl font-bold text-gray-900"><?php echo e($suratList->total()); ?></p>
                             </div>
                         </div>
                     </div>
@@ -102,7 +111,7 @@
             <!-- TAB 2: Surat yang Dibuat -->
             <div id="contentDibuat"
                 class="bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden hidden">
-                @if ($suratList->count() > 0)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($suratList->count() > 0): ?>
                     <div class="overflow-x-auto">
                         <table class="w-full">
                             <thead>
@@ -128,19 +137,20 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                @foreach ($suratList as $surat)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $suratList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr class="hover:bg-blue-50/40 transition-colors duration-200">
                                         <td class="px-8 py-6">
-                                            <p class="font-semibold text-gray-900">{{ $surat->user->name }}</p>
-                                            <p class="text-xs text-gray-500 mt-1">{{ $surat->user->email }}</p>
+                                            <p class="font-semibold text-gray-900"><?php echo e($surat->user->name); ?></p>
+                                            <p class="text-xs text-gray-500 mt-1"><?php echo e($surat->user->email); ?></p>
                                         </td>
-                                        <td class="px-8 py-6 font-mono text-sm font-semibold text-red-700">{{ $surat->nomor_surat }}
+                                        <td class="px-8 py-6 font-mono text-sm font-semibold text-red-700"><?php echo e($surat->nomor_surat); ?>
+
                                         </td>
-                                        <td class="px-8 py-6 text-sm text-gray-700">{{ $surat->jabatan }}</td>
+                                        <td class="px-8 py-6 text-sm text-gray-700"><?php echo e($surat->jabatan); ?></td>
                                         <td class="px-8 py-6 text-sm text-gray-600">
-                                            {{ optional($surat->tanggal_surat)->format('d/m/Y') }}</td>
+                                            <?php echo e(optional($surat->tanggal_surat)->format('d/m/Y')); ?></td>
                                         <td class="px-8 py-6 text-center">
-                                            @if ($surat->is_sent)
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($surat->is_sent): ?>
                                                 <div class="inline-flex flex-col items-center gap-1">
                                                     <span
                                                         class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-green-100/80 text-green-700 font-semibold rounded-full text-xs">
@@ -148,22 +158,22 @@
                                                         Terkirim
                                                     </span>
                                                     <span
-                                                        class="text-xs text-gray-500 mt-1">{{ $surat->sent_at?->format('d/m/Y H:i') }}</span>
+                                                        class="text-xs text-gray-500 mt-1"><?php echo e($surat->sent_at?->format('d/m/Y H:i')); ?></span>
                                                 </div>
-                                            @else
+                                            <?php else: ?>
                                                 <span
                                                     class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-amber-100/80 text-amber-700 font-semibold rounded-full text-xs">
                                                     <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                                                     Belum Dikirim
                                                 </span>
-                                            @endif
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </td>
                                         <td class="px-8 py-6 text-center">
                                             <!-- 2x2 Grid Action Buttons -->
                                             <div class="inline-grid grid-cols-2 gap-2">
                                                 <!-- Row 1, Col 1: Lihat Button -->
                                                 <button
-                                                    onclick="previewSurat({{ $surat->id }}, '{{ $surat->user->name }}')"
+                                                    onclick="previewSurat(<?php echo e($surat->id); ?>, '<?php echo e($surat->user->name); ?>')"
                                                     class="flex flex-col items-center justify-center gap-1 px-2 py-1.5 bg-blue-100/60 text-blue-700 font-semibold rounded-lg hover:bg-blue-100/80 transition-all duration-200 hover:shadow-sm whitespace-nowrap text-xs">
                                                     <svg class="w-4 h-4" fill="currentColor"
                                                         viewBox="0 0 20 20">
@@ -176,9 +186,9 @@
                                                 </button>
 
                                                 <!-- Row 1, Col 2: Kirim Button (conditional) -->
-                                                @if (!$surat->is_sent)
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$surat->is_sent): ?>
                                                     <button
-                                                        onclick="sendSurat({{ $surat->id }}, '{{ $surat->user->name }}')"
+                                                        onclick="sendSurat(<?php echo e($surat->id); ?>, '<?php echo e($surat->user->name); ?>')"
                                                         class="flex flex-col items-center justify-center gap-1 px-2 py-1.5 bg-green-100/60 text-green-700 font-semibold rounded-lg hover:bg-green-100/80 transition-all duration-200 hover:shadow-sm whitespace-nowrap text-xs">
                                                         <svg class="w-4 h-4" fill="currentColor"
                                                             viewBox="0 0 20 20">
@@ -188,14 +198,14 @@
                                                         </svg>
                                                         <span class="font-bold">Kirim</span>
                                                     </button>
-                                                @else
+                                                <?php else: ?>
                                                     <!-- Empty placeholder if sent -->
                                                     <div></div>
-                                                @endif
+                                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                                                 <!-- Row 2, Col 1: Edit Button (conditional) -->
-                                                @if (!$surat->is_sent)
-                                                    <button onclick="showEditModal({{ $surat->id }})"
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$surat->is_sent): ?>
+                                                    <button onclick="showEditModal(<?php echo e($surat->id); ?>)"
                                                         class="flex flex-col items-center justify-center gap-1 px-2 py-1.5 bg-amber-100/60 text-amber-700 font-semibold rounded-lg hover:bg-amber-100/80 transition-all duration-200 hover:shadow-sm whitespace-nowrap text-xs">
                                                         <svg class="w-4 h-4" fill="currentColor"
                                                             viewBox="0 0 20 20">
@@ -204,13 +214,13 @@
                                                         </svg>
                                                         <span class="font-bold">Edit</span>
                                                     </button>
-                                                @else
+                                                <?php else: ?>
                                                     <!-- Empty placeholder if sent -->
                                                     <div></div>
-                                                @endif
+                                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                                                 <!-- Row 2, Col 2: Hapus Button -->
-                                                <button onclick="deleteSurat({{ $surat->id }})"
+                                                <button onclick="deleteSurat(<?php echo e($surat->id); ?>)"
                                                     class="flex flex-col items-center justify-center gap-1 px-2 py-1.5 bg-red-100/60 text-red-700 font-semibold rounded-lg hover:bg-red-100/80 transition-all duration-200 hover:shadow-sm whitespace-nowrap text-xs">
                                                     <svg class="w-4 h-4" fill="currentColor"
                                                         viewBox="0 0 20 20">
@@ -223,16 +233,17 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Pagination -->
                     <div class="px-8 py-6 border-t border-gray-200">
-                        {{ $suratList->links() }}
+                        <?php echo e($suratList->links()); ?>
+
                     </div>
-                @else
+                <?php else: ?>
                     <div class="p-12 text-center">
                         <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="currentColor" viewBox="0 0 20 20">
                             <path
@@ -244,7 +255,7 @@
                             Buat Surat Pertama
                         </button>
                     </div>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
     </div>
@@ -271,7 +282,7 @@
 
             <!-- Modal Content -->
             <form id="suratForm" class="p-8 space-y-6">
-                @csrf
+                <?php echo csrf_field(); ?>
 
                 <!-- Pilih Karyawan -->
                 <div>
@@ -280,10 +291,10 @@
                         class="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all"
                         required>
                         <option value="">-- Pilih Karyawan --</option>
-                        @foreach ($karyawanList as $karyawan)
-                            <option value="{{ $karyawan->id }}">{{ $karyawan->name }} -
-                                {{ $karyawan->departemen_id ? 'Dept.' : 'Umum' }}</option>
-                        @endforeach
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $karyawanList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $karyawan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($karyawan->id); ?>"><?php echo e($karyawan->name); ?> -
+                                <?php echo e($karyawan->departemen_id ? 'Dept.' : 'Umum'); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </select>
                 </div>
 
@@ -296,7 +307,7 @@
                 </div>
 
                 <!-- Tanggal Surat (Hidden - Auto) -->
-                <input type="hidden" id="tanggalSurat" name="tanggal_surat" value="{{ date('Y-m-d') }}">
+                <input type="hidden" id="tanggalSurat" name="tanggal_surat" value="<?php echo e(date('Y-m-d')); ?>">
 
                 <!-- Jabatan (Auto dari data karyawan) -->
                 <div>
@@ -382,7 +393,7 @@
 
             <!-- Modal Content -->
             <form id="editSuratForm" class="p-8 space-y-6">
-                @csrf
+                <?php echo csrf_field(); ?>
                 <input type="hidden" id="editSuratId" name="surat_id">
 
                 <!-- Karyawan (Read-only) -->
@@ -575,7 +586,7 @@
                 </div>
 
                 <!-- Tanggal Surat (Hidden - Auto) -->
-                <input type="hidden" id="tanggalSuratRequest" value="{{ date('Y-m-d') }}">
+                <input type="hidden" id="tanggalSuratRequest" value="<?php echo e(date('Y-m-d')); ?>">
 
                 <!-- Jabatan (Auto dari data karyawan) -->
                 <div>
@@ -636,7 +647,16 @@
         </div>
     </div>
 
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
 
     <!-- Custom Confirmation Modal -->
     <div id="confirmModal" class="fixed inset-0 bg-black/40 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
@@ -982,7 +1002,7 @@
         document.getElementById('createModal').classList.add('hidden');
         document.getElementById('suratForm').reset();
         // Reset tanggal surat ke hari ini
-        document.getElementById('tanggalSurat').value = '{{ date('Y-m-d') }}';
+        document.getElementById('tanggalSurat').value = '<?php echo e(date('Y-m-d')); ?>';
     }
 
     // Auto-fill jabatan dan unit kerja saat karyawan dipilih
@@ -1376,3 +1396,4 @@
         closeSendConfirmModal();
     }
 </script>
+<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/admin/surat-keterangan.blade.php ENDPATH**/ ?>

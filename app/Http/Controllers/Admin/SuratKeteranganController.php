@@ -9,6 +9,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SuratKeteranganController extends Controller
 {
@@ -16,6 +19,48 @@ class SuratKeteranganController extends Controller
     {
         if (Auth::user()->role !== 'admin_hrd') {
             abort(403, 'Akses ditolak');
+        }
+    }
+
+    /**
+     * =============================
+     * HELPER: GENERATE PDF
+     * =============================
+     */
+    private function generatePdfSurat(SuratKeterangan $surat, $karyawan)
+    {
+        try {
+            // Ensure directory exists
+            if (!Storage::exists('public/surat-keterangan')) {
+                Storage::makeDirectory('public/surat-keterangan');
+            }
+            
+            // Get the public logo path
+            $logoPath = public_path('img/kop_surat.png');
+            
+            // Render Blade template to HTML
+            $html = view('surat.keterangan-kerja', [
+                'surat' => $surat->toArray(),
+                'karyawan' => $karyawan,
+                'logoPath' => $logoPath,
+            ])->render();
+
+            // Generate PDF
+            $pdf = Pdf::loadHTML($html)
+                ->setPaper('A4', 'portrait');
+
+            // Generate unique filename
+            $fileName = 'surat-keterangan-' . $surat->id . '-' . Str::random(8) . '.pdf';
+            $path = 'public/surat-keterangan/' . $fileName;
+
+            // Save to storage
+            Storage::put($path, $pdf->output());
+
+            return 'surat-keterangan/' . $fileName;
+
+        } catch (\Throwable $e) {
+            Log::error('PDF Generation Error: ' . $e->getMessage());
+            throw $e;
         }
     }
 
@@ -140,9 +185,6 @@ class SuratKeteranganController extends Controller
     {
         $this->ensureAdminHRD();
 
-        // Increase execution time for PDF generation
-        set_time_limit(120);
-
         $req = SuratKeteranganRequest::findOrFail($requestId);
         $user = $req->user;
 
@@ -156,35 +198,7 @@ class SuratKeteranganController extends Controller
         ]);
 
         try {
-            // Generate PDF
-            $html = view('surat.keterangan-kerja', [
-                'karyawan' => $user,
-                'surat' => array_merge($validated, [
-                    'tanggal_selesai_kerja' => null,
-                    'user_id' => $user->id,
-                ]),
-                'logoPath' => public_path('img/image.png'),
-            ])->render();
-
-            // Generate PDF using Laravel DomPDF
-            $pdf = Pdf::loadHTML($html)
-                ->setPaper('A4', 'portrait')
-                ->setOptions([
-                    'chroot' => public_path(),
-                    'isHtml5ParserEnabled' => true,
-                ]);
-
-            // Create file name using $user (not $surat which doesn't exist yet)
-            $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $user->name) . '_' . time() . '.pdf';
-            $path = storage_path('app/public/keterangan/' . $fileName);
-
-            if (!file_exists(dirname($path))) {
-                mkdir(dirname($path), 0755, true);
-            }
-
-            $pdf->save($path);
-
-            // Create surat keterangan dengan file_surat
+            // Create surat keterangan
             $surat = SuratKeterangan::create([
                 'user_id' => $user->id,
                 'surat_keterangan_request_id' => $requestId,
@@ -194,9 +208,17 @@ class SuratKeteranganController extends Controller
                 'unit_kerja' => $validated['unit_kerja'],
                 'tanggal_mulai_kerja' => $validated['tanggal_mulai_kerja'],
                 'keterangan' => $validated['keterangan'] ?? null,
-                'file_surat' => 'keterangan/' . $fileName,
                 'status' => 'Selesai',
             ]);
+
+            // Load user relationship
+            $surat->load('user');
+
+            // Generate PDF
+            $filePath = $this->generatePdfSurat($surat, $surat->user);
+            
+            // Update surat with file path
+            $surat->update(['file_surat' => $filePath]);
 
             // Update request status to Completed
             $req->update(['status' => 'Completed']);
@@ -207,7 +229,7 @@ class SuratKeteranganController extends Controller
                 'surat_id' => $surat->id,
             ]);
         } catch (\Throwable $e) {
-            \Log::error('Error creating surat: ' . $e->getMessage());
+            Log::error('Error creating surat: ' . $e->getMessage());
             return response()->json([
                 'ok' => false,
                 'message' => 'Gagal membuat surat: ' . $e->getMessage(),
@@ -256,49 +278,29 @@ class SuratKeteranganController extends Controller
         ]);
 
         try {
-            // Generate PDF
-            $user = User::findOrFail($validated['user_id']);
-            
-            $html = view('surat.keterangan-kerja', [
-                'karyawan' => $user,
-                'surat' => $validated,
-                'logoPath' => public_path('img/image.png'),
-            ])->render();
-
-            // Generate PDF using Laravel DomPDF
-            $pdf = Pdf::loadHTML($html)
-                ->setPaper('A4', 'portrait')
-                ->setOptions([
-                    'chroot' => public_path(),
-                    'isHtml5ParserEnabled' => true,
-                ]);
-
-            // Simpan file
-            $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $user->name) . '_' . time() . '.pdf';
-            $path = storage_path('app/public/keterangan/' . $fileName);
-
-            if (!file_exists(dirname($path))) {
-                mkdir(dirname($path), 0755, true);
-            }
-
-            $pdf->save($path);
-
-            // Simpan ke database
+            // Create surat in database first
             $surat = SuratKeterangan::create([
                 ...$validated,
-                'file_surat' => 'keterangan/' . $fileName,
                 'status' => 'Selesai',
             ]);
+
+            // Load user relationship
+            $surat->load('user');
+
+            // Generate PDF
+            $filePath = $this->generatePdfSurat($surat, $surat->user);
+            
+            // Update surat with file path
+            $surat->update(['file_surat' => $filePath]);
 
             return response()->json([
                 'ok' => true,
                 'message' => 'Surat keterangan berhasil dibuat',
                 'id' => $surat->id,
-                'url' => asset('storage/keterangan/' . $fileName),
             ]);
 
         } catch (\Throwable $e) {
-            \Log::error('Error Surat Keterangan: ' . $e->getMessage());
+            Log::error('Error Surat Keterangan: ' . $e->getMessage());
 
             return response()->json([
                 'ok' => false,
@@ -384,56 +386,32 @@ class SuratKeteranganController extends Controller
             'keterangan' => 'nullable|string',
         ]);
 
-        // Update data surat
-        $surat->update($validated);
-
         try {
-            // Regenerate PDF dengan data yang baru
-            $html = view('surat.keterangan-kerja', [
-                'karyawan' => $surat->user,
-                'surat' => $surat->toArray(),
-                'logoPath' => public_path('img/image.png'),
-            ])->render();
+            // Update data surat
+            $surat->update($validated);
+            
+            // Reload user relationship
+            $surat->load('user');
 
-            $pdf = Pdf::loadHTML($html)
-                ->setPaper('A4', 'portrait')
-                ->setOptions([
-                    'chroot' => public_path(),
-                    'isHtml5ParserEnabled' => true,
-                ]);
+            // Regenerate PDF
+            $filePath = $this->generatePdfSurat($surat, $surat->user);
+            
+            // Update file path
+            $surat->update(['file_surat' => $filePath]);
 
-            // Hapus file lama jika ada
-            if ($surat->file_surat && file_exists(storage_path('app/public/' . $surat->file_surat))) {
-                unlink(storage_path('app/public/' . $surat->file_surat));
-            }
-
-            // Simpan file PDF baru
-            $fileName = 'Surat_Keterangan_' . str_replace(' ', '_', $surat->user->name) . '_' . time() . '.pdf';
-            $path = storage_path('app/public/keterangan/' . $fileName);
-
-            if (!file_exists(dirname($path))) {
-                mkdir(dirname($path), 0755, true);
-            }
-
-            $pdf->save($path);
-
-            // Update path file surat di database
-            $surat->update([
-                'file_surat' => 'keterangan/' . $fileName,
+            return response()->json([
+                'ok' => true,
+                'message' => 'Surat keterangan berhasil diperbarui',
+                'surat' => $surat
             ]);
-
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            Log::error('Error Update Surat: ' . $e->getMessage());
+            
             return response()->json([
                 'ok' => false,
-                'message' => 'Gagal regenerate PDF: ' . $e->getMessage()
+                'message' => 'Gagal memperbarui surat: ' . $e->getMessage()
             ], 500);
         }
-
-        return response()->json([
-            'ok' => true,
-            'message' => 'Surat keterangan berhasil diperbarui',
-            'surat' => $surat
-        ]);
     }
     /**
      * =============================
@@ -515,7 +493,7 @@ class SuratKeteranganController extends Controller
                 'message' => 'Surat berhasil dikirim ke ' . $surat->user->name,
             ]);
         } catch (\Throwable $e) {
-            \Log::error('Error sending surat keterangan: ' . $e->getMessage());
+            Log::error('Error sending surat keterangan: ' . $e->getMessage());
 
             return response()->json([
                 'ok' => false,
