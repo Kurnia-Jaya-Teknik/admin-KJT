@@ -18,13 +18,21 @@ class ApprovalController extends Controller
 
     public function approve(Request $request, string $type, int $id)
     {
-        $this->ensureDirector();
+        try {
+            \Log::info("Approve request received", [
+                'type' => $type,
+                'id' => $id,
+                'user' => Auth::id(),
+                'role' => Auth::user()->role ?? 'unknown'
+            ]);
 
-        if ($type === 'cuti') {
-            $model = Cuti::findOrFail($id);
-            $model->status = 'Disetujui';
-            $model->disetujui_oleh = Auth::id();
-            $model->tanggal_persetujuan = now();
+            $this->ensureDirector();
+
+            if ($type === 'cuti') {
+                $model = Cuti::findOrFail($id);
+                $model->status = 'Disetujui';
+                $model->disetujui_oleh = Auth::id();
+                $model->tanggal_persetujuan = now();
             // decrease sisa_cuti if applicable
             if ($model->jenis === 'Cuti Tahunan' && $model->durasi_hari > 0) {
                 $user = $model->user;
@@ -68,7 +76,16 @@ class ApprovalController extends Controller
                     'referensi_id' => $model->id,
                 ]);
 
-                // Surat otomatis dibuat, tidak perlu notifikasi ke admin atau karyawan
+                // Surat otomatis dibuat — beri tahu Admin HRD supaya dapat mengirim ke karyawan
+                try {
+                    $admins = \App\Models\User::where('role', 'admin_hrd')->get();
+                    if ($admins->count()) {
+                        \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\SuratButuhPengiriman($surat));
+                    }
+                } catch (\Throwable $e) {
+                    // Log notification failure but don't block approval
+                    \Log::error('Gagal notifikasi Admin setelah pembuatan surat otomatis: ' . $e->getMessage());
+                }
             } catch (\Throwable $e) {
                 // Do not block approval if surat creation fails; log for later
                 \Log::error('Gagal buat surat otomatis setelah approve cuti: ' . $e->getMessage());
@@ -99,49 +116,87 @@ class ApprovalController extends Controller
             return redirect()->back()->with('status', 'Pengajuan lembur disetujui.');
         }
 
+        \Log::warning("Invalid type for approve", ['type' => $type]);
         abort(404);
+    } catch (\Exception $e) {
+        \Log::error("Error in approve method", [
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        
+        if ($request->expectsJson() || $request->is('*/api/*')) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+        
+        return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
     }
+}
 
     public function reject(Request $request, string $type, int $id)
     {
-        $this->ensureDirector();
+        try {
+            \Log::info("Reject request received", [
+                'type' => $type,
+                'id' => $id,
+                'user' => Auth::id(),
+                'role' => Auth::user()->role ?? 'unknown'
+            ]);
 
-        if ($type === 'cuti') {
-            $model = Cuti::findOrFail($id);
-            $model->status = 'Ditolak';
-            $model->disetujui_oleh = Auth::id();
-            $model->tanggal_persetujuan = now();
-            $model->keterangan_persetujuan = $request->input('keterangan');
-            $model->save();
+            $this->ensureDirector();
 
-            // notify requester
-            if ($model->user) {
-                \Illuminate\Support\Facades\Notification::send($model->user, new \App\Notifications\CutiStatusChanged($model));
+            if ($type === 'cuti') {
+                $model = Cuti::findOrFail($id);
+                $model->status = 'Ditolak';
+                $model->disetujui_oleh = Auth::id();
+                $model->tanggal_persetujuan = now();
+                $model->keterangan_persetujuan = $request->input('keterangan');
+                $model->save();
+
+                // notify requester
+                if ($model->user) {
+                    \Illuminate\Support\Facades\Notification::send($model->user, new \App\Notifications\CutiStatusChanged($model));
+                }
+
+                if ($request->expectsJson() || $request->is('*/api/*')) {
+                    return response()->json(['message' => 'Pengajuan cuti ditolak.', 'status' => $model->status], 200);
+                }
+
+                return redirect()->back()->with('status', 'Pengajuan cuti ditolak.');
             }
 
+            if ($type === 'lembur') {
+                $model = Lembur::findOrFail($id);
+                $model->status = 'Ditolak';
+                $model->disetujui_oleh = Auth::id();
+                $model->tanggal_persetujuan = now();
+                $model->keterangan_persetujuan = $request->input('keterangan');
+                $model->save();
+
+                if ($request->expectsJson() || $request->is('*/api/*')) {
+                    return response()->json(['message' => 'Pengajuan lembur ditolak.', 'status' => $model->status], 200);
+                }
+
+                return redirect()->back()->with('status', 'Pengajuan lembur ditolak.');
+            }
+
+            \Log::warning("Invalid type for reject", ['type' => $type]);
+            abort(404);
+        } catch (\Exception $e) {
+            \Log::error("Error in reject method", [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             if ($request->expectsJson() || $request->is('*/api/*')) {
-                return response()->json(['message' => 'Pengajuan cuti ditolak.', 'status' => $model->status], 200);
+                return response()->json([
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
             }
-
-            return redirect()->back()->with('status', 'Pengajuan cuti ditolak.');
+            
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-
-        if ($type === 'lembur') {
-            $model = Lembur::findOrFail($id);
-            $model->status = 'Ditolak';
-            $model->disetujui_oleh = Auth::id();
-            $model->tanggal_persetujuan = now();
-            $model->keterangan_persetujuan = $request->input('keterangan');
-            $model->save();
-
-            if ($request->expectsJson() || $request->is('*/api/*')) {
-                return response()->json(['message' => 'Pengajuan lembur ditolak.', 'status' => $model->status], 200);
-            }
-
-            return redirect()->back()->with('status', 'Pengajuan lembur ditolak.');
-        }
-
-        abort(404);
     }
 
     /**

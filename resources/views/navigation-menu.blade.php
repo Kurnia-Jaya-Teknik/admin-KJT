@@ -107,7 +107,16 @@
                                 {{ __('Manage Account') }}
                             </div>
 
-                            <x-dropdown-link href="{{ route('profile.show') }}">
+                            @php
+                                $profileRoute = match (Auth::user()->role) {
+                                    'admin_hrd' => route('admin.profil'),
+                                    'direktur' => route('direktur.profil'),
+                                    'karyawan' => route('karyawan.profil'),
+                                    default => route('profile.show'),
+                                };
+                            @endphp
+
+                            <x-dropdown-link href="{{ $profileRoute }}">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
@@ -174,7 +183,21 @@
 
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
-                <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
+                @php
+                    $profileRoute = match (Auth::user()->role) {
+                        'admin_hrd' => route('admin.profil'),
+                        'direktur' => route('direktur.profil'),
+                        'karyawan' => route('karyawan.profil'),
+                        default => route('profile.show'),
+                    };
+                    $isProfileActive =
+                        request()->routeIs('admin.profil') ||
+                        request()->routeIs('direktur.profil') ||
+                        request()->routeIs('karyawan.profil') ||
+                        request()->routeIs('profile.show');
+                @endphp
+
+                <x-responsive-nav-link href="{{ $profileRoute }}" :active="$isProfileActive">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 

@@ -14,29 +14,41 @@
     <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
         <div class="p-6 lg:p-8 bg-white min-h-full">
             <!-- Filters - Clean Blue-Grey Style -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Cari</label>
+                    <input id="filter_q" name="q" type="text" placeholder="Cari nama, alasan, atau jenis..."
+                        value="{{ request()->query('q', '') }}"
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm hover:shadow-md" />
+                </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
-                    <select
+                    <select id="filter_status" name="status"
                         class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm hover:shadow-md">
-                        <option>Semua</option>
-                        <option>Menunggu</option>
-                        <option>Disetujui</option>
-                        <option>Ditolak</option>
+                        <option value="" {{ request()->query('status') == '' ? 'selected' : '' }}>Semua</option>
+                        <option value="menunggu" {{ request()->query('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                        <option value="disetujui" {{ request()->query('status') == 'disetujui' ? 'selected' : '' }}>Disetujui</option>
+                        <option value="ditolak" {{ request()->query('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Periode</label>
-                    <input type="month"
+                    <input id="filter_periode" name="periode" type="month" value="{{ request()->query('periode', '') }}"
                         class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm hover:shadow-md">
                 </div>
                 <div class="flex items-end">
-                    <button
-                        class="w-full px-4 py-2.5 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 shadow-md hover:shadow-lg transition-all duration-200">
-                        Terapkan Filter
-                    </button>
+                    <div class="w-full flex gap-2">
+                        <button type="button" onclick="applyApprovalFilters()"
+                            class="w-full px-4 py-2.5 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 shadow-md hover:shadow-lg transition-all duration-200">
+                            Terapkan Filter
+                        </button>
+                        <a href="{{ route('direktur.persetujuan-cuti') }}"
+                            class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 font-semibold hover:bg-gray-50 shadow-sm transition-all duration-200 text-center">
+                            Reset
+                        </a>
+                    </div>
                 </div>
-            </div>
+            </div> 
 
             <!-- Table - Vibrant Blue-Grey -->
             <div
@@ -101,19 +113,17 @@
                                     <td class="px-6 py-5 text-center">
                                         @if ($request->status === 'Pending')
                                             <div class="flex items-center justify-center gap-2">
-                                                <button onclick="openPreviewModal({{ $request->id }}, 'cuti')"
-                                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border text-blue-700 hover:bg-blue-50 shadow-sm hover:shadow-md transition-all duration-200">Lihat
+                                                <button data-request-id="{{ $request->id }}" data-request-type="cuti"
+                                                    class="btn-preview px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border text-blue-700 hover:bg-blue-50 shadow-sm hover:shadow-md transition-all duration-200">Lihat
                                                     Surat</button>
                                                 <button data-request-id="{{ $request->id }}" data-request-type="cuti"
                                                     data-employee-name="{{ $request->user->name }}" data-jenis="Cuti"
-                                                    data-tanggal="{{ $tanggal }}"
-                                                    onclick="openApprovalModal('{{ $request->user->name }}', 'Cuti', '{{ $tanggal }}', 'Approve', {{ $request->id }}, 'cuti')"
-                                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
+                                                    data-tanggal="{{ $tanggal }}" data-action="Approve"
+                                                    class="btn-approve px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
                                                 <button data-request-id="{{ $request->id }}" data-request-type="cuti"
                                                     data-employee-name="{{ $request->user->name }}" data-jenis="Cuti"
-                                                    data-tanggal="{{ $tanggal }}"
-                                                    onclick="openApprovalModal('{{ $request->user->name }}', 'Cuti', '{{ $tanggal }}', 'Reject', {{ $request->id }}, 'cuti')"
-                                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
+                                                    data-tanggal="{{ $tanggal }}" data-action="Reject"
+                                                    class="btn-reject px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
                                             </div>
                                         @else
                                             <span class="text-xs text-gray-400">-</span>
@@ -147,5 +157,25 @@
         @include('direktur.partials.approval-modal')
         @include('direktur.partials.preview-modal')
 
-        <script src="{{ asset('js/direktur-approval.js') }}"></script>
-</x-app-layout>
+        <script>
+            window.APPROVAL_ROUTES = {
+                base: @json(route('direktur.persetujuan-cuti'))
+            };
+        </script>
+        <script>
+            function applyApprovalFilters() {
+                const base = window.APPROVAL_ROUTES.base;
+                const q = document.getElementById('filter_q')?.value.trim();
+                const status = document.getElementById('filter_status')?.value;
+                const periode = document.getElementById('filter_periode')?.value;
+                const params = new URLSearchParams();
+                if (q) params.set('q', q);
+                if (status) params.set('status', status);
+                if (periode) params.set('periode', periode);
+                const url = base + (params.toString() ? ('?' + params.toString()) : '');
+                window.location.href = url;
+            }
+        </script>
+
+        <script src="{{ asset('js/direktur-approval.js') }}?v={{ time() }}"></script>
+</x-app-layout> 

@@ -36,12 +36,12 @@
 
         <!-- Actions -->
         <div class="px-6 py-5 border-t border-gray-200 flex items-center justify-between gap-3 bg-gray-50">
-            <button onclick="closeApprovalModal()"
-                class="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md">
+            <button type="button"
+                class="btn-cancel-approval flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md">
                 Batal
             </button>
-            <button id="modalConfirmBtn" onclick="confirmApproval()"
-                class="flex-1 px-4 py-2.5 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 shadow-md hover:shadow-lg transition-all duration-200">
+            <button type="button" id="modalConfirmBtn"
+                class="btn-confirm-approval flex-1 px-4 py-2.5 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 shadow-md hover:shadow-lg transition-all duration-200">
                 Konfirmasi
             </button>
         </div>

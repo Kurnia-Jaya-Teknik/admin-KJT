@@ -236,6 +236,7 @@ class SuratController extends Controller
     {
         $this->ensureAdminHRD();
 
+<<<<<<< Updated upstream
         // Increase execution time for PDF generation
         set_time_limit(120);
 
@@ -277,12 +278,71 @@ class SuratController extends Controller
         $folderPath = 'cuti';
         $path = storage_path('app/public/'.$folderPath.'/'.$fileName);
 
+=======
+        $cuti = \App\Models\Cuti::with(['user'])->findOrFail($cutiId);
+
+        if ($cuti->status !== 'Disetujui') {
+            return response()->json(['ok' => false, 'message' => 'Pengajuan cuti belum disetujui'], 400);
+        }
+
+        // Check if surat already exists for this cuti
+        $existingSurat = Surat::where('referensi_type', 'App\\Models\\Cuti')
+            ->where('referensi_id', $cutiId)
+            ->first();
+
+        if ($existingSurat) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Surat untuk cuti ini sudah dibuat',
+                'surat_id' => $existingSurat->id
+            ], 400);
+        }
+
+        $karyawan = $cuti->user;
+
+        // Create Surat record first
+        $surat = Surat::create([
+            'user_id' => $karyawan->id,
+            'jenis' => 'Cuti',
+            'nomor_surat' => null, // Will be filled by admin
+            'perihal' => 'Pengajuan Cuti - ' . $cuti->jenis,
+            'isi_surat' => $cuti->alasan,
+            'tanggal_surat' => now(),
+            'status' => 'Pending', // Admin can edit before finalizing
+            'dibuat_oleh' => auth()->id(),
+            'referensi_type' => 'App\\Models\\Cuti',
+            'referensi_id' => $cutiId,
+        ]);
+
+        // Generate PDF
+        $logoPath = 'file://' . public_path('img/image.png');
+
+        $html = view('surat.cuti', [
+            'karyawan' => $karyawan,
+            'cuti' => $cuti,
+            'logoPath' => $logoPath,
+        ])->render();
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+        $options->set('isHtml5ParserEnabled', true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $fileName = 'Surat_Cuti_' . $karyawan->name . '_' . time() . '.pdf';
+        $path = storage_path('app/public/generated/' . $fileName);
+
+>>>>>>> Stashed changes
         if (!file_exists(dirname($path))) {
             mkdir(dirname($path), 0755, true);
         }
 
         file_put_contents($path, $dompdf->output());
 
+<<<<<<< Updated upstream
         // Save file path to cuti table
         $cuti->update([
             'file_surat' => $folderPath.'/'.$fileName
@@ -291,6 +351,19 @@ class SuratController extends Controller
         return response()->json([
             'ok' => true,
             'url' => asset('storage/'.$folderPath.'/'.$fileName)
+=======
+        // Update surat with file info
+        $surat->generated_file_path = 'generated/' . $fileName;
+        $surat->generated_file_url = asset('storage/generated/' . $fileName);
+        $surat->generated_mime = 'application/pdf';
+        $surat->save();
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Surat berhasil dibuat',
+            'url' => asset('storage/generated/' . $fileName),
+            'surat_id' => $surat->id
+>>>>>>> Stashed changes
         ]);
     }
 
@@ -422,6 +495,97 @@ class SuratController extends Controller
                 return response()->json(['ok' => false, 'error' => $e->getMessage()], 500);
             }
             return redirect()->back()->with('error', 'Gagal mengirim surat.');
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->ensureAdminHRD();
+
+        try {
+            $surat = Surat::findOrFail($id);
+            $cutiId = $request->input('cuti_id');
+
+            if ($cutiId) {
+                $cuti = \App\Models\Cuti::findOrFail($cutiId);
+
+                // Update cuti data from form
+                if ($request->has('tanggal_mulai')) {
+                    $cuti->tanggal_mulai = $request->input('tanggal_mulai');
+                }
+                if ($request->has('tanggal_selesai')) {
+                    $cuti->tanggal_selesai = $request->input('tanggal_selesai');
+                }
+                if ($request->has('alasan')) {
+                    $cuti->alasan = $request->input('alasan');
+                }
+
+                // Recalculate duration
+                if ($request->has('tanggal_mulai') && $request->has('tanggal_selesai')) {
+                    $start = new \DateTime($cuti->tanggal_mulai);
+                    $end = new \DateTime($cuti->tanggal_selesai);
+                    $durasi = $start->diff($end)->days + 1;
+                    $cuti->durasi = $durasi . ' Hari';
+                }
+
+                $cuti->save();
+            }
+
+            // Update surat data
+            if ($request->has('nomor_surat')) {
+                $surat->nomor_surat = $request->input('nomor_surat');
+            }
+            if ($request->has('catatan')) {
+                $surat->keterangan = $request->input('catatan');
+            }
+
+            $surat->save();
+
+            // Regenerate PDF with updated data
+            if ($cutiId && $surat->referensi_type === 'App\\Models\\Cuti') {
+                $karyawan = $cuti->user;
+                $logoPath = 'file://' . public_path('img/image.png');
+
+                $html = view('surat.cuti', [
+                    'karyawan' => $karyawan,
+                    'cuti' => $cuti,
+                    'logoPath' => $logoPath,
+                ])->render();
+
+                $options = new Options();
+                $options->set('isRemoteEnabled', true);
+                $options->set('isHtml5ParserEnabled', true);
+
+                $dompdf = new Dompdf($options);
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->render();
+
+                $fileName = 'Surat_Cuti_' . $karyawan->name . '_' . time() . '.pdf';
+                $path = storage_path('app/public/generated/' . $fileName);
+
+                if (!file_exists(dirname($path))) {
+                    mkdir(dirname($path), 0755, true);
+                }
+
+                file_put_contents($path, $dompdf->output());
+
+                $surat->generated_file_path = 'generated/' . $fileName;
+                $surat->generated_file_url = asset('storage/generated/' . $fileName);
+                $surat->generated_mime = 'application/pdf';
+                $surat->save();
+            }
+
+            return response()->json([
+                'ok' => true,
+                'message' => 'Surat berhasil diupdate',
+                'surat' => $surat
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'ok' => false,
+                'message' => $e->getMessage()
+            ], 422);
         }
     }
 }

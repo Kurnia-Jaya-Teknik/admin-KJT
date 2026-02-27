@@ -788,10 +788,10 @@
                                 </h3>
 
                                 <!-- Chart Container -->
-                                <div class="flex gap-3 items-end border-b-2 border-gray-200/50 pb-4"
+                                <div class="flex gap-2 items-end border-b-2 border-gray-200/50 pb-4"
                                     style="height: 240px;">
                                     @php
-                                        $bulanColors = ['indigo', 'indigo', 'indigo', 'purple', 'purple', 'purple'];
+                                        $bulanColors = ['blue', 'indigo', 'purple', 'pink', 'rose', 'red'];
                                         $bulanIndex = 0;
                                     @endphp
                                     @foreach ($pengajuanPerBulan as $entry)
@@ -801,12 +801,28 @@
                                             $color = $bulanColors[$bulanIndex % count($bulanColors)];
                                             $bulanIndex++;
                                         @endphp
-                                        <div class="flex-1 flex flex-col items-center justify-end gap-2 group/bar">
-                                            <div class="w-full bg-gradient-to-t from-{{ $color }}-400/70 to-{{ $color }}-300/50 rounded-t-xl shadow-md group-hover/bar:shadow-lg group-hover/bar:from-{{ $color }}-400/90 group-hover/bar:to-{{ $color }}-300/70 transition-all duration-300"
-                                                style="height: {{ $heightPx }}px;"
-                                                title="{{ $entry['count'] }} pengajuan"></div>
+                                        <div
+                                            class="flex-1 flex flex-col items-center justify-end gap-2 group/bar relative">
+                                            <!-- Tooltip on hover -->
+                                            <div class="absolute bottom-full mb-2 hidden group-hover/bar:block z-10">
+                                                <div
+                                                    class="bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap">
+                                                    <div class="font-semibold">{{ $entry['label'] }}</div>
+                                                    <div class="text-gray-300">{{ $entry['count'] }} pengajuan</div>
+                                                </div>
+                                            </div>
+                                            <!-- Bar -->
+                                            <div class="w-full bg-gradient-to-t from-{{ $color }}-400 to-{{ $color }}-300 rounded-t-xl shadow-md hover:shadow-lg hover:from-{{ $color }}-500 hover:to-{{ $color }}-400 transition-all duration-300 cursor-pointer relative"
+                                                style="height: {{ $heightPx }}px;">
+                                                <!-- Count badge on bar -->
+                                                <div
+                                                    class="absolute top-2 left-1/2 -translate-x-1/2 bg-white/90 text-{{ $color }}-700 text-xs font-bold px-2 py-0.5 rounded-full shadow">
+                                                    {{ $entry['count'] }}
+                                                </div>
+                                            </div>
+                                            <!-- Label -->
                                             <span
-                                                class="text-xs text-gray-700 font-medium mt-1.5">{{ $entry['label'] }}</span>
+                                                class="text-[10px] text-gray-600 font-medium mt-1 text-center leading-tight">{{ $entry['label'] }}</span>
                                         </div>
                                     @endforeach
                                 </div>
@@ -814,7 +830,7 @@
                                 <div class="pt-4 border-t border-gray-100/30 flex items-center justify-between mt-4">
                                     <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
                                     <span
-                                        class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">{{ $totalPengajuan6 }}
+                                        class="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{{ $totalPengajuan6 }}
                                         pengajuan</span>
                                 </div>
                             </div>

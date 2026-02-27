@@ -14,9 +14,18 @@
     <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
         <div class="p-6 lg:p-8 bg-gray-50/50 min-h-full">
             <!-- Header -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">Pengajuan Cuti</h1>
-                <p class="text-gray-600 mt-1">Monitor semua pengajuan cuti dari karyawan</p>
+            <div class="mb-8 flex items-start justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Pengajuan Cuti</h1>
+                    <p class="text-gray-600 mt-1">Monitor semua pengajuan cuti dari karyawan</p>
+                </div>
+                <button onclick="openTambahCutiModal()"
+                    class="inline-flex items-center px-4 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl text-sm font-semibold hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg transition-all">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Tambah Pengajuan Cuti
+                </button>
             </div>
 
             <!-- Tab Navigation -->
@@ -89,7 +98,7 @@
                             </svg>
                         </div>
                         <p class="text-sm font-medium text-gray-600 mb-1">Total Pengajuan</p>
-                        <p class="text-3xl font-bold text-gray-900">36</p>
+                        <p class="text-3xl font-bold text-gray-900">{{ $totalPengajuan ?? 0 }}</p>
                     </div>
                 </div>
                 <div
@@ -107,7 +116,7 @@
                             </svg>
                         </div>
                         <p class="text-sm font-medium text-gray-600 mb-1">Menunggu Persetujuan</p>
-                        <p class="text-3xl font-bold text-rose-600/80">8</p>
+                        <p class="text-3xl font-bold text-rose-600/80">{{ $menungguPersetujuan ?? 0 }}</p>
                     </div>
                 </div>
                 <div
@@ -125,7 +134,7 @@
                             </svg>
                         </div>
                         <p class="text-sm font-medium text-gray-600 mb-1">Disetujui</p>
-                        <p class="text-3xl font-bold text-green-600/80">24</p>
+                        <p class="text-3xl font-bold text-green-600/80">{{ $disetujui ?? 0 }}</p>
                     </div>
                 </div>
                 <div
@@ -143,8 +152,104 @@
                             </svg>
                         </div>
                         <p class="text-sm font-medium text-gray-600 mb-1">Ditolak</p>
-                        <p class="text-3xl font-bold text-red-600/80">4</p>
+                        <p class="text-3xl font-bold text-red-600/80">{{ $ditolak ?? 0 }}</p>
                     </div>
+                </div>
+            </div>
+
+            <!-- Search & Filter Section -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+                <!-- Top Row: Count & Sort -->
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-sm text-gray-600">
+                        Menampilkan <span id="visibleCount"
+                            class="font-semibold text-gray-900">{{ count($cutiList) }}</span> dari <span
+                            class="font-semibold text-gray-900">{{ count($cutiList) }}</span> pengajuan
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm text-gray-600">Urutkan:</label>
+                        <select id="sortBy"
+                            class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            <option value="newest">Terbaru</option>
+                            <option value="oldest">Terlama</option>
+                            <option value="name-asc">Nama A-Z</option>
+                            <option value="name-desc">Nama Z-A</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-4">
+                    <!-- Search Bar -->
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input type="text" id="searchInput"
+                                placeholder="Cari nama karyawan, NIK, atau departemen..."
+                                class="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+                            <div class="absolute left-4 top-1/2 -translate-y-1/2">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter by Status -->
+                    <div class="w-full lg:w-48">
+                        <select id="filterStatus"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+                            <option value="">Semua Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Disetujui">Disetujui</option>
+                            <option value="Ditolak">Ditolak</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter by Departemen -->
+                    <div class="w-full lg:w-52">
+                        <select id="filterDepartemen"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+                            <option value="">Semua Departemen</option>
+                            @foreach (\App\Models\Departemen::orderBy('nama')->get() as $dept)
+                                <option value="{{ $dept->nama }}">{{ $dept->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Reset Button -->
+                    <button onclick="resetFilters()"
+                        class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Reset
+                    </button>
+                </div>
+
+                <!-- Quick Filter Tabs -->
+                <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100">
+                    <button onclick="quickFilter('all')"
+                        class="quick-filter-btn active px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                        data-filter="all">
+                        Semua ({{ $totalPengajuan }})
+                    </button>
+                    <button onclick="quickFilter('Pending')"
+                        class="quick-filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                        data-filter="Pending">
+                        Menunggu ({{ $menungguPersetujuan }})
+                    </button>
+                    <button onclick="quickFilter('Disetujui')"
+                        class="quick-filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                        data-filter="Disetujui">
+                        Disetujui ({{ $disetujui }})
+                    </button>
+                    <button onclick="quickFilter('Ditolak')"
+                        class="quick-filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                        data-filter="Ditolak">
+                        Ditolak ({{ $ditolak }})
+                    </button>
                 </div>
             </div>
 
@@ -152,30 +257,37 @@
             <div class="space-y-4" id="cutiListContainer">
                 @forelse($cutiList as $cuti)
                     <div
-                        class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6 hover:shadow-lg hover:border-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-200/40 transition-all duration-300 group overflow-hidden relative">
-                        <div
-                            class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-500/80 to-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-400/30 rounded-l-3xl">
-                        </div>
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1 ml-2">
-                                <div class="flex items-center gap-3 mb-4">
-                                    <div
-                                        class="w-10 h-10 rounded-2xl bg-gradient-to-br from-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-100/60 to-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                        <svg class="w-5 h-5 text-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-500/70"
-                                            fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-gray-900">{{ $cuti->user->name ?? 'N/A' }}
-                                        </h3>
-                                        <p class="text-xs text-gray-500">{{ $cuti->user->departemen->nama ?? 'N/A' }}
-                                        </p>
+                        class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group">
+                        <!-- Left Color Bar -->
+                        <div class="flex">
+                            <div
+                                class="w-1 bg-gradient-to-b from-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-400 to-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-300">
+                            </div>
+
+                            <div class="flex-1 p-6">
+                                <!-- Header: Nama & Status -->
+                                <div class="flex items-start justify-between mb-5">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-11 h-11 rounded-2xl bg-gradient-to-br from-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-50 to-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-100 flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-500"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-lg font-semibold text-gray-900">
+                                                {{ $cuti->user->name ?? 'N/A' }}
+                                            </h3>
+                                            <p class="text-sm text-gray-500">
+                                                {{ $cuti->user->departemen->nama ?? 'N/A' }}
+                                            </p>
+                                        </div>
                                     </div>
                                     <span
-                                        class="ml-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-100/60 to-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-50/40 text-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-600/80 border border-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-200/30 shadow-sm">
+                                        class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-50 text-{{ $cuti->status == 'Pending' ? 'amber' : ($cuti->status == 'Disetujui' ? 'green' : 'red') }}-700">
                                         @if ($cuti->status == 'Pending')
                                             Menunggu
                                         @elseif($cuti->status == 'Disetujui')
@@ -185,51 +297,149 @@
                                         @endif
                                     </span>
                                 </div>
+
+                                <!-- Info Grid -->
                                 <div
-                                    class="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm mb-4 p-4 bg-gradient-to-br from-gray-50/50 to-slate-50/30 rounded-2xl border border-gray-100/30">
+                                    class="grid grid-cols-2 md:grid-cols-5 gap-5 mb-5 p-4 bg-gradient-to-br from-gray-50/80 to-gray-50/40 rounded-2xl">
                                     <div>
-                                        <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">Jenis
-                                            Cuti</p>
-                                        <p class="font-semibold text-gray-900">{{ $cuti->jenis }}</p>
+                                        <p class="text-xs font-medium text-gray-500 mb-1.5">Jenis Cuti</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $cuti->jenis }}</p>
                                     </div>
                                     <div>
-                                        <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">Durasi
-                                        </p>
-                                        <p class="font-semibold text-gray-900">{{ $cuti->durasi }} hari</p>
+                                        <p class="text-xs font-medium text-gray-500 mb-1.5">Durasi</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $cuti->durasi }} hari</p>
                                     </div>
                                     <div>
-                                        <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">
-                                            Tanggal</p>
-                                        <p class="font-semibold text-gray-900">
+                                        <p class="text-xs font-medium text-gray-500 mb-1.5">Tanggal</p>
+                                        <p class="text-sm font-semibold text-gray-900">
                                             {{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M') }} -
-                                            {{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M') }}</p>
+                                            {{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M') }}
+                                        </p>
                                     </div>
                                     <div>
-                                        <p class="text-gray-600 text-xs font-medium uppercase tracking-wide mb-1">
-                                            Diajukan</p>
-                                        <p class="font-semibold text-gray-900">
-                                            {{ \Carbon\Carbon::parse($cuti->created_at)->format('d M Y') }}</p>
+                                        <p class="text-xs font-medium text-gray-500 mb-1.5">Diajukan</p>
+                                        <p class="text-sm font-semibold text-gray-900">
+                                            {{ \Carbon\Carbon::parse($cuti->created_at)->format('d M Y') }}
+                                        </p>
                                     </div>
                                     <div>
+<<<<<<< Updated upstream
                                         <button onclick="showDetailCuti({{ $cuti->id }})"
                                             class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg text-xs font-semibold hover:from-indigo-600 hover:to-indigo-700 shadow-sm hover:shadow-md transition-all">
                                             Lihat Detail
                                         </button>
+=======
+                                        <p class="text-xs font-medium text-gray-500 mb-1.5">Status Surat</p>
+                                        @if ($cuti->surat)
+                                            <div class="flex flex-col gap-1.5">
+                                                <a href="/admin/surat"
+                                                    class="text-sm font-semibold text-blue-600 hover:text-blue-700">
+                                                    {{ $cuti->surat->status }} #{{ $cuti->surat->id }}
+                                                </a>
+                                                <button
+                                                    onclick="editSurat({{ $cuti->surat->id }}, {{ $cuti->id }})"
+                                                    class="px-2.5 py-1 bg-amber-500 text-white rounded-lg text-xs font-medium hover:bg-amber-600 transition-colors flex items-center justify-center gap-1">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                    Edit
+                                                </button>
+                                            </div>
+                                        @elseif($cuti->status == 'Disetujui')
+                                            <div class="flex flex-wrap gap-1.5">
+                                                <button onclick="previewSuratCuti({{ $cuti->id }})"
+                                                    class="px-2.5 py-1 bg-gray-600 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors">
+                                                    Preview
+                                                </button>
+                                                <button onclick="editCutiData({{ $cuti->id }})"
+                                                    class="px-2.5 py-1 bg-amber-500 text-white rounded-lg text-xs font-medium hover:bg-amber-600 transition-colors">
+                                                    Edit
+                                                </button>
+                                                <button onclick="buatSuratCuti({{ $cuti->id }})"
+                                                    class="px-2.5 py-1 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors">
+                                                    Buat Surat
+                                                </button>
+                                            </div>
+                                        @else
+                                            <p class="text-sm font-medium text-gray-400">-</p>
+                                        @endif
+>>>>>>> Stashed changes
                                     </div>
                                 </div>
-                                <div class="pl-4 border-l-2 border-gray-200/50 mb-3">
-                                    <p class="text-sm text-gray-600"><span class="font-medium">Alasan:</span>
-                                        {{ $cuti->alasan }}</p>
+
+                                <!-- Approval Status -->
+                                @if ($cuti->status == 'Disetujui' && $cuti->tanggal_persetujuan)
+                                    <div class="mb-4 p-3.5 bg-green-50/70 rounded-xl">
+                                        <div class="flex items-center gap-2 text-sm">
+                                            <svg class="w-4 h-4 text-green-500" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="font-semibold text-green-900">
+                                                Disetujui oleh {{ $cuti->approver->name ?? 'direktur 1' }}
+                                            </span>
+                                            <span class="text-green-500">•</span>
+                                            <span class="text-green-700">
+                                                {{ \Carbon\Carbon::parse($cuti->tanggal_persetujuan)->format('d M Y, H:i') }}
+                                                WIB
+                                            </span>
+                                        </div>
+                                    </div>
+                                @elseif($cuti->status == 'Ditolak' && $cuti->tanggal_persetujuan)
+                                    <div class="mb-4 p-3.5 bg-red-50/70 rounded-xl">
+                                        <div class="flex items-center gap-2 text-sm">
+                                            <svg class="w-4 h-4 text-red-500" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="font-semibold text-red-900">
+                                                Ditolak oleh {{ $cuti->approver->name ?? 'Direktur' }}
+                                            </span>
+                                            <span class="text-red-500">•</span>
+                                            <span class="text-red-700">
+                                                {{ \Carbon\Carbon::parse($cuti->tanggal_persetujuan)->format('d M Y, H:i') }}
+                                                WIB
+                                            </span>
+                                        </div>
+                                        @if ($cuti->keterangan_persetujuan)
+                                            <p class="text-sm text-red-800 mt-2">Alasan:
+                                                {{ $cuti->keterangan_persetujuan }}</p>
+                                        @endif
+                                    </div>
+                                @endif
+
+                                <!-- Alasan Section -->
+                                <div class="mb-4 pl-3 border-l-2 border-gray-200">
+                                    <p class="text-sm text-gray-700">
+                                        <span class="font-semibold text-gray-900">Alasan:</span>
+                                        <span class="ml-1">{{ $cuti->alasan }}</span>
+                                    </p>
                                 </div>
 
+                                <!-- Delegated Users -->
                                 @if ($cuti->delegated_users && $cuti->delegated_users->count() > 0)
-                                    <div class="pl-4 border-l-2 border-blue-200/50 mb-3">
-                                        <p class="text-sm text-gray-600 mb-1"><span class="font-medium">👥 Dilimpahkan
-                                                ke:</span></p>
+                                    <div class="pl-3 border-l-2 border-purple-200">
+                                        <p class="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                            <svg class="w-4 h-4 text-purple-500" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path
+                                                    d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                                            </svg>
+                                            Dilimpahkan ke:
+                                        </p>
                                         <div class="flex flex-wrap gap-2">
                                             @foreach ($cuti->delegated_users as $delegated)
                                                 <span
-                                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">{{ $delegated->name }}</span>
+                                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700">
+                                                    {{ $delegated->name }}
+                                                </span>
                                             @endforeach
                                         </div>
                                     </div>
@@ -244,6 +454,7 @@
                 @endforelse
             </div>
 
+<<<<<<< Updated upstream
             </div>
             <!-- End Tab: Pengajuan -->
 
@@ -334,6 +545,38 @@
             </div>
             <!-- End Tab: Surat -->
 
+=======
+            <!-- Pagination Controls -->
+            <div id="paginationControls"
+                class="mt-6 flex items-center justify-between bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                <div class="text-sm text-gray-600">
+                    Halaman <span id="currentPageDisplay" class="font-semibold text-gray-900">1</span> dari <span
+                        id="totalPagesDisplay" class="font-semibold text-gray-900">1</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="btnPrevPage" onclick="prevPage()"
+                        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        disabled>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 19l-7-7 7-7" />
+                        </svg>
+                        Sebelumnya
+                    </button>
+                    <div id="pageNumbers" class="flex items-center gap-1">
+                        <!-- Page numbers will be inserted here -->
+                    </div>
+                    <button id="btnNextPage" onclick="nextPage()"
+                        class="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                        Selanjutnya
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+>>>>>>> Stashed changes
         </div>
     </div>
 
@@ -483,6 +726,7 @@
         </div>
     </div>
 
+<<<<<<< Updated upstream
     <!-- Preview Surat Cuti Modal -->
     <div id="previewSuratCutiModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
@@ -512,6 +756,621 @@
                     </svg>
                     Download
                 </a>
+=======
+    <!-- Modal Tambah Pengajuan Cuti -->
+    <div id="tambahCutiModal"
+        class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-300">
+            <!-- Modal Header -->
+            <div
+                class="sticky top-0 bg-gradient-to-r from-red-500 to-rose-500 backdrop-blur-md p-6 flex items-start justify-between z-10">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Tambah Pengajuan Cuti</h2>
+                        <p class="text-sm text-red-100 mt-1">Buat pengajuan cuti baru untuk karyawan</p>
+                    </div>
+                </div>
+                <button onclick="closeTambahCutiModal()"
+                    class="p-2 hover:bg-white/20 rounded-2xl transition-colors flex-shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <form id="tambahCutiForm" class="p-8 space-y-8">
+                @csrf
+
+                <!-- Section 1: Informasi Karyawan -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 pb-3 border-b-2 border-red-100">
+                        <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900">Informasi Karyawan</h3>
+                            <p class="text-xs text-gray-500">Pilih karyawan yang mengajukan cuti</p>
+                        </div>
+                    </div>
+
+                    <!-- Pilih Karyawan -->
+                    <div class="relative">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            Pilih Karyawan
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <select name="user_id" required
+                                class="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all appearance-none bg-white hover:border-gray-300">
+                                <option value="">-- Pilih Karyawan --</option>
+                                @foreach (\App\Models\User::where('role', '!=', 'admin_hrd')->orderBy('name')->get() as $user)
+                                    <option value="{{ $user->id }}">
+                                        {{ $user->name }} • NIK: {{ $user->nik }} •
+                                        {{ $user->departemen->nama ?? 'No Dept' }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="mt-2 text-xs text-gray-500">
+                            Pilih dari daftar karyawan aktif
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Section 2: Detail Cuti -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 pb-3 border-b-2 border-red-100">
+                        <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900">Detail Cuti</h3>
+                            <p class="text-xs text-gray-500">Isi informasi periode dan jenis cuti</p>
+                        </div>
+                    </div>
+
+                    <!-- Jenis Cuti -->
+                    <div class="relative">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            Jenis Cuti
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <select name="jenis" required
+                                class="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all appearance-none bg-white hover:border-gray-300">
+                                <option value="">-- Pilih Jenis Cuti --</option>
+                                <option value="Cuti Tahunan">📅 Cuti Tahunan</option>
+                                <option value="Cuti Sakit">🏥 Cuti Sakit</option>
+                                <option value="Cuti Menikah">💒 Cuti Menikah</option>
+                                <option value="Cuti Melahirkan">👶 Cuti Melahirkan</option>
+                                <option value="Cuti Keluarga Meninggal">🕊️ Cuti Keluarga Meninggal</option>
+                                <option value="Cuti Besar">⭐ Cuti Besar</option>
+                            </select>
+                            <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
+                            </div>
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tanggal Mulai & Selesai -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="relative">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                Tanggal Mulai
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="date" name="tanggal_mulai" required
+                                    class="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all hover:border-gray-300" />
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                Tanggal Selesai
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="date" name="tanggal_selesai" required
+                                    class="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all hover:border-gray-300" />
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alasan -->
+                    <div class="relative">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            Alasan Pengajuan Cuti
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <textarea name="alasan" rows="4" required
+                            class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all hover:border-gray-300 resize-none"
+                            placeholder="Jelaskan alasan pengajuan cuti secara detail..."></textarea>
+                        <p class="mt-2 text-xs text-gray-500">
+                            Berikan alasan yang jelas dan lengkap
+                        </p>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="relative">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            Status Pengajuan
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <select name="status" required
+                                class="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all appearance-none bg-white hover:border-gray-300">
+                                <option value="Pending">⏳ Pending (Menunggu Persetujuan)</option>
+                                <option value="Disetujui">✅ Disetujui</option>
+                                <option value="Ditolak">❌ Ditolak</option>
+                            </select>
+                            <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-4 pt-6 border-t-2 border-gray-100">
+                    <button type="button" onclick="closeTambahCutiModal()"
+                        class="flex-1 px-6 py-3.5 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 px-6 py-3.5 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-xl hover:from-red-600 hover:to-red-700 shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 13l4 4L19 7" />
+                        </svg>
+                        Simpan Pengajuan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Data Cuti -->
+    <div id="editCutiModal"
+        class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-300">
+            <!-- Modal Header -->
+            <div
+                class="sticky top-0 bg-gradient-to-r from-amber-500 to-orange-500 backdrop-blur-md p-6 flex items-start justify-between z-10">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Edit Data Cuti</h2>
+                        <p class="text-sm text-amber-100 mt-1">Ubah informasi pengajuan cuti sebelum membuat surat</p>
+                    </div>
+                </div>
+                <button onclick="closeEditCutiModal()"
+                    class="p-2 hover:bg-white/20 rounded-2xl transition-colors flex-shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <form id="editCutiForm" class="p-8 space-y-8">
+                @csrf
+                <input type="hidden" id="editCutiIdField" name="cuti_id">
+
+                <!-- Info Karyawan (Read-only) -->
+                <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-amber-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900">Informasi Karyawan</h3>
+                            <p class="text-xs text-gray-600">Data karyawan tidak dapat diubah</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-amber-200/50">
+                            <div class="flex items-center gap-2 mb-1">
+                                <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-xs font-medium text-gray-600">Nama Lengkap</span>
+                            </div>
+                            <span id="editCutiKaryawanNama" class="text-sm font-bold text-gray-900">-</span>
+                        </div>
+                        <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-amber-200/50">
+                            <div class="flex items-center gap-2 mb-1">
+                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                                </svg>
+                                <span class="text-xs font-medium text-gray-600">NIK</span>
+                            </div>
+                            <span id="editCutiKaryawanNik" class="text-sm font-bold text-gray-900">-</span>
+                        </div>
+                        <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-amber-200/50">
+                            <div class="flex items-center gap-2 mb-1">
+                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                <span class="text-xs font-medium text-gray-600">Jabatan</span>
+                            </div>
+                            <span id="editCutiKaryawanJabatan" class="text-sm font-bold text-gray-900">-</span>
+                        </div>
+                        <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-amber-200/50">
+                            <div class="flex items-center gap-2 mb-1">
+                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                                <span class="text-xs font-medium text-gray-600">Departemen</span>
+                            </div>
+                            <span id="editCutiKaryawanDept" class="text-sm font-bold text-gray-900">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Detail Cuti -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 pb-3 border-b-2 border-amber-100">
+                        <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900">Detail Cuti yang Dapat Diubah</h3>
+                            <p class="text-xs text-gray-500">Pastikan data yang diinput sudah benar</p>
+                        </div>
+                    </div>
+
+                    <!-- Jenis Cuti -->
+                    <div class="relative">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            Jenis Cuti
+                        </label>
+                        <div class="relative">
+                            <select id="editCutiJenis" name="jenis"
+                                class="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all appearance-none bg-white hover:border-gray-300">
+                                <option value="Cuti Tahunan">📅 Cuti Tahunan</option>
+                                <option value="Cuti Sakit">🏥 Cuti Sakit</option>
+                                <option value="Cuti Menikah">💒 Cuti Menikah</option>
+                                <option value="Cuti Melahirkan">👶 Cuti Melahirkan</option>
+                                <option value="Cuti Keluarga Meninggal">🕊️ Cuti Keluarga Meninggal</option>
+                                <option value="Cuti Besar">⭐ Cuti Besar</option>
+                            </select>
+                            <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
+                            </div>
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Periode Cuti -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="relative">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                Tanggal Mulai
+                            </label>
+                            <div class="relative">
+                                <input type="date" id="editCutiTanggalMulai" name="tanggal_mulai"
+                                    class="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all hover:border-gray-300" />
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                Tanggal Selesai
+                            </label>
+                            <div class="relative">
+                                <input type="date" id="editCutiTanggalSelesai" name="tanggal_selesai"
+                                    class="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all hover:border-gray-300" />
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alasan -->
+                    <div class="relative">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            Alasan Cuti
+                        </label>
+                        <textarea id="editCutiAlasan" name="alasan" rows="4"
+                            class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all hover:border-gray-300 resize-none"
+                            placeholder="Jelaskan alasan pengajuan cuti..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-4 pt-6 border-t-2 border-gray-100">
+                    <button type="button" onclick="closeEditCutiModal()"
+                        class="flex-1 px-6 py-3.5 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 px-6 py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold rounded-xl hover:from-amber-600 hover:to-amber-700 shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 13l4 4L19 7" />
+                        </svg>
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Surat -->
+    <div id="editSuratModal"
+        class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-300">
+            <!-- Modal Header -->
+            <div
+                class="sticky top-0 bg-gradient-to-r from-amber-50/80 to-orange-50/60 backdrop-blur-md border-b border-gray-100/40 p-6 flex items-start justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Edit Surat Cuti</h2>
+                    <p class="text-sm text-gray-500 mt-1">Ubah data surat cuti sebelum finalisasi</p>
+                </div>
+                <button onclick="closeEditSuratModal()"
+                    class="p-2 hover:bg-white/50 rounded-2xl transition-colors flex-shrink-0">
+                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <form id="editSuratForm" class="p-8 space-y-6">
+                @csrf
+                <input type="hidden" id="editSuratId" name="surat_id">
+                <input type="hidden" id="editCutiId" name="cuti_id">
+
+                <!-- Nomor Surat -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Surat</label>
+                    <input type="text" id="editNomorSurat" name="nomor_surat"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                        placeholder="Contoh: 001/KJT-HRD/II/2026" />
+                </div>
+
+                <!-- Info Karyawan (Read-only) -->
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-3">Informasi Karyawan</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-gray-600">Nama:</span>
+                            <span id="editKaryawanNama" class="font-medium text-gray-900 ml-2">-</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">NIK:</span>
+                            <span id="editKaryawanNik" class="font-medium text-gray-900 ml-2">-</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">Jabatan:</span>
+                            <span id="editKaryawanJabatan" class="font-medium text-gray-900 ml-2">-</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">Departemen:</span>
+                            <span id="editKaryawanDept" class="font-medium text-gray-900 ml-2">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jenis Cuti (Read-only) -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Cuti</label>
+                    <input type="text" id="editJenisCuti" readonly
+                        class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 text-gray-700" />
+                </div>
+
+                <!-- Periode Cuti -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Mulai</label>
+                        <input type="date" id="editTanggalMulai" name="tanggal_mulai"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Selesai</label>
+                        <input type="date" id="editTanggalSelesai" name="tanggal_selesai"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent" />
+                    </div>
+                </div>
+
+                <!-- Alasan -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Alasan Cuti</label>
+                    <textarea id="editAlasan" name="alasan" rows="3"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent"></textarea>
+                </div>
+
+                <!-- Catatan Tambahan -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Catatan Tambahan (Opsional)</label>
+                    <textarea id="editCatatan" name="catatan" rows="2"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                        placeholder="Catatan khusus untuk surat ini..."></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-3 pt-4 border-t border-gray-100/40">
+                    <button type="button" onclick="closeEditSuratModal()"
+                        class="flex-1 px-4 py-3 bg-gray-100/50 text-gray-700 font-medium rounded-2xl hover:bg-gray-100 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium rounded-2xl hover:from-amber-600 hover:to-amber-700 shadow-sm hover:shadow-md transition-all duration-300">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Preview Surat -->
+    <div id="previewSuratModal"
+        class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-300">
+            <!-- Modal Header -->
+            <div
+                class="sticky top-0 bg-gradient-to-r from-blue-50/80 to-slate-50/60 backdrop-blur-md border-b border-gray-100/40 p-6 flex items-start justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Preview Surat Cuti</h2>
+                    <p class="text-sm text-gray-500 mt-1">Pratinjau surat sebelum dibuat</p>
+                </div>
+                <button onclick="closePreviewSuratModal()"
+                    class="p-2 hover:bg-white/50 rounded-2xl transition-colors flex-shrink-0">
+                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-8">
+                <div id="previewSuratContent"
+                    class="bg-white border border-gray-200 rounded-xl p-8 min-h-[600px] shadow-inner">
+                    <div class="text-center text-gray-400 py-12">
+                        <svg class="w-12 h-12 mx-auto mb-3 animate-spin" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        Memuat preview...
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-3 mt-6">
+                    <button onclick="closePreviewSuratModal()"
+                        class="flex-1 px-4 py-3 bg-gray-100/50 text-gray-700 font-medium rounded-2xl hover:bg-gray-100 transition-colors">
+                        Tutup
+                    </button>
+                    <button id="btnBuatFromPreview"
+                        class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-2xl hover:from-blue-600 hover:to-blue-700 shadow-sm hover:shadow-md transition-all duration-300">
+                        Lanjut Buat Surat
+                    </button>
+                </div>
+>>>>>>> Stashed changes
             </div>
         </div>
     </div>
@@ -1094,6 +1953,7 @@
             if (e.target === this) closeBuatSuratModal();
         });
 
+<<<<<<< Updated upstream
         document.getElementById('previewSuratCutiModal')?.addEventListener('click', function(e) {
             if (e.target === this) closePreviewCutiModal();
         });
@@ -1112,5 +1972,604 @@
         document.getElementById('lihatSuratBtn')?.addEventListener('click', function() {
             previewCutiFromModal();
         });
+=======
+        document.getElementById('tambahCutiModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeTambahCutiModal();
+        });
+
+        document.getElementById('previewSuratModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closePreviewSuratModal();
+        });
+
+        document.getElementById('editSuratModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeEditSuratModal();
+        });
+
+        document.getElementById('editCutiModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeEditCutiModal();
+        });
+
+        // ========== MODAL EDIT DATA CUTI ==========
+        async function editCutiData(cutiId) {
+            const modal = document.getElementById('editCutiModal');
+            document.getElementById('editCutiIdField').value = cutiId;
+
+            try {
+                // Fetch cuti data
+                const response = await fetch(`/admin/cuti/${cutiId}/detail`);
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch cuti data');
+                }
+
+                const cutiData = await response.json();
+
+                // Populate karyawan info
+                if (cutiData.user) {
+                    document.getElementById('editCutiKaryawanNama').textContent = cutiData.user.name || '-';
+                    document.getElementById('editCutiKaryawanNik').textContent = cutiData.user.nik || '-';
+                    document.getElementById('editCutiKaryawanJabatan').textContent = cutiData.user.jabatan || '-';
+                    document.getElementById('editCutiKaryawanDept').textContent = cutiData.user.departemen?.nama || '-';
+                }
+
+                // Populate cuti data
+                document.getElementById('editCutiJenis').value = cutiData.jenis || '';
+                document.getElementById('editCutiTanggalMulai').value = cutiData.tanggal_mulai || '';
+                document.getElementById('editCutiTanggalSelesai').value = cutiData.tanggal_selesai || '';
+                document.getElementById('editCutiAlasan').value = cutiData.alasan || '';
+
+                // Show modal
+                modal.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error loading cuti data:', error);
+                showNotification('✗ Gagal memuat data cuti', 'error');
+            }
+        }
+
+        function closeEditCutiModal() {
+            document.getElementById('editCutiModal').classList.add('hidden');
+        }
+
+        // Handle edit cuti form submit
+        document.getElementById('editCutiForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const cutiId = document.getElementById('editCutiIdField').value;
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+
+            // Disable button & show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <svg class="animate-spin h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            `;
+
+            try {
+                const response = await fetch(`/admin/cuti/${cutiId}/update`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.ok) {
+                    showNotification('✓ Data cuti berhasil diupdate!', 'success');
+                    closeEditCutiModal();
+                    // Reload halaman setelah 1 detik
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showNotification('✗ ' + (data.message || 'Gagal mengupdate data cuti'), 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('✗ Terjadi kesalahan saat mengupdate data cuti', 'error');
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+
+        // ========== MODAL EDIT SURAT ==========
+        async function editSurat(suratId, cutiId) {
+            const modal = document.getElementById('editSuratModal');
+
+            // Set IDs
+            document.getElementById('editSuratId').value = suratId;
+            document.getElementById('editCutiId').value = cutiId;
+
+            try {
+                // Fetch surat and cuti data
+                const [suratRes, cutiRes] = await Promise.all([
+                    fetch(`/admin/surat/${suratId}`),
+                    fetch(`/admin/cuti/${cutiId}/detail`)
+                ]);
+
+                if (!suratRes.ok || !cutiRes.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+
+                const suratResponse = await suratRes.json();
+                const cutiData = await cutiRes.json();
+                const suratData = suratResponse.surat || suratResponse;
+
+                // Populate form with surat data
+                document.getElementById('editNomorSurat').value = suratData.nomor_surat || '';
+
+                // Populate karyawan info
+                if (cutiData.user) {
+                    document.getElementById('editKaryawanNama').textContent = cutiData.user.name || '-';
+                    document.getElementById('editKaryawanNik').textContent = cutiData.user.nik || '-';
+                    document.getElementById('editKaryawanJabatan').textContent = cutiData.user.jabatan || '-';
+                    document.getElementById('editKaryawanDept').textContent = cutiData.user.departemen?.nama || '-';
+                }
+
+                // Populate cuti data
+                document.getElementById('editJenisCuti').value = cutiData.jenis || '';
+                document.getElementById('editTanggalMulai').value = cutiData.tanggal_mulai || '';
+                document.getElementById('editTanggalSelesai').value = cutiData.tanggal_selesai || '';
+                document.getElementById('editAlasan').value = cutiData.alasan || '';
+                document.getElementById('editCatatan').value = suratData.keterangan || '';
+
+                // Show modal
+                modal.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error loading surat data:', error);
+                showNotification('✗ Gagal memuat data surat', 'error');
+            }
+        }
+
+        function closeEditSuratModal() {
+            document.getElementById('editSuratModal').classList.add('hidden');
+        }
+
+        // Handle edit surat form submit
+        document.getElementById('editSuratForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const suratId = document.getElementById('editSuratId').value;
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+
+            // Disable button & show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <svg class="animate-spin h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            `;
+
+            try {
+                const response = await fetch(`/admin/surat/${suratId}/update`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.ok) {
+                    showNotification('✓ Surat berhasil diupdate!', 'success');
+                    closeEditSuratModal();
+                    // Reload halaman setelah 1 detik
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showNotification('✗ ' + (data.message || 'Gagal mengupdate surat'), 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('✗ Terjadi kesalahan saat mengupdate surat', 'error');
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+
+        // ========== MODAL TAMBAH PENGAJUAN CUTI ==========
+        function openTambahCutiModal() {
+            document.getElementById('tambahCutiModal').classList.remove('hidden');
+            document.getElementById('tambahCutiForm').reset();
+        }
+
+        function closeTambahCutiModal() {
+            document.getElementById('tambahCutiModal').classList.add('hidden');
+        }
+
+        // Handle form submit untuk tambah cuti
+        document.getElementById('tambahCutiForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+
+            // Disable button & show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <svg class="animate-spin h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            `;
+
+            try {
+                const response = await fetch('/admin/cuti/store', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.ok) {
+                    showNotification('✓ Pengajuan cuti berhasil ditambahkan!', 'success');
+                    closeTambahCutiModal();
+                    // Reload halaman setelah 1 detik
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showNotification('✗ ' + (data.message || 'Gagal menambahkan pengajuan cuti'), 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('✗ Terjadi kesalahan saat menambahkan pengajuan cuti', 'error');
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+
+        // ========== MODAL PREVIEW SURAT ==========
+        let currentPreviewCutiId = null;
+
+        async function previewSuratCuti(cutiId) {
+            currentPreviewCutiId = cutiId;
+            const modal = document.getElementById('previewSuratModal');
+            const content = document.getElementById('previewSuratContent');
+
+            // Show modal with loading state
+            modal.classList.remove('hidden');
+            content.innerHTML = `
+                <div class="text-center text-gray-400 py-12">
+                    <svg class="w-12 h-12 mx-auto mb-3 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p class="mt-2">Memuat preview surat...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`/admin/cuti/${cutiId}/preview`, {
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                if (response.ok) {
+                    const html = await response.text();
+                    content.innerHTML = html;
+                } else {
+                    content.innerHTML = `
+                        <div class="text-center text-red-500 py-12">
+                            <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p>Gagal memuat preview surat</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                content.innerHTML = `
+                    <div class="text-center text-red-500 py-12">
+                        <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p>Terjadi kesalahan saat memuat preview</p>
+                    </div>
+                `;
+            }
+        }
+
+        function closePreviewSuratModal() {
+            document.getElementById('previewSuratModal').classList.add('hidden');
+            currentPreviewCutiId = null;
+        }
+
+        // Handle button "Lanjut Buat Surat" dari preview modal
+        document.getElementById('btnBuatFromPreview')?.addEventListener('click', function() {
+            if (currentPreviewCutiId) {
+                closePreviewSuratModal();
+                buatSuratCuti(currentPreviewCutiId);
+            }
+        });
+
+        // ========== SEARCH & FILTER FUNCTIONALITY ==========
+        let allCutiCards = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
+        // Initialize: get all cuti cards
+        function initializeCards() {
+            allCutiCards = Array.from(document.querySelectorAll('#cutiListContainer > div:not(.text-center)'));
+            updatePagination();
+        }
+
+        // Call on page load
+        initializeCards();
+
+        // Search functionality
+        document.getElementById('searchInput')?.addEventListener('input', function(e) {
+            filterCards();
+        });
+
+        // Filter by status
+        document.getElementById('filterStatus')?.addEventListener('change', function(e) {
+            filterCards();
+        });
+
+        // Filter by departemen
+        document.getElementById('filterDepartemen')?.addEventListener('change', function(e) {
+            filterCards();
+        });
+
+        // Sort functionality
+        document.getElementById('sortBy')?.addEventListener('change', function(e) {
+            sortCards(e.target.value);
+        });
+
+        // Sort cards function
+        function sortCards(sortType) {
+            const container = document.getElementById('cutiListContainer');
+            const cards = Array.from(container.querySelectorAll(':scope > div:not(.empty-message)'));
+
+            cards.sort((a, b) => {
+                if (sortType === 'newest' || sortType === 'oldest') {
+                    // Get date from "Diajukan" field
+                    const dateA = a.querySelector('[class*="Diajukan"]')?.nextElementSibling?.textContent || '';
+                    const dateB = b.querySelector('[class*="Diajukan"]')?.nextElementSibling?.textContent || '';
+                    const compare = dateA.localeCompare(dateB);
+                    return sortType === 'newest' ? -compare : compare;
+                } else if (sortType === 'name-asc' || sortType === 'name-desc') {
+                    const nameA = a.querySelector('h3')?.textContent.trim().toLowerCase() || '';
+                    const nameB = b.querySelector('h3')?.textContent.trim().toLowerCase() || '';
+                    const compare = nameA.localeCompare(nameB);
+                    return sortType === 'name-asc' ? compare : -compare;
+                }
+                return 0;
+            });
+
+            // Re-append cards in sorted order
+            cards.forEach(card => container.appendChild(card));
+
+            // Reapply filters
+            filterCards();
+        }
+
+        // Main filter function
+        function filterCards() {
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const statusFilter = document.getElementById('filterStatus')?.value || '';
+            const departemenFilter = document.getElementById('filterDepartemen')?.value || '';
+
+            let visibleCount = 0;
+
+            allCutiCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                const matchesSearch = cardText.includes(searchTerm);
+                const matchesStatus = !statusFilter || cardText.includes(statusFilter.toLowerCase());
+                const matchesDepartemen = !departemenFilter || cardText.includes(departemenFilter.toLowerCase());
+
+                if (matchesSearch && matchesStatus && matchesDepartemen) {
+                    card.classList.remove('filtered-out');
+                    visibleCount++;
+                } else {
+                    card.classList.add('filtered-out');
+                }
+            });
+
+            // Update visible count
+            const visibleCountEl = document.getElementById('visibleCount');
+            if (visibleCountEl) {
+                visibleCountEl.textContent = visibleCount;
+            }
+
+            // Reset to first page when filtering
+            currentPage = 1;
+            updatePagination();
+
+            // Show/hide empty message
+            const container = document.getElementById('cutiListContainer');
+            let emptyMsg = container.querySelector('.empty-message');
+
+            if (visibleCount === 0) {
+                if (!emptyMsg) {
+                    emptyMsg = document.createElement('div');
+                    emptyMsg.className = 'empty-message text-center py-12 text-gray-500';
+                    emptyMsg.innerHTML = `
+                        <svg class=\"w-16 h-16 mx-auto mb-4 text-gray-300\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">
+                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\" />
+                        </svg>
+                        <p class=\"text-lg font-medium\">Tidak ada data yang sesuai</p>
+                        <p class=\"text-sm mt-2\">Coba ubah filter atau kata kunci pencarian</p>
+                    `;
+                    container.appendChild(emptyMsg);
+                }
+                emptyMsg.style.display = '';
+                document.getElementById('paginationControls').style.display = 'none';
+            } else {
+                if (emptyMsg) {
+                    emptyMsg.style.display = 'none';
+                }
+                document.getElementById('paginationControls').style.display = 'flex';
+            }
+        }
+
+        // Quick filter buttons
+        function quickFilter(status) {
+            // Update active button
+            document.querySelectorAll('.quick-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Apply filter
+            const statusSelect = document.getElementById('filterStatus');
+            if (status === 'all') {
+                statusSelect.value = '';
+            } else {
+                statusSelect.value = status;
+            }
+
+            filterCards();
+        }
+
+        // Reset all filters
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterDepartemen').value = '';
+            document.getElementById('sortBy').value = 'newest';
+
+            // Reset active button to "Semua"
+            document.querySelectorAll('.quick-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-filter') === 'all') {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Reset page to 1
+            currentPage = 1;
+
+            // Reset sort and filter
+            sortCards('newest');
+            filterCards();
+        }
+
+        // ========== PAGINATION FUNCTIONALITY ==========
+        function updatePagination() {
+            // Get filtered cards (not hidden by filters)
+            const visibleCards = allCutiCards.filter(card => !card.classList.contains('filtered-out'));
+            const totalPages = Math.ceil(visibleCards.length / itemsPerPage);
+
+            // Hide all cards first
+            allCutiCards.forEach(card => {
+                card.style.display = 'none';
+            });
+
+            // Show only cards for current page
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageCards = visibleCards.slice(startIndex, endIndex);
+
+            pageCards.forEach(card => {
+                card.style.display = '';
+            });
+
+            // Update pagination controls
+            document.getElementById('currentPageDisplay').textContent = currentPage;
+            document.getElementById('totalPagesDisplay').textContent = totalPages || 1;
+
+            // Enable/disable buttons
+            const btnPrev = document.getElementById('btnPrevPage');
+            const btnNext = document.getElementById('btnNextPage');
+
+            btnPrev.disabled = currentPage === 1;
+            btnNext.disabled = currentPage >= totalPages;
+
+            // Generate page numbers
+            const pageNumbersContainer = document.getElementById('pageNumbers');
+            pageNumbersContainer.innerHTML = '';
+
+            // Show max 5 page numbers
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => goToPage(i);
+                pageBtn.className = `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    i === currentPage 
+                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white' 
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                }`;
+                pageNumbersContainer.appendChild(pageBtn);
+            }
+
+            // Scroll to top of list
+            document.getElementById('cutiListContainer').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function nextPage() {
+            const visibleCards = allCutiCards.filter(card => !card.classList.contains('filtered-out'));
+            const totalPages = Math.ceil(visibleCards.length / itemsPerPage);
+
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePagination();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
+            }
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            updatePagination();
+        }
+>>>>>>> Stashed changes
     </script>
+
+    <style>
+        /* Quick Filter Button Styles */
+        .quick-filter-btn {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .quick-filter-btn:hover {
+            background-color: #e5e7eb;
+        }
+
+        .quick-filter-btn.active {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-weight: 600;
+        }
+    </style>
 </x-app-layout>
