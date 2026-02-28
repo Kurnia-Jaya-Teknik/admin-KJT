@@ -201,6 +201,18 @@
         <div style="border-top: 2px solid #000; border-bottom: 1px solid #000; height: 4px; margin: 6px 0 15px 0;"></div>
         <div class="title" style="text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 10px;">SURAT PERMOHONAN CUTI</div>
 
+        <!-- Nomor dan Tanggal Surat -->
+        @if($nomor_surat ?? false)
+        <div style="margin-bottom: 10px; font-size: 11px;">
+            <div style="text-align: right; margin-bottom: 3px;">
+                <span style="font-weight: bold;">Nomor Surat :</span> {{ $nomor_surat }}
+            </div>
+            <div style="text-align: right; margin-bottom: 3px;">
+                <span style="font-weight: bold;">Tanggal Surat :</span> {{ \Carbon\Carbon::parse($tanggal_surat)->format('d/m/Y') }}
+            </div>
+        </div>
+        @endif
+
         <!-- Isi Surat -->
         <div class="letter-content" >
             <p class="intro-text">Yang bertanda tangan di bawah ini:</p>

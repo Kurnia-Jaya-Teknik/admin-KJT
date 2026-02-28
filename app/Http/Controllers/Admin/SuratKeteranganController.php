@@ -171,7 +171,7 @@ class SuratKeteranganController extends Controller
             ],
             'alasan' => $request->alasan,
             'keperluan' => $request->keperluan,
-            'tanggal_diminta' => $request->tanggal_diminta?->toDateString(),
+            'tanggal_diminta' => $request->tanggal_diminta ?? null,
             'status' => $request->status,
         ]);
     }

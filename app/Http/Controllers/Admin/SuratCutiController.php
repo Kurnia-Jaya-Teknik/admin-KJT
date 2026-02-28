@@ -31,6 +31,12 @@ class SuratCutiController extends Controller
             return response()->json(['ok' => false, 'message' => 'Pengajuan cuti belum disetujui'], 400);
         }
 
+        // Validate request for nomor_surat and tanggal_surat
+        $validated = $request->validate([
+            'nomor_surat' => 'required|string|max:100',
+            'tanggal_surat' => 'required|date'
+        ]);
+
         $karyawan = $cuti->user;
 
         // Get delegated users from dilimpahkan_ke array
@@ -39,14 +45,16 @@ class SuratCutiController extends Controller
             $delegatedUsers = \App\Models\User::whereIn('id', $cuti->dilimpahkan_ke)->get();
         }
 
-        // ✅ PATH LOGO WAJIB FILE://
-        $logoPath = 'file://' . public_path('img/image.png');
+        // ✅ Logo path - gunakan format yang sama dengan SuratKeteranganController
+        $logoPath = public_path('img/kop_surat.png');
 
         $html = view('surat.cuti', [
             'karyawan' => $karyawan,
             'cuti' => $cuti,
             'logoPath' => $logoPath,
             'delegatedUsers' => $delegatedUsers,
+            'nomor_surat' => $validated['nomor_surat'],
+            'tanggal_surat' => $validated['tanggal_surat'],
         ])->render();
 
         // ✅ OPTIONS DOMPDF (WAJIB)

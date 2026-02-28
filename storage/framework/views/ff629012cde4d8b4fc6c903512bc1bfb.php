@@ -1,13 +1,22 @@
-<x-app-layout>
-    <x-slot name="header">
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Pengajuan Cuti
         </h2>
-    </x-slot>
+     <?php $__env->endSlot(); ?>
 
     <!-- Fixed Sidebar -->
     <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
-        @include('layouts.sidebar')
+        <?php echo $__env->make('layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <!-- Toast container -->
@@ -48,29 +57,22 @@
                                 <div>
                                     <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">👤 Nama</label>
                                     <div class="px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-lg text-base text-gray-700 font-medium">
-                                        {{ auth()->user()->name }}
+                                        <?php echo e(auth()->user()->name); ?>
+
                                     </div>
                                 </div>
                                 <div>
                                     <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">🏢 Divisi</label>
                                     <div class="px-4 py-2.5 bg-white/70 border border-gray-200/50 rounded-lg text-base text-gray-700 font-medium">
-                                        {{ auth()->user()->departemen->nama ?? '-' }}
+                                        <?php echo e(auth()->user()->departemen->nama ?? '-'); ?>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Tanggal Masuk ke Perusahaan -->
-                        {{-- <div class="grid grid-cols-12 gap-4 items-center mb-6">
-                            <div class="col-span-4">
-                                <label class="text-sm font-medium text-gray-700">Tanggal Masuk ke Perusahaan</label>
-                            </div>
-                            <div class="col-span-8">
-                                <div class="border-b-2 border-gray-300 px-2 py-1 text-sm text-gray-600">
-                                    {{ auth()->user()->created_at ? auth()->user()->created_at->format('d/m/Y') : '-' }}
-                                </div>
-                            </div>
-                        </div> --}}
+                        
 
                         <!-- Jenis Cuti Section -->
                         <div class="mb-6 p-6 bg-white/80 border border-gray-200/40 rounded-xl">
@@ -138,11 +140,11 @@
                                         <select id="filter_departemen"
                                             class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
                                             <option value="">-- Semua Divisi --</option>
-                                            @foreach ($departemens ?? [] as $d)
-                                                <option value="{{ $d->id }}"
-                                                    @if (auth()->user()->departemen_id == $d->id) selected @endif>
-                                                    {{ $d->nama }} ({{ $d->kode }})</option>
-                                            @endforeach
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $departemens ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($d->id); ?>"
+                                                    <?php if(auth()->user()->departemen_id == $d->id): ?> selected <?php endif; ?>>
+                                                    <?php echo e($d->nama); ?> (<?php echo e($d->kode); ?>)</option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </select>
                                     </div>
                                     <div class="col-span-6 text-right">
@@ -178,7 +180,7 @@
                             <label class="text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">☎️ Telepon Yang Bisa Dihubungi</label>
                             <input type="tel" id="telp" name="telp"
                                 placeholder="Contoh: 082123456789"
-                                value="{{ old('telp', auth()->user()->phone ?? '') }}"
+                                value="<?php echo e(old('telp', auth()->user()->phone ?? '')); ?>"
                                 class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base focus:bg-white focus:border-blue-400/60 focus:ring-2 focus:ring-blue-200/30 transition-all" />
                         </div>
 
@@ -223,10 +225,10 @@
     <!-- Toast container (for popups) -->
     <div id="cutiToast" class="fixed bottom-6 right-6 w-full max-w-xs hidden z-50 space-y-3"></div>
     </div>
-    @push('scripts')
+    <?php $__env->startPush('scripts'); ?>
         <script>
             (function() {
-                const API_BASE_RAW = {!! json_encode(rtrim(request()->getSchemeAndHttpHost() . request()->getBaseUrl(), '/')) !!};
+                const API_BASE_RAW = <?php echo json_encode(rtrim(request()->getSchemeAndHttpHost() . request()->getBaseUrl(), '/')); ?>;
                 const API_BASE = (API_BASE_RAW && API_BASE_RAW.indexOf(String.fromCharCode(123, 123)) === -1) ?
                     API_BASE_RAW : (window.location.origin + window.location.pathname.substring(0, window.location.pathname
                         .lastIndexOf(String.fromCharCode(47))));
@@ -720,7 +722,7 @@
                             const hiddenInputs = document.getElementById('pelimpahan_hidden_inputs');
                             const clearBtn = document.getElementById('clearPelimpahan');
 
-                            window.pelimpahanEmployeesList = {!! json_encode(
+                            window.pelimpahanEmployeesList = <?php echo json_encode(
                                 ($employees ?? collect())->map(function ($e) {
                                     return [
                                         'id' => $e->id,
@@ -729,9 +731,9 @@
                                         'departemen_name' => $e->departemen->nama ?? '',
                                     ];
                                 }),
-                            ) !!};
+                            ); ?>;
 
-                            window.currentUserId = {{ Auth::id() }}; // ID user yang sedang login
+                            window.currentUserId = <?php echo e(Auth::id()); ?>; // ID user yang sedang login
                             window.pelimpahanSelectedIds = window.pelimpahanSelectedIds || new Set();
 
                             // expose helper to resolve name globally
@@ -1344,7 +1346,7 @@
                 }
             })();
         </script>
-    @endpush
+    <?php $__env->stopPush(); ?>
 
     <!-- Delegation Confirmation Modal -->
     <div id="confirmDelegationModal"
@@ -1543,4 +1545,14 @@
         </div>
     </div>
 
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/karyawan/pengajuan-cuti.blade.php ENDPATH**/ ?>
