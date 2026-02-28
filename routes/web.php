@@ -169,17 +169,12 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         
         Route::get('/cuti', [\App\Http\Controllers\Admin\CutiController::class, 'index'])->name('cuti');
         Route::get('/cuti/list', [\App\Http\Controllers\Admin\CutiController::class, 'list'])->name('cuti.list');
-<<<<<<< Updated upstream
         Route::get('/cuti/{id}', [\App\Http\Controllers\Admin\CutiController::class, 'show'])->name('cuti.show');
-        Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratCutiController::class, 'store'])->name('cuti.buat-surat');
-        Route::get('/cuti/{id}/preview', [\App\Http\Controllers\Admin\SuratCutiController::class, 'preview'])->name('cuti.preview');
-=======
         Route::post('/cuti/store', [\App\Http\Controllers\Admin\CutiController::class, 'store'])->name('cuti.store');
         Route::post('/cuti/{id}/update', [\App\Http\Controllers\Admin\CutiController::class, 'update'])->name('cuti.update');
-        Route::get('/cuti/{id}/preview', [\App\Http\Controllers\Admin\CutiController::class, 'preview'])->name('cuti.preview');
+        Route::get('/cuti/{id}/preview', [\App\Http\Controllers\Admin\SuratCutiController::class, 'preview'])->name('cuti.preview');
         Route::get('/cuti/{id}/detail', [\App\Http\Controllers\Admin\CutiController::class, 'detail'])->name('cuti.detail');
-        Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratController::class, 'storeCutiSurat'])->name('cuti.buat-surat');
->>>>>>> Stashed changes
+        Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratCutiController::class, 'store'])->name('cuti.buat-surat');
         
         Route::get('/magang', [\App\Http\Controllers\Admin\MagangController::class, 'index'])->name('magang');
         Route::get('/magang-stats', [\App\Http\Controllers\Admin\MagangController::class, 'getStats'])->name('magang.stats');
