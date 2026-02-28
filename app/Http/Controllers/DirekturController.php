@@ -106,10 +106,10 @@ class DirekturController extends Controller
         $status = $request->query('status');
         $periode = $request->query('periode');
 
-        // Query only Cuti with jenis "Cuti"
+        // Query all Cuti EXCEPT "Ijin Sakit" (includes Cuti Tahunan, Cuti Bersama, etc)
         $cutiQuery = Cuti::with('user')
             ->where('status', '!=', null)
-            ->where('jenis', 'Cuti');
+            ->where('jenis', '!=', 'Ijin Sakit');
 
         // Filter by status
         if ($status) {
@@ -130,8 +130,21 @@ class DirekturController extends Controller
                 ->whereMonth('tanggal_mulai', explode('-', $periode)[1]);
         }
 
+        // Search (nama karyawan, alasan, atau jenis)
+        $search = trim($request->query('q', ''));
+        if (!empty($search)) {
+            $cutiQuery->where(function ($qBuilder) use ($search) {
+                $qBuilder->whereHas('user', function ($u) use ($search) {
+                    $u->where('name', 'like', "%{$search}%");
+                })->orWhere('alasan', 'like', "%{$search}%")
+                  ->orWhere('jenis', 'like', "%{$search}%");
+            });
+        }
+
         // Enrich cuti with delegated users and paginate
         $requests = $cutiQuery->orderBy('created_at', 'desc')->paginate(10);
+        // preserve query params in pagination links
+        $requests->appends($request->query());
         
         $requests->getCollection()->each(function ($cuti) {
             if (!empty($cuti->dilimpahkan_ke) && is_array($cuti->dilimpahkan_ke)) {

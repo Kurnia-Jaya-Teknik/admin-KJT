@@ -65,6 +65,9 @@ Route::middleware([
         Route::get('/laporan/absensi', [DirekturController::class, 'laporanAbsensi'])->name('laporan.absensi');
         Route::get('/laporan/lembur', [DirekturController::class, 'laporanLembur'])->name('laporan.lembur');
         Route::get('/riwayat-persetujuan', [DirekturController::class, 'riwayatPersetujuan'])->name('riwayat-persetujuan');
+        Route::get('/profil', function () {
+            return view('direktur.profil');
+        })->name('profil');
         
         // Magang surat request dari direktur
         Route::post('/magang/{id}/request-surat', [DirekturController::class, 'requestMagangSurat'])->name('magang.request-surat');
@@ -166,9 +169,17 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         
         Route::get('/cuti', [\App\Http\Controllers\Admin\CutiController::class, 'index'])->name('cuti');
         Route::get('/cuti/list', [\App\Http\Controllers\Admin\CutiController::class, 'list'])->name('cuti.list');
+<<<<<<< Updated upstream
         Route::get('/cuti/{id}', [\App\Http\Controllers\Admin\CutiController::class, 'show'])->name('cuti.show');
         Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratCutiController::class, 'store'])->name('cuti.buat-surat');
         Route::get('/cuti/{id}/preview', [\App\Http\Controllers\Admin\SuratCutiController::class, 'preview'])->name('cuti.preview');
+=======
+        Route::post('/cuti/store', [\App\Http\Controllers\Admin\CutiController::class, 'store'])->name('cuti.store');
+        Route::post('/cuti/{id}/update', [\App\Http\Controllers\Admin\CutiController::class, 'update'])->name('cuti.update');
+        Route::get('/cuti/{id}/preview', [\App\Http\Controllers\Admin\CutiController::class, 'preview'])->name('cuti.preview');
+        Route::get('/cuti/{id}/detail', [\App\Http\Controllers\Admin\CutiController::class, 'detail'])->name('cuti.detail');
+        Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratController::class, 'storeCutiSurat'])->name('cuti.buat-surat');
+>>>>>>> Stashed changes
         
         Route::get('/magang', [\App\Http\Controllers\Admin\MagangController::class, 'index'])->name('magang');
         Route::get('/magang-stats', [\App\Http\Controllers\Admin\MagangController::class, 'getStats'])->name('magang.stats');
@@ -192,6 +203,7 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
 
         // Admin surat detail (AJAX helper + detail view)
         Route::get('/surat/{id}', [\App\Http\Controllers\Admin\SuratController::class, 'show']);
+        Route::post('/surat/{id}/update', [\App\Http\Controllers\Admin\SuratController::class, 'update'])->name('surat.update');
 
         // Admin Surat actions (approve/reject/delete)
         Route::post('/surat/{id}/approve', [\App\Http\Controllers\Admin\SuratController::class, 'approve'])->name('surat.approve');

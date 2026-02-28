@@ -234,16 +234,25 @@
 
                             </div>
 
+                            <?php
+                                $profileRoute = match (Auth::user()->role) {
+                                    'admin_hrd' => route('admin.profil'),
+                                    'direktur' => route('direktur.profil'),
+                                    'karyawan' => route('karyawan.profil'),
+                                    default => route('profile.show'),
+                                };
+                            ?>
+
                             <?php if (isset($component)) { $__componentOriginal68cb1971a2b92c9735f83359058f7108 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal68cb1971a2b92c9735f83359058f7108 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.dropdown-link','data' => ['href' => ''.e(route('profile.show')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.dropdown-link','data' => ['href' => ''.e($profileRoute).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('dropdown-link'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => ''.e(route('profile.show')).'']); ?>
+<?php $component->withAttributes(['href' => ''.e($profileRoute).'']); ?>
                                 <?php echo e(__('Profile')); ?>
 
                              <?php echo $__env->renderComponent(); ?>
@@ -386,16 +395,30 @@
 
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
+                <?php
+                    $profileRoute = match (Auth::user()->role) {
+                        'admin_hrd' => route('admin.profil'),
+                        'direktur' => route('direktur.profil'),
+                        'karyawan' => route('karyawan.profil'),
+                        default => route('profile.show'),
+                    };
+                    $isProfileActive =
+                        request()->routeIs('admin.profil') ||
+                        request()->routeIs('direktur.profil') ||
+                        request()->routeIs('karyawan.profil') ||
+                        request()->routeIs('profile.show');
+                ?>
+
                 <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => ''.e(route('profile.show')).'','active' => request()->routeIs('profile.show')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => ''.e($profileRoute).'','active' => $isProfileActive]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('responsive-nav-link'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => ''.e(route('profile.show')).'','active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('profile.show'))]); ?>
+<?php $component->withAttributes(['href' => ''.e($profileRoute).'','active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($isProfileActive)]); ?>
                     <?php echo e(__('Profile')); ?>
 
                  <?php echo $__env->renderComponent(); ?>

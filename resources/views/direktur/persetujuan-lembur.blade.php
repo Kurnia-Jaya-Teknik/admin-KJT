@@ -73,9 +73,13 @@
                                     <td class="px-6 py-5 text-sm text-gray-600">{{ $tanggal }}</td>
                                     <td class="px-6 py-5 text-sm text-gray-600">{{ $durasi }}</td>
                                     <td class="px-6 py-5 text-sm text-gray-600">
-                                        <button
-                                            onclick="showDetailLembur({{ $r->id }}, '{{ $r->user->name }}', '{{ $tanggal }}', '{{ $r->jam_mulai ?? '' }}', '{{ $r->jam_selesai ?? '' }}', '{{ $durasi }}', `{{ addslashes($r->keterangan ?? 'Tidak ada keterangan') }}`)"
-                                            class="text-left hover:text-red-600 transition-colors">
+                                        <button data-id="{{ $r->id }}" data-name="{{ $r->user->name }}"
+                                            data-tanggal="{{ $tanggal }}"
+                                            data-jam-mulai="{{ $r->jam_mulai ?? '' }}"
+                                            data-jam-selesai="{{ $r->jam_selesai ?? '' }}"
+                                            data-durasi="{{ $durasi }}"
+                                            data-keterangan="{{ $r->keterangan ?? 'Tidak ada keterangan' }}"
+                                            class="btn-detail-lembur text-left hover:text-red-600 transition-colors">
                                             {{ Str::limit($r->keterangan ?? '-', 40) }}
                                         </button>
                                     </td>
@@ -85,12 +89,16 @@
                                     <td class="px-6 py-5 text-center">
                                         @if ($r->status === 'Pending')
                                             <div class="flex items-center justify-center gap-2">
-                                                <button
-                                                    onclick="openApprovalModal('{{ $r->user->name }}', 'Lembur', '{{ $tanggal }}', 'Approve', {{ $r->id }}, 'lembur')"
-                                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white">Setujui</button>
-                                                <button
-                                                    onclick="openApprovalModal('{{ $r->user->name }}', 'Lembur', '{{ $tanggal }}', 'Reject', {{ $r->id }}, 'lembur')"
-                                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white">Tolak</button>
+                                                <button data-request-id="{{ $r->id }}"
+                                                    data-request-type="lembur"
+                                                    data-employee-name="{{ $r->user->name }}" data-jenis="Lembur"
+                                                    data-tanggal="{{ $tanggal }}" data-action="Approve"
+                                                    class="btn-approve px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white">Setujui</button>
+                                                <button data-request-id="{{ $r->id }}"
+                                                    data-request-type="lembur"
+                                                    data-employee-name="{{ $r->user->name }}" data-jenis="Lembur"
+                                                    data-tanggal="{{ $tanggal }}" data-action="Reject"
+                                                    class="btn-reject px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white">Tolak</button>
                                             </div>
                                         @else
                                             <span class="text-xs text-gray-400">-</span>
@@ -208,6 +216,22 @@
 
     @push('scripts')
         <script>
+            // Event listener untuk tombol detail lembur
+            document.addEventListener('click', function(e) {
+                const btn = e.target.closest('.btn-detail-lembur');
+                if (btn) {
+                    const id = btn.getAttribute('data-id');
+                    const nama = btn.getAttribute('data-name');
+                    const tanggal = btn.getAttribute('data-tanggal');
+                    const jamMulai = btn.getAttribute('data-jam-mulai');
+                    const jamSelesai = btn.getAttribute('data-jam-selesai');
+                    const durasi = btn.getAttribute('data-durasi');
+                    const keterangan = btn.getAttribute('data-keterangan');
+
+                    showDetailLembur(id, nama, tanggal, jamMulai, jamSelesai, durasi, keterangan);
+                }
+            });
+
             function showDetailLembur(id, nama, tanggal, jamMulai, jamSelesai, durasi, keterangan) {
                 document.getElementById('detailNama').textContent = nama;
                 document.getElementById('detailTanggal').textContent = tanggal;

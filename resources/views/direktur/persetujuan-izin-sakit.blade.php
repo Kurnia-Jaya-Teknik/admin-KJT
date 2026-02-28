@@ -101,25 +101,25 @@
                                     <td class="px-6 py-5 text-center">
                                         @if ($request->status === 'Pending')
                                             <div class="flex items-center justify-center gap-2">
-                                                <button onclick="openPreviewModal({{ $request->id }}, 'cuti')"
-                                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border text-blue-700 hover:bg-blue-50 shadow-sm hover:shadow-md transition-all duration-200">Lihat
+                                                <button data-request-id="{{ $request->id }}" data-request-type="cuti"
+                                                    class="btn-preview px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border text-blue-700 hover:bg-blue-50 shadow-sm hover:shadow-md transition-all duration-200">Lihat
                                                     Surat</button>
                                                 @if (!empty($request->bukti))
                                                     <button
-                                                        onclick="openImageModal('{{ route('files.bukti', basename($request->bukti)) }}')"
-                                                        class="px-3 py-1.5 text-xs font-semibold rounded-lg border bg-white/80 text-indigo-600 hover:bg-indigo-50">📄
+                                                        data-image-url="{{ route('files.bukti', basename($request->bukti)) }}"
+                                                        class="btn-image px-3 py-1.5 text-xs font-semibold rounded-lg border bg-white/80 text-indigo-600 hover:bg-indigo-50">📄
                                                         Surat Dokter</button>
                                                 @endif
                                                 <button data-request-id="{{ $request->id }}" data-request-type="cuti"
                                                     data-employee-name="{{ $request->user->name }}"
                                                     data-jenis="Ijin Sakit" data-tanggal="{{ $tanggal }}"
-                                                    onclick="openApprovalModal('{{ $request->user->name }}', 'Ijin Sakit', '{{ $tanggal }}', 'Approve', {{ $request->id }}, 'cuti')"
-                                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
+                                                    data-action="Approve"
+                                                    class="btn-approve px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all duration-200">Setujui</button>
                                                 <button data-request-id="{{ $request->id }}" data-request-type="cuti"
                                                     data-employee-name="{{ $request->user->name }}"
                                                     data-jenis="Ijin Sakit" data-tanggal="{{ $tanggal }}"
-                                                    onclick="openApprovalModal('{{ $request->user->name }}', 'Ijin Sakit', '{{ $tanggal }}', 'Reject', {{ $request->id }}, 'cuti')"
-                                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
+                                                    data-action="Reject"
+                                                    class="btn-reject px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-sm hover:shadow-md transition-all duration-200">Tolak</button>
                                             </div>
                                         @else
                                             <span class="text-xs text-gray-400">-</span>

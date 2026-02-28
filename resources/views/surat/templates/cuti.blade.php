@@ -3,7 +3,7 @@
 @endphp
 
 <div
-    style="max-width: 210mm; margin: 0 auto; background: white; padding: 20mm; font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.6; color: #000;">
+    style="max-width: 210mm; margin: 0 auto; background: white; padding: 20mm; font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.4; color: #000;">
 
     <!-- KOP SURAT -->
     @if ($kopSurat && $kopSurat->file_path)
@@ -19,114 +19,161 @@
         </div>
     @endif
 
+    <!-- JUDUL FORMULIR -->
+    <div style="text-align: center; margin-bottom: 25px;">
+        <h3 style="margin: 0; font-size: 14pt; font-weight: bold; text-decoration: underline;">FORMULIR PERMOHONAN CUTI
+        </h3>
+    </div>
+
     <!-- NOMOR SURAT -->
-    <div style="margin-bottom: 30px;">
-        <table style="width: 100%; border: none;">
+    <div style="margin-bottom: 20px;">
+        <table style="width: 100%; border: none; border-collapse: collapse;">
             <tr>
-                <td style="width: 20%; padding: 2px 0; border: none;">Nomor</td>
-                <td style="width: 2%; padding: 2px 0; border: none;">:</td>
-                <td style="padding: 2px 0; border: none;">
-                    {{ str_pad($cuti->id ?? 0, 3, '0', STR_PAD_LEFT) }}/CUTI/KJT/{{ now()->format('m/Y') }}</td>
-            </tr>
-            <tr>
-                <td style="padding: 2px 0; border: none;">Lampiran</td>
-                <td style="padding: 2px 0; border: none;">:</td>
-                <td style="padding: 2px 0; border: none;">-</td>
-            </tr>
-            <tr>
-                <td style="padding: 2px 0; border: none;">Perihal</td>
-                <td style="padding: 2px 0; border: none;">:</td>
-                <td style="padding: 2px 0; border: none;">
-                    <strong>{{ $cuti->jenis === 'Ijin Sakit' ? 'Pemberitahuan Ijin Sakit' : 'Persetujuan Cuti' }}</strong>
+                <td style="width: 20%; padding: 3px 0; border: none;">Nomor</td>
+                <td style="width: 2%; padding: 3px 0; border: none;">:</td>
+                <td style="padding: 3px 0; border: none;">
+                    {{ str_pad($cuti->id ?? 0, 3, '0', STR_PAD_LEFT) }}/CUTI/KJT/{{ now()->format('m/Y') }}
                 </td>
             </tr>
         </table>
     </div>
 
-    <!-- TUJUAN SURAT -->
-    <div style="margin-bottom: 30px;">
-        <p style="margin: 0;">Kepada Yth.</p>
-        <p style="margin: 5px 0;"><strong>{{ $cuti->user->name ?? '-' }}</strong></p>
-        <p style="margin: 0;">Di Tempat</p>
+    <!-- DATA KARYAWAN & PERMINTAAN CUTI -->
+    <div style="margin-bottom: 25px;">
+        <table class="data-table" style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+            <tr>
+                <td
+                    style="width: 30%; padding: 8px; border: 1px solid #000; background-color: #f5f5f5; font-weight: bold;">
+                    Nama Lengkap</td>
+                <td style="padding: 8px; border: 1px solid #000;">{{ $cuti->user->name ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #000; background-color: #f5f5f5; font-weight: bold;">
+                    Departemen</td>
+                <td style="padding: 8px; border: 1px solid #000;">{{ $cuti->user->departemen->nama ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #000; background-color: #f5f5f5; font-weight: bold;">Jabatan
+                </td>
+                <td style="padding: 8px; border: 1px solid #000;">{{ ucfirst($cuti->user->role ?? '-') }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #000; background-color: #f5f5f5; font-weight: bold;">Tanggal
+                    Pengajuan</td>
+                <td style="padding: 8px; border: 1px solid #000;">{{ $cuti->created_at->format('d F Y') }}</td>
+            </tr>
+        </table>
     </div>
 
-    <!-- ISI SURAT -->
-    <div style="margin-bottom: 30px;">
-        <p style="text-align: justify; text-indent: 50px; margin-bottom: 15px;">
-            Dengan hormat,
-        </p>
-
-        @if ($cuti->jenis === 'Ijin Sakit')
-            <p style="text-align: justify; text-indent: 50px; margin-bottom: 15px;">
-                Berdasarkan surat keterangan dokter yang telah diserahkan, bersama ini kami sampaikan bahwa Saudara/i
-                <strong>{{ $cuti->user->name ?? '-' }}</strong> dinyatakan tidak dapat melaksanakan tugas karena sakit
-                dan memerlukan istirahat.
-            </p>
-        @else
-            <p style="text-align: justify; text-indent: 50px; margin-bottom: 15px;">
-                Berdasarkan pengajuan cuti yang diajukan oleh <strong>{{ $cuti->user->name ?? '-' }}</strong> pada
-                tanggal {{ $cuti->created_at->format('d F Y') }}, dengan ini kami sampaikan bahwa permohonan cuti telah
-                <strong>DISETUJUI</strong>.
-            </p>
-        @endif
-
-        <p style="margin-bottom: 10px;"><strong>Rincian
-                {{ $cuti->jenis === 'Ijin Sakit' ? 'Ijin Sakit' : 'Cuti' }}:</strong></p>
-        <table style="width: 100%; margin-bottom: 20px; border-collapse: collapse;">
+    <!-- JENIS CUTI (CHECKBOX) -->
+    <div style="margin-bottom: 25px;">
+        <p style="margin: 0 0 10px 0; font-weight: bold;">Jenis Cuti/Ijin:</p>
+        <table style="width: 100%; border: none; border-collapse: collapse;">
             <tr>
-                <td style="width: 30%; padding: 5px 10px; border: 1px solid #000; background-color: #f5f5f5;">
-                    <strong>Jenis</strong></td>
-                <td style="padding: 5px 10px; border: 1px solid #000;">{{ $cuti->jenis }}</td>
-            </tr>
-            <tr>
-                <td style="padding: 5px 10px; border: 1px solid #000; background-color: #f5f5f5;"><strong>Tanggal
-                        Mulai</strong></td>
-                <td style="padding: 5px 10px; border: 1px solid #000;">{{ $cuti->tanggal_mulai->format('d F Y') }}</td>
-            </tr>
-            <tr>
-                <td style="padding: 5px 10px; border: 1px solid #000; background-color: #f5f5f5;"><strong>Tanggal
-                        Selesai</strong></td>
-                <td style="padding: 5px 10px; border: 1px solid #000;">{{ $cuti->tanggal_selesai->format('d F Y') }}
+                <td style="width: 33%; padding: 5px; border: none;">
+                    <span
+                        style="display: inline-block; width: 14px; height: 14px; border: 1px solid #000; text-align: center; line-height: 14px; margin-right: 5px;">{!! $cuti->jenis === 'Cuti Tahunan' ? '&#10003;' : '' !!}</span>
+                    Cuti Tahunan
+                </td>
+                <td style="width: 33%; padding: 5px; border: none;">
+                    <span
+                        style="display: inline-block; width: 14px; height: 14px; border: 1px solid #000; text-align: center; line-height: 14px; margin-right: 5px;">{!! $cuti->jenis === 'Ijin Sakit' ? '&#10003;' : '' !!}</span>
+                    Ijin Sakit
+                </td>
+                <td style="width: 34%; padding: 5px; border: none;">
+                    <span
+                        style="display: inline-block; width: 14px; height: 14px; border: 1px solid #000; text-align: center; line-height: 14px; margin-right: 5px;">{!! !in_array($cuti->jenis, ['Cuti Tahunan', 'Ijin Sakit']) ? '&#10003;' : '' !!}</span>
+                    Lainnya:
+                    {{ !in_array($cuti->jenis, ['Cuti Tahunan', 'Ijin Sakit']) ? $cuti->jenis : '___________' }}
                 </td>
             </tr>
+        </table>
+    </div>
+
+    <!-- DETAIL CUTI -->
+    <div style="margin-bottom: 25px;">
+        <table class="data-table" style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
             <tr>
-                <td style="padding: 5px 10px; border: 1px solid #000; background-color: #f5f5f5;">
-                    <strong>Durasi</strong></td>
-                <td style="padding: 5px 10px; border: 1px solid #000;">{{ $cuti->durasi_hari }} hari</td>
+                <td
+                    style="width: 30%; padding: 8px; border: 1px solid #000; background-color: #f5f5f5; font-weight: bold;">
+                    Tanggal Mulai</td>
+                <td style="padding: 8px; border: 1px solid #000;">{{ $cuti->tanggal_mulai->format('d F Y') }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #000; background-color: #f5f5f5; font-weight: bold;">Tanggal
+                    Selesai</td>
+                <td style="padding: 8px; border: 1px solid #000;">{{ $cuti->tanggal_selesai->format('d F Y') }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #000; background-color: #f5f5f5; font-weight: bold;">Jumlah
+                    Hari</td>
+                <td style="padding: 8px; border: 1px solid #000;">{{ $cuti->durasi_hari }} hari</td>
             </tr>
             @if ($cuti->alasan)
                 <tr>
-                    <td style="padding: 5px 10px; border: 1px solid #000; background-color: #f5f5f5;">
-                        <strong>{{ $cuti->jenis === 'Ijin Sakit' ? 'Diagnosa/Keterangan' : 'Alasan' }}</strong></td>
-                    <td style="padding: 5px 10px; border: 1px solid #000;">{{ $cuti->alasan }}</td>
+                    <td
+                        style="padding: 8px; border: 1px solid #000; background-color: #f5f5f5; font-weight: bold; vertical-align: top;">
+                        {{ $cuti->jenis === 'Ijin Sakit' ? 'Diagnosa/Keterangan' : 'Alasan' }}</td>
+                    <td style="padding: 8px; border: 1px solid #000;">{{ $cuti->alasan }}</td>
+                </tr>
+            @endif
+            @if (
+                $cuti->pelimpahan_tugas &&
+                    is_array($pelimpahan = json_decode($cuti->pelimpahan_tugas, true)) &&
+                    count($pelimpahan) > 0)
+                <tr>
+                    <td
+                        style="padding: 8px; border: 1px solid #000; background-color: #f5f5f5; font-weight: bold; vertical-align: top;">
+                        Pelimpahan Tugas</td>
+                    <td style="padding: 8px; border: 1px solid #000;">
+                        @foreach ($pelimpahan as $index => $userId)
+                            @php
+                                $delegatedUser = \App\Models\User::find($userId);
+                            @endphp
+                            @if ($delegatedUser)
+                                {{ $index + 1 }}. {{ $delegatedUser->name }}
+                                ({{ $delegatedUser->departemen->nama ?? '-' }})
+                                <br>
+                            @endif
+                        @endforeach
+                    </td>
                 </tr>
             @endif
         </table>
-
-        <p style="text-align: justify; text-indent: 50px;">
-            Demikian surat ini dibuat untuk dapat digunakan sebagaimana mestinya. Atas perhatian dan kerjasamanya, kami
-            ucapkan terima kasih.
-        </p>
     </div>
 
-    <!-- TTD -->
-    <div style="margin-top: 50px;">
-        <table style="width: 100%; border: none;">
+    <!-- TANDA TANGAN -->
+    <div style="margin-top: 40px; margin-bottom: 25px;">
+        <table style="width: 50%; margin-left: auto; border-collapse: collapse; border: 1px solid #000;">
             <tr>
-                <td style="width: 50%; border: none;"></td>
-                <td style="width: 50%; text-align: center; border: none;">
-                    <p style="margin: 0;">
-                        {{ \Carbon\Carbon::parse($cuti->tanggal_persetujuan ?? now())->locale('id')->isoFormat('D MMMM Y') }}
-                    </p>
-                    <p style="margin: 5px 0;"><strong>Direktur,</strong></p>
-                    <div style="height: 80px;"></div>
-                    <p
-                        style="margin: 0; border-top: 1px solid #000; display: inline-block; padding-top: 5px; min-width: 200px;">
-                        <strong>{{ auth()->user()->name ?? 'Direktur' }}</strong>
-                    </p>
+                <td
+                    style="padding: 8px; border: 1px solid #000; text-align: center; background-color: #f5f5f5; font-weight: bold;">
+                    Direktur</td>
+            </tr>
+            <tr>
+                <td
+                    style="padding: 8px; border: 1px solid #000; text-align: center; height: 80px; vertical-align: bottom;">
+                    @if ($cuti->direktur_status === 'Disetujui')
+                        <strong>{{ $cuti->direktur_name ?? '-' }}</strong><br>
+                        <small>{{ $cuti->tanggal_persetujuan ? \Carbon\Carbon::parse($cuti->tanggal_persetujuan)->format('d/m/Y') : '-' }}</small>
+                    @else
+                        -
+                    @endif
                 </td>
             </tr>
         </table>
+    </div>
+
+    <!-- CATATAN -->
+    <div style="margin-top: 25px; font-size: 10pt;">
+        <p style="margin: 0 0 5px 0; font-weight: bold;">Catatan:</p>
+        <ol style="margin: 0; padding-left: 20px;">
+            <li>Formulir ini harus diisi lengkap dan diajukan minimal 3 hari sebelum cuti dimulai (kecuali ijin sakit)
+            </li>
+            <li>Persetujuan cuti bergantung pada kebutuhan operasional dan kebijakan perusahaan</li>
+            <li>Untuk ijin sakit lebih dari 2 hari wajib melampirkan surat keterangan dokter</li>
+            <li>Karyawan yang sedang cuti harus dapat dihubungi dalam keadaan darurat</li>
+        </ol>
     </div>
 
 </div>
