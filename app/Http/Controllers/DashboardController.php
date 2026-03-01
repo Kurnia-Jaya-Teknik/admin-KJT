@@ -30,7 +30,7 @@ class DashboardController extends Controller
             return view('dashboard-admin', $data);
         } else {
             $data = array_merge($data, $this->getKaryawanData($user));
-            return view('dashboard-karyawan', $data);
+            return view('dashboard', $data);
         }
     }
 
