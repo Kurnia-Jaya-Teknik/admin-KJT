@@ -15,557 +15,503 @@
 
     <!-- Scrollable Main Content -->
     <div class="flex-1 lg:ml-64 overflow-y-auto h-[calc(100vh-4rem)]">
-        <div class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gray-50 min-h-full">
+        <div class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gray-50/50 min-h-full">
             <!-- Welcome Banner -->
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Auth::user()->role === 'karyawan'): ?>
-                <div
-                    class="relative overflow-hidden mb-8 rounded-2xl shadow-sm border-0">
-                    <!-- Animated gradient background - Soft diverse -->
-                    <div class="absolute inset-0 bg-gradient-to-br from-teal-600 via-cyan-500 to-blue-600"></div>
-                    <!-- Decorative blur elements -->
-                    <div class="absolute top-0 right-0 w-96 h-96 bg-white/8 rounded-full -mr-48 -mt-48 blur-3xl"></div>
-                    <div class="absolute bottom-0 left-0 w-80 h-80 bg-white/4 rounded-full -ml-32 -mb-32 blur-3xl"></div>
-                    
-                    <!-- Content -->
-                    <div class="relative px-8 py-7 md:py-9 flex items-center justify-between">
-                        <div class="flex items-center gap-6 flex-1">
-                            <!-- Icon Container -->
-                            <div class="flex-shrink-0">
-                                <div class="w-14 h-14 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/25 shadow-sm">
-                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2 1m2-1l-2-1m2 1v2.5" />
-                                    </svg>
-                                </div>
-                            </div>
-                            
-                            <!-- Text Content -->
-                            <div class="flex-1">
-                                <div class="mb-1">
-                                    <h1 class="text-3xl md:text-4xl font-semibold text-white mb-1">
-                                        Selamat datang, <span class="bg-gradient-to-r from-white/95 via-white to-blue-100 bg-clip-text text-transparent"><?php echo e(Auth::user()->name); ?></span>! 👋
-                                    </h1>
-                                    <p class="text-white/80 text-sm md:text-base font-normal flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
-                                        <?php echo e(now()->locale('id')->isoFormat('dddd, D MMMM Y')); ?>
-
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Right side decoration -->
-                        <div class="hidden lg:block flex-shrink-0">
-                            <div class="text-white/15">
-                                <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php else: ?>
-                <div
-                    class="relative overflow-hidden bg-gradient-to-r from-red-600/95 via-red-500/90 to-gray-600/85 rounded-2xl p-8 mb-8 shadow-sm border border-white/10">
-                    <div class="relative flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h1 class="text-2xl font-semibold mb-1 text-white">Selamat Datang, <?php echo e(Auth::user()->name); ?>!
-                                    👋</h1>
-                                <p class="text-white/70 text-sm"><?php echo e(now()->locale('id')->isoFormat('dddd, D MMMM Y')); ?>
-
-                                </p>
-                            </div>
-                        </div>
-                        <div class="hidden md:block">
-                            <svg class="w-24 h-24 text-white/12" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            <div
+                class="relative overflow-hidden bg-gradient-to-r from-slate-400 via-slate-400 to-slate-500 rounded-2xl p-6 mb-6 shadow-lg">
+                <div class="relative flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                         </div>
+                        <div>
+                            <h1 class="text-xl font-bold mb-1 text-white">Halo, <?php echo e(Auth::user()->name); ?>! 👋</h1>
+                            <p class="text-slate-50 text-sm font-medium">
+                                <?php echo e(now()->locale('id')->isoFormat('dddd, D MMMM Y')); ?></p>
+                        </div>
                     </div>
                 </div>
-            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            </div>
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <?php if(Auth::user()->role === 'direktur'): ?>
-                    <!-- Direktur Stats Card 1: Total Karyawan -->
+                <!-- Karyawan Stats - Personal (Soft Modern Design) -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-slate-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-slate-200/25 hover:shadow-md hover:border-slate-300/40 transition-all duration-300 hover:-translate-y-0.5">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-slate-50/20 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-xl bg-slate-100/50 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                                    <svg class="w-6 h-6 text-slate-600/80" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-slate-700 bg-slate-100/60 px-2.5 py-1.5 rounded-full border border-slate-200/40">👥
-                                    Aktif</span>
-                            </div>
-                            <h3 class="text-2xl font-semibold text-gray-800 mb-0.5"><?php echo e($totalKaryawan); ?></h3>
-                            <p class="text-sm text-gray-600 font-normal">Total Karyawan Aktif</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-slate-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100/60 to-slate-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-slate-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-slate-600/80 bg-slate-50/70 px-2.5 py-1.5 rounded-full border border-slate-200/30 shadow-sm">👥
+                                Aktif</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($totalKaryawan); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
+                    </div>
+                </div>
 
-                    <!-- Direktur Stats Card 2: Cuti Pending -->
+                <!-- Direktur Stats Card 2: Cuti Pending -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-amber-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-amber-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-amber-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-100/60 to-amber-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-amber-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">⏳
-                                    Pending</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">
-                                <?php echo e(\App\Models\Cuti::where('status', 'Pending')->count()); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Cuti Menunggu Persetujuan</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-amber-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-100/60 to-amber-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-amber-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">⏳
+                                Pending</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5">
+                            <?php echo e(\App\Models\Cuti::where('status', 'Pending')->count()); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Cuti Menunggu Persetujuan</p>
+                    </div>
+                </div>
 
-                    <!-- Direktur Stats Card 3: Lembur Pending -->
+                <!-- Direktur Stats Card 3: Lembur Pending -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-orange-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-orange-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-100/60 to-orange-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-orange-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-orange-600/80 bg-orange-50/70 px-2.5 py-1.5 rounded-full border border-orange-200/30 shadow-sm">⏳
-                                    Pending</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">
-                                <?php echo e(\App\Models\Lembur::where('status', 'Pending')->count()); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Lembur Menunggu Persetujuan</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-100/60 to-orange-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-orange-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-orange-600/80 bg-orange-50/70 px-2.5 py-1.5 rounded-full border border-orange-200/30 shadow-sm">⏳
+                                Pending</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5">
+                            <?php echo e(\App\Models\Lembur::where('status', 'Pending')->count()); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Lembur Menunggu Persetujuan</p>
+                    </div>
+                </div>
 
-                    <!-- Direktur Stats Card 4: Surat Pending -->
+                <!-- Direktur Stats Card 4: Surat Pending -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-red-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-red-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-100/60 to-red-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-red-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3l-4 4z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">📋
-                                    Proses</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5">
-                                <?php echo e(\App\Models\Surat::whereIn('status', ['Draft', 'Menunggu Persetujuan'])->count()); ?>
-
-                            </h3>
-                            <p class="text-sm text-gray-600 font-medium">Surat Menunggu Proses</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-100/60 to-red-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-red-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3l-4 4z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">📋
+                                Proses</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5">
+                            <?php echo e(\App\Models\Surat::whereIn('status', ['Draft', 'Menunggu Persetujuan'])->count()); ?>
 
-                    <!-- Direktur Stats Card 5: Persetujuan Selesai -->
+                        </h3>
+                        <p class="text-sm text-gray-600 font-medium">Surat Menunggu Proses</p>
+                    </div>
+                </div>
+
+                <!-- Direktur Stats Card 5: Persetujuan Selesai -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-green-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-green-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-green-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-100/60 to-green-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-green-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">✅
-                                    Selesai</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($persetujuanSelesai); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Persetujuan Selesai Bulan Ini</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-green-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-100/60 to-green-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-green-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">✅
+                                Selesai</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($persetujuanSelesai); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Persetujuan Selesai Bulan Ini</p>
+                    </div>
+                </div>
 
-                    <!-- Direktur Stats Card 6: Kehadiran Hari Ini -->
+                <!-- Direktur Stats Card 6: Kehadiran Hari Ini -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-blue-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-blue-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-100/60 to-blue-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-blue-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">📊
-                                    <?php echo e($totalKaryawan > 0 ? round(($hadirHariIni / $totalKaryawan) * 100) : 0); ?>%</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($hadirHariIni); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Hadir Hari Ini</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-100/60 to-blue-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-blue-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">📊
+                                <?php echo e($totalKaryawan > 0 ? round(($hadirHariIni / $totalKaryawan) * 100) : 0); ?>%</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($hadirHariIni); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Hadir Hari Ini</p>
+                    </div>
+                </div>
 
-                    <!-- Direktur Stats Card 7: Surat Dikirim -->
+                <!-- Direktur Stats Card 7: Surat Dikirim -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-purple-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-purple-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100/60 to-purple-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-purple-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">📤
-                                    Terkirim</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($suratDikirimBulan ?? 0); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Surat Sudah Dikirim</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100/60 to-purple-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-purple-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">📤
+                                Terkirim</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($suratDikirimBulan ?? 0); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Surat Sudah Dikirim</p>
+                    </div>
+                </div>
 
-                    <!-- Direktur Stats Card 8: Tindakan Diperlukan -->
+                <!-- Direktur Stats Card 8: Tindakan Diperlukan -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-rose-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-rose-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-rose-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-100/60 to-rose-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-rose-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4v2m0 4v2M7 8a5 5 0 1110 0H7z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">⚠️
-                                    Penting</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($pendingApprovals); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Memerlukan Tindakan Segera</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-rose-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
-                <?php elseif(Auth::user()->role === 'admin_hrd'): ?>
-                    <!-- Admin HRD Stats - 8 Cards Grid -->
-                    <!-- Card 1: Total Karyawan -->
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-100/60 to-rose-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-rose-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4v2m0 4v2M7 8a5 5 0 1110 0H7z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">⚠️
+                                Penting</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($pendingApprovals); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Memerlukan Tindakan Segera</p>
+                    </div>
+                </div>
+            <?php elseif(Auth::user()->role === 'admin_hrd'): ?>
+                <!-- Admin HRD Stats - 8 Cards Grid -->
+                <!-- Card 1: Total Karyawan -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-slate-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-slate-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-slate-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100/60 to-slate-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-slate-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">+12%</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e(number_format($totalKaryawan)); ?>
-
-                            </h3>
-                            <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-slate-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100/60 to-slate-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-slate-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">+12%</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e(number_format($totalKaryawan)); ?>
 
-                    <!-- Kehadiran card removed per user request -->
+                        </h3>
+                        <p class="text-sm text-gray-600 font-medium">Total Karyawan Aktif</p>
+                    </div>
+                </div>
 
-                    <!-- Card 3: Cuti Pending -->
+                <!-- Kehadiran card removed per user request -->
+
+                <!-- Card 3: Cuti Pending -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-amber-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-amber-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-amber-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-100/60 to-amber-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-amber-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">Menunggu</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($cutiPending); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Pengajuan Cuti Pending</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-amber-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-100/60 to-amber-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-amber-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">Menunggu</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($cutiPending); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Pengajuan Cuti Pending</p>
+                    </div>
+                </div>
 
-                    <!-- Card 4: Lembur Pending -->
+                <!-- Card 4: Lembur Pending -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-orange-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-orange-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-100/60 to-orange-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-orange-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-orange-600/80 bg-orange-50/70 px-2.5 py-1.5 rounded-full border border-orange-200/30 shadow-sm">Pending</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($lemburPending); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Pengajuan Lembur Pending</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-100/60 to-orange-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-orange-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-orange-600/80 bg-orange-50/70 px-2.5 py-1.5 rounded-full border border-orange-200/30 shadow-sm">Pending</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($lemburPending); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Pengajuan Lembur Pending</p>
+                    </div>
+                </div>
 
-                    <!-- Card 5: Surat Pending -->
+                <!-- Card 5: Surat Pending -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-red-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-red-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-100/60 to-red-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-red-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3l-4 4z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">Proses</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($suratPending); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Surat dalam Proses</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-100/60 to-red-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-red-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3l-4 4z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">Proses</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($suratPending); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Surat dalam Proses</p>
+                    </div>
+                </div>
 
-                    <!-- Card 6: Disetujui -->
+                <!-- Card 6: Disetujui -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-blue-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-blue-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-100/60 to-blue-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-blue-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">Approved</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($pengajuanDisetujui); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Pengajuan Disetujui</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-100/60 to-blue-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-blue-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-blue-600/80 bg-blue-50/70 px-2.5 py-1.5 rounded-full border border-blue-200/30 shadow-sm">Approved</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($pengajuanDisetujui); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Pengajuan Disetujui</p>
+                    </div>
+                </div>
 
-                    <!-- Card 7: Surat Siap -->
+                <!-- Card 7: Surat Siap -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-purple-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-purple-100/60 transition-all duration-300 hover:-translate-y-1">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100/60 to-purple-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-purple-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">Siap</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($suratDiterbitkan); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Surat Siap Dikirim</p>
-                        </div>
+                        class="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100/60 to-purple-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-purple-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-purple-600/80 bg-purple-50/70 px-2.5 py-1.5 rounded-full border border-purple-200/30 shadow-sm">Siap</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($suratDiterbitkan); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Surat Siap Dikirim</p>
+                    </div>
+                </div>
 
-                    <!-- Card 8: Ditolak/Revisi -->
+                <!-- Card 8: Ditolak/Revisi -->
+                <div
+                    class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-rose-100/60 transition-all duration-300 hover:-translate-y-1">
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-rose-100/60 transition-all duration-300 hover:-translate-y-1">
+                        class="absolute inset-0 bg-gradient-to-br from-rose-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-100/60 to-rose-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                <svg class="w-6 h-6 text-rose-500/70" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Revisi</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($revisiCount); ?></h3>
+                        <p class="text-sm text-gray-600 font-medium">Pengajuan Perlu Revisi</p>
+                    </div>
+                </div>
+            <?php else: ?>
+                <!-- Karyawan Stats - Personal (Soft Modern Design) -->
+                <div
+                    class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-red-50/50 to-slate-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <div class="relative flex items-center justify-between mb-4">
                         <div
-                            class="absolute inset-0 bg-gradient-to-br from-rose-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-100 to-slate-100 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
                         </div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-100/60 to-rose-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-rose-500/70" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </div>
-                                <span
-                                    class="text-xs font-medium text-rose-600/80 bg-rose-50/70 px-2.5 py-1.5 rounded-full border border-rose-200/30 shadow-sm">Revisi</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-0.5"><?php echo e($revisiCount); ?></h3>
-                            <p class="text-sm text-gray-600 font-medium">Pengajuan Perlu Revisi</p>
-                        </div>
+                        <span
+                            class="text-xs font-medium text-red-600 bg-red-50 px-2.5 py-1 rounded-full">Tersisa</span>
                     </div>
-                <?php else: ?>
-                    <!-- Karyawan Stats - Personal (Soft Diverse Colors) -->
-                    <!-- Sisa Cuti Card -->
-                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-0 bg-gradient-to-br from-teal-500/90 to-cyan-600/85">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                                <span class="text-xs font-semibold text-white/80 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Tersisa</span>
-                            </div>
-                            <h3 class="text-4xl font-bold text-white mb-1">12</h3>
-                            <p class="text-white/85 text-sm font-normal">Sisa Cuti Tahun Ini</p>
-                            <div class="mt-4 pt-4 border-t border-white/15">
-                                <p class="text-xs text-white/70">Total tahunan: <span class="font-semibold text-white/95">20 hari</span></p>
-                            </div>
-                        </div>
-                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-1">12</h3>
+                    <p class="text-sm text-gray-500 font-medium">Sisa Cuti Tahun Ini</p>
+                </div>
 
-                    <!-- Cuti Digunakan Card -->
-                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-0 bg-gradient-to-br from-slate-500/90 to-slate-700/85">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <span class="text-xs font-semibold text-white/80 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Digunakan</span>
-                            </div>
-                            <h3 class="text-4xl font-bold text-white mb-1">8</h3>
-                            <p class="text-white/85 text-sm font-normal">Cuti Dipakai Tahun Ini</p>
-                            <div class="mt-4 pt-4 border-t border-white/15">
-                                <p class="text-xs text-white/70">Sisa: <span class="font-semibold text-white/95">12 hari</span></p>
-                            </div>
-                        </div>
+                <div
+                    class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-slate-50/50 to-gray-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative flex items-center justify-between mb-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-100 to-gray-100 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <span
+                            class="text-xs font-medium text-slate-600 bg-slate-50 px-2.5 py-1 rounded-full">Digunakan</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-1">8</h3>
+                    <p class="text-sm text-gray-500 font-medium">Cuti Dipakai Tahun Ini</p>
+                </div>
 
-                    <!-- Lembur Bulan Ini Card -->
-                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-0 bg-gradient-to-br from-amber-500/90 to-orange-600/85">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                    </svg>
-                                </div>
-                                <span class="text-xs font-semibold text-white/80 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Januari</span>
-                            </div>
-                            <h3 class="text-4xl font-bold text-white mb-1">16</h3>
-                            <p class="text-white/85 text-sm font-normal">Total Lembur Bulan Ini</p>
-                            <div class="mt-4 pt-4 border-t border-white/15">
-                                <p class="text-xs text-white/70">Rata-rata: <span class="font-semibold text-white/95">8 jam/minggu</span></p>
-                            </div>
-                        </div>
+                <div
+                    class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-red-50/50 to-orange-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative flex items-center justify-between mb-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-100 to-orange-100 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <span
+                            class="text-xs font-medium text-red-600 bg-red-50 px-2.5 py-1 rounded-full">Januari</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-1">16</h3>
+                    <p class="text-sm text-gray-500 font-medium">Total Lembur Bulan Ini</p>
+                </div>
 
-                    <!-- Status Pengajuan Card -->
-                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-0 bg-gradient-to-br from-emerald-500/90 to-green-600/85">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
-                        <div class="relative">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-white/90" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                </div>
-                                <span class="text-xs font-semibold text-white/80 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Disetujui</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-white mb-1">Disetujui</h3>
-                            <p class="text-white/85 text-sm font-normal">Status Pengajuan Terakhir</p>
-                            <div class="mt-4 pt-4 border-t border-white/15">
-                                <p class="text-xs text-white/70">Tanggal: <span class="font-semibold text-white/95">12 Jan 2025</span></p>
-                            </div>
-                        </div>
+                <div
+                    class="group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100/50 transition-all duration-300 hover:-translate-y-0.5">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-green-50/50 to-emerald-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
+                    <div class="relative flex items-center justify-between mb-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <span
+                            class="text-xs font-medium text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Disetujui</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-1">Disetujui</h3>
+                    <p class="text-sm text-gray-500 font-medium">Status Pengajuan Terakhir</p>
+                </div>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
             <!-- Content Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                <?php if(Auth::user()->role === 'direktur' && isset($pengajuanPerBulan)): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Auth::user()->role === 'direktur' && isset($pengajuanPerBulan)): ?>
                     <!-- Charts Section - Direktur (2 kolom) -->
                     <div class="lg:col-span-2 space-y-6">
                         <!-- Pengajuan Bulan Ini Chart - Normal Bar Chart with Tooltip -->
                         <div
-                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
+                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
                             <div
                                 class="absolute inset-0 bg-gradient-to-br from-rose-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
@@ -609,7 +555,7 @@
 
                         <!-- Lembur Per Divisi - Soft Gradient Progress Bars -->
                         <div
-                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
+                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
                             <div
                                 class="absolute inset-0 bg-gradient-to-br from-orange-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
@@ -693,7 +639,7 @@
                     <div class="space-y-6">
                         <!-- Status Pengajuan Donut - Soft Gradient Colors -->
                         <div
-                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
+                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
                             <div
                                 class="absolute inset-0 bg-gradient-to-br from-green-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
@@ -820,7 +766,7 @@
                     <div class="lg:col-span-2 space-y-6">
                         <!-- Pengajuan Masuk - Soft Gradient Chart -->
                         <div
-                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
+                            class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 hover:shadow-lg transition-all duration-300 p-6">
                             <div
                                 class="absolute inset-0 bg-gradient-to-br from-purple-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
@@ -883,7 +829,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <!-- Cuti vs Lembur Comparison -->
                             <div
-                                class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl shadow-sm border border-gray-100/40 p-6">
+                                class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6">
                                 <h4 class="text-sm font-semibold text-gray-800 mb-4">Pengajuan Menunggu</h4>
                                 <div class="space-y-3">
                                     <div class="flex items-center justify-between">
@@ -910,7 +856,7 @@
 
                             <!-- Pengajuan Disetujui Bulan Ini -->
                             <div
-                                class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl shadow-sm border border-gray-100/40 p-6">
+                                class="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-gray-100/40 p-6">
                                 <h4 class="text-sm font-semibold text-gray-800 mb-4">Disetujui Bulan Ini</h4>
                                 <div class="text-center py-6">
                                     <div class="text-3xl font-bold text-green-600"><?php echo e($pengajuanDisetujui); ?></div>
@@ -1329,147 +1275,230 @@
                         </div>
                     </div>
 
-                    <!-- Right Column - Karyawan (Personal) - Modern Design -->
-                    <div class="space-y-6">
-                        <!-- Profile Card dengan Info Lengkap -->
-                        <div class="relative overflow-hidden bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-7">
-                            <div class="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-cyan-50/20 pointer-events-none"></div>
-                            <div class="relative">
-                                <div class="flex items-center gap-5 mb-6">
-                                    <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="flex-1">
-                                        <h3 class="text-xl font-bold text-gray-900"><?php echo e(Auth::user()->name); ?></h3>
-                                        <p class="text-sm text-blue-600 font-semibold">Karyawan Tetap</p>
+                    <!-- Right Column - Karyawan (Personal) - Soft Modern Design -->
+                    <div class="space-y-5">
+                        <!-- Surat Keterangan Diterima - PRIORITAS TERATAS -->
+                        <div
+                            class="bg-gradient-to-br from-green-50 to-emerald-50 backdrop-blur-sm rounded-xl shadow-md border-2 border-green-200 p-5 ring-2 ring-green-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+                                    <span class="text-lg">📬</span>
+                                    Surat Keterangan Diterima
+                                </h3>
+                                <span id="suratBadge"
+                                    class="hidden px-2.5 py-1 text-xs font-bold text-white bg-red-500 rounded-full animate-pulse shadow-lg">0</span>
+                            </div>
+                            <div id="suratDiterimaContainer" class="space-y-3">
+                                <div class="flex items-center justify-center py-6">
+                                    <div class="text-center">
+                                        <div
+                                            class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-2">
+                                        </div>
+                                        <p class="text-xs text-gray-500">Loading...</p>
                                     </div>
                                 </div>
-                                <div class="space-y-3 divide-y divide-gray-200">
-                                    <div class="pt-3 first:pt-0">
-                                        <p class="text-xs text-gray-500 font-medium mb-1">Departemen/Bagian</p>
-                                        <p class="text-sm font-semibold text-gray-900">IT & Teknologi</p>
+                            </div>
+                            <div class="mt-4 flex gap-2 items-center">
+                                <a href="<?php echo e(route('karyawan.surat-keterangan.request.index')); ?>"
+                                    class="flex-1 text-center text-xs font-semibold text-gray-700 hover:text-gray-800 py-2.5 border-2 border-gray-300 rounded-lg hover:bg-white transition-all">
+                                    📋 Ajukan Permintaan
+                                </a>
+                                <a href="/karyawan/surat-keterangan"
+                                    class="flex-1 text-center text-xs font-bold text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all">
+                                    Lihat Semua →
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Cuti Balance Quick View -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Kuota Cuti Saya</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-medium text-gray-600">Cuti Tahunan</span>
+                                        <span class="text-sm font-semibold text-red-600">12 / 20 hari</span>
                                     </div>
-                                    <div class="pt-3">
-                                        <p class="text-xs text-gray-500 font-medium mb-1">Email</p>
-                                        <p class="text-sm font-semibold text-gray-900"><?php echo e(Auth::user()->email); ?></p>
+                                    <div class="w-full bg-gray-100 rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full transition-all duration-500"
+                                            style="width: 60%"></div>
                                     </div>
-                                    <div class="pt-3">
-                                        <p class="text-xs text-gray-500 font-medium mb-1">Kehadiran Bulan Ini</p>
-                                        <div class="flex items-center gap-2">
-                                            <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                                <div class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style="width: 90.9%"></div>
-                                            </div>
-                                            <span class="text-lg font-bold text-green-600">90.9%</span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-medium text-gray-600">Cuti Sakit</span>
+                                        <span class="text-sm font-semibold text-slate-600">Tidak Terbatas</span>
+                                    </div>
+                                    <div class="w-full bg-gray-100 rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-slate-500 to-slate-600 h-2 rounded-full transition-all duration-500"
+                                            style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Summary -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Info Saya</h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                                    <span class="text-gray-500 font-medium">Bagian</span>
+                                    <span class="font-semibold text-gray-800">IT & Teknologi</span>
+                                </div>
+                                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                                    <span class="text-gray-500 font-medium">Status</span>
+                                    <span class="font-semibold text-gray-800">Tetap</span>
+                                </div>
+                                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                                    <span class="text-gray-500 font-medium">Kehadiran Bulan Ini</span>
+                                    <span class="font-semibold text-lg text-red-600">100%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-500 font-medium">Menunggu Persetujuan</span>
+                                    <span class="font-semibold text-lg text-slate-600">1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions Card -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Aksi Cepat</h3>
+                            <div class="space-y-3">
+                                <a href="<?php echo e(route('karyawan.pengajuan-cuti')); ?>"
+                                    class="block w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                    Ajukan Cuti
+                                </a>
+                                <a href="<?php echo e(route('karyawan.pengajuan-lembur')); ?>"
+                                    class="block w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                    Ajukan Lembur
+                                </a>
+                                <a href="<?php echo e(route('karyawan.surat-keterangan.request.index')); ?>"
+                                    class="block w-full bg-gradient-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                    Surat Keterangan
+                                </a>
+                                <a href="<?php echo e(route('karyawan.surat')); ?>"
+                                    class="block w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-center">
+                                    Surat Saya
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Pengajuan Pending -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Pengajuan Menunggu</h3>
+                            <div class="space-y-3">
+                                <div
+                                    class="flex items-center justify-between p-3 bg-red-50/50 rounded-lg border border-red-100/50">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-800">Cuti Tahunan</p>
+                                            <p class="text-xs text-gray-500">2 hari - 15-16 Jan</p>
                                         </div>
                                     </div>
+                                    <span
+                                        class="text-xs font-medium text-red-600 bg-red-100 px-2 py-0.5 rounded-full">Pending</span>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Quick Stats Grid -->
-                        <div class="grid grid-cols-2 gap-4">
-                            <!-- Menunggu Persetujuan -->
-                            <div class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-5 border border-orange-100">
-                                <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mb-3">
-                                    <svg class="w-5 h-5 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-                                    </svg>
-                                </div>
-                                <p class="text-xs text-gray-600 font-medium mb-1">Menunggu Persetujuan</p>
-                                <p class="text-3xl font-bold text-orange-600">1</p>
-                            </div>
-
-                            <!-- Penolakan -->
-                            <div class="bg-gradient-to-br from-red-50 to-rose-50 rounded-2xl p-5 border border-red-100">
-                                <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center mb-3">
-                                    <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
-                                    </svg>
-                                </div>
-                                <p class="text-xs text-gray-600 font-medium mb-1">Perlu Revisi</p>
-                                <p class="text-3xl font-bold text-red-600">0</p>
-                            </div>
-                        </div>
-
-                        <!-- Surat Keterangan Alert Box -->
-                        <div class="relative overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 rounded-2xl shadow-lg border border-emerald-300/30 p-6">
-                            <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
-                            <div class="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
-                            <div class="relative">
-                                <div class="flex items-start gap-3 mb-4">
-                                    <div class="flex-shrink-0 mt-1">
-                                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-                                        </svg>
+                                <div
+                                    class="flex items-center justify-between p-3 bg-slate-50/50 rounded-lg border border-slate-100/50">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-2 h-2 rounded-full bg-slate-500"></div>
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-800">Lembur</p>
+                                            <p class="text-xs text-gray-500">5 jam - 12 Jan</p>
+                                        </div>
                                     </div>
-                                    <div class="flex-1">
-                                        <h4 class="text-white font-bold text-sm mb-1">📬 Surat Keterangan Tersedia</h4>
-                                        <p class="text-white/90 text-xs leading-relaxed">Anda memiliki surat yang siap untuk diambil. Klik tombol di bawah untuk melihat detail.</p>
+                                    <span
+                                        class="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">Review</span>
+                                </div>
+                            </div>
+                            <a href="<?php echo e(route('karyawan.riwayat')); ?>"
+                                class="mt-3 block text-center text-xs font-medium text-slate-600 hover:text-slate-700">
+                                Lihat Semua →
+                            </a>
+                        </div>
+
+                        <!-- Statistik Bulanan -->
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Statistik Bulan Ini</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-600">Kehadiran</span>
                                     </div>
+                                    <span class="text-sm font-semibold text-gray-800">90.9%</span>
                                 </div>
-                                <div id="suratDiterimaContainer" class="mb-4">
-                                    <!-- Akan diisi oleh JavaScript -->
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-600">Total Lembur</span>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800">16 jam</span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <a href="<?php echo e(route('karyawan.surat-keterangan.request.index')); ?>" class="flex-1 text-center bg-white/20 hover:bg-white/30 text-white text-xs font-semibold py-2.5 rounded-xl transition-all border border-white/30">
-                                        📋 Ajukan
-                                    </a>
-                                    <a href="/karyawan/surat-keterangan" class="flex-1 text-center bg-white text-emerald-600 hover:bg-emerald-50 text-xs font-bold py-2.5 rounded-xl transition-all">
-                                        Lihat Semua →
-                                    </a>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-600">Cuti Digunakan</span>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800">2 hari</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-600">Surat Terbit</span>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800">1</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Quick Actions Buttons -->
-                        <div class="grid grid-cols-2 gap-3">
-                            <a href="<?php echo e(route('karyawan.pengajuan-cuti')); ?>" class="group relative overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700">
-                                <div class="relative flex flex-col items-center text-center text-white">
-                                    <svg class="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
-                                    </svg>
-                                    <span class="text-xs font-semibold">Ajukan Cuti</span>
+                        <!-- Notifikasi Penting -->
+                        <div
+                            class="bg-gradient-to-br from-red-50/50 to-slate-50/30 rounded-xl shadow-sm border border-red-100/50 p-5">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                                <h3 class="text-sm font-semibold text-gray-800">Pemberitahuan</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="text-xs text-gray-600 leading-relaxed">
+                                    <p class="font-medium text-gray-800 mb-1">• Slip gaji Desember tersedia</p>
+                                    <p class="text-gray-500">Silakan unduh di menu Surat Saya</p>
                                 </div>
-                            </a>
-
-                            <a href="<?php echo e(route('karyawan.pengajuan-lembur')); ?>" class="group relative overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800">
-                                <div class="relative flex flex-col items-center text-center text-white">
-                                    <svg class="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
-                                    </svg>
-                                    <span class="text-xs font-semibold">Ajukan Lembur</span>
+                                <div class="text-xs text-gray-600 leading-relaxed pt-2 border-t border-red-100/50">
+                                    <p class="font-medium text-gray-800 mb-1">• Evaluasi kinerja Q4</p>
+                                    <p class="text-gray-500">Jadwal: 20 Januari 2026</p>
                                 </div>
-                            </a>
-
-                            <a href="<?php echo e(route('karyawan.surat-keterangan.request.index')); ?>" class="group relative overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700">
-                                <div class="relative flex flex-col items-center text-center text-white">
-                                    <svg class="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    <span class="text-xs font-semibold">Surat Keterangan</span>
-                                </div>
-                            </a>
-
-                            <a href="<?php echo e(route('karyawan.surat')); ?>" class="group relative overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700">
-                                <div class="relative flex flex-col items-center text-center text-white">
-                                    <svg class="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-xs font-semibold">Surat Saya</span>
-                                </div>
-                            </a>
+                            </div>
                         </div>
-
-
-                        <!-- View History Link -->
-                        <a href="<?php echo e(route('karyawan.riwayat')); ?>" class="flex items-center justify-center gap-2 w-full bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm hover:shadow-md transition-all border border-gray-100/50 text-gray-700 font-semibold hover:text-blue-600 group">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3" />
-                            </svg>
-                            Lihat Riwayat Lengkap →
-                        </a>
                     </div>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
@@ -1485,7 +1514,7 @@
                         <div class="divide-gray-100 max-h-96 overflow-y-auto">
                             <!-- Card Item 1 -->
                             <div class="px-6 py-4 hover:bg-gray-50 transition-colors ">
-                                <div class="flex items-start gap-4"> 
+                                <div class="flex items-start gap-4">
                                     <div
                                         class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0 font-semibold text-indigo-600">
                                         AR</div>
@@ -2194,7 +2223,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Recent Activities -->
                 <div
-                    class="lg:col-span-3 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
+                    class="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 overflow-hidden hover:shadow-md transition-shadow duration-300">
                     <div
                         class="px-6 py-4 border-b border-gray-100/50 bg-gradient-to-r from-pink-50/30 via-purple-50/30 to-orange-50/20">
                         <div class="flex items-center justify-between">
@@ -2592,6 +2621,32 @@
                                     </div>
                                 </div>
                             </div>
+                            <div
+                                class="px-6 py-5 hover:bg-gradient-to-r hover:from-purple-50/30 hover:to-transparent transition-all duration-300 group">
+                                <div class="flex items-start gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-semibold text-gray-800 mb-1">Slip gaji tersedia</p>
+                                        <p class="text-xs text-gray-500 mb-2">Slip gaji Desember - Siap diunduh</p>
+                                        <span class="inline-flex items-center text-xs text-gray-400">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            5 hari lalu
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
@@ -2936,8 +2991,6 @@
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-    </div>
-    </div>
 
     <!-- Mobile Sidebar Toggle (for responsive) -->
     <div class="lg:hidden fixed bottom-6 right-6 z-50">
@@ -2959,4 +3012,4 @@
 <?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
 <?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
 <?php endif; ?>
-<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/dashboard.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/dashboard-karyawan.blade.php ENDPATH**/ ?>

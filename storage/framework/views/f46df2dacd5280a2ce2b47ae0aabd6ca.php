@@ -46,23 +46,23 @@
                     <form id="ijinForm" class="space-y-6" enctype="multipart/form-data">
                         <div id="ijinAlert" class="hidden"></div>
 
-                        <div class="text-sm text-gray-700 mb-6 p-4 rounded-xl bg-blue-50/40 border border-blue-200/30">
+                        <div class="text-base text-gray-700 mb-6 p-4 rounded-xl bg-blue-50/40 border border-blue-200/30">
                             <p class="font-medium text-gray-800">ℹ️ Yang bertanda tangan di bawah ini:</p>
                         </div>
 
                         <!-- User Info - Display only -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-gray-200/30">
                             <div>
-                                <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Nama Karyawan</label>
-                                <div class="px-4 py-3 rounded-lg bg-gray-50/80 border border-gray-200/50 text-sm font-medium text-gray-800">
+                                <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Nama Karyawan</label>
+                                <div class="px-4 py-3 rounded-lg bg-gray-50/80 border border-gray-200/50 text-base font-medium text-gray-800">
                                     <?php echo e(auth()->user()->name); ?>
 
                                 </div>
                             </div>
 
                             <div>
-                                <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Jabatan / Divisi</label>
-                                <div class="px-4 py-3 rounded-lg bg-gray-50/80 border border-gray-200/50 text-sm font-medium text-gray-800">
+                                <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Jabatan / Divisi</label>
+                                <div class="px-4 py-3 rounded-lg bg-gray-50/80 border border-gray-200/50 text-base font-medium text-gray-800">
                                     <?php echo e(auth()->user()->departemen->nama ?? '-'); ?>
 
                                 </div>
@@ -74,41 +74,41 @@
 
                         <!-- Periode Ijin Sakit -->
                         <div class="pt-6">
-                            <h3 class="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <h3 class="text-base font-semibold text-gray-800 mb-4 flex items-center gap-2">
                                 <span class="text-lg">📅</span> Periode Ijin Sakit
                             </h3>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Tanggal Mulai</label>
+                                    <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Tanggal Mulai</label>
                                     <input id="tanggal_mulai" name="tanggal_mulai" type="date"
-                                        class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-sm bg-white/60 focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-200/30 transition-all duration-200 font-medium text-gray-800">
+                                        class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base bg-white/60 focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-200/30 transition-all duration-200 font-medium text-gray-800">
                                 </div>
                                 <div>
-                                    <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Tanggal Selesai</label>
+                                    <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Tanggal Selesai</label>
                                     <input id="tanggal_selesai" name="tanggal_selesai" type="date"
-                                        class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-sm bg-white/60 focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-200/30 transition-all duration-200 font-medium text-gray-800">
+                                        class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base bg-white/60 focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-200/30 transition-all duration-200 font-medium text-gray-800">
                                 </div>
                             </div>
 
-                            <div id="tanggal-error" class="text-red-500/80 text-xs mt-3 hidden font-medium"></div>
+                            <div id="tanggal-error" class="text-red-500/80 text-sm mt-3 hidden font-medium"></div>
                         </div>
 
                         <!-- Keterangan -->
                         <div class="pt-6">
-                            <h3 class="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <h3 class="text-base font-semibold text-gray-800 mb-4 flex items-center gap-2">
                                 <span class="text-lg">📝</span> Keterangan / Alasan
                             </h3>
                             <textarea id="alasan" name="alasan" rows="4" placeholder="Uraikan kondisi kesehatan dan alasan pengajuan ijin sakit..."
-                                class="w-full px-4 py-3 border border-gray-300/60 rounded-lg text-sm bg-white/60 focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-200/30 transition-all duration-200 resize-none font-normal text-gray-800 placeholder-gray-400"></textarea>
+                                class="w-full px-4 py-3 border border-gray-300/60 rounded-lg text-base bg-white/60 focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-200/30 transition-all duration-200 resize-none font-normal text-gray-800 placeholder-gray-400"></textarea>
                         </div>
 
                         <!-- Lampiran (Surat Dokter) -->
                         <div class="pt-6 border-t border-gray-200/30">
-                            <h3 class="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                <span class="text-lg">📄</span> Upload Surat Dokter <span class="text-red-500 text-xs font-bold">(WAJIB)</span>
+                            <h3 class="text-base font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                                <span class="text-lg">📄</span> Upload Surat Dokter <span class="text-red-500 text-sm font-bold">(WAJIB)</span>
                             </h3>
-                            <p class="text-xs text-gray-500 mb-4">Upload file surat keterangan dari dokter (PDF atau gambar). File maksimal 10 MB.</p>
+                            <p class="text-sm text-gray-500 mb-4">Upload file surat keterangan dari dokter (PDF atau gambar). File maksimal 10 MB.</p>
                             <div class="flex items-center gap-4 p-4 rounded-lg bg-blue-50/40 border-2 border-dashed border-blue-300/50 hover:border-blue-400/70 transition-all duration-300 cursor-pointer group"
                                 onclick="document.getElementById('bukti').click()">
                                 <div class="w-12 h-12 rounded-lg bg-blue-500/15 flex items-center justify-center group-hover:bg-blue-500/25 transition-colors">
@@ -117,10 +117,10 @@
                                     </svg>
                                 </div>
                                 <div class="flex-1">
-                                    <p class="text-sm font-medium text-gray-800">
+                                    <p class="text-base font-medium text-gray-800">
                                         <span id="buktiName">Klik atau drag file surat dokter di sini</span>
                                     </p>
-                                    <p class="text-xs text-gray-500 mt-1">Tipe: PDF, JPG, PNG | Max: 10 MB</p>
+                                    <p class="text-sm text-gray-500 mt-1">Tipe: PDF, JPG, PNG | Max: 10 MB</p>
                                 </div>
                                 <input type="file" id="bukti" name="bukti" accept="image/*,.pdf" required
                                     class="sr-only" />
@@ -129,21 +129,21 @@
 
                         <!-- Nomor Telepon -->
                         <div class="pt-6 border-t border-gray-200/30">
-                            <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Telepon Yang Bisa Dihubungi</label>
+                            <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Telepon Yang Bisa Dihubungi</label>
                             <input type="tel" id="telp" name="telp"
                                 placeholder="Contoh: 081234567890"
                                 value="<?php echo e(old('telp', auth()->user()->phone ?? '')); ?>"
-                                class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-sm bg-white/60 focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-200/30 transition-all duration-200 font-medium text-gray-800" />
+                                class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base bg-white/60 focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-200/30 transition-all duration-200 font-medium text-gray-800" />
                         </div>
 
                         <!-- Button -->
                         <div class="flex gap-3 pt-6 border-t border-gray-200/30">
                             <button type="submit" id="submitIjin"
-                                class="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-semibold rounded-lg transition-all duration-300 text-sm shadow-sm hover:shadow-md active:scale-98">
+                                class="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-semibold rounded-lg transition-all duration-300 text-base shadow-sm hover:shadow-md active:scale-98">
                                 ✓ Ajukan Ijin Sakit
                             </button>
                             <button type="reset"
-                                class="flex-1 px-4 py-3 bg-gray-200/80 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-all duration-300 text-sm shadow-sm hover:shadow-md">
+                                class="flex-1 px-4 py-3 bg-gray-200/80 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-all duration-300 text-base shadow-sm hover:shadow-md">
                                 ✕ Batal
                             </button>
                         </div>
@@ -327,13 +327,13 @@
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center justify-between gap-3 mb-2">
                                             <div>
-                                                <p class="text-sm font-semibold text-gray-800">Ijin Sakit</p>
-                                                <p class="text-xs text-gray-500 mt-1">📅 ${tanggalMulai} – ${tanggalSelesai}</p>
+                                                <p class="text-base font-semibold text-gray-800">Ijin Sakit</p>
+                                                <p class="text-sm text-gray-500 mt-1">📅 ${tanggalMulai} – ${tanggalSelesai}</p>
                                             </div>
-                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-${statusColor}-100/70 text-${statusColor}-700 text-xs font-semibold rounded-full whitespace-nowrap flex-shrink-0 shadow-sm">${statusLabel}</span>
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-${statusColor}-100/70 text-${statusColor}-700 text-sm font-semibold rounded-full whitespace-nowrap flex-shrink-0 shadow-sm">${statusLabel}</span>
                                         </div>
-                                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">📝 ${i.alasan || '-'}</p>
-                                        <button class="text-xs text-${statusColor}-600/90 hover:text-${statusColor}-700 font-medium transition-colors group-hover:font-bold">Lihat Detail →</button>
+                                        <p class="text-base text-gray-600 mb-2 line-clamp-2">📝 ${i.alasan || '-'}</p>
+                                        <button class="text-sm text-${statusColor}-600/90 hover:text-${statusColor}-700 font-medium transition-colors group-hover:font-bold">Lihat Detail →</button>
                                     </div>
                                 </div>
                             </div>`;
@@ -344,7 +344,7 @@
                             const buttons = [];
                             for (let p = 1; p <= pagination.last_page; p++) {
                                 buttons.push(
-                                    `<button class="px-3 py-2 rounded-lg font-medium text-xs transition-all duration-300 ${p === page ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md hover:shadow-lg' : 'border border-gray-300/60 text-gray-600 hover:bg-gray-100 hover:border-gray-400'}" data-page="${p}">${p}</button>`
+                                    `<button class="px-3 py-2 rounded-lg font-medium text-sm transition-all duration-300 ${p === page ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md hover:shadow-lg' : 'border border-gray-300/60 text-gray-600 hover:bg-gray-100 hover:border-gray-400'}" data-page="${p}">${p}</button>`
                                     );
                             }
                             paginationEl.innerHTML = buttons.join('');
