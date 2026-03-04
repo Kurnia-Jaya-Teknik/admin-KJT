@@ -83,10 +83,59 @@ class CutiController extends Controller
         return response()->json(['ok' => true, 'list' => $cutiList]);
     }
 
+<<<<<<< Updated upstream
+=======
+    public function store(Request $request)
+    {
+        $this->ensureAdminHRD();
+
+        try {
+            $request->validate([
+                'user_id' => 'required|exists:users,id',
+                'jenis' => 'required|string',
+                'tanggal_mulai' => 'required|date',
+                'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+                'alasan' => 'required|string',
+                'status' => 'required|in:Pending,Disetujui,Ditolak',
+            ]);
+
+            // Calculate duration
+            $start = new \DateTime($request->tanggal_mulai);
+            $end = new \DateTime($request->tanggal_selesai);
+            $durasi = $start->diff($end)->days + 1;
+
+            // Create cuti
+            $cuti = Cuti::create([
+                'user_id' => $request->user_id,
+                'jenis' => $request->jenis,
+                'tanggal_mulai' => $request->tanggal_mulai,
+                'tanggal_selesai' => $request->tanggal_selesai,
+                'durasi' => $durasi . ' Hari',
+                'alasan' => $request->alasan,
+                'status' => $request->status,
+                'disetujui_oleh' => $request->status === 'Disetujui' ? Auth::id() : null,
+                'tanggal_persetujuan' => $request->status === 'Disetujui' ? now() : null,
+            ]);
+
+            return response()->json([
+                'ok' => true,
+                'message' => 'Pengajuan cuti berhasil ditambahkan',
+                'cuti' => $cuti
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'ok' => false,
+                'message' => $e->getMessage()
+            ], 422);
+        }
+    }
+
+>>>>>>> Stashed changes
     public function preview($id)
     {
         $this->ensureAdminHRD();
 
+<<<<<<< Updated upstream
         $cuti = Cuti::find($id);
         if (!$cuti) {
             return response()->json(['ok' => false, 'message' => 'Cuti tidak ditemukan'], 404);
@@ -133,6 +182,10 @@ class CutiController extends Controller
             'cuti' => $cuti
         ]);
     }
+=======
+        try {
+            $cuti = Cuti::with(['user', 'user.departemen'])->findOrFail($id);
+>>>>>>> Stashed changes
 
     public function buatSurat(Request $request, $id)
     {
@@ -215,4 +268,23 @@ class CutiController extends Controller
             ], 500);
         }
     }
+<<<<<<< Updated upstream
+=======
+
+    public function show($id)
+    {
+        $this->ensureAdminHRD();
+
+        $cuti = Cuti::with(['user', 'user.departemen'])->find($id);
+        
+        if (!$cuti) {
+            return response()->json(['ok' => false, 'message' => 'Cuti tidak ditemukan'], 404);
+        }
+
+        return response()->json([
+            'ok' => true,
+            'cuti' => $cuti
+        ]);
+    }
+>>>>>>> Stashed changes
 }

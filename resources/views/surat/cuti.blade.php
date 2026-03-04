@@ -19,6 +19,7 @@
             color: #000;
             line-height: 1.5;
             background: white;
+<<<<<<< Updated upstream
             font-size: 12px;
         }
         @page {
@@ -55,6 +56,8 @@
 
         .company-name {
             font-weight: bold;
+=======
+>>>>>>> Stashed changes
             font-size: 11pt;
         }
         /* Isi Surat */
@@ -68,7 +71,11 @@
         }
         .intro-text {
             margin-bottom: 12px;
+<<<<<<< Updated upstream
             text-align: justify;
+=======
+            font-weight: normal;
+>>>>>>> Stashed changes
         }
         .info-line {
             margin: 5px 0;
@@ -197,9 +204,14 @@
             </tr>
         </table>
 
+<<<<<<< Updated upstream
         <!-- Judul Surat -->
         <div style="border-top: 2px solid #000; border-bottom: 1px solid #000; height: 4px; margin: 6px 0 15px 0;"></div>
         <div class="title" style="text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 10px;">SURAT PERMOHONAN CUTI</div>
+=======
+        <!-- Judul Formulir -->
+        <div class="title">FORMULIR CUTI</div>
+>>>>>>> Stashed changes
 
         <!-- Nomor dan Tanggal Surat -->
         @if($nomor_surat ?? false)
@@ -223,6 +235,7 @@
                 <span class="info-value">{{ $karyawan->name ?? '' }}</span>
             </div>
 
+<<<<<<< Updated upstream
             <div class="info-line">
                 <span class="info-label">Jabatan/Devisi</span>
                 <span class="info-value">{{ $karyawan->departemen->nama ?? $karyawan->jabatan ?? '' }}</span>
@@ -282,12 +295,69 @@
             </div>
 
             <p style="margin-top: 10px; margin-bottom: 14px; font-size: 12px;">Demikian permohonan cuti ini saya sampaikan.</p>
+=======
+            <!-- Detail Cuti -->
+            <p style="margin: 12px 0 8px 0; font-weight: bold;">Mengajukan Cuti Terhitung:</p>
+            <table class="data-table">
+                <tr>
+                    <td class="label-cell">Mulai Tanggal</td>
+                    <td class="value-cell">
+                        {{ $cuti->tanggal_mulai ? $cuti->tanggal_mulai->locale('id')->translatedFormat('d F Y') : '-' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Sampai Tanggal</td>
+                    <td class="value-cell">
+                        {{ $cuti->tanggal_selesai ? $cuti->tanggal_selesai->locale('id')->translatedFormat('d F Y') : '-' }}
+                        <strong style="margin-left: 15px;">Total Hari: {{ $cuti->durasi_hari ?? '0' }} hari</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Keperluan / Alasan</td>
+                    <td class="value-cell">{{ $cuti->alasan ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Pelimpahan Tugas Kepada</td>
+                    <td class="value-cell">
+                        @if (!empty($cuti->dilimpahkan_ke))
+                            @php
+                                $delegatedNames = is_array($cuti->dilimpahkan_ke)
+                                    ? $cuti->dilimpahkan_ke
+                                    : json_decode($cuti->dilimpahkan_ke, true);
+                            @endphp
+                            @if ($delegatedNames && count($delegatedNames) > 0)
+                                {{ implode(', ', array_column($delegatedNames, 'name')) }}
+                            @else
+                                -
+                            @endif
+                        @else
+                            -
+                        @endif
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Telp. yang Bisa Dihubungi</td>
+                    <td class="value-cell">{{ $karyawan->phone ?? '-' }}</td>
+                </tr>
+            </table>
+
+            <!-- Penutup -->
+            <p style="margin: 15px 0 10px 0;">
+                Demikian permohonan cuti ini saya sampaikan untuk dapat dipertimbangkan.
+                Atas perhatian dan persetujuannya, saya ucapkan terima kasih.
+            </p>
+>>>>>>> Stashed changes
         </div>
 
         <!-- Signature Section -->
         <div class="signature-section">
+<<<<<<< Updated upstream
             <div class="date-line">
                 Pasuruan, {{ now()->format('d/m/Y') }}
+=======
+            <div class="sig-date">
+                Pasuruan, {{ now()->locale('id')->translatedFormat('d F Y') }}
+>>>>>>> Stashed changes
             </div>
 
             <div class="signature-wrapper">

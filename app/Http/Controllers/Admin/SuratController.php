@@ -236,49 +236,6 @@ class SuratController extends Controller
     {
         $this->ensureAdminHRD();
 
-<<<<<<< Updated upstream
-        // Increase execution time for PDF generation
-        set_time_limit(120);
-
-        $cuti = \App\Models\Cuti::findOrFail($cutiId);
-
-        if ($cuti->status !== 'Disetujui') {
-            return response()->json(['ok' => false, 'message' => 'Pengajuan cuti belum disetujui'], 400);
-        }
-
-        $karyawan = $cuti->user;
-
-        // Get delegated users from dilimpahkan_ke array
-        $delegatedUsers = collect();
-        if (!empty($cuti->dilimpahkan_ke) && is_array($cuti->dilimpahkan_ke)) {
-            $delegatedUsers = \App\Models\User::whereIn('id', $cuti->dilimpahkan_ke)->get();
-        }
-
-        // ✅ PATH LOGO WAJIB FILE://
-        $logoPath = 'file://' . public_path('img/image.png');
-
-        $html = view('surat.cuti', [
-            'karyawan' => $karyawan,
-            'cuti' => $cuti,
-            'logoPath' => $logoPath,
-            'delegatedUsers' => $delegatedUsers,
-        ])->render();
-
-        // ✅ OPTIONS DOMPDF (WAJIB)
-        $options = new Options();
-        $options->set('isRemoteEnabled', true);
-        $options->set('isHtml5ParserEnabled', true);
-
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-
-        $fileName = 'Surat_Cuti_'.$karyawan->name.'_'.time().'.pdf';
-        $folderPath = 'cuti';
-        $path = storage_path('app/public/'.$folderPath.'/'.$fileName);
-
-=======
         $cuti = \App\Models\Cuti::with(['user'])->findOrFail($cutiId);
 
         if ($cuti->status !== 'Disetujui') {
@@ -334,24 +291,12 @@ class SuratController extends Controller
 
         $fileName = 'Surat_Cuti_' . $karyawan->name . '_' . time() . '.pdf';
         $path = storage_path('app/public/generated/' . $fileName);
-
->>>>>>> Stashed changes
         if (!file_exists(dirname($path))) {
             mkdir(dirname($path), 0755, true);
         }
 
         file_put_contents($path, $dompdf->output());
 
-<<<<<<< Updated upstream
-        // Save file path to cuti table
-        $cuti->update([
-            'file_surat' => $folderPath.'/'.$fileName
-        ]);
-
-        return response()->json([
-            'ok' => true,
-            'url' => asset('storage/'.$folderPath.'/'.$fileName)
-=======
         // Update surat with file info
         $surat->generated_file_path = 'generated/' . $fileName;
         $surat->generated_file_url = asset('storage/generated/' . $fileName);
@@ -363,7 +308,6 @@ class SuratController extends Controller
             'message' => 'Surat berhasil dibuat',
             'url' => asset('storage/generated/' . $fileName),
             'surat_id' => $surat->id
->>>>>>> Stashed changes
         ]);
     }
 

@@ -1,2 +1,0 @@
-<input type="checkbox" <?php echo $attributes->merge(['class' => 'rounded border-gray-300 text-red-600 shadow-sm focus:ring-red-500']); ?>>
-<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/components/checkbox.blade.php ENDPATH**/ ?>
