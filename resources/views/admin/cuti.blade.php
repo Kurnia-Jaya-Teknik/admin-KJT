@@ -41,11 +41,6 @@
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00-.293.707l-2.414 2.414a1 1 0 101.414 1.414L9 11.414V6z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-<<<<<<< Updated upstream
-                            <div>
-                                <p class="text-sm text-gray-600">Menunggu Persetujuan</p>
-                                <p class="text-2xl font-bold text-gray-900" id="pendingCount">0</p>
-=======
                         </div>
                     </div>
 
@@ -291,9 +286,6 @@
                                         </div>
                                     </div>
                                 @endif
->>>>>>> Stashed changes
-                            </div>
-                        </div>
                     </div>
                     
                     <!-- Disetujui -->
@@ -328,74 +320,6 @@
                 </div>
             </div>
 
-<<<<<<< Updated upstream
-            <!-- Tabs -->
-            <div class="flex gap-4 mb-6 border-b border-gray-100">
-                <button onclick="switchTabCuti('pengajuan')" id="tabPengajuan"
-                    class="px-6 py-3 font-semibold text-amber-600 border-b-2 border-amber-500 whitespace-nowrap">
-                    📋 Pengajuan Cuti (Pending)
-                </button>
-                <button onclick="switchTabCuti('dibuat')" id="tabDibuat"
-                    class="px-6 py-3 font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 whitespace-nowrap">
-                    ✓ Surat yang Dibuat
-                </button>
-            </div>
-
-            <!-- TAB 1: Pengajuan Cuti -->
-            <div id="contentPengajuan" class="bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden">
-                <table class="w-full border-collapse">
-                    <thead>
-                        <tr class="bg-gradient-to-r from-gray-50 to-slate-50 border-b border-gray-200">
-                            <th class="px-8 py-6 text-left text-sm font-semibold text-gray-700">Karyawan</th>
-                            <th class="px-8 py-6 text-left text-sm font-semibold text-gray-700">Jenis Cuti</th>
-                            <th class="px-8 py-6 text-left text-sm font-semibold text-gray-700">Durasi</th>
-                            <th class="px-8 py-6 text-left text-sm font-semibold text-gray-700">Tanggal</th>
-                            <th class="px-8 py-6 text-center text-sm font-semibold text-gray-700">Status</th>
-                            <th class="px-8 py-6 text-center text-sm font-semibold text-gray-700">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pengajuanTableBody">
-                        <tr>
-                            <td colspan="6" class="px-8 py-12 text-center text-gray-500">
-                                <div class="flex flex-col items-center justify-center gap-4">
-                                    <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    <p class="text-sm">Tidak ada pengajuan cuti</p>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- TAB 2: Surat yang Dibuat -->
-            <div id="contentDibuat" class="bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden hidden">
-                <table class="w-full border-collapse">
-                    <thead>
-                        <tr class="bg-gradient-to-r from-gray-50 to-slate-50 border-b border-gray-200">
-                            <th class="px-8 py-6 text-left text-sm font-semibold text-gray-700">Karyawan</th>
-                            <th class="px-8 py-6 text-left text-sm font-semibold text-gray-700">Jenis Cuti</th>
-                            <th class="px-8 py-6 text-left text-sm font-semibold text-gray-700">Durasi</th>
-                            <th class="px-8 py-6 text-left text-sm font-semibold text-gray-700">Tanggal</th>
-                            <th class="px-8 py-6 text-center text-sm font-semibold text-gray-700">Tanggal Dibuat</th>
-                            <th class="px-8 py-6 text-center text-sm font-semibold text-gray-700">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="suratDibuatTableBody">
-                        <tr>
-                            <td colspan="6" class="px-8 py-12 text-center text-gray-500">
-                                <div class="flex flex-col items-center justify-center gap-4">
-                                    <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    <p class="text-sm">Tidak ada surat yang dibuat</p>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-=======
             <!-- Pagination Controls -->
             <div id="paginationControls"
                 class="mt-6 flex items-center justify-between bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
@@ -424,7 +348,6 @@
                         </svg>
                     </button>
                 </div>
->>>>>>> Stashed changes
             </div>
 
         </div>
@@ -601,39 +524,6 @@
         </div>
     </div>
 
-<<<<<<< Updated upstream
-    <!-- Preview Surat Modal - Red Theme -->
-    <div id="previewSuratModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
-            <!-- Header - Red Theme -->
-            <div class="sticky top-0 bg-gradient-to-r from-red-50 via-white to-slate-50 border-b border-gray-100/40 px-8 py-6 flex items-start justify-between">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-900">Preview Surat Cuti</h2>
-                    <p class="text-sm text-gray-500 mt-1" id="previewTitle"></p>
-                </div>
-                <button onclick="closePreviewModal()" class="p-2 hover:bg-white/50 rounded-2xl transition-colors">
-                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto bg-gray-50">
-                <iframe id="previewFrame" class="w-full h-full" style="min-height: 600px;" frameborder="0"></iframe>
-            </div>
-            
-            <!-- Footer - Red Theme Button -->
-            <div class="border-t border-gray-100/40 bg-gradient-to-r from-gray-50/50 to-slate-50/30 px-8 py-6 flex gap-4 justify-end flex-wrap">
-                <button onclick="closePreviewModal()" class="px-8 py-3 border border-gray-200/60 rounded-2xl text-gray-600 font-medium hover:bg-gray-50/70 transition-all">
-                    Tutup
-                </button>
-                <a id="downloadBtn" href="#" target="_blank" class="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-red-600 to-red-500 text-white font-semibold rounded-2xl hover:from-red-700 hover:to-red-600 shadow-md hover:shadow-lg transition-all transform hover:scale-105">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                    </svg>
-                    Download
-                </a>
-=======
 
     <!-- Modal Tambah Pengajuan Cuti -->
     <div id="tambahCutiModal"
@@ -1248,7 +1138,6 @@
                         Lanjut Buat Surat
                     </button>
                 </div>
->>>>>>> Stashed changes
             </div>
         </div>
     </div>
@@ -1850,15 +1739,11 @@
         document.getElementById('buatSuratModal')?.addEventListener('click', function(e) {
             if (e.target === this) closeBuatSuratModal();
         });
-<<<<<<< Updated upstream
-        
-=======
 
         document.getElementById('tambahCutiModal')?.addEventListener('click', function(e) {
             if (e.target === this) closeTambahCutiModal();
         });
 
->>>>>>> Stashed changes
         document.getElementById('previewSuratModal')?.addEventListener('click', function(e) {
             if (e.target === this) closePreviewModal();
         });
@@ -1867,8 +1752,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadPengajuanCuti();
         });
-<<<<<<< Updated upstream
-=======
 
         document.getElementById('editCutiModal')?.addEventListener('click', function(e) {
             if (e.target === this) closeEditCutiModal();
@@ -2437,6 +2320,5 @@
             currentPage = page;
             updatePagination();
         }
->>>>>>> Stashed changes
     </script>
 </x-app-layout>

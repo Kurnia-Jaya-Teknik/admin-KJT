@@ -83,8 +83,6 @@ class CutiController extends Controller
         return response()->json(['ok' => true, 'list' => $cutiList]);
     }
 
-<<<<<<< Updated upstream
-=======
     public function store(Request $request)
     {
         $this->ensureAdminHRD();
@@ -130,62 +128,12 @@ class CutiController extends Controller
         }
     }
 
->>>>>>> Stashed changes
     public function preview($id)
     {
         $this->ensureAdminHRD();
 
-<<<<<<< Updated upstream
-        $cuti = Cuti::find($id);
-        if (!$cuti) {
-            return response()->json(['ok' => false, 'message' => 'Cuti tidak ditemukan'], 404);
-        }
-
-        // Check if surat file exists
-        if (!$cuti->file_surat) {
-            return response()->json(['ok' => false, 'message' => 'File surat tidak ditemukan'], 404);
-        }
-
-        $filePath = storage_path('app/public/' . $cuti->file_surat);
-        
-        if (!file_exists($filePath)) {
-            return response()->json(['ok' => false, 'message' => 'File surat tidak ditemukan'], 404);
-        }
-
-        // Read file and encode to base64
-        $pdfContent = file_get_contents($filePath);
-        $pdfBase64 = base64_encode($pdfContent);
-
-        // Get download URL
-        $downloadUrl = url('storage/' . $cuti->file_surat);
-
-        return response()->json([
-            'ok' => true,
-            'pdfBase64' => $pdfBase64,
-            'downloadUrl' => $downloadUrl,
-            'filename' => basename($filePath)
-        ]);
-    }
-
-    public function show($id)
-    {
-        $this->ensureAdminHRD();
-
-        $cuti = Cuti::with(['user', 'user.departemen'])->find($id);
-        
-        if (!$cuti) {
-            return response()->json(['ok' => false, 'message' => 'Cuti tidak ditemukan'], 404);
-        }
-
-        return response()->json([
-            'ok' => true,
-            'cuti' => $cuti
-        ]);
-    }
-=======
         try {
             $cuti = Cuti::with(['user', 'user.departemen'])->findOrFail($id);
->>>>>>> Stashed changes
 
     public function buatSurat(Request $request, $id)
     {
@@ -268,8 +216,6 @@ class CutiController extends Controller
             ], 500);
         }
     }
-<<<<<<< Updated upstream
-=======
 
     public function show($id)
     {
@@ -286,5 +232,4 @@ class CutiController extends Controller
             'cuti' => $cuti
         ]);
     }
->>>>>>> Stashed changes
 }

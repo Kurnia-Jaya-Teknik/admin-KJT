@@ -174,11 +174,7 @@ Route::get('/session/api-token', [\App\Http\Controllers\SessionController::class
         Route::post('/cuti/{id}/update', [\App\Http\Controllers\Admin\CutiController::class, 'update'])->name('cuti.update');
         Route::get('/cuti/{id}/preview', [\App\Http\Controllers\Admin\SuratCutiController::class, 'preview'])->name('cuti.preview');
         Route::get('/cuti/{id}/detail', [\App\Http\Controllers\Admin\CutiController::class, 'detail'])->name('cuti.detail');
-<<<<<<< Updated upstream
         Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratCutiController::class, 'store'])->name('cuti.buat-surat');
-=======
-        Route::post('/cuti/{id}/buat-surat', [\App\Http\Controllers\Admin\SuratController::class, 'storeCutiSurat'])->name('cuti.buat-surat');
->>>>>>> Stashed changes
         
         Route::get('/magang', [\App\Http\Controllers\Admin\MagangController::class, 'index'])->name('magang');
         Route::get('/magang-stats', [\App\Http\Controllers\Admin\MagangController::class, 'getStats'])->name('magang.stats');

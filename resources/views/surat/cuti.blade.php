@@ -19,45 +19,6 @@
             color: #000;
             line-height: 1.5;
             background: white;
-<<<<<<< Updated upstream
-            font-size: 12px;
-        }
-        @page {
-            size: A4;
-            margin: 15mm 15mm 15mm 15mm;
-        }
-        .page {
-            width: 210mm;
-            height: 297mm;
-            margin: 0 auto;
-            padding: 15mm;
-            background: white;
-        }
-        /* Header dengan Logo dan Kop Surat */
-         /* ================= HEADER ================= */
-        .header-table {
-            border-bottom: 2px solid #000;
-            margin-bottom: 12px;
-            padding-bottom: 6px;
-        }
-        .header-text {
-            font-size: 9.5pt;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-
-
-        .logo {
-            width: 640px;
-            height: auto;
-            display: block;
-            margin: 0 auto 5px auto;
-        }
-
-        .company-name {
-            font-weight: bold;
-=======
->>>>>>> Stashed changes
             font-size: 11pt;
         }
         /* Isi Surat */
@@ -71,11 +32,7 @@
         }
         .intro-text {
             margin-bottom: 12px;
-<<<<<<< Updated upstream
-            text-align: justify;
-=======
             font-weight: normal;
->>>>>>> Stashed changes
         }
         .info-line {
             margin: 5px 0;
@@ -204,14 +161,8 @@
             </tr>
         </table>
 
-<<<<<<< Updated upstream
-        <!-- Judul Surat -->
-        <div style="border-top: 2px solid #000; border-bottom: 1px solid #000; height: 4px; margin: 6px 0 15px 0;"></div>
-        <div class="title" style="text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 10px;">SURAT PERMOHONAN CUTI</div>
-=======
         <!-- Judul Formulir -->
         <div class="title">FORMULIR CUTI</div>
->>>>>>> Stashed changes
 
         <!-- Nomor dan Tanggal Surat -->
         @if($nomor_surat ?? false)
@@ -235,67 +186,6 @@
                 <span class="info-value">{{ $karyawan->name ?? '' }}</span>
             </div>
 
-<<<<<<< Updated upstream
-            <div class="info-line">
-                <span class="info-label">Jabatan/Devisi</span>
-                <span class="info-value">{{ $karyawan->departemen->nama ?? $karyawan->jabatan ?? '' }}</span>
-            </div>
-
-            <div class="info-line">
-                <span class="info-label">Tanggal Masuk ke Perusahaan</span>
-                <span class="info-value">{{ $karyawan->tanggal_bergabung ? \Carbon\Carbon::parse($karyawan->tanggal_bergabung)->format('d/m/Y') : '' }}</span>
-            </div>
-
-            <div class="options">
-                <span>Mengajukan cuti : </span>
-                <span>
-                    @if($cuti->jenis === 'Cuti Tahunan')
-                        &nbsp; ✓ a. Tahunan &nbsp; &nbsp; &nbsp; b. Lainnya _________________ 
-                    @else
-                        &nbsp; a. Tahunan &nbsp; &nbsp; &nbsp; ✓ b. {{ $cuti->jenis }} _________________ 
-                    @endif
-                </span>
-            </div>
-
-            <p class="section-title">Mengajukan Cuti Terhitung :</p>
-
-            <div class="info-line">
-                <span class="info-label">Mulai Tanggal</span>
-                <span class="info-value info-value-short">{{ $cuti->tanggal_mulai ? \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d/m/Y') : '' }}</span>
-            </div>
-
-            <div class="info-line">
-                <span class="info-label">Sampai Tanggal</span>
-                <span class="info-value info-value-short">{{ $cuti->tanggal_selesai ? \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d/m/Y') : '' }}</span>
-                <span style="margin-left: 6px; font-size: 12px;">Total Hari:</span>
-                <span class="info-value info-value-medium">{{ $cuti->durasi_hari ?? '' }} hari</span>
-            </div>
-
-            <div class="info-line">
-                <span class="info-label">Keperluan</span>
-                <span class="info-value">{{ $cuti->alasan ?? '' }}</span>
-            </div>
-
-            <div class="info-line">
-                <span class="info-label">Pelimpahan Tugas Kepada</span>
-                <span class="info-value">
-                    @if($delegatedUsers && $delegatedUsers->count() > 0)
-                        @foreach($delegatedUsers as $key => $user)
-                            {{ $user->name }}@if(!$loop->last), @endif
-                        @endforeach
-                    @else
-                        -
-                    @endif
-                </span>
-            </div>
-
-            <div class="info-line">
-                <span class="info-label">Telp. Yang bisa dihubungi</span>
-                <span class="info-value">{{ $karyawan->phone ?? '' }}</span>
-            </div>
-
-            <p style="margin-top: 10px; margin-bottom: 14px; font-size: 12px;">Demikian permohonan cuti ini saya sampaikan.</p>
-=======
             <!-- Detail Cuti -->
             <p style="margin: 12px 0 8px 0; font-weight: bold;">Mengajukan Cuti Terhitung:</p>
             <table class="data-table">
@@ -346,18 +236,12 @@
                 Demikian permohonan cuti ini saya sampaikan untuk dapat dipertimbangkan.
                 Atas perhatian dan persetujuannya, saya ucapkan terima kasih.
             </p>
->>>>>>> Stashed changes
         </div>
 
         <!-- Signature Section -->
         <div class="signature-section">
-<<<<<<< Updated upstream
-            <div class="date-line">
-                Pasuruan, {{ now()->format('d/m/Y') }}
-=======
             <div class="sig-date">
                 Pasuruan, {{ now()->locale('id')->translatedFormat('d F Y') }}
->>>>>>> Stashed changes
             </div>
 
             <div class="signature-wrapper">
