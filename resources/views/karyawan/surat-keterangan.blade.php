@@ -165,7 +165,7 @@
                             });
                     }
 
-                    // Render table
+                    // Render surat list dengan card design - konsisten dengan halaman lain
                     function renderTable(suratList) {
                         const container = document.getElementById('tableContainer');
 
@@ -174,96 +174,59 @@
                             return;
                         }
 
-                        const tableHTML = `
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
-                        <tr>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Nomor Surat</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Jabatan</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Unit Kerja</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Tanggal Surat</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Diterima</th>
-                            <th class="px-6 py-4 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">File</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        ${suratList.map((surat, index) => `
-                                            <tr class="hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}">
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
-                                                            <span class="text-white font-bold text-sm">📄</span>
-                                                        </div>
-                                                        <div class="ml-4">
-                                                            <div class="text-sm font-bold text-gray-900">${surat.nomor_surat}</div>
-                                                            <div class="text-xs text-gray-500">${surat.keterangan || '-'}</div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <span class="text-sm font-medium text-gray-900">${surat.jabatan}</span>
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <span class="text-sm text-gray-700">${surat.unit_kerja}</span>
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="text-sm text-gray-700">${surat.tanggal_surat}</span>
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="flex items-center">
-                                                        ${surat.is_sent ? `
-                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
-                                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                                </svg>
-                                                ${surat.sent_at}
-                                            </span>
-                                        ` : `
-                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">
-                                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                                </svg>
-                                                Pending
-                                            </span>
-                                        `}
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-center whitespace-nowrap">
-                                                    <div class="flex items-center justify-center gap-2">
-                                                        ${surat.is_sent ? `
-                                            <a href="${surat.file_url}" target="_blank" 
-                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-semibold rounded-lg hover:from-green-600 hover:to-green-700 transition-all shadow-sm hover:shadow-md">
-                                                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                                </svg>
-                                                Lihat
-                                            </a>
-                                            <a href="${surat.download_url}" download
-                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm hover:shadow-md">
-                                                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                                                </svg>
-                                                Download
-                                            </a>
-                                        ` : `
-                                            <button disabled
-                                                class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-500 text-xs font-semibold rounded-lg cursor-not-allowed opacity-60">
-                                                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                                                </svg>
-                                                Menunggu
-                                            </button>
-                                        `}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+                        container.innerHTML = `
+                            <div class="bg-gray-50/30 rounded-xl border border-gray-200/50 shadow-sm overflow-hidden">
+                                ${suratList.map(surat => {
+                                    // Status styling - konsisten dengan desain standar
+                                    const isSent = surat.is_sent;
+                                    const statusColor = isSent ? 'emerald' : 'amber';
+                                    const statusBg = isSent ? 'bg-emerald-50/60' : 'bg-amber-50/60';
+                                    const statusBorder = isSent ? 'border-emerald-200/50' : 'border-amber-200/50';
+                                    const statusIcon = isSent ? '✓' : '⏳';
+                                    const statusLabel = isSent ? 'Diterima' : 'Pending';
 
-                        container.innerHTML = tableHTML;
+                                    // Action buttons
+                                    const actionButtons = isSent ? `
+                                        <a href="${surat.file_url}" target="_blank" class="text-sm text-emerald-600/90 hover:text-emerald-700 font-medium transition-colors group-hover:font-bold">
+                                            Lihat Detail →
+                                        </a>
+                                        <a href="${surat.download_url}" download class="text-sm text-blue-600/90 hover:text-blue-700 font-medium transition-colors group-hover:font-bold ml-3">
+                                            📥 Download
+                                        </a>
+                                    ` : `
+                                        <span class="text-sm text-gray-500">Menunggu pengiriman</span>
+                                    `;
+
+                                    return `
+                                        <div class="bg-white/60 backdrop-blur-sm p-5 hover:bg-white/90 transition-all duration-300 group border-b border-gray-100/50 last:border-0">
+                                            <div class="flex items-start gap-4">
+                                                <div class="w-12 h-12 rounded-xl ${statusBg} ${statusBorder} border flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 text-lg font-semibold text-${statusColor}-600">
+                                                    ${statusIcon}
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="flex items-center justify-between gap-3 mb-2">
+                                                        <div>
+                                                            <p class="text-base font-semibold text-gray-800">📄 ${surat.nomor_surat}</p>
+                                                            <p class="text-sm text-gray-500 mt-1">${surat.keterangan || 'Surat Keterangan'}</p>
+                                                        </div>
+                                                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-${statusColor}-100/70 text-${statusColor}-700 text-sm font-semibold rounded-full whitespace-nowrap flex-shrink-0 shadow-sm">${statusLabel}</span>
+                                                    </div>
+                                                    <div class="space-y-1 mb-3">
+                                                        <p class="text-sm text-gray-600">👤 ${surat.jabatan}</p>
+                                                        <p class="text-sm text-gray-600">🏢 ${surat.unit_kerja}</p>
+                                                        <p class="text-sm text-gray-600">📅 ${surat.tanggal_surat}</p>
+                                                        ${isSent ? `<p class="text-sm text-emerald-600 font-medium">📬 Dikirim: ${surat.sent_at}</p>` : ''}
+                                                    </div>
+                                                    <div class="flex items-center gap-3 mt-3">
+                                                        ${actionButtons}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        `;
                     }
 
                     // Calculate stats

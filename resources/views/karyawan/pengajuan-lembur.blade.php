@@ -336,27 +336,14 @@
                         }
 
                         lemburCache.forEach(item => {
-                            // Status styling
-                            let statusBadge, iconBg, iconColor, hoverBg;
-                            if (item.status === 'Pending') {
-                                statusBadge =
-                                    '<span class="px-3 py-1.5 bg-amber-100/80 text-amber-700 text-sm font-semibold rounded-lg shadow-sm border border-amber-200/50">⏱️ Menunggu Persetujuan</span>';
-                                iconBg = 'from-amber-50/70 to-amber-100/50';
-                                iconColor = 'text-amber-600';
-                                hoverBg = 'hover:from-amber-50/40';
-                            } else if (item.status === 'Disetujui') {
-                                statusBadge =
-                                    '<span class="px-3 py-1.5 bg-emerald-100/80 text-emerald-700 text-sm font-semibold rounded-lg shadow-sm border border-emerald-200/50">✓ Disetujui</span>';
-                                iconBg = 'from-emerald-50/70 to-emerald-100/50';
-                                iconColor = 'text-emerald-600';
-                                hoverBg = 'hover:from-emerald-50/40';
-                            } else {
-                                statusBadge =
-                                    '<span class="px-3 py-1.5 bg-red-100/80 text-red-700 text-sm font-semibold rounded-lg shadow-sm border border-red-200/50">✕ Ditolak</span>';
-                                iconBg = 'from-red-50/70 to-red-100/50';
-                                iconColor = 'text-red-600';
-                                hoverBg = 'hover:from-red-50/40';
-                            }
+                            // Status styling - Desain standar konsisten  
+                            const st = (item.status || '').toString().toLowerCase();
+                            const isPending = (st === 'pending' || st === 'menunggu');
+                            const statusColor = st === 'disetujui' ? 'emerald' : isPending ? 'amber' : 'red';
+                            const statusBg = st === 'disetujui' ? 'bg-emerald-50/60' : isPending ? 'bg-amber-50/60' : 'bg-red-50/60';
+                            const statusBorder = st === 'disetujui' ? 'border-emerald-200/50' : isPending ? 'border-amber-200/50' : 'border-red-200/50';
+                            const statusIcon = st === 'disetujui' ? '✓' : isPending ? '⏳' : '✕';
+                            const statusLabel = st === 'disetujui' ? 'Disetujui' : isPending ? 'Menunggu' : 'Ditolak';
 
                             // Format tanggal
                             const dateStr = new Date(item.tanggal).toLocaleDateString('id-ID', {
@@ -365,54 +352,33 @@
                                 year: 'numeric'
                             });
 
-                            const el = document.createElement('div');
-                            el.className =
-                                `px-6 py-5 hover:bg-gradient-to-r ${hoverBg} hover:to-transparent transition-all duration-300 group border-b border-gray-100/50 last:border-0`;
+                            // Edit button hanya untuk pending
+                            const editButton = isPending ? `<button onclick="editLembur(${item.id})" class="text-sm text-blue-600/90 hover:text-blue-700 font-medium transition-colors group-hover:font-bold mr-3">✏️ Edit</button>` : '';
 
-                            // Action buttons with better styling
-                            const actions = item.status === 'Pending' ? `
-                                <div class="flex gap-2 mt-3">
-                                    <button onclick="previewLembur(${item.id})" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors duration-200 shadow-sm">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        Lihat Detail
-                                    </button>
-                                    <button onclick="editLembur(${item.id})" class="flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 hover:bg-blue-200 text-blue-700 text-sm font-medium rounded-lg transition-colors duration-200 shadow-sm">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                        Edit
-                                    </button>
-                                    <button onclick="deleteLembur(${item.id})" class="flex items-center gap-1.5 px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 text-sm font-medium rounded-lg transition-colors duration-200 shadow-sm">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                        Hapus
-                                    </button>
-                                </div>
-                            ` : `
-                                <div class="flex gap-2 mt-3">
-                                    <button onclick="previewLembur(${item.id})" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors duration-200 shadow-sm">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        Lihat Detail
-                                    </button>
-                                </div>
-                            `;
+                            const el = document.createElement('div');
+                            el.className = 'bg-white/60 backdrop-blur-sm p-5 hover:bg-white/90 transition-all duration-300 group border-b border-gray-100/50 last:border-0';
 
                             el.innerHTML = `
-                                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                                    <div class="flex-1 space-y-2.5">
-                                        <div class="flex items-center gap-3">
-                                            ${statusBadge}
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl ${statusBg} ${statusBorder} border flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 text-lg font-semibold text-${statusColor}-600">
+                                        ${statusIcon}
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center justify-between gap-3 mb-2">
+                                            <div>
+                                                <p class="text-base font-semibold text-gray-800">Lembur</p>
+                                                <p class="text-sm text-gray-500 mt-1">📅 ${dateStr} • ⏰ ${item.jam_mulai} - ${item.jam_selesai}</p>
+                                            </div>
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-${statusColor}-100/70 text-${statusColor}-700 text-sm font-semibold rounded-full whitespace-nowrap flex-shrink-0 shadow-sm">${statusLabel}</span>
                                         </div>
-                                        <div class="text-base font-semibold text-gray-900">
-                                            📅 ${dateStr}
+                                        <p class="text-base text-gray-600 mb-2 line-clamp-2">📝 ${item.keterangan || 'Tidak ada keterangan'}</p>
+                                        <p class="text-sm text-indigo-600 font-medium mt-2">⏱️ Durasi: ${item.total_jam} jam</p>
+                                        <div class="flex items-center gap-3 mt-3">
+                                            ${editButton}
+                                            <button onclick="previewLembur(${item.id})" class="text-sm text-${statusColor}-600/90 hover:text-${statusColor}-700 font-medium transition-colors group-hover:font-bold">Lihat Detail →</button>
                                         </div>
-                                        <div class="text-sm text-gray-600">
-                                            ⏰ ${item.jam_mulai} - ${item.jam_selesai}
-                                            <span class="ml-2 px-2.5 py-1 bg-indigo-50/70 text-indigo-700 rounded-lg text-sm font-medium">
-                                                ${item.total_jam} jam
-                                            </span>
-                                        </div>
-                                        <div class="text-sm text-gray-700 mt-2">📝 ${item.keterangan || 'Tidak ada keterangan'}</div>
                                     </div>
                                 </div>
-                                ${actions}
                             `;
                             container.appendChild(el);
                         });
