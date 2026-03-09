@@ -19,6 +19,7 @@ class Cuti extends Model
         'tanggal_selesai',
         'durasi_hari',
         'alasan',
+        'telp',
         'dilimpahkan_ke',
         'bukti',
         'status',

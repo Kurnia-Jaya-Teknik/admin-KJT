@@ -164,6 +164,83 @@
                 <div id="riwayatPagination"
                     class="px-8 py-4 border-t border-gray-200/30 flex items-center justify-center gap-2 bg-gray-50/50"></div>
             </div>
+
+            <!-- Detail Modal -->
+            <div id="detailModal" class="fixed inset-0 bg-black/40 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+                <div class="bg-white rounded-2xl shadow-2xl border border-gray-200 max-w-2xl w-full animate-in fade-in zoom-in-95 duration-300 max-h-[90vh] overflow-y-auto">
+                    <!-- Header -->
+                    <div class="sticky top-0 px-8 py-6 border-b border-gray-200 bg-gradient-to-r from-red-50/80 via-white to-gray-50/80 flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div id="detailStatusBg" class="w-12 h-12 rounded-lg bg-amber-50/60 border border-amber-200/50 flex items-center justify-center text-2xl">⏳</div>
+                            <div>
+                                <p class="text-sm text-gray-600 font-medium">Status Pengajuan</p>
+                                <p id="detailStatus" class="text-lg font-bold text-gray-800">Menunggu</p>
+                            </div>
+                        </div>
+                        <button onclick="closeDetailModal()" type="button" class="text-gray-500 hover:text-gray-700 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="px-8 py-8 space-y-6">
+                        <!-- Periode -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="p-4 rounded-xl bg-blue-50/40 border border-blue-200/30">
+                                <p class="text-xs text-blue-600 font-semibold uppercase tracking-wide mb-2">📅 Tanggal Mulai</p>
+                                <p id="detailTanggalMulai" class="text-base font-semibold text-gray-800">-</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-purple-50/40 border border-purple-200/30">
+                                <p class="text-xs text-purple-600 font-semibold uppercase tracking-wide mb-2">📅 Tanggal Selesai</p>
+                                <p id="detailTanggalSelesai" class="text-base font-semibold text-gray-800">-</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-green-50/40 border border-green-200/30">
+                                <p class="text-xs text-green-600 font-semibold uppercase tracking-wide mb-2">⏱️ Durasi</p>
+                                <p id="detailDurasi" class="text-base font-semibold text-gray-800">-</p>
+                            </div>
+                        </div>
+
+                        <!-- Alasan -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">📝 Alasan / Keterangan</label>
+                            <div class="p-4 rounded-xl bg-gray-50/60 border border-gray-200/50">
+                                <p id="detailAlasan" class="text-base text-gray-700 leading-relaxed whitespace-pre-wrap">-</p>
+                            </div>
+                        </div>
+
+                        <!-- Kontak -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">📞 Nomor Telepon</label>
+                            <div class="p-4 rounded-xl bg-gray-50/60 border border-gray-200/50">
+                                <p id="detailTelp" class="text-base text-gray-700 font-medium">-</p>
+                            </div>
+                        </div>
+
+                        <!-- Surat Dokter -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">📄 Surat Dokter</label>
+                            <button id="detailBuktiBtn" type="button" class="hidden w-full px-6 py-3 rounded-lg bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Lihat Surat Dokter
+                            </button>
+                            <div class="p-4 rounded-xl bg-gray-50/60 border border-gray-200/50 hidden" id="detailBuktiEmpty">
+                                <p class="text-base text-gray-500 text-center">Tidak ada surat dokter</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="sticky bottom-0 px-8 py-5 border-t border-gray-200 bg-gray-50/80 flex items-center justify-end gap-3">
+                        <button type="button" onclick="closeDetailModal()" class="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -332,8 +409,8 @@
                                             </div>
                                             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-${statusColor}-100/70 text-${statusColor}-700 text-sm font-semibold rounded-full whitespace-nowrap flex-shrink-0 shadow-sm">${statusLabel}</span>
                                         </div>
-                                        <p class="text-base text-gray-600 mb-2 line-clamp-2">📝 ${i.alasan || '-'}</p>
-                                        <button class="text-sm text-${statusColor}-600/90 hover:text-${statusColor}-700 font-medium transition-colors group-hover:font-bold">Lihat Detail →</button>
+                                        <p class="text-base text-gray-600 mb-3 line-clamp-2">📝 ${i.alasan || '-'}</p>
+                                        <button type="button" class="btn-detail px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 shadow-sm hover:shadow-md bg-${statusColor}-600 text-white hover:bg-${statusColor}-700" data-ijin-id="${i.id}" data-ijin-data='${JSON.stringify(i)}'>📄 Lihat Detail</button>
                                     </div>
                                 </div>
                             </div>`;
@@ -362,6 +439,102 @@
                 // Load riwayat on page load
                 if (document.getElementById('riwayatList')) {
                     fetchRiwayat();
+                }
+
+                // Modal detail handler
+                function openDetailModal(data) {
+                    const modal = document.getElementById('detailModal');
+                    if (!modal) return;
+
+                    // Format dates
+                    const tanggalMulai = data.tanggal_mulai ? new Date(data.tanggal_mulai).toLocaleDateString('id-ID', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    }) : '-';
+                    const tanggalSelesai = data.tanggal_selesai ? new Date(data.tanggal_selesai).toLocaleDateString('id-ID', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    }) : '-';
+
+                    // Calculate days
+                    let durasi = '-';
+                    if (data.tanggal_mulai && data.tanggal_selesai) {
+                        const start = new Date(data.tanggal_mulai);
+                        const end = new Date(data.tanggal_selesai);
+                        const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                        durasi = `${days} hari`;
+                    }
+
+                    // Status styling
+                    const st = (data.status || '').toString().toLowerCase();
+                    const statusMap = {
+                        'pending': { label: 'Menunggu', color: 'amber', icon: '⏳' },
+                        'disetujui': { label: 'Disetujui', color: 'emerald', icon: '✓' },
+                        'ditolak': { label: 'Ditolak', color: 'red', icon: '✕' }
+                    };
+                    const statusInfo = statusMap[st] || { label: data.status || '-', color: 'gray', icon: '?' };
+
+                    // Populate modal
+                    document.getElementById('detailStatus').textContent = statusInfo.label;
+                    document.getElementById('detailStatusBg').className = `w-12 h-12 rounded-lg bg-${statusInfo.color}-50/60 border border-${statusInfo.color}-200/50 flex items-center justify-center text-2xl`;
+                    document.getElementById('detailStatusBg').textContent = statusInfo.icon;
+                    document.getElementById('detailTanggalMulai').textContent = tanggalMulai;
+                    document.getElementById('detailTanggalSelesai').textContent = tanggalSelesai;
+                    document.getElementById('detailDurasi').textContent = durasi;
+                    document.getElementById('detailAlasan').textContent = data.alasan || '-';
+                    document.getElementById('detailTelp').textContent = data.telp || '-';
+
+                    // Show bukti button if exists
+                    const buktiBtn = document.getElementById('detailBuktiBtn');
+                    if (data.bukti) {
+                        buktiBtn.classList.remove('hidden');
+                        buktiBtn.onclick = () => {
+                            window.open(`/files/bukti/${data.bukti.split('/').pop()}`, '_blank');
+                        };
+                    } else {
+                        buktiBtn.classList.add('hidden');
+                    }
+
+                    modal.classList.remove('hidden');
+                }
+
+                function closeDetailModal() {
+                    const modal = document.getElementById('detailModal');
+                    if (modal) modal.classList.add('hidden');
+                }
+
+                // Event delegation for detail buttons
+                document.addEventListener('click', function(e) {
+                    if (e.target && e.target.classList.contains('btn-detail')) {
+                        e.preventDefault();
+                        try {
+                            const data = JSON.parse(e.target.getAttribute('data-ijin-data'));
+                            openDetailModal(data);
+                        } catch (err) {
+                            console.error('Error parsing ijin data:', err);
+                            alert('Gagal membuka detail');
+                        }
+                    }
+                    
+                    // Handle close button clicks for detail modal
+                    if (e.target && e.target.closest('button[onclick*="closeDetailModal"]')) {
+                        e.preventDefault();
+                        closeDetailModal();
+                    }
+                });
+
+                // Close modal when clicking outside (backdrop)
+                const detailModal = document.getElementById('detailModal');
+                if (detailModal) {
+                    detailModal.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            closeDetailModal();
+                        }
+                    });
                 }
 
                 // form submit handler
