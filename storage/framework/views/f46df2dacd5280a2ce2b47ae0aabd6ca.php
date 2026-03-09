@@ -1,13 +1,22 @@
-<x-app-layout>
-    <x-slot name="header">
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Ijin Sakit
         </h2>
-    </x-slot>
+     <?php $__env->endSlot(); ?>
 
     <!-- Fixed Sidebar -->
     <div class="fixed left-0 top-16 bottom-0 z-40 hidden lg:block">
-        @include('layouts.sidebar')
+        <?php echo $__env->make('layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <!-- Toast container -->
@@ -46,19 +55,21 @@
                             <div>
                                 <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Nama Karyawan</label>
                                 <div class="px-4 py-3 rounded-lg bg-gray-50/80 border border-gray-200/50 text-base font-medium text-gray-800">
-                                    {{ auth()->user()->name }}
+                                    <?php echo e(auth()->user()->name); ?>
+
                                 </div>
                             </div>
 
                             <div>
                                 <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Jabatan / Divisi</label>
                                 <div class="px-4 py-3 rounded-lg bg-gray-50/80 border border-gray-200/50 text-base font-medium text-gray-800">
-                                    {{ auth()->user()->departemen->nama ?? '-' }}
+                                    <?php echo e(auth()->user()->departemen->nama ?? '-'); ?>
+
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Hidden jenis = Ijin Sakit --}}
+                        
                         <input type="hidden" name="jenis" value="Ijin Sakit">
 
                         <!-- Periode Ijin Sakit -->
@@ -121,7 +132,7 @@
                             <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Telepon Yang Bisa Dihubungi</label>
                             <input type="tel" id="telp" name="telp"
                                 placeholder="Contoh: 081234567890"
-                                value="{{ old('telp', auth()->user()->phone ?? '') }}"
+                                value="<?php echo e(old('telp', auth()->user()->phone ?? '')); ?>"
                                 class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base bg-white/60 focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-200/30 transition-all duration-200 font-medium text-gray-800" />
                         </div>
 
@@ -156,10 +167,10 @@
         </div>
     </div>
 
-    @push('scripts')
+    <?php $__env->startPush('scripts'); ?>
         <script>
             (function() {
-                const API_BASE_RAW = "{{ rtrim(request()->getSchemeAndHttpHost() . request()->getBaseUrl(), '/') }}";
+                const API_BASE_RAW = "<?php echo e(rtrim(request()->getSchemeAndHttpHost() . request()->getBaseUrl(), '/')); ?>";
                 const API_BASE = (API_BASE_RAW && API_BASE_RAW.indexOf('{{') === -1) ? API_BASE_RAW : (window.location
                     .origin + window.location.pathname.replace(/\/[^\/]*$/, ''));
 
@@ -464,5 +475,15 @@
 
             })();
         </script>
-    @endpush
-</x-app-layout>
+    <?php $__env->stopPush(); ?>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php /**PATH C:\xampp5\htdocs\admin-KJT\resources\views/karyawan/ijin-sakit.blade.php ENDPATH**/ ?>

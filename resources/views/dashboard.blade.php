@@ -11,8 +11,8 @@
             @if (Auth::user()->role === 'karyawan')
                 <div
                     class="relative overflow-hidden mb-8 rounded-2xl shadow-sm border-0">
-                    <!-- Animated gradient background - Soft diverse -->
-                    <div class="absolute inset-0 bg-gradient-to-br from-teal-600 via-cyan-500 to-blue-600"></div>
+                    <!-- Animated gradient background - Soft red-gray -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-500 via-red-400 to-gray-400"></div>
                     <!-- Decorative blur elements -->
                     <div class="absolute top-0 right-0 w-96 h-96 bg-white/8 rounded-full -mr-48 -mt-48 blur-3xl"></div>
                     <div class="absolute bottom-0 left-0 w-80 h-80 bg-white/4 rounded-full -ml-32 -mb-32 blur-3xl"></div>
@@ -34,7 +34,7 @@
                             <div class="flex-1">
                                 <div class="mb-1">
                                     <h1 class="text-3xl md:text-4xl font-semibold text-white mb-1">
-                                        Selamat datang, <span class="bg-gradient-to-r from-white/95 via-white to-blue-100 bg-clip-text text-transparent">{{ Auth::user()->name }}</span>! 👋
+                                        Selamat datang, <span class="bg-gradient-to-r from-white/95 via-white to-red-100 bg-clip-text text-transparent">{{ Auth::user()->name }}</span>! 👋
                                     </h1>
                                     <p class="text-white/80 text-sm md:text-base font-normal flex items-center gap-2">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
@@ -56,11 +56,11 @@
                 </div>
             @else
                 <div
-                    class="relative overflow-hidden bg-gradient-to-r from-red-600/95 via-red-500/90 to-gray-600/85 rounded-2xl p-8 mb-8 shadow-sm border border-white/10">
+                    class="relative overflow-hidden bg-gradient-to-r from-red-500/30 via-gray-600/25 to-red-600/30 backdrop-blur-xl rounded-2xl p-8 mb-8 shadow-lg border border-white/30">
                     <div class="relative flex items-center justify-between">
                         <div class="flex items-center gap-4">
                             <div
-                                class="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                                class="w-12 h-12 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                                     <path
                                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
@@ -74,7 +74,7 @@
                             </div>
                         </div>
                         <div class="hidden md:block">
-                            <svg class="w-24 h-24 text-white/12" fill="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-24 h-24 text-white/8" fill="currentColor" viewBox="0 0 24 24">
                                 <path
                                     d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                             </svg>
@@ -113,22 +113,22 @@
 
                     <!-- Direktur Stats Card 2: Cuti Pending -->
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-amber-100/60 transition-all duration-300 hover:-translate-y-1">
+                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-red-100/60 transition-all duration-300 hover:-translate-y-1">
                         <div
-                            class="absolute inset-0 bg-gradient-to-br from-amber-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div class="relative">
                             <div class="flex items-center justify-between mb-4">
                                 <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-100/60 to-amber-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-amber-500/70" fill="none" stroke="currentColor"
+                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-100/60 to-red-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-red-500/70" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                                 <span
-                                    class="text-xs font-medium text-amber-600/80 bg-amber-50/70 px-2.5 py-1.5 rounded-full border border-amber-200/30 shadow-sm">⏳
+                                    class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">⏳
                                     Pending</span>
                             </div>
                             <h3 class="text-2xl font-bold text-gray-800 mb-0.5">
@@ -139,22 +139,22 @@
 
                     <!-- Direktur Stats Card 3: Lembur Pending -->
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-orange-100/60 transition-all duration-300 hover:-translate-y-1">
+                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-red-100/60 transition-all duration-300 hover:-translate-y-1">
                         <div
-                            class="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            class="absolute inset-0 bg-gradient-to-br from-red-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div class="relative">
                             <div class="flex items-center justify-between mb-4">
                                 <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-100/60 to-orange-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-orange-500/70" fill="none" stroke="currentColor"
+                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-100/60 to-red-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-red-500/70" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
                                 <span
-                                    class="text-xs font-medium text-orange-600/80 bg-orange-50/70 px-2.5 py-1.5 rounded-full border border-orange-200/30 shadow-sm">⏳
+                                    class="text-xs font-medium text-red-600/80 bg-red-50/70 px-2.5 py-1.5 rounded-full border border-red-200/30 shadow-sm">⏳
                                     Pending</span>
                             </div>
                             <h3 class="text-2xl font-bold text-gray-800 mb-0.5">
@@ -192,22 +192,22 @@
 
                     <!-- Direktur Stats Card 5: Persetujuan Selesai -->
                     <div
-                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-green-100/60 transition-all duration-300 hover:-translate-y-1">
+                        class="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-gray-100/40 hover:shadow-lg hover:border-gray-100/60 transition-all duration-300 hover:-translate-y-1">
                         <div
-                            class="absolute inset-0 bg-gradient-to-br from-green-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            class="absolute inset-0 bg-gradient-to-br from-gray-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
                         <div class="relative">
                             <div class="flex items-center justify-between mb-4">
                                 <div
-                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-100/60 to-green-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <svg class="w-6 h-6 text-green-500/70" fill="none" stroke="currentColor"
+                                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-gray-100/60 to-gray-50/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                                    <svg class="w-6 h-6 text-gray-500/70" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 13l4 4L19 7" />
                                     </svg>
                                 </div>
                                 <span
-                                    class="text-xs font-medium text-green-600/80 bg-green-50/70 px-2.5 py-1.5 rounded-full border border-green-200/30 shadow-sm">✅
+                                    class="text-xs font-medium text-gray-600/80 bg-gray-50/70 px-2.5 py-1.5 rounded-full border border-gray-200/30 shadow-sm">✅
                                     Selesai</span>
                             </div>
                             <h3 class="text-2xl font-bold text-gray-800 mb-0.5">{{ $persetujuanSelesai }}</h3>
@@ -462,88 +462,224 @@
                         </div>
                     </div>
                 @else
-                    <!-- Karyawan Stats - Personal (Soft Diverse Colors) -->
-                    <!-- Sisa Cuti Card -->
-                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-0 bg-gradient-to-br from-teal-500/90 to-cyan-600/85">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+                    <!-- Karyawan Stats - Personal Dashboard (Dynamic Data) -->
+                    <!-- 1. Sisa Cuti Card - Soft Glass Red -->
+                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/20 bg-gradient-to-br from-white/50 via-red-50/30 to-white/40 backdrop-blur-xl">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-100/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div class="relative">
                             <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
-                                <span class="text-xs font-semibold text-white/80 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Tersisa</span>
+                                <span class="text-xs font-bold text-red-700 bg-red-100/60 px-3 py-1 rounded-full backdrop-blur-sm shadow-sm">TERSISA</span>
                             </div>
-                            <h3 class="text-4xl font-bold text-white mb-1">12</h3>
-                            <p class="text-white/85 text-sm font-normal">Sisa Cuti Tahun Ini</p>
-                            <div class="mt-4 pt-4 border-t border-white/15">
-                                <p class="text-xs text-white/70">Total tahunan: <span class="font-semibold text-white/95">20 hari</span></p>
+                            <h3 class="text-4xl font-black text-gray-800 mb-2 tracking-tight">{{ $sisaCuti }}</h3>
+                            <p class="text-gray-700 text-sm font-semibold">Sisa Cuti Tahun Ini</p>
+                            <div class="mt-4 pt-4 border-t border-white/30">
+                                <p class="text-xs text-gray-600"><span class="font-bold text-gray-800">{{ $cutiEntitlement }} hari</span> total tahunan</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Cuti Digunakan Card -->
-                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-0 bg-gradient-to-br from-slate-500/90 to-slate-700/85">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+                    <!-- 2. Cuti Digunakan Card - Soft Glass Gray -->
+                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/20 bg-gradient-to-br from-white/50 via-gray-50/30 to-white/40 backdrop-blur-xl">
+                        <div class="absolute inset-0 bg-gradient-to-br from-gray-100/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div class="relative">
                             <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <div class="w-12 h-12 rounded-xl bg-gray-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
-                                <span class="text-xs font-semibold text-white/80 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Digunakan</span>
+                                <span class="text-xs font-bold text-gray-700 bg-gray-100/60 px-3 py-1 rounded-full backdrop-blur-sm shadow-sm">DIGUNAKAN</span>
                             </div>
-                            <h3 class="text-4xl font-bold text-white mb-1">8</h3>
-                            <p class="text-white/85 text-sm font-normal">Cuti Dipakai Tahun Ini</p>
-                            <div class="mt-4 pt-4 border-t border-white/15">
-                                <p class="text-xs text-white/70">Sisa: <span class="font-semibold text-white/95">12 hari</span></p>
+                            <h3 class="text-4xl font-black text-gray-800 mb-2 tracking-tight">{{ $cutiDipakai }}</h3>
+                            <p class="text-gray-700 text-sm font-semibold">Cuti Dipakai Tahun Ini</p>
+                            <div class="mt-4 pt-4 border-t border-white/30">
+                                <p class="text-xs text-gray-600"><span class="font-bold text-gray-800">{{ $cutiApprovedCount }}x</span> persetujuan diterima</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Lembur Bulan Ini Card -->
-                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-0 bg-gradient-to-br from-amber-500/90 to-orange-600/85">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+                    <!-- 3. Lembur Bulan Ini Card - Soft Glass Red-Gray -->
+                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/20 bg-gradient-to-br from-white/50 via-red-50/25 to-gray-50/35 backdrop-blur-xl">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-100/20 to-gray-100/20 opacity-0 group-hover:opacity-80 transition-opacity duration-300"></div>
                         <div class="relative">
                             <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                     </svg>
                                 </div>
-                                <span class="text-xs font-semibold text-white/80 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Januari</span>
+                                <span class="text-xs font-bold text-red-700 bg-red-100/60 px-3 py-1 rounded-full backdrop-blur-sm shadow-sm">LEMBUR</span>
                             </div>
-                            <h3 class="text-4xl font-bold text-white mb-1">16</h3>
-                            <p class="text-white/85 text-sm font-normal">Total Lembur Bulan Ini</p>
-                            <div class="mt-4 pt-4 border-t border-white/15">
-                                <p class="text-xs text-white/70">Rata-rata: <span class="font-semibold text-white/95">8 jam/minggu</span></p>
+                            <h3 class="text-4xl font-black text-gray-800 mb-2 tracking-tight">{{ $lemburBulanIni }}</h3>
+                            <p class="text-gray-700 text-sm font-semibold">Total Lembur {{ now()->locale('id')->isoFormat('MMMM') }}</p>
+                            <div class="mt-4 pt-4 border-t border-white/30">
+                                <p class="text-xs text-gray-600"><span class="font-bold text-gray-800">{{ $lemburApprovedCount }}x</span> disetujui bulan ini</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Status Pengajuan Card -->
-                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-0 bg-gradient-to-br from-emerald-500/90 to-green-600/85">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+                    <!-- 4. Pengajuan Menunggu Card - Soft Glass Gray-Red -->
+                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/20 bg-gradient-to-br from-white/50 via-gray-50/30 to-red-50/25 backdrop-blur-xl">
+                        <div class="absolute inset-0 bg-gradient-to-br from-gray-100/20 to-red-100/20 opacity-0 group-hover:opacity-80 transition-opacity duration-300"></div>
                         <div class="relative">
                             <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-white/90" fill="currentColor" viewBox="0 0 24 24">
+                                <div class="w-12 h-12 rounded-xl bg-gray-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-bold text-gray-700 bg-gray-100/60 px-3 py-1 rounded-full backdrop-blur-sm shadow-sm">⏳ PENDING</span>
+                            </div>
+                            <h3 class="text-4xl font-black text-gray-800 mb-2 tracking-tight">{{ $pendingRequests }}</h3>
+                            <p class="text-gray-700 text-sm font-semibold">Pengajuan Menunggu</p>
+                            <a href="{{ route('karyawan.pengajuan-cuti') }}" class="mt-4 pt-4 border-t border-white/30 block group/link">
+                                <p class="text-xs text-gray-600 group-hover/link:text-gray-800 font-semibold transition-colors">Lihat detail »</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 5. Surat Diterima Card - Soft Glass Red-Gray -->
+                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/20 bg-gradient-to-br from-white/50 via-red-50/30 to-gray-50/30 backdrop-blur-xl">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-100/20 to-gray-100/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-bold text-green-700 bg-green-100/60 px-3 py-1 rounded-full backdrop-blur-sm shadow-sm">✓ SIAP</span>
+                            </div>
+                            <h3 class="text-4xl font-black text-gray-800 mb-2 tracking-tight">{{ $suratDiterima }}</h3>
+                            <p class="text-gray-700 text-sm font-semibold">Surat Sudah Diterbitkan</p>
+                            <a href="{{ route('karyawan.surat') }}" class="mt-4 pt-4 border-t border-white/30 block group/link">
+                                <p class="text-xs text-gray-600 group-hover/link:text-gray-800 font-semibold transition-colors">Lihat surat »</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 6. Riwayat Pengajuan Card - Soft Glass Master -->
+                    <div class="group relative overflow-hidden rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/20 bg-gradient-to-br from-white/50 via-gray-50/30 to-red-50/25 backdrop-blur-xl">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-100/20 to-gray-100/20 opacity-0 group-hover:opacity-80 transition-opacity duration-300"></div>
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                                     </svg>
                                 </div>
-                                <span class="text-xs font-semibold text-white/80 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Disetujui</span>
+                                <span class="text-xs font-bold text-red-700 bg-red-100/60 px-3 py-1 rounded-full backdrop-blur-sm shadow-sm">✅ DISETUJUI</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-white mb-1">Disetujui</h3>
-                            <p class="text-white/85 text-sm font-normal">Status Pengajuan Terakhir</p>
-                            <div class="mt-4 pt-4 border-t border-white/15">
-                                <p class="text-xs text-white/70">Tanggal: <span class="font-semibold text-white/95">12 Jan 2025</span></p>
-                            </div>
+                            <h3 class="text-4xl font-black text-gray-800 mb-2 tracking-tight">{{ $pengajuanDisetujui }}</h3>
+                            <p class="text-gray-700 text-sm font-semibold">Total Pengajuan Disetujui</p>
+                            <a href="{{ route('karyawan.riwayat') }}" class="mt-4 pt-4 border-t border-white/30 block group/link">
+                                <p class="text-xs text-gray-600 group-hover/link:text-gray-800 font-semibold transition-colors">Lihat riwayat »</p>
+                            </a>
                         </div>
                     </div>
                 @endif
             </div>
+
+            <!-- Karyawan: Quick Actions + Activity Sections -->
+            @if(Auth::user()->role === 'karyawan')
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Quick Actions Section -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-5 tracking-wide">⚡ Akses Cepat</h3>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <!-- Buat Pengajuan Cuti -->
+                                <a href="{{ route('karyawan.pengajuan-cuti') }}" class="group relative overflow-hidden bg-gradient-to-br from-red-50/80 to-rose-50/80 hover:from-red-100 hover:to-rose-100 rounded-xl p-4 shadow-sm border border-red-200/50 hover:border-red-300/70 transition-all duration-300 hover:shadow-md">
+                                    <div class="flex flex-col items-center text-center gap-2">
+                                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500/25 to-rose-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                            <svg class="w-5 h-5 text-red-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-bold text-gray-700 tracking-wide">Cuti</span>
+                                    </div>
+                                </a>
+
+                                <!-- Buat Ijin Sakit -->
+                                <a href="{{ route('karyawan.ijin-sakit') }}" class="group relative overflow-hidden bg-gradient-to-br from-red-50/80 to-orange-50/80 hover:from-red-100 hover:to-orange-100 rounded-xl p-4 shadow-sm border border-red-200/50 hover:border-red-300/70 transition-all duration-300 hover:shadow-md">
+                                    <div class="flex flex-col items-center text-center gap-2">
+                                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500/25 to-orange-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                            <svg class="w-5 h-5 text-red-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-bold text-gray-700 tracking-wide">Ijin Sakit</span>
+                                    </div>
+                                </a>
+
+                                <!-- Buat Pengajuan Lembur -->
+                                <a href="{{ route('karyawan.pengajuan-lembur') }}" class="group relative overflow-hidden bg-gradient-to-br from-gray-50/80 to-slate-50/80 hover:from-gray-100 hover:to-slate-100 rounded-xl p-4 shadow-sm border border-gray-200/50 hover:border-gray-300/70 transition-all duration-300 hover:shadow-md">
+                                    <div class="flex flex-col items-center text-center gap-2">
+                                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500/25 to-slate-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                            <svg class="w-5 h-5 text-gray-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-bold text-gray-700 tracking-wide">Lembur</span>
+                                    </div>
+                                </a>
+
+                                <!-- Minta Surat -->
+                                <a href="{{ route('karyawan.surat-keterangan.request.index') }}" class="group relative overflow-hidden bg-gradient-to-br from-red-50/80 to-gray-50/80 hover:from-red-100 hover:to-gray-100 rounded-xl p-4 shadow-sm border border-red-200/50 hover:border-red-300/70 transition-all duration-300 hover:shadow-md">
+                                    <div class="flex flex-col items-center text-center gap-2">
+                                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500/25 to-gray-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                            <svg class="w-5 h-5 text-red-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-bold text-gray-700 tracking-wide">Minta Surat</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alerts Section -->
+                    <div>
+                        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100/50 p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4 tracking-wide">🔔 Peringatan</h3>
+                            @if($cutiRejectedCount > 0)
+                                <div class="mb-3 p-3 bg-red-100/40 border border-red-300/30 rounded-lg backdrop-blur-sm">
+                                    <p class="text-xs font-bold text-red-700">⚠️ {{ $cutiRejectedCount }} pengajuan cuti ditolak</p>
+                                </div>
+                            @endif
+                            @if($lemburRejectedCount > 0)
+                                <div class="mb-3 p-3 bg-red-100/40 border border-red-300/30 rounded-lg backdrop-blur-sm">
+                                    <p class="text-xs font-bold text-red-700">⚠️ {{ $lemburRejectedCount }} pengajuan lembur ditolak</p>
+                                </div>
+                            @endif
+                            @if($sisaCuti < 3 && $sisaCuti >= 0)
+                                <div class="mb-3 p-3 bg-amber-100/40 border border-amber-300/30 rounded-lg backdrop-blur-sm">
+                                    <p class="text-xs font-bold text-amber-700">📅 Sisa cuti rendah: {{ $sisaCuti }} hari</p>
+                                </div>
+                            @endif
+                            @if($pendingRequests > 0)
+                                <div class="p-3 bg-gray-100/40 border border-gray-300/30 rounded-lg backdrop-blur-sm">
+                                    <p class="text-xs font-bold text-gray-700">⏳ {{ $pendingRequests }} pengajuan menunggu</p>
+                                </div>
+                            @endif
+                            @if($cutiRejectedCount === 0 && $lemburRejectedCount === 0 && $sisaCuti >= 3 && $pendingRequests === 0)
+                                <div class="p-4 bg-gradient-to-br from-green-50/60 to-emerald-50/50 border border-green-300/30 rounded-lg text-center backdrop-blur-sm">
+                                    <p class="text-2xl mb-1">✅</p>
+                                    <p class="text-xs font-bold text-green-700">Tidak ada peringatan</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                
+            @endif
 
             <!-- Content Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
@@ -559,34 +695,53 @@
                             <div class="relative">
                                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Pengajuan per Bulan (6 Bulan
                                     Terakhir)</h3>
-                                <div
-                                    class="flex items-end justify-between h-56 gap-3 mb-6 px-2 relative border-b-2 border-gray-200/50 pb-4">
-                                    @foreach ($pengajuanPerBulan as $entry)
+                                <div class="flex gap-4">
+                                    <!-- Y-Axis Labels -->
+                                    <div class="flex flex-col justify-between items-end w-10" style="height: 224px;">
                                         @php
-                                            $height = $maxPengajuan
-                                                ? floor(($entry['count'] / $maxPengajuan) * 110)
-                                                : 20;
+                                            $yMax = max(5, $maxPengajuan);
+                                            $step = ceil($yMax / 4);
+                                            $labels = [];
+                                            for ($i = $yMax; $i >= 0; $i -= $step) {
+                                                $labels[] = $i;
+                                            }
                                         @endphp
-                                        <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
-                                            <div
-                                                class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
-                                                <span>{{ $entry['count'] }}</span>
+                                        @foreach ($labels as $label)
+                                            <div class="text-sm text-gray-600 font-semibold">{{ $label }}</div>
+                                        @endforeach
+                                    </div>
+                                    <!-- Bar Chart -->
+                                    <div
+                                        class="flex items-end justify-between flex-1 h-56 gap-3 relative border-b-2 border-gray-200/50 pb-4">
+                                        @foreach ($pengajuanPerBulan as $entry)
+                                            @php
+                                                $yMax = max(5, $maxPengajuan);
+                                                $height = $yMax
+                                                    ? floor(($entry['count'] / $yMax) * 210)
+                                                    : 20;
+                                                if ($height < 5 && $entry['count'] > 0) $height = 5;
+                                            @endphp
+                                            <div class="flex-1 flex flex-col items-center gap-2 group/bar relative">
                                                 <div
-                                                    class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600">
+                                                    class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-600/90 to-rose-500/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10">
+                                                    <span>{{ $entry['count'] }}</span>
+                                                    <div
+                                                        class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-rose-600">
+                                                    </div>
                                                 </div>
+                                                <div class="w-8 bg-gradient-to-t from-red-400/70 to-red-300/50 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-red-400/90 group-hover/bar:to-red-300/70 transition-all duration-300 cursor-pointer"
+                                                    style="height: {{ $height }}px;"></div>
+                                                <span
+                                                    class="text-xs text-gray-600 font-medium">{{ $entry['label'] }}</span>
                                             </div>
-                                            <div class="w-8 bg-gradient-to-t from-rose-400/60 to-rose-300/40 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-rose-400/80 group-hover/bar:to-rose-300/60 transition-all duration-300 cursor-pointer"
-                                                style="height: {{ $height }}px;"></div>
-                                            <span
-                                                class="text-xs text-gray-600 font-medium">{{ $entry['label'] }}</span>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    </div>
                                 </div>
                                 <div class="pt-4">
                                     <div class="flex items-center justify-between">
                                         <span class="text-sm font-medium text-gray-600">Total 6 Bulan</span>
                                         <span
-                                            class="text-lg font-bold bg-gradient-to-r from-rose-500 to-rose-400 bg-clip-text text-transparent">{{ $totalPengajuan6 }}
+                                            class="text-lg font-bold bg-gradient-to-r from-red-500 to-rose-500 bg-clip-text text-transparent">{{ $totalPengajuan6 }}
                                             pengajuan</span>
                                     </div>
                                 </div>
@@ -697,20 +852,20 @@
                                     <div class="relative w-48 h-48">
                                         <svg class="w-full h-full drop-shadow-sm" viewBox="0 0 140 140"
                                             style="transform: rotate(-90deg)">
-                                            <!-- Approved -->
+                                            <!-- Approved (Red) -->
                                             <circle cx="70" cy="70" r="55" fill="none"
-                                                stroke="#10b981" stroke-width="22"
+                                                stroke="#dc2626" stroke-width="22"
                                                 stroke-dasharray="{{ $approvedDash }} {{ $circumference }}"
                                                 stroke-linecap="round" opacity="0.8" />
-                                            <!-- Pending -->
+                                            <!-- Pending (Gray) -->
                                             <circle cx="70" cy="70" r="55" fill="none"
-                                                stroke="#f59e0b" stroke-width="22"
+                                                stroke="#6b7280" stroke-width="22"
                                                 stroke-dasharray="{{ $pendingDash }} {{ $circumference }}"
                                                 stroke-dashoffset="-{{ $approvedDash }}" stroke-linecap="round"
                                                 opacity="0.8" />
-                                            <!-- Rejected -->
+                                            <!-- Rejected (Red Dark) -->
                                             <circle cx="70" cy="70" r="55" fill="none"
-                                                stroke="#ef4444" stroke-width="22"
+                                                stroke="#b91c1c" stroke-width="22"
                                                 stroke-dasharray="{{ $rejectedDash }} {{ $circumference }}"
                                                 stroke-dashoffset="-{{ $approvedDash + $pendingDash }}"
                                                 stroke-linecap="round" opacity="0.8" />
@@ -727,10 +882,10 @@
                                 </div>
                                 <div class="space-y-3 text-sm">
                                     <div
-                                        class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-green-50/40 hover:to-transparent transition-colors duration-300">
+                                        class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-red-50/60 hover:to-transparent transition-colors duration-300">
                                         <div class="flex items-center gap-3">
                                             <div
-                                                class="w-4 h-4 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex-shrink-0 shadow-sm">
+                                                class="w-4 h-4 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex-shrink-0 shadow-sm">
                                             </div>
                                             <span class="text-gray-600">Disetujui</span>
                                         </div>
@@ -738,10 +893,10 @@
                                             ({{ $approvedPct }}%)</span>
                                     </div>
                                     <div
-                                        class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-amber-50/40 hover:to-transparent transition-colors duration-300">
+                                        class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-gray-50/60 hover:to-transparent transition-colors duration-300">
                                         <div class="flex items-center gap-3">
                                             <div
-                                                class="w-4 h-4 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 flex-shrink-0 shadow-sm">
+                                                class="w-4 h-4 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex-shrink-0 shadow-sm">
                                             </div>
                                             <span class="text-gray-600">Menunggu</span>
                                         </div>
@@ -749,10 +904,10 @@
                                             ({{ $pendingPct }}%)</span>
                                     </div>
                                     <div
-                                        class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-red-50/40 hover:to-transparent transition-colors duration-300">
+                                        class="flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-rose-50/60 hover:to-transparent transition-colors duration-300">
                                         <div class="flex items-center gap-3">
                                             <div
-                                                class="w-4 h-4 rounded-full bg-gradient-to-br from-red-400 to-red-500 flex-shrink-0 shadow-sm">
+                                                class="w-4 h-4 rounded-full bg-gradient-to-br from-rose-400 to-red-700 flex-shrink-0 shadow-sm">
                                             </div>
                                             <span class="text-gray-600">Ditolak</span>
                                         </div>
@@ -771,14 +926,14 @@
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm text-gray-600 font-bold">Pengajuan Pending</span>
                                     </div>
-                                    <span class="font-bold text-lg text-yellow-600">{{ $pendingApprovals }}</span>
+                                    <span class="font-bold text-lg text-gray-600">{{ $pendingApprovals }}</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm text-gray-600 font-bold">Disetujui (Bulan Ini)</span>
                                     </div>
                                     <span
-                                        class="font-bold text-lg text-green-600">{{ $persetujuanSelesai ?? 0 }}</span>
+                                        class="font-bold text-lg text-red-600">{{ $persetujuanSelesai ?? 0 }}</span>
                                 </div>
                                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                                     <div class="flex items-center gap-2">
@@ -1040,222 +1195,100 @@
                         </div> --}}
 
                         <!-- Pengajuan Cuti Chart - 6 Bulan Terakhir -->
-                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
-                            <h3 class="text-base font-semibold text-gray-800 mb-6">Pengajuan Cuti Saya - 6 Bulan
-                                Terakhir</h3>
-                            <!-- Chart dengan Grid Lines dan Layout Lebih Besar -->
-                            <div class="space-y-4">
-                                <!-- Y-axis scale labels -->
-                                <div class="flex gap-6">
-                                    <div class="w-12 flex flex-col justify-between text-right pr-2"
-                                        style="height: 280px;">
-                                        <span class="text-xs text-gray-500 font-medium">4</span>
-                                        <span class="text-xs text-gray-500 font-medium">3</span>
-                                        <span class="text-xs text-gray-500 font-medium">2</span>
-                                        <span class="text-xs text-gray-500 font-medium">1</span>
-                                        <span class="text-xs text-gray-500 font-medium">0</span>
+                        <div class="group relative overflow-hidden bg-gradient-to-br from-white/50 via-red-50/30 to-white/40 backdrop-blur-xl rounded-2xl p-6 shadow-md border border-white/20 hover:shadow-lg transition-all duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-red-100/20 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+                            <div class="relative">
+                                <h3 class="text-lg font-bold text-gray-800 mb-6 tracking-tight">📅 Pengajuan Cuti Saya - 6 Bulan</h3>
+                                <div class="flex gap-4">
+                                    <!-- Y-Axis Labels -->
+                                    <div class="flex flex-col justify-between items-end w-10" style="height: 240px;">
+                                        @php
+                                            $yMax = max(5, $maxCuti);
+                                            $step = ceil($yMax / 4);
+                                            $labels = [];
+                                            for ($i = $yMax; $i >= 0; $i -= $step) {
+                                                $labels[] = $i;
+                                            }
+                                        @endphp
+                                        @foreach ($labels as $label)
+                                            <div class="text-sm text-gray-600 font-semibold">{{ $label }}</div>
+                                        @endforeach
                                     </div>
-                                    <!-- Main Chart Container -->
-                                    <div class="flex-1">
-                                        <div class="relative" style="height: 280px;">
-                                            <!-- Grid lines -->
-                                            <div
-                                                class="absolute inset-0 flex flex-col justify-between pointer-events-none">
-                                                <div class="border-t border-gray-200"></div>
-                                                <div class="border-t border-gray-200"></div>
-                                                <div class="border-t border-gray-200"></div>
-                                                <div class="border-t border-gray-200"></div>
-                                                <div class="border-t border-gray-200"></div>
+                                    <!-- Bar Chart -->
+                                    <div class="flex items-end justify-between flex-1 h-60 gap-3 relative border-b-2 border-gray-200/50 pb-3">
+                                        @foreach ($cutiPerBulan as $entry)
+                                            @php
+                                                $yMax = max(5, $maxCuti);
+                                                $height = $yMax
+                                                    ? floor(($entry['count'] / $yMax) * 200)
+                                                    : 0;
+                                            @endphp
+                                            <div class="flex-1 flex flex-col items-center gap-1 group/bar relative">
+                                                @if ($entry['count'] > 0)
+                                                    <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-red-600 to-red-500 text-white px-2.5 py-1 rounded-lg text-xs font-bold opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10 whitespace-nowrap">
+                                                        {{ $entry['count'] }} hari
+                                                    </div>
+                                                @endif
+                                                <div class="w-6 bg-gradient-to-t from-red-400/80 to-red-300/60 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-red-400 transition-all duration-300 cursor-pointer"
+                                                    style="height: {{ $height }}px; min-height: 4px;"></div>
+                                                <span class="text-xs text-gray-600 font-semibold">{{ $entry['label'] }}</span>
                                             </div>
-                                            <!-- Bars Container -->
-                                            <div class="absolute inset-0 flex items-end justify-around gap-6 px-2">
-                                                <!-- Agustus -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-red-600 hover:bg-red-700 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 75%; max-width: 80px; margin: 0 auto;"
-                                                        title="3 hari">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">3</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Agu</span>
-                                                </div>
-                                                <!-- September -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-red-600 hover:bg-red-700 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 50%; max-width: 80px; margin: 0 auto;"
-                                                        title="2 hari">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">2</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Sep</span>
-                                                </div>
-                                                <!-- Oktober -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-red-600 hover:bg-red-700 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 100%; max-width: 80px; margin: 0 auto;"
-                                                        title="4 hari">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">4</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Okt</span>
-                                                </div>
-                                                <!-- November -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-red-600 hover:bg-red-700 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 25%; max-width: 80px; margin: 0 auto; min-height: 12px;"
-                                                        title="1 hari">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">1</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Nov</span>
-                                                </div>
-                                                <!-- Desember -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-gray-400 hover:bg-gray-500 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 5%; max-width: 80px; margin: 0 auto; min-height: 8px;"
-                                                        title="0 hari"></div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Des</span>
-                                                </div>
-                                                <!-- Januari -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-red-700 hover:bg-red-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 50%; max-width: 80px; margin: 0 auto;"
-                                                        title="2 hari">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">2</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Jan</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-600">Total Cuti Digunakan</span>
-                                <span class="text-lg font-semibold text-yellow-600">12 hari</span>
+                                <div class="mt-6 pt-4 border-t border-white/30 flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-700">Total 6 Bulan</span>
+                                    <span class="text-lg font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">{{ $totalCuti6 }} hari</span>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Personal Overtime Chart -->
-                        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 p-6">
-                            <h3 class="text-base font-semibold text-gray-800 mb-6">Lembur Saya - 6 Bulan Terakhir</h3>
-                            <!-- Chart dengan Grid Lines dan Layout Lebih Besar -->
-                            <div class="space-y-4">
-                                <!-- Y-axis scale labels -->
-                                <div class="flex gap-6">
-                                    <div class="w-12 flex flex-col justify-between text-right pr-2"
-                                        style="height: 280px;">
-                                        <span class="text-xs text-gray-500 font-medium">14h</span>
-                                        <span class="text-xs text-gray-500 font-medium">10h</span>
-                                        <span class="text-xs text-gray-500 font-medium">7h</span>
-                                        <span class="text-xs text-gray-500 font-medium">3h</span>
-                                        <span class="text-xs text-gray-500 font-medium">0h</span>
+                        <!-- Lembur Chart - 6 Bulan Terakhir -->
+                        <div class="group relative overflow-hidden bg-gradient-to-br from-white/50 via-gray-50/30 to-white/40 backdrop-blur-xl rounded-2xl p-6 shadow-md border border-white/20 hover:shadow-lg transition-all duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-br from-gray-100/20 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+                            <div class="relative">
+                                <h3 class="text-lg font-bold text-gray-800 mb-6 tracking-tight">⏰ Lembur Saya - 6 Bulan</h3>
+                                <div class="flex gap-4">
+                                    <!-- Y-Axis Labels -->
+                                    <div class="flex flex-col justify-between items-end w-10" style="height: 240px;">
+                                        @php
+                                            $yMax = max(10, $maxLembur);
+                                            $step = ceil($yMax / 4);
+                                            $labels = [];
+                                            for ($i = $yMax; $i >= 0; $i -= $step) {
+                                                $labels[] = $i;
+                                            }
+                                        @endphp
+                                        @foreach ($labels as $label)
+                                            <div class="text-sm text-gray-600 font-semibold">{{ $label }}j</div>
+                                        @endforeach
                                     </div>
-                                    <!-- Main Chart Container -->
-                                    <div class="flex-1">
-                                        <div class="relative" style="height: 280px;">
-                                            <!-- Grid lines -->
-                                            <div
-                                                class="absolute inset-0 flex flex-col justify-between pointer-events-none">
-                                                <div class="border-t border-gray-200"></div>
-                                                <div class="border-t border-gray-200"></div>
-                                                <div class="border-t border-gray-200"></div>
-                                                <div class="border-t border-gray-200"></div>
-                                                <div class="border-t border-gray-200"></div>
+                                    <!-- Bar Chart -->
+                                    <div class="flex items-end justify-between flex-1 h-60 gap-3 relative border-b-2 border-gray-200/50 pb-3">
+                                        @foreach ($lemburPerBulan as $entry)
+                                            @php
+                                                $yMax = max(10, $maxLembur);
+                                                $height = $yMax
+                                                    ? floor(($entry['count'] / $yMax) * 200)
+                                                    : 0;
+                                            @endphp
+                                            <div class="flex-1 flex flex-col items-center gap-1 group/bar relative">
+                                                @if ($entry['count'] > 0)
+                                                    <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-gray-600 to-gray-500 text-white px-2.5 py-1 rounded-lg text-xs font-bold opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none shadow-lg z-10 whitespace-nowrap">
+                                                        {{ $entry['count'] }} jam
+                                                    </div>
+                                                @endif
+                                                <div class="w-6 bg-gradient-to-t from-gray-400/80 to-gray-300/60 rounded-t-lg shadow-md group-hover/bar:shadow-lg group-hover/bar:from-gray-400 transition-all duration-300 cursor-pointer"
+                                                    style="height: {{ $height }}px; min-height: 4px;"></div>
+                                                <span class="text-xs text-gray-600 font-semibold">{{ $entry['label'] }}</span>
                                             </div>
-                                            <!-- Bars Container -->
-                                            <div class="absolute inset-0 flex items-end justify-around gap-6 px-2">
-                                                <!-- Agustus -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-slate-700 hover:bg-slate-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 85.7%; max-width: 80px; margin: 0 auto;"
-                                                        title="12 jam">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">12h</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Agu</span>
-                                                </div>
-                                                <!-- September -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-slate-700 hover:bg-slate-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 57%; max-width: 80px; margin: 0 auto;"
-                                                        title="8 jam">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">8h</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Sep</span>
-                                                </div>
-                                                <!-- Oktober -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-slate-700 hover:bg-slate-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 71%; max-width: 80px; margin: 0 auto;"
-                                                        title="10 jam">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">10h</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Okt</span>
-                                                </div>
-                                                <!-- November -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-slate-700 hover:bg-slate-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 42.8%; max-width: 80px; margin: 0 auto; min-height: 12px;"
-                                                        title="6 jam">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">6h</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Nov</span>
-                                                </div>
-                                                <!-- Desember -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-slate-700 hover:bg-slate-800 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 100%; max-width: 80px; margin: 0 auto;"
-                                                        title="14 jam">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">14h</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Des</span>
-                                                </div>
-                                                <!-- Januari -->
-                                                <div class="flex-1 flex flex-col items-center group">
-                                                    <div class="w-full bg-slate-800 hover:bg-slate-900 rounded-t-lg transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                                                        style="height: 114%; max-width: 80px; margin: 0 auto;"
-                                                        title="16 jam">
-                                                        <div
-                                                            class="w-full h-full flex items-start justify-center pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span class="text-xs font-bold text-white">16h</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-600 font-medium mt-2">Jan</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-600">Total 6 Bulan Terakhir</span>
-                                <span class="text-lg font-semibold text-purple-600">66 jam</span>
+                                <div class="mt-6 pt-4 border-t border-white/30 flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-700">Total 6 Bulan</span>
+                                    <span class="text-lg font-bold bg-gradient-to-r from-gray-500 to-gray-600 bg-clip-text text-transparent">{{ $totalLembur6 }} jam</span>
+                                </div>
                             </div>
                         </div>
 
@@ -1270,15 +1303,15 @@
                                         <circle cx="60" cy="60" r="50" fill="none" stroke="#e5e7eb"
                                             stroke-width="12" />
                                         <!-- Disetujui (60% = 188.5 dari 314.16) -->
-                                        <circle cx="60" cy="60" r="50" fill="none" stroke="#10b981"
+                                        <circle cx="60" cy="60" r="50" fill="none" stroke="#DC2626"
                                             stroke-width="12" stroke-dasharray="188.5 314.16" stroke-dashoffset="0"
                                             stroke-linecap="round" />
                                         <!-- Menunggu (25% = 78.54 dari 314.16) -->
-                                        <circle cx="60" cy="60" r="50" fill="none" stroke="#f59e0b"
+                                        <circle cx="60" cy="60" r="50" fill="none" stroke="#6B7280"
                                             stroke-width="12" stroke-dasharray="78.54 314.16"
                                             stroke-dashoffset="-188.5" stroke-linecap="round" />
                                         <!-- Ditolak (15% = 47.12 dari 314.16) -->
-                                        <circle cx="60" cy="60" r="50" fill="none" stroke="#ef4444"
+                                        <circle cx="60" cy="60" r="50" fill="none" stroke="#991B1B"
                                             stroke-width="12" stroke-dasharray="47.12 314.16"
                                             stroke-dashoffset="-267.04" stroke-linecap="round" />
                                     </svg>
@@ -1292,21 +1325,21 @@
                                 <!-- Legend -->
                                 <div class="space-y-3 flex-shrink-0">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+                                        <div class="w-3 h-3 rounded-full bg-red-600 flex-shrink-0"></div>
                                         <div>
                                             <p class="text-xs font-medium text-gray-800">Disetujui</p>
                                             <p class="text-xs text-gray-500">12 (60%)</p>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-3">
-                                        <div class="w-3 h-3 rounded-full bg-red-500 flex-shrink-0"></div>
+                                        <div class="w-3 h-3 rounded-full bg-gray-500 flex-shrink-0"></div>
                                         <div>
                                             <p class="text-xs font-medium text-gray-800">Menunggu</p>
                                             <p class="text-xs text-gray-500">5 (25%)</p>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-3">
-                                        <div class="w-3 h-3 rounded-full bg-red-500 flex-shrink-0"></div>
+                                        <div class="w-3 h-3 rounded-full bg-red-900 flex-shrink-0"></div>
                                         <div>
                                             <p class="text-xs font-medium text-gray-800">Ditolak</p>
                                             <p class="text-xs text-gray-500">3 (15%)</p>
@@ -1320,18 +1353,18 @@
                     <!-- Right Column - Karyawan (Personal) - Modern Design -->
                     <div class="space-y-6">
                         <!-- Profile Card dengan Info Lengkap -->
-                        <div class="relative overflow-hidden bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-7">
-                            <div class="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-cyan-50/20 pointer-events-none"></div>
+                        <div class="relative overflow-hidden bg-gradient-to-br from-white/50 via-red-50/30 to-white/40 backdrop-blur-xl rounded-2xl shadow-md border border-white/20 p-7">
+                            <div class="absolute inset-0 bg-gradient-to-br from-red-100/10 via-transparent to-gray-50/10 pointer-events-none"></div>
                             <div class="relative">
                                 <div class="flex items-center gap-5 mb-6">
-                                    <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
+                                    <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center flex-shrink-0">
                                         <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                                         </svg>
                                     </div>
                                     <div class="flex-1">
                                         <h3 class="text-xl font-bold text-gray-900">{{ Auth::user()->name }}</h3>
-                                        <p class="text-sm text-blue-600 font-semibold">Karyawan Tetap</p>
+                                        <p class="text-sm text-red-600 font-semibold">Karyawan Tetap</p>
                                     </div>
                                 </div>
                                 <div class="space-y-3 divide-y divide-gray-200">
@@ -1347,9 +1380,9 @@
                                         <p class="text-xs text-gray-500 font-medium mb-1">Kehadiran Bulan Ini</p>
                                         <div class="flex items-center gap-2">
                                             <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                                <div class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style="width: 90.9%"></div>
+                                                <div class="h-full bg-gradient-to-r from-red-500 to-red-600 rounded-full" style="width: 90.9%"></div>
                                             </div>
-                                            <span class="text-lg font-bold text-green-600">90.9%</span>
+                                            <span class="text-lg font-bold text-red-600">90.9%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1359,20 +1392,20 @@
                         <!-- Quick Stats Grid -->
                         <div class="grid grid-cols-2 gap-4">
                             <!-- Menunggu Persetujuan -->
-                            <div class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-5 border border-orange-100">
-                                <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mb-3">
-                                    <svg class="w-5 h-5 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+                            <div class="bg-gradient-to-br from-gray-50 to-slate-50 rounded-2xl p-5 border border-gray-200/50">
+                                <div class="w-10 h-10 rounded-lg bg-gray-500/20 flex items-center justify-center mb-3">
+                                    <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
                                     </svg>
                                 </div>
                                 <p class="text-xs text-gray-600 font-medium mb-1">Menunggu Persetujuan</p>
-                                <p class="text-3xl font-bold text-orange-600">1</p>
+                                <p class="text-3xl font-bold text-gray-600">1</p>
                             </div>
 
                             <!-- Penolakan -->
-                            <div class="bg-gradient-to-br from-red-50 to-rose-50 rounded-2xl p-5 border border-red-100">
+                            <div class="bg-gradient-to-br from-red-50 to-red-100/30 rounded-2xl p-5 border border-red-200/50">
                                 <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center mb-3">
-                                    <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-5 h-5 text-red-700" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
                                     </svg>
                                 </div>
@@ -1382,7 +1415,7 @@
                         </div>
 
                         <!-- Surat Keterangan Alert Box -->
-                        <div class="relative overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 rounded-2xl shadow-lg border border-emerald-300/30 p-6">
+                        <div class="relative overflow-hidden bg-gradient-to-br from-red-500 via-red-600 to-red-700 rounded-2xl shadow-lg border border-red-400/30 p-6">
                             <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
                             <div class="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
                             <div class="relative">
@@ -1404,7 +1437,7 @@
                                     <a href="{{ route('karyawan.surat-keterangan.request.index') }}" class="flex-1 text-center bg-white/20 hover:bg-white/30 text-white text-xs font-semibold py-2.5 rounded-xl transition-all border border-white/30">
                                         📋 Ajukan
                                     </a>
-                                    <a href="/karyawan/surat-keterangan" class="flex-1 text-center bg-white text-emerald-600 hover:bg-emerald-50 text-xs font-bold py-2.5 rounded-xl transition-all">
+                                    <a href="/karyawan/surat-keterangan" class="flex-1 text-center bg-white text-red-600 hover:bg-red-50 text-xs font-bold py-2.5 rounded-xl transition-all">
                                         Lihat Semua →
                                     </a>
                                 </div>
@@ -1422,7 +1455,7 @@
                                 </div>
                             </a>
 
-                            <a href="{{ route('karyawan.pengajuan-lembur') }}" class="group relative overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800">
+                            <a href="{{ route('karyawan.pengajuan-lembur') }}" class="group relative overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700">
                                 <div class="relative flex flex-col items-center text-center text-white">
                                     <svg class="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
@@ -1431,7 +1464,7 @@
                                 </div>
                             </a>
 
-                            <a href="{{ route('karyawan.surat-keterangan.request.index') }}" class="group relative overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700">
+                            <a href="{{ route('karyawan.surat-keterangan.request.index') }}" class="group relative overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-red-400 to-red-500 hover:from-red-500 hover:to-red-600">
                                 <div class="relative flex flex-col items-center text-center text-white">
                                     <svg class="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -1440,7 +1473,7 @@
                                 </div>
                             </a>
 
-                            <a href="{{ route('karyawan.surat') }}" class="group relative overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700">
+                            <a href="{{ route('karyawan.surat') }}" class="group relative overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600">
                                 <div class="relative flex flex-col items-center text-center text-white">
                                     <svg class="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -1452,7 +1485,7 @@
 
 
                         <!-- View History Link -->
-                        <a href="{{ route('karyawan.riwayat') }}" class="flex items-center justify-center gap-2 w-full bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm hover:shadow-md transition-all border border-gray-100/50 text-gray-700 font-semibold hover:text-blue-600 group">
+                        <a href="{{ route('karyawan.riwayat') }}" class="flex items-center justify-center gap-2 w-full bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm hover:shadow-md transition-all border border-gray-100/50 text-gray-700 font-semibold hover:text-red-600 group">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3" />
                             </svg>

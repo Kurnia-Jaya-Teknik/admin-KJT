@@ -15,8 +15,8 @@
         <div class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gray-50 min-h-full">
             <!-- Page Header with Gradient Banner -->
             <div class="mb-8 relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-purple-600 via-violet-500 to-indigo-600 rounded-3xl blur-2xl opacity-10"></div>
-                <div class="relative bg-gradient-to-r from-purple-600/95 via-violet-500/90 to-indigo-600/85 rounded-3xl p-8 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-red-600 via-red-500 to-red-700 rounded-3xl blur-2xl opacity-10"></div>
+                <div class="relative bg-gradient-to-r from-red-600/95 via-red-500/90 to-red-700/85 rounded-3xl p-8 overflow-hidden">
                     <div class="absolute top-4 right-8 opacity-20">
                         <div class="w-32 h-32 bg-white rounded-full blur-3xl"></div>
                     </div>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="relative">
                         <h1 class="text-3xl font-bold text-white mb-2">⏰ Pengajuan Lembur</h1>
-                        <p class="text-purple-50/90 text-sm">Ajukan jam kerja tambahan untuk pekerjaan yang mendesak</p>
+                        <p class="text-red-50/90 text-sm">Ajukan jam kerja tambahan untuk pekerjaan yang mendesak</p>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                 <!-- Form Pengajuan -->
                 <div
                     class="lg:col-span-2 bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/50 overflow-hidden hover:shadow-md transition-all duration-300">
-                    <div class="px-8 py-6 border-b border-gray-200/30 bg-gradient-to-r from-purple-50/80 via-violet-50/50 to-indigo-50/30">
+                    <div class="px-8 py-6 border-b border-gray-200/30 bg-gradient-to-r from-red-50/80 via-red-50/50 to-gray-50/30">
                         <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">📝 Ajukan Lembur Baru</h3>
                     </div>
                     <div class="p-8">
@@ -42,41 +42,41 @@
                             <!-- Tanggal Lembur -->
                             <div>
                                 <label class="text-sm font-semibold text-gray-700 uppercase tracking-wide block mb-3 flex items-center gap-2">
-                                    <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">📅</span>
+                                    <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">&#x1f4c5;</span>
                                     Tanggal Lembur
                                 </label>
                                 <input id="lemburTanggal" type="date"
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-white focus:bg-white focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-200/30 transition-all duration-200 font-medium text-gray-800 shadow-sm">
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-white focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-100/30 transition-all duration-200 font-medium text-gray-800 shadow-sm">
                             </div>
 
                             <!-- Jam Mulai & Selesai -->
                             <div class="grid grid-cols-2 gap-6">
                                 <div>
                                     <label class="text-sm font-semibold text-gray-700 uppercase tracking-wide block mb-3 flex items-center gap-2">
-                                        <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">⏰</span>
+                                        <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">⏰</span>
                                         Jam Mulai
                                     </label>
                                     <input id="lemburMulai" type="time"
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-white focus:bg-white focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-200/30 transition-all duration-200 font-medium text-gray-800 shadow-sm">
+                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-white focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-100/30 transition-all duration-200 font-medium text-gray-800 shadow-sm">
                                 </div>
                                 <div>
                                     <label class="text-sm font-semibold text-gray-700 uppercase tracking-wide block mb-3 flex items-center gap-2">
-                                        <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">⏱️</span>
+                                        <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">⏱️</span>
                                         Jam Selesai
                                     </label>
                                     <input id="lemburSelesai" type="time"
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-white focus:bg-white focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-200/30 transition-all duration-200 font-medium text-gray-800 shadow-sm">
+                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-white focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-100/30 transition-all duration-200 font-medium text-gray-800 shadow-sm">
                                 </div>
                             </div>
 
                             <!-- Total Jam -->
                             <div>
                                 <label class="text-sm font-semibold text-gray-700 uppercase tracking-wide block mb-3 flex items-center gap-2">
-                                    <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">⏳</span>
+                                    <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">⏳</span>
                                     Total Jam Lembur
                                 </label>
                                 <div id="lemburTotalContainer"
-                                    class="px-4 py-3 bg-gradient-to-r from-indigo-50/70 to-indigo-100/50 border border-indigo-200/50 rounded-xl shadow-sm">
+                                    class="px-4 py-3 bg-gradient-to-r from-red-50/70 to-red-100/50 border border-red-200/50 rounded-xl shadow-sm">
                                     <p id="lemburTotal" class="text-gray-800 font-bold text-base">-</p>
                                 </div>
                                 <div id="lemburTotalError" class="text-red-500/80 text-sm mt-3 hidden font-medium"></div>
@@ -86,19 +86,19 @@
                             <!-- Keterangan Pekerjaan -->
                             <div>
                                 <label class="text-sm font-semibold text-gray-700 uppercase tracking-wide block mb-3 flex items-center gap-2">
-                                    <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">📋</span>
+                                    <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">📋</span>
                                     Keterangan Pekerjaan
                                 </label>
                                 <textarea id="lemburKeterangan" rows="4" placeholder="Jelaskan pekerjaan apa yang akan dilakukan selama lembur..."
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-white focus:bg-white focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-200/30 transition-all duration-200 resize-none font-normal text-gray-800 placeholder-gray-400 shadow-sm leading-relaxed"></textarea>
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-white focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-100/30 transition-all duration-200 resize-none font-normal text-gray-800 placeholder-gray-400 shadow-sm leading-relaxed"></textarea>
                             </div>
 
                             <!-- Info -->
                             <div
-                                class="bg-gradient-to-r from-indigo-50/70 to-indigo-100/50 border border-indigo-200/50 rounded-xl p-4 shadow-sm">
+                                class="bg-gradient-to-r from-red-50/70 to-red-100/50 border border-red-200/50 rounded-xl p-4 shadow-sm">
                                 <div class="flex items-start gap-3">
-                                    <div class="p-1.5 bg-indigo-100 rounded-lg flex-shrink-0 mt-0.5">
-                                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor"
+                                    <div class="p-1.5 bg-red-100 rounded-lg flex-shrink-0 mt-0.5">
+                                        <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -113,7 +113,7 @@
                             <!-- Button -->
                             <div class="flex gap-3 pt-6 border-t border-gray-200/30">
                                 <button id="submitLembur" type="submit"
-                                    class="flex-1 px-4 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 active:scale-95 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-base">
+                                    class="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:scale-95 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-base">
                                     Ajukan Lembur
                                 </button>
                                 <button type="reset"
@@ -128,14 +128,14 @@
                 <!-- Info Card -->
                 <div
                     class="bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/50 overflow-hidden hover:shadow-md transition-all duration-300">
-                    <div class="px-8 py-6 border-b border-gray-200/30 bg-gradient-to-r from-indigo-50/80 via-indigo-50/50 to-purple-50/30">
+                    <div class="px-8 py-6 border-b border-gray-200/30 bg-gradient-to-r from-red-50/80 via-red-50/50 to-gray-50/30">
                         <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">ℹ️ Informasi Lembur</h3>
                     </div>
                     <div class="p-6 space-y-6">
                         <div>
                             <p class="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-2">Total Lembur Bulan Ini</p>
                             <p
-                                class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-700 bg-clip-text text-transparent">
+                                class="text-3xl font-bold bg-gradient-to-r from-red-600 to-red-700 bg-clip-text text-transparent">
                                 12 jam</p>
                             <p class="text-sm text-gray-600 mt-2">Dari 6 pengajuan</p>
                         </div>
@@ -143,19 +143,19 @@
                             <p class="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-3">Kebijakan Lembur</p>
                             <ul class="space-y-3 text-sm text-gray-700">
                                 <li class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-indigo-600 mt-2.5 flex-shrink-0"></div>
+                                    <div class="w-2 h-2 rounded-full bg-red-600 mt-2.5 flex-shrink-0"></div>
                                     <span class="leading-relaxed">Max 3 jam per hari</span>
                                 </li>
                                 <li class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-indigo-600 mt-2.5 flex-shrink-0"></div>
+                                    <div class="w-2 h-2 rounded-full bg-red-600 mt-2.5 flex-shrink-0"></div>
                                     <span class="leading-relaxed">Max 20 jam per bulan</span>
                                 </li>
                                 <li class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-indigo-600 mt-2.5 flex-shrink-0"></div>
+                                    <div class="w-2 h-2 rounded-full bg-red-600 mt-2.5 flex-shrink-0"></div>
                                     <span class="leading-relaxed">Lembur hari libur prioritas rendah</span>
                                 </li>
                                 <li class="flex items-start gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-indigo-600 mt-2.5 flex-shrink-0"></div>
+                                    <div class="w-2 h-2 rounded-full bg-red-600 mt-2.5 flex-shrink-0"></div>
                                     <span class="leading-relaxed">Persetujuan dari direktur</span>
                                 </li>
                             </ul>
@@ -167,7 +167,7 @@
             <!-- Riwayat Pengajuan Lembur -->
             <div
                 class="mt-8 bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/50 overflow-hidden hover:shadow-md transition-all duration-300">
-                <div class="px-8 py-5 border-b border-gray-200/30 bg-gradient-to-r from-indigo-50/80 via-indigo-50/50 to-purple-50/30">
+                <div class="px-8 py-5 border-b border-gray-200/30 bg-gradient-to-r from-red-50/80 via-red-50/50 to-gray-50/30">
                     <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">📋 Riwayat Pengajuan Lembur</h3>
                 </div>
                         {{-- <div class="flex items-center gap-3 text-xs text-gray-500">
@@ -372,7 +372,7 @@
                                             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-${statusColor}-100/70 text-${statusColor}-700 text-sm font-semibold rounded-full whitespace-nowrap flex-shrink-0 shadow-sm">${statusLabel}</span>
                                         </div>
                                         <p class="text-base text-gray-600 mb-2 line-clamp-2">📝 ${item.keterangan || 'Tidak ada keterangan'}</p>
-                                        <p class="text-sm text-indigo-600 font-medium mt-2">⏱️ Durasi: ${item.total_jam} jam</p>
+                                        <p class="text-sm text-red-600 font-medium mt-2">⏱️ Durasi: ${item.total_jam} jam</p>
                                         <div class="flex items-center gap-3 mt-3">
                                             ${editButton}
                                             <button onclick="previewLembur(${item.id})" class="text-sm text-${statusColor}-600/90 hover:text-${statusColor}-700 font-medium transition-colors group-hover:font-bold">Lihat Detail →</button>
@@ -399,7 +399,7 @@
                     modal.innerHTML = `
                         <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-gray-200">
                             <!-- Header -->
-                            <div class="px-6 py-5 bg-gradient-to-r from-indigo-600 to-indigo-700 border-b border-indigo-800/20">
+                            <div class="px-6 py-5 bg-gradient-to-r from-red-600 to-red-700 border-b border-red-800/20">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-3">
                                         <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30">
@@ -425,69 +425,69 @@
                                 <!-- Tanggal Lembur -->
                                 <div class="group">
                                     <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
-                                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">
+                                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">
                                             <span class="text-lg">📅</span>
                                         </div>
                                         Tanggal Lembur
                                     </label>
-                                    <input id="modalTanggal" type="date" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition-all duration-300 text-base text-gray-800 font-medium shadow-sm" />
+                                    <input id="modalTanggal" type="date" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 transition-all duration-300 text-base text-gray-800 font-medium shadow-sm" />
                                 </div>
                                 
                                 <!-- Jam Mulai & Selesai -->
                                 <div class="grid grid-cols-2 gap-5">
                                     <div class="group">
                                         <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
-                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">
                                                 <span class="text-lg">⏰</span>
                                             </div>
                                             Jam Mulai
                                         </label>
-                                        <input id="modalMulai" type="time" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition-all duration-300 text-base text-gray-800 font-medium shadow-sm" />
+                                        <input id="modalMulai" type="time" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 transition-all duration-300 text-base text-gray-800 font-medium shadow-sm" />
                                     </div>
                                     <div class="group">
                                         <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
-                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">
                                                 <span class="text-lg">⏱️</span>
                                             </div>
                                             Jam Selesai
                                         </label>
-                                        <input id="modalSelesai" type="time" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition-all duration-300 text-base text-gray-800 font-medium shadow-sm" />
+                                        <input id="modalSelesai" type="time" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 transition-all duration-300 text-base text-gray-800 font-medium shadow-sm" />
                                     </div>
                                 </div>
                                 
                                 <!-- Durasi -->
                                 <div class="group">
                                     <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
-                                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">
+                                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">
                                             <span class="text-lg">⏳</span>
                                         </div>
                                         Total Durasi Lembur
                                     </label>
-                                    <div class="px-5 py-4 bg-gradient-to-r from-indigo-50 to-indigo-100/50 border-2 border-indigo-200/50 rounded-xl shadow-sm">
-                                        <div id="modalDurasi" class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-700 bg-clip-text text-transparent">-</div>
+                                    <div class="px-5 py-4 bg-gradient-to-r from-red-50 to-red-100/50 border-2 border-red-200/50 rounded-xl shadow-sm">
+                                        <div id="modalDurasi" class="text-2xl font-bold bg-gradient-to-r from-red-600 to-red-700 bg-clip-text text-transparent">-</div>
                                     </div>
                                 </div>
                                 
                                 <!-- Pekerjaan yang Ditangani -->
                                 <div class="group">
                                     <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
-                                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">
+                                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">
                                             <span class="text-lg">📝</span>
                                         </div>
                                         Pekerjaan yang Ditangani
                                     </label>
-                                    <textarea id="modalKeterangan" rows="4" placeholder="Jelaskan pekerjaan yang ditangani selama lembur..." class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition-all duration-300 text-base resize-none text-gray-700 placeholder-gray-400 shadow-sm leading-relaxed"></textarea>
+                                    <textarea id="modalKeterangan" rows="4" placeholder="Jelaskan pekerjaan yang ditangani selama lembur..." class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500 transition-all duration-300 text-base resize-none text-gray-700 placeholder-gray-400 shadow-sm leading-relaxed"></textarea>
                                 </div>
                                 
                                 <!-- Status -->
                                 <div class="group">
                                     <label class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
-                                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/60 flex items-center justify-center">
+                                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-50 to-red-100/60 flex items-center justify-center">
                                             <span class="text-lg">📊</span>
                                         </div>
                                         Status Pengajuan
                                     </label>
-                                    <div id="modalStatus" class="px-5 py-4 bg-gradient-to-r from-indigo-50 to-indigo-100/50 border-2 border-indigo-200/50 rounded-xl shadow-sm">
+                                    <div id="modalStatus" class="px-5 py-4 bg-gradient-to-r from-red-50 to-red-100/50 border-2 border-red-200/50 rounded-xl shadow-sm">
                                         <div class="text-base font-semibold text-gray-800">-</div>
                                     </div>
                                 </div>
@@ -501,7 +501,7 @@
                                     </svg>
                                     Hapus Pengajuan
                                 </button>
-                                <button id="modalSaveBtn" class="hidden flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold rounded-xl transition-all duration-200 text-base shadow-md hover:shadow-lg hover:scale-105">
+                                <button id="modalSaveBtn" class="hidden flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold rounded-xl transition-all duration-200 text-base shadow-md hover:shadow-lg hover:scale-105">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                     </svg>

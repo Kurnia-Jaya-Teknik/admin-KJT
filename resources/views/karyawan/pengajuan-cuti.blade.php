@@ -18,8 +18,8 @@
         <div class="p-6 lg:pr-8 lg:pl-4 lg:py-8 bg-gray-50 min-h-full">
             <!-- Page Header with Gradient Banner -->
             <div class="mb-8 relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-600 rounded-3xl blur-2xl opacity-10"></div>
-                <div class="relative bg-gradient-to-r from-blue-600/95 via-cyan-500/90 to-teal-600/85 rounded-3xl p-8 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-red-600 via-red-500 to-red-700 rounded-3xl blur-2xl opacity-10"></div>
+                <div class="relative bg-gradient-to-r from-red-600/95 via-red-500/90 to-red-700/85 rounded-3xl p-8 overflow-hidden">
                     <div class="absolute top-4 right-8 opacity-20">
                         <div class="w-32 h-32 bg-white rounded-full blur-3xl"></div>
                     </div>
@@ -28,14 +28,14 @@
                     </div>
                     <div class="relative">
                         <h1 class="text-3xl font-bold text-white mb-2">🗓️ Pengajuan Cuti</h1>
-                        <p class="text-blue-50/90 text-sm">Ajukan cuti tahunan atau khusus dengan mudah</p>
+                        <p class="text-red-50/90 text-sm">Ajukan cuti tahunan atau khusus dengan mudah</p>
                     </div>
                 </div>
             </div>
 
             <!-- Form Pengajuan - Modern Style -->
             <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/50 overflow-hidden">
-                <div class="px-8 py-6 border-b border-gray-200/30 bg-gradient-to-r from-blue-50/80 via-cyan-50/50 to-teal-50/30">
+                <div class="px-8 py-6 border-b border-gray-200/30 bg-gradient-to-r from-red-50/80 via-red-50/50 to-gray-50/30">
                     <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">📋 Formulir Pengajuan Cuti</h2>
                 </div>
                 <div class="p-8">
@@ -43,7 +43,7 @@
                         <div id="cutiAlert" class="hidden"></div>
 
                         <!-- User Info Section -->
-                        <div class="mb-6 p-6 bg-gradient-to-br from-blue-50/60 to-cyan-50/40 rounded-xl border border-blue-200/30">
+                        <div class="mb-6 p-6 bg-gradient-to-br from-red-50/60 to-gray-50/40 rounded-xl border border-red-200/30">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">👤 Nama</label>
@@ -79,16 +79,16 @@
                                 <label class="flex items-center gap-3 cursor-pointer group">
                                     <div class="relative flex items-center">
                                         <input type="radio" id="jenis-tahunan" name="jenis" value="Cuti Tahunan"
-                                            class="w-4 h-4 text-blue-500 cursor-pointer">
+                                            class="w-4 h-4 text-red-500 cursor-pointer">
                                     </div>
-                                    <span class="text-base text-gray-700 group-hover:text-blue-600 transition-colors">Cuti Tahunan</span>
+                                    <span class="text-base text-gray-700 group-hover:text-red-600 transition-colors">Cuti Tahunan</span>
                                 </label>
                                 <label class="flex items-center gap-3 cursor-pointer group">
                                     <div class="relative flex items-center">
                                         <input type="radio" id="jenis-lainnya" name="jenis" value="Cuti Khusus"
-                                            class="w-4 h-4 text-blue-500 cursor-pointer">
+                                            class="w-4 h-4 text-red-500 cursor-pointer">
                                     </div>
-                                    <span class="text-base text-gray-700 group-hover:text-blue-600 transition-colors">Cuti Khusus / Darurat</span>
+                                    <span class="text-base text-gray-700 group-hover:text-red-600 transition-colors">Cuti Khusus / Darurat</span>
                                 </label>
                             </div>
                             <div id="jenis-error" class="text-red-500/80 text-sm mt-3 hidden font-medium"></div>
@@ -102,17 +102,17 @@
                                 <div>
                                     <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">Mulai Tanggal</label>
                                     <input id="tanggal_mulai" name="tanggal_mulai" type="date"
-                                        class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base focus:bg-white focus:border-blue-400/60 focus:ring-2 focus:ring-blue-200/30 transition-all">
+                                        class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-100/30 transition-all">
                                 </div>
                                 <div>
                                     <label class="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">Sampai Tanggal</label>
                                     <input id="tanggal_selesai" name="tanggal_selesai" type="date"
-                                        class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base focus:bg-white focus:border-blue-400/60 focus:ring-2 focus:ring-blue-200/30 transition-all">
+                                        class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-100/30 transition-all">
                                 </div>
                             </div>
 
-                            <div class="bg-blue-50/60 border border-blue-200/40 rounded-lg p-4 mb-2">
-                                <p class="text-base font-semibold text-gray-700">📊 Total Hari Cuti: <span id="editDurasiLabel" class="text-blue-600 font-bold">-</span></p>
+                            <div class="bg-red-50/60 border border-red-200/40 rounded-lg p-4 mb-2">
+                                <p class="text-base font-semibold text-gray-700">📊 Total Hari Cuti: <span id="editDurasiLabel" class="text-red-600 font-bold">-</span></p>
                             </div>
                             <div id="tanggal-error" class="text-red-500/80 text-sm mt-3 hidden font-medium"></div>
                         </div>
@@ -121,7 +121,7 @@
                         <div class="mb-6 p-6 bg-white/80 border border-gray-200/40 rounded-xl">
                             <label class="text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">📝 Keterangan / Alasan</label>
                             <textarea id="alasan" name="alasan" rows="4" placeholder="Jelaskan alasan atau keterangan cuti Anda..."
-                                class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base resize-none focus:bg-white focus:border-blue-400/60 focus:ring-2 focus:ring-blue-200/30 transition-all"></textarea>
+                                class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base resize-none focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-100/30 transition-all"></textarea>
                         </div>
 
                         <!-- Pelimpahan Tugas (by department) -->
@@ -179,20 +179,20 @@
                             <input type="tel" id="telp" name="telp"
                                 placeholder="Contoh: 082123456789"
                                 value="{{ old('telp', auth()->user()->phone ?? '') }}"
-                                class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base focus:bg-white focus:border-blue-400/60 focus:ring-2 focus:ring-blue-200/30 transition-all" />
+                                class="w-full px-4 py-2.5 border border-gray-300/60 rounded-lg text-base focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-100/30 transition-all" />
                         </div>
 
                         <!-- Info Box & Buttons -->
                         <div class="mb-6">
-                            <div class="bg-gradient-to-r from-blue-50/80 to-cyan-50/60 border border-blue-200/50 rounded-xl p-4 mb-6">
+                            <div class="bg-gradient-to-r from-red-50/80 to-red-50/60 border border-red-200/50 rounded-xl p-4 mb-6">
                                 <p class="text-base font-semibold text-gray-700">
-                                    ✓ Sisa Cuti Tahun Ini: <span id="sisaCutiLabel" class="text-blue-600 font-bold">-</span> hari
+                                    ✓ Sisa Cuti Tahun Ini: <span id="sisaCutiLabel" class="text-red-600 font-bold">-</span> hari
                                 </p>
                             </div>
 
                             <div class="flex gap-3 pt-6 border-t border-gray-200/30">
                                 <button type="submit" id="submitCuti"
-                                    class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 active:scale-95 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-base">
+                                    class="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:scale-95 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-base">
                                     Ajukan Cuti
                                 </button>
                                 <button type="reset"
@@ -209,7 +209,7 @@
             <div
                 class="mt-8 bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/50 overflow-hidden hover:shadow-md transition-all duration-300">
                 <div
-                    class="px-6 py-3.5 border-b border-gray-200/30 bg-gradient-to-r from-blue-50/80 via-cyan-50/50 to-teal-50/30">
+                    class="px-6 py-3.5 border-b border-gray-200/30 bg-gradient-to-r from-red-50/80 via-red-50/50 to-gray-50/30">
                     <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">📋 Riwayat Pengajuan Cuti</h3>
                 </div>
                 <div id="riwayatList" class="divide-y divide-gray-100/50"></div>
@@ -248,7 +248,7 @@
                     div.className =
                         'max-w-sm w-full bg-white shadow-lg rounded-xl p-4 border flex items-start gap-3 animate-in fade-in';
                     div.innerHTML =
-                        `<div class="w-3 h-3 mt-1 rounded-full ${type==='success'?'bg-emerald-500':'bg-red-500'}"></div><div><p class="font-medium text-sm text-gray-800">${message}</p></div>`;
+                        `<div class="w-3 h-3 mt-1 rounded-full ${type==='success'?'bg-red-500':'bg-red-500'}"></div><div><p class="font-medium text-sm text-gray-800">${message}</p></div>`;
                     toastContainer.appendChild(div);
                     toastContainer.classList.remove('hidden');
                     setTimeout(() => {
@@ -428,19 +428,19 @@
                             const status = i.status || 'Pending';
 
                             // Status colors and badge classes
-                            let statusBadgeClass = 'bg-amber-50/70 text-amber-600/80';
-                            let hoverClass = 'hover:from-blue-50/30';
-                            let iconBg = 'from-amber-50/60 to-amber-50/40';
-                            let iconColor = 'text-amber-600/70';
+                            let statusBadgeClass = 'bg-gray-50/70 text-gray-600/80';
+                            let hoverClass = 'hover:from-gray-50/30';
+                            let iconBg = 'from-gray-50/60 to-gray-50/40';
+                            let iconColor = 'text-gray-600/70';
                             let statusEmoji = '⏳';
                             let iconSvg =
                                 '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>';
 
                             if (status === 'Disetujui') {
-                                statusBadgeClass = 'bg-emerald-50/70 text-emerald-600/80';
-                                hoverClass = 'hover:from-emerald-50/30';
-                                iconBg = 'from-emerald-50/60 to-emerald-50/40';
-                                iconColor = 'text-emerald-500/70';
+                                statusBadgeClass = 'bg-red-50/70 text-red-600/80';
+                                hoverClass = 'hover:from-red-50/30';
+                                iconBg = 'from-red-50/60 to-red-50/40';
+                                iconColor = 'text-red-500/70';
                                 statusEmoji = '✓';
                                 iconSvg =
                                     '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>';
@@ -491,7 +491,7 @@
                                 ${i.bukti ? `<p class="text-base mb-2"><a href="${window.location.origin + '/storage/' + encodeURIComponent(i.bukti)}" target="_blank" class="text-base text-indigo-600 underline">Lihat Lampiran (Surat Dokter)</a></p>` : ''}
                                 <div class="flex gap-3">
                                     ${status === 'Pending' ? `
-                                        <button data-action="edit-cuti" data-id="${i.id}" data-jenis="${i.jenis || ''}" data-tanggal-mulai="${i.tanggal_mulai || ''}" data-tanggal-selesai="${tanggalSelesai}" data-alasan="${i.alasan || ''}" data-telp="${i.telp || ''}" class="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors">✏️ Ubah</button>
+                                        <button data-action="edit-cuti" data-id="${i.id}" data-jenis="${i.jenis || ''}" data-tanggal-mulai="${i.tanggal_mulai || ''}" data-tanggal-selesai="${tanggalSelesai}" data-alasan="${i.alasan || ''}" data-telp="${i.telp || ''}" class="text-sm text-red-600 hover:text-red-700 font-medium transition-colors">✏️ Ubah</button>
                                         <button data-action="delete-cuti" data-id="${i.id}" class="text-sm text-red-600 hover:text-red-700 font-medium transition-colors">🗑️ Hapus</button>
                                     ` : ''}
                                     <button data-action="view-detail" data-id="${i.id}" class="text-sm text-gray-600 hover:text-gray-800 font-medium transition-colors">👁️ Detail</button>

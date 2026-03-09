@@ -26,10 +26,10 @@ class DummyDataSeeder extends Seeder
         $departments = [];
         $departemenNames = ['Mekanik', 'Elektrik', 'Cleaning', 'IT', 'Finance', 'Operations'];
         foreach ($departemenNames as $name) {
-            $departments[] = Departemen::create([
-                'kode' => strtolower(str_replace(' ', '_', $name)),
-                'nama' => $name,
-            ]);
+            $departments[] = Departemen::updateOrCreate(
+                ['kode' => strtolower(str_replace(' ', '_', $name))],
+                ['nama' => $name]
+            );
         }
 
         // 2. Create Admin & Direktur
@@ -152,7 +152,7 @@ class DummyDataSeeder extends Seeder
             Surat::create([
                 'user_id' => $karyawanList[$faker->numberBetween(0, count($karyawanList) - 1)]->id,
                 'jenis' => $faker->randomElement($suratJenis),
-                'nomor_surat' => 'SR-' . now()->format('Ymd') . '-' . str_pad($i + 1, 3, '0', STR_PAD_LEFT),
+                'nomor_surat' => 'SR-' . now()->format('Ymd') . '-' . str_pad($i + 1, 3, '0', STR_PAD_LEFT) . '-' . $faker->randomNumber(3),
                 'perihal' => $faker->sentence(5),
                 'isi_surat' => $faker->paragraph(),
                 'tanggal_surat' => now()->subDays($faker->numberBetween(1, 60)),
@@ -177,7 +177,7 @@ class DummyDataSeeder extends Seeder
                 'tanggal_selesai' => $startDate->clone()->addMonths($faker->numberBetween(1, 3)),
                 'keperluan' => $faker->sentence(),
                 'phone' => $faker->phoneNumber(),
-                'status' => $faker->randomElement(['Pending', 'Disetujui', 'Ditolak']),
+                'status' => $faker->randomElement(['Permintaan Surat', 'Surat Selesai', 'Disetujui', 'Ditolak']),
             ]);
         }
 

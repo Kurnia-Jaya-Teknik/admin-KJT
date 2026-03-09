@@ -543,8 +543,6 @@ class DashboardController extends Controller
             'statusTotal' => $statusTotal,
             'karyawanPerluPerhatian' => $karyawanPerluPerhatian,
             'aktivitasTerbaru' => $aktivitasTerbaru,
-            'karyawanPerluPerhatian' => $karyawanPerluPerhatian,
-            'aktivitasTerbaru' => $aktivitasTerbaru,
         ];
     }
 
@@ -573,19 +571,23 @@ class DashboardController extends Controller
         $cutiPendingCount = Cuti::where('user_id', $user->id)->where('status', 'Pending')->count();
         $cutiRejectedCount = Cuti::where('user_id', $user->id)->where('status', 'Ditolak')->count();
 
-        // Pengajuan disetujui (total)
-        $pengajuanDisetujui = $cutiApprovedCount +
-            Lembur::where('user_id', $user->id)
+        // Lembur counts
+        $lemburApprovedCount = Lembur::where('user_id', $user->id)
             ->where('status', 'Disetujui')
             ->count();
+        $lemburPendingCount = Lembur::where('user_id', $user->id)->where('status', 'Pending')->count();
+        $lemburRejectedCount = Lembur::where('user_id', $user->id)->where('status', 'Ditolak')->count();
+
+        // Pengajuan disetujui (total)
+        $pengajuanDisetujui = $cutiApprovedCount + $lemburApprovedCount;
 
         // Pengajuan menunggu (pending)
-        $pendingRequests = Cuti::where('user_id', $user->id)
-            ->where('status', 'Pending')
-            ->count() +
-            Lembur::where('user_id', $user->id)
-            ->where('status', 'Pending')
-            ->count();
+        $pendingRequests = $cutiPendingCount + $lemburPendingCount;
+
+        // Surat counts
+        $suratDiterima = Surat::where('user_id', $user->id)->where('status', 'Diterbitkan')->count();
+        $suratPending = Surat::where('user_id', $user->id)->where('status', 'Menunggu Persetujuan')->count();
+        $suratDitolak = Surat::where('user_id', $user->id)->where('status', 'Ditolak')->count();
 
         // Status kontrak
         $statusKontrak = $user->status_kontrak ?? 'PKWTT';
@@ -599,6 +601,142 @@ class DashboardController extends Controller
         // Derive used for display convenience
         $cutiUsed = max(0, $cutiEntitlement - $cutiRemaining);
 
+        // Recent pengajuan (combined cuti + lembur, latest 5)
+        $recentRequests = collect()
+            ->merge(
+                Cuti::where('user_id', $user->id)
+                    ->latest('created_at')
+                    ->take(5)
+                    ->get()
+                    ->map(function ($cuti) {
+                        return [
+                            'type' => 'cuti',
+                            'jenis' => 'Pengajuan Cuti - ' . $cuti->jenis,
+                            'status' => $cuti->status,
+                            'tanggal' => $cuti->created_at,
+                            'durasi' => $cuti->durasi_hari . ' hari',
+                            'mulai' => \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y'),
+                            'detail' => $cuti->jenis . ' ' . $cuti->durasi_hari . ' hari mulai ' . \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y'),
+                        ];
+                    })
+            )
+            ->merge(
+                Lembur::where('user_id', $user->id)
+                    ->latest('created_at')
+                    ->take(5)
+                    ->get()
+                    ->map(function ($lembur) {
+                        return [
+                            'type' => 'lembur',
+                            'jenis' => 'Pengajuan Lembur',
+                            'status' => $lembur->status,
+                            'tanggal' => $lembur->created_at,
+                            'durasi' => $lembur->durasi_jam . ' jam',
+                            'mulai' => \Carbon\Carbon::parse($lembur->tanggal)->format('d M Y'),
+                            'detail' => $lembur->durasi_jam . ' jam lembur pada ' . \Carbon\Carbon::parse($lembur->tanggal)->format('d M Y'),
+                        ];
+                    })
+            )
+            ->sortByDesc('tanggal')
+            ->take(5);
+
+        // Latest approvals (notifications)
+        $latestApprovals = collect()
+            ->merge(
+                Cuti::where('user_id', $user->id)
+                    ->where('status', 'Disetujui')
+                    ->whereNotNull('tanggal_persetujuan')
+                    ->latest('tanggal_persetujuan')
+                    ->take(3)
+                    ->get()
+                    ->map(fn($c) => [
+                        'jenis' => 'Cuti Disetujui',
+                        'detail' => $c->jenis . ' ' . $c->durasi_hari . ' hari',
+                        'tanggal' => $c->tanggal_persetujuan,
+                    ])
+            )
+            ->merge(
+                Lembur::where('user_id', $user->id)
+                    ->where('status', 'Disetujui')
+                    ->whereNotNull('tanggal_persetujuan')
+                    ->latest('tanggal_persetujuan')
+                    ->take(3)
+                    ->get()
+                    ->map(fn($l) => [
+                        'jenis' => 'Lembur Disetujui',
+                        'detail' => $l->durasi_jam . ' jam',
+                        'tanggal' => $l->tanggal_persetujuan,
+                    ])
+            )
+            ->sortByDesc('tanggal')
+            ->take(3);
+
+        // Latest rejected (alerts)
+        $latestRejected = collect()
+            ->merge(
+                Cuti::where('user_id', $user->id)
+                    ->where('status', 'Ditolak')
+                    ->latest('updated_at')
+                    ->take(3)
+                    ->get()
+                    ->map(fn($c) => [
+                        'jenis' => 'Cuti Ditolak',
+                        'detail' => $c->jenis . ' ' . $c->durasi_hari . ' hari - ' . ($c->alasan_penolakan ?? '-'),
+                        'tanggal' => $c->updated_at,
+                    ])
+            )
+            ->merge(
+                Lembur::where('user_id', $user->id)
+                    ->where('status', 'Ditolak')
+                    ->latest('updated_at')
+                    ->take(3)
+                    ->get()
+                    ->map(fn($l) => [
+                        'jenis' => 'Lembur Ditolak',
+                        'detail' => $l->durasi_jam . ' jam - ' . ($l->alasan_penolakan ?? '-'),
+                        'tanggal' => $l->updated_at,
+                    ])
+            )
+            ->sortByDesc('tanggal')
+            ->take(3);
+
+        // Total lembur bulan ini
+        $lemburBulanIni = Lembur::where('user_id', $user->id)
+            ->where('status', 'Disetujui')
+            ->whereMonth('tanggal', now()->month)
+            ->whereYear('tanggal', now()->year)
+            ->sum('durasi_jam');
+
+        // Cuti per bulan (last 6 months)
+        $cutiPerBulan = collect();
+        for ($i = 5; $i >= 0; $i--) {
+            $m = now()->copy()->subMonths($i)->locale('id');
+            $count = Cuti::where('user_id', $user->id)
+                ->where('status', 'Disetujui')
+                ->whereYear('tanggal_persetujuan', $m->year)
+                ->whereMonth('tanggal_persetujuan', $m->month)
+                ->sum('durasi_hari');
+            $label = $m->isoFormat('MMM YY');
+            $cutiPerBulan->push(['label' => $label, 'count' => $count]);
+        }
+        $maxCuti = max(1, $cutiPerBulan->max('count') ?? 1);
+        $totalCuti6 = $cutiPerBulan->sum('count');
+
+        // Lembur per bulan (last 6 months)
+        $lemburPerBulan = collect();
+        for ($i = 5; $i >= 0; $i--) {
+            $m = now()->copy()->subMonths($i)->locale('id');
+            $count = Lembur::where('user_id', $user->id)
+                ->where('status', 'Disetujui')
+                ->whereYear('tanggal', $m->year)
+                ->whereMonth('tanggal', $m->month)
+                ->sum('durasi_jam');
+            $label = $m->isoFormat('MMM YY');
+            $lemburPerBulan->push(['label' => $label, 'count' => $count]);
+        }
+        $maxLembur = max(1, $lemburPerBulan->max('count') ?? 1);
+        $totalLembur6 = $lemburPerBulan->sum('count');
+
         return [
             'statusAbsensi' => $statusAbsensi,
             'sisaCuti' => $cutiRemaining,
@@ -608,9 +746,25 @@ class DashboardController extends Controller
             'cutiPendingCount' => $cutiPendingCount,
             'cutiRejectedCount' => $cutiRejectedCount,
             'cutiEntitlement' => $cutiEntitlement,
+            'lemburApprovedCount' => $lemburApprovedCount,
+            'lemburPendingCount' => $lemburPendingCount,
+            'lemburRejectedCount' => $lemburRejectedCount,
+            'lemburBulanIni' => $lemburBulanIni,
+            'suratDiterima' => $suratDiterima,
+            'suratPending' => $suratPending,
+            'suratDitolak' => $suratDitolak,
             'pengajuanDisetujui' => $pengajuanDisetujui,
             'pendingRequests' => $pendingRequests,
             'statusKontrak' => $statusKontrak,
+            'recentRequests' => $recentRequests,
+            'latestApprovals' => $latestApprovals,
+            'latestRejected' => $latestRejected,
+            'cutiPerBulan' => $cutiPerBulan,
+            'maxCuti' => $maxCuti,
+            'totalCuti6' => $totalCuti6,
+            'lemburPerBulan' => $lemburPerBulan,
+            'maxLembur' => $maxLembur,
+            'totalLembur6' => $totalLembur6,
         ];
     }
 }
