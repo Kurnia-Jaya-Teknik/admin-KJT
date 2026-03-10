@@ -397,12 +397,12 @@
                                         <div class="flex items-center justify-between gap-3 mb-2">
                                             <div>
                                                 <p class="text-base font-semibold text-gray-800">Ijin Sakit</p>
-                                                <p class="text-sm text-gray-500 mt-1">📅 ${tanggalMulai} – ${tanggalSelesai}</p>
+                                                <p class="text-sm text-gray-500 mt-1">${tanggalMulai} – ${tanggalSelesai}</p>
                                             </div>
                                             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-${statusColor}-100/70 text-${statusColor}-700 text-sm font-semibold rounded-full whitespace-nowrap flex-shrink-0 shadow-sm">${statusLabel}</span>
                                         </div>
-                                        <p class="text-base text-gray-600 mb-3 line-clamp-2">📝 ${i.alasan || '-'}</p>
-                                        <button type="button" class="btn-detail px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 shadow-sm hover:shadow-md bg-${statusColor}-600 text-white hover:bg-${statusColor}-700" data-ijin-id="${i.id}" data-ijin-data='${JSON.stringify(i)}'>📄 Lihat Detail</button>
+                                        <p class="text-base text-gray-600 mb-3 line-clamp-2">${i.alasan || '-'}</p>
+                                        <button type="button" class="btn-detail px-4 py-2 rounded-xl font-semibold text-sm transition-all duration-200 shadow-sm hover:shadow-md bg-red-600 text-white hover:bg-red-700" data-ijin-id="${i.id}" data-ijin-data='${JSON.stringify(i)}'>Lihat Detail</button>
                                     </div>
                                 </div>
                             </div>`;
