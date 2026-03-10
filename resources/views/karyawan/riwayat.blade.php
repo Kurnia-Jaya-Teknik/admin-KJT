@@ -24,7 +24,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wide">Jenis Pengajuan</label>
-                    <select class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-400/50 transition-all duration-300 text-sm">
+                    <select class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-400/50 transition-all duration-300 text-base">
                         <option selected>Semua</option>
                         <option>Cuti</option>
                         <option>Lembur</option>
@@ -33,7 +33,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wide">Status</label>
-                    <select class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-400/50 transition-all duration-300 text-sm">
+                    <select class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-400/50 transition-all duration-300 text-base">
                         <option selected>Semua</option>
                         <option>Disetujui</option>
                         <option>Menunggu</option>
@@ -46,12 +46,12 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wide">Sampai Tanggal</label>
-                    <input type="date" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-400/50 transition-all duration-300 text-sm">
+                    <input type="date" class="w-full px-4 py-2.5 bg-white/80 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-400/50 transition-all duration-300 text-base">
                 </div>
             </div>
             <div class="flex gap-3 mt-4">
-                <button class="px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 shadow-sm hover:shadow-md transition-all duration-300 text-sm">Filter</button>
-                <button class="px-6 py-2.5 bg-white/80 border border-gray-200/60 text-gray-700 font-semibold rounded-xl hover:bg-gray-100/80 hover:border-gray-300/60 transition-all duration-300 text-sm">Reset</button>
+                <button class="px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 shadow-sm hover:shadow-md transition-all duration-300 text-base">Filter</button>
+                <button class="px-6 py-2.5 bg-white/80 border border-gray-200/60 text-gray-700 font-semibold rounded-xl hover:bg-gray-100/80 hover:border-gray-300/60 transition-all duration-300 text-base">Reset</button>
             </div>
         </div>
 
@@ -59,7 +59,7 @@
         <div class="space-y-4">
             <!-- Kategori Januari 2026 -->
             <div class="sticky top-0 bg-gradient-to-r from-red-50/60 via-red-50/40 to-red-50/50 backdrop-blur-sm py-3 mb-4 rounded-xl px-4 -mx-2 z-10 border-l-4 border-red-600">
-                <h3 class="text-sm font-bold text-red-700">Januari 2026</h3>
+                <h3 class="text-base font-bold text-red-700">Januari 2026</h3>
             </div>
 
             <!-- Item 1 -->
@@ -73,13 +73,13 @@
                     <div class="flex-1 min-w-0">
                         <div class="flex items-start justify-between mb-1.5">
                             <div>
-                                <p class="text-sm font-medium text-gray-800">Cuti Tahunan</p>
-                                <p class="text-xs text-gray-500 mt-0.5">3 hari • 10 - 12 Januari 2026</p>
+                                <p class="text-base font-semibold text-gray-800">Cuti Tahunan</p>
+                                <p class="text-sm text-gray-500 mt-0.5">3 hari • 10 - 12 Januari 2026</p>
                             </div>
-                            <span class="px-2.5 py-0.5 bg-green-50/70 text-green-600/80 text-xs font-medium rounded-full shadow-sm flex-shrink-0 ml-2">Disetujui</span>
+                            <span class="px-3 py-1 bg-emerald-100/70 text-emerald-700 text-sm font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Disetujui</span>
                         </div>
-                        <p class="text-xs text-gray-400 mb-2">Diproses oleh: <strong class="text-gray-600">Direktur</strong> • 7 Januari 2026</p>
-                        <button class="text-xs text-green-600/90 hover:text-green-700 font-medium transition-colors">Lihat Detail →</button>
+                        <p class="text-sm text-gray-400 mb-2">Diproses oleh: <strong class="text-gray-600">Direktur</strong> • 7 Januari 2026</p>
+                        <button class="text-sm text-red-600/90 hover:text-red-700 font-semibold transition-colors">Lihat Detail →</button>
                     </div>
                 </div>
             </div>
@@ -95,15 +95,15 @@
                     <div class="flex-1 min-w-0">
                         <div class="flex items-start justify-between mb-1.5">
                             <div>
-                                <p class="text-sm font-medium text-gray-800">Lembur</p>
-                                <p class="text-xs text-gray-500 mt-0.5">5 jam • 6 Januari 2026</p>
+                                <p class="text-base font-semibold text-gray-800">Lembur</p>
+                                <p class="text-sm text-gray-500 mt-0.5">5 jam • 6 Januari 2026</p>
                             </div>
-                            <span class="px-3 py-1 bg-amber-100/70 text-amber-700 text-xs font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Menunggu</span>
+                            <span class="px-3 py-1 bg-amber-100/70 text-amber-700 text-sm font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Menunggu</span>
                         </div>
-                        <p class="text-xs text-gray-400 mb-2">Diajukan: <strong class="text-gray-600">5 Januari 2026</strong></p>
+                        <p class="text-sm text-gray-400 mb-2">Diajukan: <strong class="text-gray-600">5 Januari 2026</strong></p>
                         <div class="flex gap-3">
-                            <button class="text-xs text-red-600/90 hover:text-red-700 font-semibold transition-colors">Lihat Detail →</button>
-                            <button class="text-xs text-red-600/80 hover:text-red-700/80 font-semibold transition-colors">Batalkan</button>
+                            <button class="text-sm text-red-600/90 hover:text-red-700 font-semibold transition-colors">Lihat Detail →</button>
+                            <button class="text-sm text-red-600/80 hover:text-red-700/80 font-semibold transition-colors">Batalkan</button>
                         </div>
                     </div>
                 </div>
@@ -120,15 +120,15 @@
                     <div class="flex-1 min-w-0">
                         <div class="flex items-start justify-between mb-1.5">
                             <div>
-                                <p class="text-sm font-medium text-gray-800">Surat Keterangan Kerja</p>
-                                <p class="text-xs text-gray-500 mt-0.5">Untuk keperluan bank</p>
+                                <p class="text-base font-semibold text-gray-800">Surat Keterangan Kerja</p>
+                                <p class="text-sm text-gray-500 mt-0.5">Untuk keperluan bank</p>
                             </div>
-                            <span class="px-3 py-1 bg-emerald-100/70 text-emerald-700 text-xs font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Siap Ambil</span>
+                            <span class="px-3 py-1 bg-emerald-100/70 text-emerald-700 text-sm font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Siap Ambil</span>
                         </div>
-                        <p class="text-xs text-gray-400 mb-2">Diajukan: <strong class="text-gray-600">3 Januari 2026</strong> • Siap: <strong class="text-gray-600">5 Januari 2026</strong></p>
+                        <p class="text-sm text-gray-400 mb-2">Diajukan: <strong class="text-gray-600">3 Januari 2026</strong> • Siap: <strong class="text-gray-600">5 Januari 2026</strong></p>
                         <div class="flex gap-3">
-                            <button class="text-xs text-emerald-600/90 hover:text-emerald-700 font-semibold transition-colors">Download →</button>
-                            <button class="text-xs text-emerald-600/90 hover:text-emerald-700 font-semibold transition-colors">Detail</button>
+                            <button class="text-sm text-emerald-600/90 hover:text-emerald-700 font-semibold transition-colors">Download →</button>
+                            <button class="text-sm text-emerald-600/90 hover:text-emerald-700 font-semibold transition-colors">Detail</button>
                         </div>
                     </div>
                 </div>
@@ -145,15 +145,15 @@
                     <div class="flex-1 min-w-0">
                         <div class="flex items-start justify-between mb-1.5">
                             <div>
-                                <p class="text-sm font-medium text-gray-800">Cuti Sakit</p>
-                                <p class="text-xs text-gray-500 mt-0.5">1 hari • 5 Januari 2026</p>
+                                <p class="text-base font-semibold text-gray-800">Cuti Sakit</p>
+                                <p class="text-sm text-gray-500 mt-0.5">1 hari • 5 Januari 2026</p>
                             </div>
-                            <span class="px-3 py-1 bg-red-100/70 text-red-700 text-xs font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Ditolak</span>
+                            <span class="px-3 py-1 bg-red-100/70 text-red-700 text-sm font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Ditolak</span>
                         </div>
-                        <p class="text-xs text-gray-400 mb-2">Alasan Penolakan: <strong class="text-gray-600">Bentrok dengan jadwal rapat penting</strong></p>
+                        <p class="text-sm text-gray-400 mb-2">Alasan Penolakan: <strong class="text-gray-600">Bentrok dengan jadwal rapat penting</strong></p>
                         <div class="flex gap-3">
-                            <button class="text-xs text-red-600/90 hover:text-red-700 font-semibold transition-colors">Detail →</button>
-                            <button class="text-xs text-red-600/90 hover:text-red-700 font-semibold transition-colors">Ajukan Ulang</button>
+                            <button class="text-sm text-red-600/90 hover:text-red-700 font-semibold transition-colors">Detail →</button>
+                            <button class="text-sm text-red-600/90 hover:text-red-700 font-semibold transition-colors">Ajukan Ulang</button>
                         </div>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
 
             <!-- Kategori Desember 2025 -->
             <div class="sticky top-0 bg-gradient-to-r from-red-50/60 via-red-50/40 to-red-50/50 backdrop-blur-sm py-3 mb-4 mt-8 rounded-xl px-4 -mx-2 z-10 border-l-4 border-red-600">
-                <h3 class="text-sm font-bold text-red-700">Desember 2025</h3>
+                <h3 class="text-base font-bold text-red-700">Desember 2025</h3>
             </div>
 
             <!-- Item 5 -->
@@ -175,13 +175,13 @@
                     <div class="flex-1 min-w-0">
                         <div class="flex items-start justify-between mb-1.5">
                             <div>
-                                <p class="text-sm font-medium text-gray-800">Cuti Tahunan</p>
-                                <p class="text-xs text-gray-500 mt-0.5">5 hari • 16 - 20 Desember 2025</p>
+                                <p class="text-base font-semibold text-gray-800">Cuti Tahunan</p>
+                                <p class="text-sm text-gray-500 mt-0.5">5 hari • 16 - 20 Desember 2025</p>
                             </div>
-                            <span class="px-3 py-1 bg-emerald-100/70 text-emerald-700 text-xs font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Disetujui</span>
+                            <span class="px-3 py-1 bg-emerald-100/70 text-emerald-700 text-sm font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Disetujui</span>
                         </div>
-                        <p class="text-xs text-gray-400 mb-2">Diproses oleh: <strong class="text-gray-600">Direktur</strong> • 10 Desember 2025</p>
-                        <button class="text-xs text-red-600/90 hover:text-red-700 font-semibold transition-colors">Lihat Detail →</button>
+                        <p class="text-sm text-gray-400 mb-2">Diproses oleh: <strong class="text-gray-600">Direktur</strong> • 10 Desember 2025</p>
+                        <button class="text-sm text-red-600/90 hover:text-red-700 font-semibold transition-colors">Lihat Detail →</button>
                     </div>
                 </div>
             </div>
@@ -197,15 +197,15 @@
                     <div class="flex-1 min-w-0">
                         <div class="flex items-start justify-between mb-1.5">
                             <div>
-                                <p class="text-sm font-medium text-gray-800">Surat Keterangan Gaji</p>
-                                <p class="text-xs text-gray-500 mt-0.5">Slip gaji Desember 2025</p>
+                                <p class="text-base font-semibold text-gray-800">Surat Keterangan Gaji</p>
+                                <p class="text-sm text-gray-500 mt-0.5">Slip gaji Desember 2025</p>
                             </div>
-                            <span class="px-3 py-1 bg-emerald-100/70 text-emerald-700 text-xs font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Siap Ambil</span>
+                            <span class="px-3 py-1 bg-emerald-100/70 text-emerald-700 text-sm font-semibold rounded-full shadow-sm flex-shrink-0 ml-2">Siap Ambil</span>
                         </div>
-                        <p class="text-xs text-gray-400 mb-2">Diajukan: <strong class="text-gray-600">28 Desember 2025</strong> • Siap: <strong class="text-gray-600">30 Desember 2025</strong></p>
+                        <p class="text-sm text-gray-400 mb-2">Diajukan: <strong class="text-gray-600">28 Desember 2025</strong> • Siap: <strong class="text-gray-600">30 Desember 2025</strong></p>
                         <div class="flex gap-3">
-                            <button class="text-xs text-emerald-600/90 hover:text-emerald-700 font-semibold transition-colors">Download →</button>
-                            <button class="text-xs text-emerald-600/90 hover:text-emerald-700 font-semibold transition-colors">Detail</button>
+                            <button class="text-sm text-emerald-600/90 hover:text-emerald-700 font-semibold transition-colors">Download →</button>
+                            <button class="text-sm text-emerald-600/90 hover:text-emerald-700 font-semibold transition-colors">Detail</button>
                         </div>
                     </div>
                 </div>
@@ -214,11 +214,11 @@
 
         <!-- Pagination -->
         <div class="mt-8 flex justify-center items-center gap-2">
-            <button class="px-4 py-2.5 rounded-xl border border-gray-200/60 text-gray-700 font-semibold hover:bg-white/80 hover:border-gray-300/60 transition-all duration-300 text-sm">← Sebelumnya</button>
-            <button class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold shadow-sm text-sm">1</button>
-            <button class="px-4 py-2.5 rounded-xl border border-gray-200/60 text-gray-700 font-semibold hover:bg-white/80 hover:border-gray-300/60 transition-all duration-300 text-sm">2</button>
-            <button class="px-4 py-2.5 rounded-xl border border-gray-200/60 text-gray-700 font-semibold hover:bg-white/80 hover:border-gray-300/60 transition-all duration-300 text-sm">3</button>
-            <button class="px-4 py-2.5 rounded-xl border border-gray-200/60 text-gray-700 font-semibold hover:bg-white/80 hover:border-gray-300/60 transition-all duration-300 text-sm">Selanjutnya →</button>
+            <button class="px-6 py-2.5 rounded-xl border border-gray-200/60 text-gray-700 font-semibold hover:bg-white/80 hover:border-gray-300/60 transition-all duration-300 text-base">← Sebelumnya</button>
+            <button class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold shadow-sm text-base">1</button>
+            <button class="px-5 py-2.5 rounded-xl border border-gray-200/60 text-gray-700 font-semibold hover:bg-white/80 hover:border-gray-300/60 transition-all duration-300 text-base">2</button>
+            <button class="px-5 py-2.5 rounded-xl border border-gray-200/60 text-gray-700 font-semibold hover:bg-white/80 hover:border-gray-300/60 transition-all duration-300 text-base">3</button>
+            <button class="px-6 py-2.5 rounded-xl border border-gray-200/60 text-gray-700 font-semibold hover:bg-white/80 hover:border-gray-300/60 transition-all duration-300 text-base">Selanjutnya →</button>
         </div>
         </div>
     </div>
