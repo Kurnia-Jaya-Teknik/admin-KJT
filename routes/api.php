@@ -22,6 +22,13 @@ Route::middleware(['auth:sanctum', \Laravel\Sanctum\Http\Middleware\EnsureFronte
     Route::put('/employee/requests/{cuti}', [\App\Http\Controllers\Api\Employee\RequestController::class, 'update']);
     Route::delete('/employee/requests/{cuti}', [\App\Http\Controllers\Api\Employee\RequestController::class, 'destroy']);
 
+    // Approval endpoints (untuk direktur & admin)
+    Route::get('/admin/approvals/pending', [\App\Http\Controllers\Api\Admin\ApprovalController::class, 'pendingApprovals']);
+    Route::post('/admin/approvals/{cuti}/approve', [\App\Http\Controllers\Api\Admin\ApprovalController::class, 'approve']);
+    Route::post('/admin/approvals/{cuti}/reject', [\App\Http\Controllers\Api\Admin\ApprovalController::class, 'reject']);
+    Route::post('/admin/approvals/{cuti}/generate-surat', [\App\Http\Controllers\Api\Admin\ApprovalController::class, 'generateSurat']);
+    Route::get('/admin/approvals/{cuti}/download-surat', [\App\Http\Controllers\Api\Admin\ApprovalController::class, 'downloadSurat']);
+
     // Reports
     Route::get('/reports/cuti', [\App\Http\Controllers\Api\ReportsController::class, 'cuti']);
 
