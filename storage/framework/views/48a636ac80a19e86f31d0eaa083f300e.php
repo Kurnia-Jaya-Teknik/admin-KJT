@@ -138,7 +138,7 @@
                 <div
                     class="bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/50 overflow-hidden hover:shadow-md transition-all duration-300">
                     <div class="px-8 py-6 border-b border-gray-200/30 bg-gradient-to-r from-red-50/80 via-red-50/50 to-gray-50/30">
-                        <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">ℹ️ Informasi Lembur</h3>
+                        <h3 class="text-lg font-semibold text-gray-800">Informasi Lembur</h3>
                     </div>
                     <div class="p-6 space-y-6">
                         <div>
@@ -177,7 +177,7 @@
             <div
                 class="mt-8 bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/50 overflow-hidden hover:shadow-md transition-all duration-300">
                 <div class="px-8 py-5 border-b border-gray-200/30 bg-gradient-to-r from-red-50/80 via-red-50/50 to-gray-50/30">
-                    <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">📋 Riwayat Pengajuan Lembur</h3>
+                    <h3 class="text-lg font-semibold text-gray-800">Riwayat Pengajuan Lembur</h3>
                 </div>
                         
                     </div>
@@ -225,7 +225,8 @@
 
                 function showToast(type, msg) {
                     console.debug('[lembur] toast', type, msg);
-                    alert((type === 'success' ? '✅ ' : '❌ ') + msg);
+                    const prefix = type === 'success' ? 'Berhasil: ' : 'Gagal: ';
+                    alert(prefix + msg);
                 }
 
                 async function fetchHistory() {
@@ -277,7 +278,7 @@
                             });
 
                             // Edit button hanya untuk pending
-                            const editButton = isPending ? `<button onclick="editLembur(${item.id})" class="text-sm text-blue-600/90 hover:text-blue-700 font-medium transition-colors group-hover:font-bold mr-3">✏️ Edit</button>` : '';
+                            const editButton = isPending ? `<button onclick="editLembur(${item.id})" class="text-sm text-blue-600/90 hover:text-blue-700 font-medium transition-colors group-hover:font-bold mr-3">Edit</button>` : '';
 
                             const el = document.createElement('div');
                             el.className = 'bg-white/60 backdrop-blur-sm p-5 hover:bg-white/90 transition-all duration-300 group border-b border-gray-100/50 last:border-0';
@@ -299,7 +300,7 @@
                                         <p class="text-sm text-red-600 font-medium mt-2">Durasi: ${item.total_jam} jam</p>
                                         <div class="flex items-center gap-3 mt-3">
                                             ${editButton}
-                                            <button onclick="previewLembur(${item.id})" class="px-3 py-1.5 bg-${statusColor}-50/60 text-${statusColor}-600 hover:bg-${statusColor}-100/80 hover:text-${statusColor}-700 font-medium text-sm rounded transition-colors">Detail</button>
+                                            <button onclick="previewLembur(${item.id})" class="px-3 py-1.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-semibold text-sm rounded transition-all duration-200 shadow-sm hover:shadow-md">Detail</button>
                                         </div>
                                     </div>
                                 </div>
@@ -533,18 +534,18 @@
                             const jamSelesai = selesaiInput.value;
                             const keterangan = keteranganInput.value;
                             if (!tanggal || !jamMulai || !jamSelesai) {
-                                alert('⚠️ Tanggal dan jam harus diisi');
+                                alert('Peringatan: Tanggal dan jam harus diisi');
                                 return;
                             }
                             const s = new Date('1970-01-01T' + jamMulai + ':00Z');
                             const e = new Date('1970-01-01T' + jamSelesai + ':00Z');
                             let diff = Math.round(((e - s) / 3600000) * 100) / 100;
                             if (diff <= 0) {
-                                alert('⚠️ Jam selesai harus lebih besar dari jam mulai');
+                                alert('Peringatan: Jam selesai harus lebih besar dari jam mulai');
                                 return;
                             }
                             if (diff > 3) {
-                                alert('⚠️ Durasi lembur maksimal 3 jam per hari');
+                                alert('Peringatan: Durasi lembur maksimal 3 jam per hari');
                                 return;
                             }
 
