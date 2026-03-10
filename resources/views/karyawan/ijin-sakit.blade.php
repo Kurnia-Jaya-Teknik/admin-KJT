@@ -30,15 +30,15 @@
             </div>
 
             <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/50 overflow-hidden hover:shadow-md transition-all duration-300">
-                <div class="px-8 py-6 border-b border-gray-200/30 bg-gradient-to-r from-red-50/40 via-white to-gray-50/30">
-                    <h2 class="text-lg font-semibold text-gray-800">📋 Formulir Pengajuan Ijin Sakit</h2>
+                <div class="px-8 py-6 border-b border-gray-200/30 bg-gradient-to-r from-red-50/80 via-red-50/50 to-gray-50/30">
+                    <h2 class="text-lg font-semibold text-gray-800">Formulir Pengajuan Ijin Sakit</h2>
                 </div>
                 <div class="p-8">
                     <form id="ijinForm" class="space-y-6" enctype="multipart/form-data">
                         <div id="ijinAlert" class="hidden"></div>
 
                         <div class="text-base text-gray-700 mb-6 p-4 rounded-xl bg-red-50/40 border border-red-200/30">
-                            <p class="font-medium text-gray-800">ℹ️ Yang bertanda tangan di bawah ini:</p>
+                            <p class="font-medium text-gray-800">Yang bertanda tangan di bawah ini:</p>
                         </div>
 
                         <!-- User Info - Display only -->
@@ -63,8 +63,8 @@
 
                         <!-- Periode Ijin Sakit -->
                         <div class="pt-6">
-                            <h3 class="text-base font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                <span class="text-lg">📅</span> Periode Ijin Sakit
+                            <h3 class="text-base font-semibold text-gray-800 mb-4">
+                                Periode Ijin Sakit
                             </h3>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -85,8 +85,8 @@
 
                         <!-- Keterangan -->
                         <div class="pt-6">
-                            <h3 class="text-base font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                <span class="text-lg">📝</span> Keterangan / Alasan
+                            <h3 class="text-base font-semibold text-gray-800 mb-4">
+                                Keterangan / Alasan
                             </h3>
                             <textarea id="alasan" name="alasan" rows="4" placeholder="Uraikan kondisi kesehatan dan alasan pengajuan ijin sakit..."
                                 class="w-full px-4 py-3 border border-gray-300/60 rounded-lg text-base bg-white/60 focus:bg-white focus:border-red-400/60 focus:ring-2 focus:ring-red-200/30 transition-all duration-200 resize-none font-normal text-gray-800 placeholder-gray-400"></textarea>
@@ -94,8 +94,8 @@
 
                         <!-- Lampiran (Surat Dokter) -->
                         <div class="pt-6 border-t border-gray-200/30">
-                            <h3 class="text-base font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                <span class="text-lg">📄</span> Upload Surat Dokter <span class="text-red-500 text-sm font-bold">(WAJIB)</span>
+                            <h3 class="text-base font-semibold text-gray-800 mb-4">
+                                Upload Surat Dokter <span class="text-red-500 text-sm font-bold">(WAJIB)</span>
                             </h3>
                             <p class="text-sm text-gray-500 mb-4">Upload file surat keterangan dari dokter (PDF atau gambar). File maksimal 10 MB.</p>
                             <div class="flex items-center gap-4 p-4 rounded-lg bg-red-50/40 border-2 border-dashed border-red-300/50 hover:border-red-400/70 transition-all duration-300 cursor-pointer group"
@@ -128,12 +128,12 @@
                         <!-- Button -->
                         <div class="flex gap-3 pt-6 border-t border-gray-200/30">
                             <button type="submit" id="submitIjin"
-                                class="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-semibold rounded-lg transition-all duration-300 text-base shadow-sm hover:shadow-md active:scale-98">
-                                ✓ Ajukan Ijin Sakit
+                                class="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:scale-95 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-base">
+                                Ajukan Ijin Sakit
                             </button>
                             <button type="reset"
-                                class="flex-1 px-4 py-3 bg-gray-200/80 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-all duration-300 text-base shadow-sm hover:shadow-md">
-                                ✕ Batal
+                                class="flex-1 px-4 py-3 bg-gray-200/80 hover:bg-gray-300 text-gray-700 font-semibold rounded-xl transition-all duration-300 text-base">
+                                Batal
                             </button>
                         </div>
                     </form>
@@ -144,9 +144,9 @@
             <div
                 class="mt-10 bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/50 overflow-hidden hover:shadow-md transition-all duration-300">
                 <div
-                    class="px-8 py-5 border-b border-gray-200/30 bg-gradient-to-r from-red-50/40 via-white to-gray-50/30">
-                    <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                        <span class="text-xl">📋</span> Riwayat Pengajuan Ijin Sakit
+                    class="px-8 py-5 border-b border-gray-200/30 bg-gradient-to-r from-red-50/80 via-red-50/50 to-gray-50/30">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        Riwayat Pengajuan Ijin Sakit
                     </h3>
                 </div>
                 <div id="riwayatList" class="divide-y divide-gray-100/50"></div>
@@ -158,15 +158,15 @@
             <div id="detailModal" class="fixed inset-0 bg-black/40 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
                 <div class="bg-white rounded-2xl shadow-2xl border border-gray-200 max-w-2xl w-full animate-in fade-in zoom-in-95 duration-300 max-h-[90vh] overflow-y-auto">
                     <!-- Header -->
-                    <div class="sticky top-0 px-8 py-6 border-b border-gray-200 bg-gradient-to-r from-red-50/80 via-white to-gray-50/80 flex items-center justify-between gap-4">
+                    <div class="sticky top-0 px-8 py-6 border-b border-red-800/20 bg-gradient-to-r from-red-600 to-red-700 flex items-center justify-between gap-4">
                         <div class="flex items-center gap-4">
-                            <div id="detailStatusBg" class="w-12 h-12 rounded-lg bg-amber-50/60 border border-amber-200/50 flex items-center justify-center text-2xl">⏳</div>
+                            <div id="detailStatusBg" class="w-12 h-12 rounded-lg bg-white/20 border border-white/30 flex items-center justify-center text-2xl"></div>
                             <div>
-                                <p class="text-sm text-gray-600 font-medium">Status Pengajuan</p>
-                                <p id="detailStatus" class="text-lg font-bold text-gray-800">Menunggu</p>
+                                <p class="text-sm text-white/80 font-medium">Status Pengajuan</p>
+                                <p id="detailStatus" class="text-lg font-bold text-white">Menunggu</p>
                             </div>
                         </div>
-                        <button onclick="closeDetailModal()" type="button" class="text-gray-500 hover:text-gray-700 transition-colors">
+                        <button onclick="closeDetailModal()" type="button" class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-white/20 text-white/90 hover:text-white transition-all duration-200 backdrop-blur-sm">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -177,23 +177,23 @@
                     <div class="px-8 py-8 space-y-6">
                         <!-- Periode -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="p-4 rounded-xl bg-blue-50/40 border border-blue-200/30">
-                                <p class="text-xs text-blue-600 font-semibold uppercase tracking-wide mb-2">📅 Tanggal Mulai</p>
+                            <div class="p-4 rounded-xl bg-red-50/40 border border-red-200/30">
+                                <p class="text-xs text-red-600 font-semibold uppercase tracking-wide mb-2">Tanggal Mulai</p>
                                 <p id="detailTanggalMulai" class="text-base font-semibold text-gray-800">-</p>
                             </div>
-                            <div class="p-4 rounded-xl bg-purple-50/40 border border-purple-200/30">
-                                <p class="text-xs text-purple-600 font-semibold uppercase tracking-wide mb-2">📅 Tanggal Selesai</p>
+                            <div class="p-4 rounded-xl bg-red-50/40 border border-red-200/30">
+                                <p class="text-xs text-red-600 font-semibold uppercase tracking-wide mb-2">Tanggal Selesai</p>
                                 <p id="detailTanggalSelesai" class="text-base font-semibold text-gray-800">-</p>
                             </div>
-                            <div class="p-4 rounded-xl bg-green-50/40 border border-green-200/30">
-                                <p class="text-xs text-green-600 font-semibold uppercase tracking-wide mb-2">⏱️ Durasi</p>
+                            <div class="p-4 rounded-xl bg-red-50/40 border border-red-200/30">
+                                <p class="text-xs text-red-600 font-semibold uppercase tracking-wide mb-2">Durasi</p>
                                 <p id="detailDurasi" class="text-base font-semibold text-gray-800">-</p>
                             </div>
                         </div>
 
                         <!-- Alasan -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-3">📝 Alasan / Keterangan</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Alasan / Keterangan</label>
                             <div class="p-4 rounded-xl bg-gray-50/60 border border-gray-200/50">
                                 <p id="detailAlasan" class="text-base text-gray-700 leading-relaxed whitespace-pre-wrap">-</p>
                             </div>
@@ -201,7 +201,7 @@
 
                         <!-- Kontak -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-3">📞 Nomor Telepon</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Nomor Telepon</label>
                             <div class="p-4 rounded-xl bg-gray-50/60 border border-gray-200/50">
                                 <p id="detailTelp" class="text-base text-gray-700 font-medium">-</p>
                             </div>
@@ -209,8 +209,8 @@
 
                         <!-- Surat Dokter -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-3">📄 Surat Dokter</label>
-                            <button id="detailBuktiBtn" type="button" class="hidden w-full px-6 py-3 rounded-lg bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Surat Dokter</label>
+                            <button id="detailBuktiBtn" type="button" class="hidden w-full px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
@@ -224,7 +224,10 @@
 
                     <!-- Footer -->
                     <div class="sticky bottom-0 px-8 py-5 border-t border-gray-200 bg-gray-50/80 flex items-center justify-end gap-3">
-                        <button type="button" onclick="closeDetailModal()" class="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md">
+                        <button type="button" onclick="closeDetailModal()" class="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-gray-300 text-gray-700 font-bold hover:bg-gray-100 transition-all duration-200 shadow-sm hover:shadow-md text-base">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
                             Tutup
                         </button>
                     </div>
