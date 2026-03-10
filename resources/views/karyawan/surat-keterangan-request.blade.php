@@ -21,31 +21,30 @@
                             <!-- Header dengan tombol buat -->
                             <div class="flex justify-between items-center mb-6">
                                 <div>
-                                    <h1 class="text-2xl font-bold text-gray-900">📋 Surat Keterangan Kerja</h1>
-                                    <p class="text-gray-600 text-sm mt-1">Ajukan permintaan surat keterangan kerja Anda
-                                        ke admin</p>
+                                    <h1 class="text-3xl font-bold text-gray-900">Surat Keterangan Kerja</h1>
+                                    <p class="text-gray-600 text-base mt-2">Ajukan permintaan surat keterangan kerja Anda ke admin</p>
                                 </div>
                                 <button onclick="showRequestModal()"
-                                    class="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-sm hover:shadow-md">
+                                    class="px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 transition-all shadow-sm hover:shadow-md">
                                     + Buat Permintaan
                                 </button>
                             </div>
 
                             <!-- Status Stats -->
                             <div class="grid grid-cols-3 gap-4 mb-8">
-                                <div class="bg-amber-50 border border-amber-100 rounded-lg p-4">
-                                    <p class="text-sm text-amber-700 font-medium">Pending</p>
-                                    <p class="text-2xl font-bold text-amber-900">
+                                <div class="bg-amber-50/80 border border-amber-200/50 rounded-2xl p-6 shadow-sm">
+                                    <p class="text-sm text-amber-700 font-semibold mb-2 uppercase tracking-wide">Menunggu</p>
+                                    <p class="text-4xl font-bold text-amber-900">
                                         {{ $requests->where('status', 'Pending')->count() }}</p>
                                 </div>
-                                <div class="bg-green-50 border border-green-100 rounded-lg p-4">
-                                    <p class="text-sm text-green-700 font-medium">Approved</p>
-                                    <p class="text-2xl font-bold text-green-900">
+                                <div class="bg-emerald-50/80 border border-emerald-200/50 rounded-2xl p-6 shadow-sm">
+                                    <p class="text-sm text-emerald-700 font-semibold mb-2 uppercase tracking-wide">Disetujui</p>
+                                    <p class="text-4xl font-bold text-emerald-900">
                                         {{ $requests->where('status', 'Approved')->count() }}</p>
                                 </div>
-                                <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
-                                    <p class="text-sm text-blue-700 font-medium">Completed</p>
-                                    <p class="text-2xl font-bold text-blue-900">
+                                <div class="bg-blue-50/80 border border-blue-200/50 rounded-2xl p-6 shadow-sm">
+                                    <p class="text-sm text-blue-700 font-semibold mb-2 uppercase tracking-wide">Selesai</p>
+                                    <p class="text-4xl font-bold text-blue-900">
                                         {{ $requests->where('status', 'Completed')->count() }}</p>
                                 </div>
                             </div>
@@ -53,69 +52,48 @@
                             <!-- Table -->
                             @if ($requests->count() > 0)
                                 <div class="overflow-x-auto">
-                                    <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-gray-50">
-                                            <tr>
-                                                <th
-                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                                    Alasan</th>
-                                                <th
-                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                                    Keperluan</th>
-                                                <th
-                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                                    Tanggal Diminta</th>
-                                                <th
-                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                                    Status</th>
-                                                <th
-                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                                    Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="bg-white divide-y divide-gray-200">
-                                            @foreach ($requests as $req)
-                                                <tr>
-                                                    <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                        {{ $req->alasan }}</td>
-                                                    <td class="px-6 py-4 text-sm text-gray-700">
-                                                        {{ Str::limit($req->keperluan, 50) }}</td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                        {{ $req->tanggal_diminta->format('d/m/Y') }}</td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                        @if ($req->status === 'Pending')
-                                                            <span
-                                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-800">Menunggu</span>
-                                                        @elseif($req->status === 'Approved')
-                                                            <span
-                                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Disetujui</span>
-                                                        @elseif($req->status === 'Completed')
-                                                            <span
-                                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Selesai</span>
-                                                        @else
-                                                            <span
-                                                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Ditolak</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                                        @if ($req->status === 'Pending')
-                                                            <button onclick="cancelRequest({{ $req->id }})"
-                                                                class="text-red-600 hover:text-red-900 font-medium">Batalkan</button>
-                                                        @else
-                                                            <span class="text-gray-400">-</span>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                    <div class="bg-gray-50/30 rounded-xl border border-gray-200/50 shadow-sm overflow-hidden">
+                                        @foreach ($requests as $req)
+                                            <div class="bg-white/60 backdrop-blur-sm p-5 hover:bg-white/90 transition-all duration-300 border-b border-gray-100/50 last:border-0 group">
+                                                <div class="flex items-start justify-between gap-4 mb-3">
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="flex items-center justify-between mb-2">
+                                                            <p class="text-base font-semibold text-gray-800">{{ $req->alasan }}</p>
+                                                            @if ($req->status === 'Pending')
+                                                                <span class="px-3 py-1 bg-amber-100/70 text-amber-700 text-sm font-semibold rounded-full shadow-sm">Menunggu</span>
+                                                            @elseif($req->status === 'Approved')
+                                                                <span class="px-3 py-1 bg-emerald-100/70 text-emerald-700 text-sm font-semibold rounded-full shadow-sm">Disetujui</span>
+                                                            @elseif($req->status === 'Completed')
+                                                                <span class="px-3 py-1 bg-blue-100/70 text-blue-700 text-sm font-semibold rounded-full shadow-sm">Selesai</span>
+                                                            @else
+                                                                <span class="px-3 py-1 bg-red-100/70 text-red-700 text-sm font-semibold rounded-full shadow-sm">Ditolak</span>
+                                                            @endif
+                                                        </div>
+                                                        <div class="space-y-1">
+                                                            <p class="text-sm text-gray-600"><strong>Keperluan:</strong> {{ Str::limit($req->keperluan, 60) }}</p>
+                                                            <p class="text-sm text-gray-600"><strong>Tanggal Diminta:</strong> {{ $req->tanggal_diminta->format('d/m/Y') }}</p>
+                                                        </div>
+                                                    </div>
+                                                    @if ($req->status === 'Pending')
+                                                        <button onclick="cancelRequest({{ $req->id }})"
+                                                            class="text-sm text-red-600/90 hover:text-red-700 font-semibold transition-colors flex-shrink-0">Batalkan</button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             @else
                                 <div class="text-center py-12">
-                                    <p class="text-gray-500 mb-4">Belum ada permintaan surat keterangan</p>
+                                    <svg class="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Belum Ada Permintaan</h3>
+                                    <p class="text-gray-600 mb-6 text-base">Anda belum mengajukan surat keterangan</p>
                                     <button onclick="showRequestModal()"
-                                        class="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-sm hover:shadow-md">
+                                        class="px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 transition-all shadow-sm hover:shadow-md">
                                         Buat Permintaan Pertama
                                     </button>
                                 </div>
@@ -127,16 +105,15 @@
 
             <!-- Request Modal -->
             <div id="requestModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
-                <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden">
                     <!-- Header -->
-                    <div
-                        class="bg-gradient-to-r from-red-50 to-red-100 px-6 py-4 border-b border-red-200 flex items-center justify-between">
+                    <div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-5 border-b border-red-800/20 flex items-center justify-between">
                         <div>
-                            <h2 class="text-xl font-bold text-red-900">📋 Permintaan Surat Keterangan</h2>
-                            <p class="text-sm text-red-700/80 mt-1">Isi data permintaan Anda dengan lengkap</p>
+                            <h2 class="text-xl font-bold text-white">Permintaan Surat Keterangan</h2>
+                            <p class="text-sm text-red-100 mt-1">Isi data permintaan Anda dengan lengkap</p>
                         </div>
-                        <button onclick="closeRequestModal()" class="text-gray-400 hover:text-gray-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button onclick="closeRequestModal()" class="text-white/70 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -148,8 +125,8 @@
                         @csrf
 
                         <!-- Error Display -->
-                        <div id="errorAlert" class="hidden bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-                            <p class="text-sm font-semibold text-red-800 mb-2">❌ Error:</p>
+                        <div id="errorAlert" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                            <p class="text-sm font-semibold text-red-800 mb-2">Gagal:</p>
                             <ul id="errorList" class="text-sm text-red-700 space-y-1 list-disc pl-5"></ul>
                         </div>
 
@@ -157,7 +134,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-900 mb-2">Alasan Permintaan</label>
                             <select id="alasan" name="alasan" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+                                class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-base">
                                 <option value="">-- Pilih Alasan --</option>
                                 <option value="Pembukaan Rekening Bank">Pembukaan Rekening Bank</option>
                                 <option value="Lamaran Kerja">Lamaran Kerja</option>
@@ -172,7 +149,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-900 mb-2">Detail Keperluan</label>
                             <textarea id="keperluan" name="keperluan" rows="3" placeholder="Jelaskan keperluan Anda..." required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"></textarea>
+                                class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-base"></textarea>
                             <p id="error-keperluan" class="text-xs text-red-500 mt-1 hidden"></p>
                         </div>
 
@@ -181,7 +158,7 @@
                             <label class="block text-sm font-semibold text-gray-900 mb-2">Tanggal Dibutuhkan</label>
                             <input type="date" id="tanggal_diminta" name="tanggal_diminta" required
                                 min="{{ date('Y-m-d') }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+                                class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-base">
                             <p class="text-xs text-gray-500 mt-1">Minimal hari ini atau lebih</p>
                             <p id="error-tanggal_diminta" class="text-xs text-red-500 mt-1 hidden"></p>
                         </div>
@@ -189,11 +166,11 @@
                         <!-- Actions -->
                         <div class="flex gap-3 pt-4">
                             <button type="button" onclick="closeRequestModal()"
-                                class="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all duration-200">
+                                class="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all duration-200">
                                 Batal
                             </button>
                             <button type="submit"
-                                class="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-sm hover:shadow-md">
+                                class="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-200 shadow-sm hover:shadow-md">
                                 Kirim Permintaan
                             </button>
                         </div>

@@ -21,27 +21,26 @@
                             <!-- Header -->
                             <div class="flex justify-between items-center mb-6">
                                 <div>
-                                    <h1 class="text-2xl font-bold text-gray-900">📬 Surat Keterangan Diterima</h1>
-                                    <p class="text-gray-600 text-sm mt-1">Daftar surat keterangan yang telah dikirim
-                                        admin kepada Anda</p>
+                                    <h1 class="text-3xl font-bold text-gray-900">Surat Keterangan Diterima</h1>
+                                    <p class="text-gray-600 text-base mt-2">Daftar surat keterangan yang telah dikirim admin kepada Anda</p>
                                 </div>
                                 <a href="{{ route('karyawan.surat-keterangan.request.index') }}"
-                                    class="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-sm hover:shadow-md">
-                                    📋 Ajukan Permintaan
+                                    class="px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 transition-all shadow-sm hover:shadow-md">
+                                    Ajukan Permintaan
                                 </a>
                             </div>
 
                             <!-- Stats -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                                 <div
-                                    class="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-5">
+                                    class="bg-gradient-to-br from-red-50/80 to-red-100/60 border border-red-200/50 rounded-2xl p-6 shadow-sm">
                                     <div class="flex items-center justify-between">
                                         <div>
-                                            <p class="text-sm text-green-700 font-medium mb-1">Total Surat Diterima</p>
-                                            <p class="text-3xl font-bold text-green-900" id="totalSurat">0</p>
+                                            <p class="text-sm text-red-700 font-semibold mb-2 uppercase tracking-wide">Total Surat Diterima</p>
+                                            <p class="text-4xl font-bold text-red-900" id="totalSurat">0</p>
                                         </div>
-                                        <div class="p-3 bg-green-200 rounded-full">
-                                            <svg class="w-8 h-8 text-green-700" fill="none" stroke="currentColor"
+                                        <div class="p-3 bg-red-100/70 rounded-xl">
+                                            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -51,14 +50,14 @@
                                 </div>
 
                                 <div
-                                    class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-5">
+                                    class="bg-gradient-to-br from-emerald-50/80 to-emerald-100/60 border border-emerald-200/50 rounded-2xl p-6 shadow-sm">
                                     <div class="flex items-center justify-between">
                                         <div>
-                                            <p class="text-sm text-blue-700 font-medium mb-1">Bulan Ini</p>
-                                            <p class="text-3xl font-bold text-blue-900" id="bulanIni">0</p>
+                                            <p class="text-sm text-emerald-700 font-semibold mb-2 uppercase tracking-wide">Bulan Ini</p>
+                                            <p class="text-4xl font-bold text-emerald-900" id="bulanIni">0</p>
                                         </div>
-                                        <div class="p-3 bg-blue-200 rounded-full">
-                                            <svg class="w-8 h-8 text-blue-700" fill="none" stroke="currentColor"
+                                        <div class="p-3 bg-emerald-100/70 rounded-xl">
+                                            <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -68,14 +67,14 @@
                                 </div>
 
                                 <div
-                                    class="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg p-5">
+                                    class="bg-gradient-to-br from-blue-50/80 to-blue-100/60 border border-blue-200/50 rounded-2xl p-6 shadow-sm">
                                     <div class="flex items-center justify-between">
                                         <div>
-                                            <p class="text-sm text-purple-700 font-medium mb-1">Surat Terbaru</p>
-                                            <p class="text-3xl font-bold text-purple-900" id="suratTerbaru">-</p>
+                                            <p class="text-sm text-blue-700 font-semibold mb-2 uppercase tracking-wide">Surat Terbaru</p>
+                                            <p class="text-2xl font-bold text-blue-900" id="suratTerbaru">-</p>
                                         </div>
-                                        <div class="p-3 bg-purple-200 rounded-full">
-                                            <svg class="w-8 h-8 text-purple-700" fill="none" stroke="currentColor"
+                                        <div class="p-3 bg-blue-100/70 rounded-xl">
+                                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -88,12 +87,12 @@
                             <!-- Filter & Search -->
                             <div class="mb-6 flex gap-3">
                                 <div class="flex-1">
-                                    <input type="text" id="searchInput" placeholder="🔍 Cari nomor surat, jabatan..."
-                                        class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm">
+                                    <input type="text" id="searchInput" placeholder="Cari nomor surat, jabatan..."
+                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent text-base shadow-sm focus:shadow-md transition-all">
                                 </div>
                                 <button onclick="loadSuratList()"
-                                    class="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-all text-sm">
-                                    🔄 Refresh
+                                    class="px-6 py-3 bg-red-50 hover:bg-red-100 text-red-700 font-semibold rounded-xl border border-red-200/50 transition-all text-base">
+                                    Refresh
                                 </button>
                             </div>
 
@@ -117,11 +116,11 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Belum Ada Surat Diterima</h3>
-                                    <p class="text-gray-600 mb-6">Anda belum menerima surat keterangan dari admin</p>
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Belum Ada Surat Diterima</h3>
+                                    <p class="text-gray-600 mb-6 text-base">Anda belum menerima surat keterangan dari admin</p>
                                     <a href="{{ route('karyawan.surat-keterangan.request.index') }}"
-                                        class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all shadow-sm">
-                                        📋 Ajukan Permintaan Surat
+                                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl hover:from-red-700 hover:to-red-800 transition-all shadow-sm hover:shadow-md font-semibold">
+                                        Ajukan Permintaan Surat
                                     </a>
                                 </div>
                             </template>
@@ -187,11 +186,11 @@
 
                                     // Action buttons
                                     const actionButtons = isSent ? `
-                                        <a href="${surat.file_url}" target="_blank" class="text-sm text-emerald-600/90 hover:text-emerald-700 font-medium transition-colors group-hover:font-bold">
+                                        <a href=\"${surat.file_url}\" target=\"_blank\" class=\"text-sm text-emerald-600/90 hover:text-emerald-700 font-semibold transition-colors\">
                                             Lihat Detail →
                                         </a>
-                                        <a href="${surat.download_url}" download class="text-sm text-blue-600/90 hover:text-blue-700 font-medium transition-colors group-hover:font-bold ml-3">
-                                            📥 Download
+                                        <a href="${surat.download_url}" download class="text-sm text-blue-600/90 hover:text-blue-700 font-semibold transition-colors ml-3">
+                                            Download
                                         </a>
                                     ` : `
                                         <span class="text-sm text-gray-500">Menunggu pengiriman</span>
@@ -201,21 +200,20 @@
                                         <div class="bg-white/60 backdrop-blur-sm p-5 hover:bg-white/90 transition-all duration-300 group border-b border-gray-100/50 last:border-0">
                                             <div class="flex items-start gap-4">
                                                 <div class="w-12 h-12 rounded-xl ${statusBg} ${statusBorder} border flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 text-lg font-semibold text-${statusColor}-600">
-                                                    ${statusIcon}
                                                 </div>
                                                 <div class="flex-1 min-w-0">
                                                     <div class="flex items-center justify-between gap-3 mb-2">
                                                         <div>
-                                                            <p class="text-base font-semibold text-gray-800">📄 ${surat.nomor_surat}</p>
+                                                            <p class="text-base font-semibold text-gray-800">${surat.nomor_surat}</p>
                                                             <p class="text-sm text-gray-500 mt-1">${surat.keterangan || 'Surat Keterangan'}</p>
                                                         </div>
-                                                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-${statusColor}-100/70 text-${statusColor}-700 text-sm font-semibold rounded-full whitespace-nowrap flex-shrink-0 shadow-sm">${statusLabel}</span>
+                                                        <span class="inline-flex items-center gap-1.5 px-4 py-2 bg-${statusColor}-100/70 text-${statusColor}-700 text-sm font-semibold rounded-full whitespace-nowrap flex-shrink-0 shadow-sm">${statusLabel}</span>
                                                     </div>
                                                     <div class="space-y-1 mb-3">
-                                                        <p class="text-sm text-gray-600">👤 ${surat.jabatan}</p>
-                                                        <p class="text-sm text-gray-600">🏢 ${surat.unit_kerja}</p>
-                                                        <p class="text-sm text-gray-600">📅 ${surat.tanggal_surat}</p>
-                                                        ${isSent ? `<p class="text-sm text-emerald-600 font-medium">📬 Dikirim: ${surat.sent_at}</p>` : ''}
+                                                        <p class="text-sm text-gray-600"><strong>Jabatan:</strong> ${surat.jabatan}</p>
+                                                        <p class="text-sm text-gray-600"><strong>Unit Kerja:</strong> ${surat.unit_kerja}</p>
+                                                        <p class="text-sm text-gray-600"><strong>Tanggal:</strong> ${surat.tanggal_surat}</p>
+                                                        ${isSent ? `<p class="text-sm text-emerald-600 font-semibold">Dikirim: ${surat.sent_at}</p>` : ''}
                                                     </div>
                                                     <div class="flex items-center gap-3 mt-3">
                                                         ${actionButtons}
